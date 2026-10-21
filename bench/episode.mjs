@@ -84,7 +84,7 @@ export const PIXEL_INTRO = '当前画面见附图(没有附图就先调用 scree
 /** 把题目起点写进本局存档文件(引擎启动时读)。 */
 function prepareSaves(start) {
   if (start.rpg) {
-    const raw = fs.readFileSync(path.join(process.env.AGENT_PAL_CLASSIC_SAVES || '', start.rpg));
+    const raw = fs.readFileSync(path.join(process.env.AGENT_PAL_CLASSIC_SAVES || path.join(startSaves, 'classic'), start.rpg));
     const payload = { version: 1, savedTimes: raw.readUInt16LE(0), timestamp: 0, bytes: Array.from(raw) };
     fs.writeFileSync(process.env.AGENT_PAL_SAVES, JSON.stringify({ 'PAL-SAVE-1': JSON.stringify(payload) }));
   } else if (start.saves) {
