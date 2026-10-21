@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+const {WorldReferenceLeases}=await import('../services/world-reference-leases');
+const r=new WorldReferenceLeases(),raw={triggerScript:10},source={site:'proximity-compose' as const,sceneId:1,eventId:2,eventIndex:1};
+const otherSource={...source,eventId:3,eventIndex:2};
+const a=r.acquire('root',source,raw),b=r.acquire('other',otherSource,raw);
+raw.triggerScript=77;assert.equal(r.resolve(a,'root',source),raw);assert.equal(r.resolve(a,'foreign',source),null);assert.equal(r.resolve(a,'root',{...source,eventIndex:2}),null);
+r.release(a);assert.equal(r.resolve(a,'root',source),null);assert.equal(r.resolve(b,'other',otherSource),raw);
+r.transfer('other','successor');b.owner='successor';assert.equal(r.resolve(b,'successor',otherSource),raw);
+r.clear();assert.equal(r.resolve(b,'successor',otherSource),null);assert.notEqual(r.acquire('next',source,raw).generation,b.generation);
+console.log('world-reference-leases: alias, independent release, source/owner, rollover, generation passed');

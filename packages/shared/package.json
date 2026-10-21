@@ -1,0 +1,27 @@
+{
+  "name": "@onchainpal/shared",
+  "version": "0.1.0",
+  "description": "Shared schemas, DTOs, and codecs for PAL packages and contracts.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "types"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jianmliu/onchainpal.git",
+    "directory": "packages/shared"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

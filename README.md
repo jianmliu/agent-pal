@@ -1,0 +1,127 @@
+# Agent-PAL (`--pure` Coding Harness & Replay Edition)
+
+**Agent-PAL** 是一个面向 1995 DOS 经典原版《仙剑奇侠传》（*Chinese Paladin*）的 **无头确定性引擎 + `--pure` 智能体编程框架（Agentic Coding Harness）+ 实时观战与回放（`.palrec` / MP4）** 独立仓库。
+
+本仓库剥离了前端网页游乐场、移动端外壳、TUI 终端、剧情编辑器等无关模块，只保留 **让前沿编程大模型（如 Gemini 4 Argon、GPT-6.1-Sol、Claude Opus 5.5）在 `--pure` 模式下全自主写代码打穿整部游戏所需的核心代码与回放工具链**。
+
+---
+
+## 1. 核心特性
+
+1. **纯净 `--pure` 协议与自编程沙箱 (`src/l0.mjs`, `src/pure.mjs`, `src/code-runner.mjs`)**
+   - 仅向大模型暴露 L0 协议原语（`observe`, `step`, `search`, `advance`, `choose`, `battle`, `use_item`, `press`, `wait`, `save`, `load`, `list_saves`）、静态数据表导出（`pal-data/*.json`）、热加载模块（`module_reload`）与持久化 JavaScript 沙箱（`run_code`）。
+   - 智能体无任何预置攻略或白盒内存外挂，必须靠 `SMSG_*` 事件包重建世界状态，并通过现场编写与演进 `global.*` JavaScript 函数库完成 293 个场景、11 章主线与最终 Boss 拜月教主（`32,760 HP`）的端到端通关。
+2. **确定性锁步虚拟时钟 (`src/clock.mjs`, `--seed 1`)**
+   - 接管 `Date.now` / `setTimeout` 与引擎随机数发生器，保证相同种子下跨模型评测与 JSONL 轨迹重放 100% 比特级可复现。
+3. **融合版静态字节码拓扑编译器 (`src/bytecode-compiler.mjs`)**
+   - 融合 **Claude Opus 5.5** 与 **GPT-6.1-Sol** 在 `--pure` 通关过程中独立发明的字节码编译算法：自动从 `scripts.json` 编译 `0x0044` 树藤跳跃、`0x0070`/`0x007A` 双向移动浮板、`0x006E` 相对偏移塌陷滑坡、嵌墙暗门/绳索（`triggerMode 1..3`, `search: true`）、同场景 `0x0059 + 0x0046` 五神石传送阵，以及跨场景多连通分量（孤岛）换乘图。
+4. **直播观战、无损录制与多倍速回放 (`src/host.mjs`, `src/palrec.mjs`, `src/replay.mjs`)**
+   - **实时观战与录制 (`--host 8090 --record`)**：浏览器打开 `http://127.0.0.1:8090/watch` 实时观看 AI 操作、状态栏、小地图与对白时间线，同时边跑边落盘为 `.palrec` 增量调色板录像文件。
+   - **免引擎交互式回放 (`agent-pal replay`)**：无需游戏资产或启动引擎，直接在浏览器中以 `0.25x–8x` 倍速拖动进度条回放任意 `.palrec` 录像。
+   - **视频渲染导出 (`agent-pal export` / `src/record-replay.mjs`)**：支持将 `.palrec` 录像（含内置 WAV 音效与背景音乐）直接混流导出为高清像素放大 MP4，或将 `--seed` 确定性运行日志（`.jsonl`）重放渲染为 MP4。
+
+---
+
+## 2. 目录结构
+
+```text
+agent-pal/
+├── bin/
+│   └── agent-pal.mjs                 # CLI 入口 (MCP stdio / HTTP RPC / live host / replay / export / data dump)
+├── src/
+│   ├── engine.mjs                    # 无头 DOS 仙剑引擎启动器与底层探针
+│   ├── clock.mjs                     # --seed 确定性虚拟时钟与锁步驱动器
+│   ├── l0.mjs                        # L0 协议状态快照、差分 (SMSG_*) 与指令映射 (CMSG_*)
+│   ├── pure.mjs                      # --pure 模式 MCP 工具定义与协议分发
+│   ├── code-runner.mjs               # run_code 持久化 JS 沙箱 (pal.world / global.* / 动态工具注册)
+│   ├── modules.mjs                   # L2 外部进程模块加载与热重载 (module_reload)
+│   ├── data-dump.mjs                 # 原始 MKF 数据表静态导出器 (scenes / objects / scripts / maps)
+│   ├── bytecode-compiler.mjs         # 融合版静态字节码编译器与跨场景/多孤岛拓扑规划器
+│   ├── bytecode-compiler-demo.mjs    # 五大典型迷宫 (神木林/锁妖塔/试炼窟/铜门/女娲遗迹) 实机演示
+│   ├── argon-pure-lib.js             # Gemini 4 Argon 全程自编写运行时库 (731 行)
+│   ├── gpt61-pure-lib.js             # GPT-6.1-Sol 全程自编写运行时库 (135 行单行函数式)
+│   ├── opus-pure-lib.js              # Claude Opus 5.5 全程自编写运行时库 (1,427 行)
+│   ├── host.mjs & host-client.html   # 浏览器远程观战页与 WebSocket 帧增量流
+│   ├── palrec.mjs                    # .palrec 调色板帧 + 音效 + 观战时间线录制与读取器
+│   ├── replay.mjs                    # .palrec 浏览器交互式回放服务
+│   ├── record.mjs & record-replay.mjs# 确定性 JSONL 运行日志重放转 MP4 视频
+│   └── mcp.mjs                       # MCP stdio & HTTP JSON-RPC 服务端
+├── modules/
+│   ├── nav/                          # 纯 L0 协议单场景网格寻路与视野模块
+│   └── pure-walker/                  # 纯 L0 协议最小示例模块
+├── scripts/
+│   ├── palrec-replay.mjs             # 启动 .palrec 浏览器回放服务
+│   ├── palrec-export.mjs             # 将 .palrec 导出为带音效/BGM 的 MP4 视频
+│   ├── palrec-capture.mjs            # 用无头浏览器录制带观战 HUD 面板的回放视频
+│   └── pack-npx.mjs                  # 打包单文件可执行 npx 发布包
+├── test/                             # 核心单元测试 (L0 / code-runner / modules / nav / palrec / replay / compiler)
+├── docs/                             # 三大模型通关报告与深度对比文章 (中/英)
+└── packages/
+    ├── agent-pal-protocol/           # Agent-PAL CMSG_*/SMSG_* 协议与世界模型定义
+    └── game-engine/                  # 1995 DOS 仙剑核心引擎
+```
+
+---
+
+## 3. 快速开始
+
+### 3.1 安装依赖与构建引擎
+
+```bash
+pnpm install
+pnpm run build:engine
+```
+
+### 3.2 启动 `--pure` 模式供 AI 智能体游玩
+
+1. **MCP Stdio 模式（接入 Claude Code / Codex / Gemini CLI）**：
+   ```bash
+   node bin/agent-pal.mjs --pure --seed 1 --modules modules --assets /path/to/pal-assets
+   ```
+2. **HTTP JSON-RPC 持久服务模式（适合长程接力或脚本驱动）**：
+   ```bash
+   node bin/agent-pal.mjs --pure --seed 1 --http 8086 --modules modules --assets /path/to/pal-assets
+   ```
+3. **带浏览器实时观战 + `.palrec` 全程录像模式**：
+   ```bash
+   node bin/agent-pal.mjs --pure --host 8090 --http 8086 --modules modules --record ./recordings --assets /path/to/pal-assets
+   # 浏览器打开 http://127.0.0.1:8090/watch 即可实时观战
+   ```
+
+### 3.3 回放与视频导出 (`Replay`)
+
+1. **在浏览器中交互式回放 `.palrec` 录像（支持暂停、拖动进度条、`0.25x–8x` 倍速，无需游戏资源）**：
+   ```bash
+   node bin/agent-pal.mjs replay ./recordings/run-xxx.palrec --port 8096
+   # 浏览器打开 http://127.0.0.1:8096/replay
+   ```
+2. **将 `.palrec` 录像直接导出为 MP4 视频（自动合成内置音效与可选背景音乐）**：
+   ```bash
+   node bin/agent-pal.mjs export ./recordings/run-xxx.palrec -o playthrough.mp4 --scale 4
+   ```
+3. **将确定性模式（`--seed`）下的 JSONL 运行日志重放渲染为 MP4 视频**：
+   ```bash
+   node src/record-replay.mjs ./runs/run-xxx.jsonl ./replayed.mp4
+   ```
+
+### 3.4 运行静态字节码拓扑编译器实机演示与测试套件
+
+```bash
+# 运行全部单元测试与 --pure 冒烟测试
+pnpm test
+
+# 运行五大非线性迷宫（神木林/锁妖塔/试炼窟/铜门/女娲遗迹 16 段换乘）字节码编译演示
+pnpm run demo:compiler
+```
+
+---
+
+## 4. 三大前沿模型 `--pure` 全自主通关文档与代码库
+
+- **深度对比文章**：
+  - 中文版：[docs/three-models-play-agent-pal.zh.md](./docs/three-models-play-agent-pal.zh.md)
+  - 英文版：[docs/three-models-play-agent-pal.md](./docs/three-models-play-agent-pal.md)
+- **分模型通关报告与自编写代码库**：
+  - **Gemini 4 Argon**：[通关报告](./docs/argon-pure-playthrough-report.md) ｜ [自编写库 `src/argon-pure-lib.js`](./src/argon-pure-lib.js)
+  - **GPT-6.1-Sol**：[通关报告](./docs/gpt61-pure-playthrough-report.md) ｜ [自编写库 `src/gpt61-pure-lib.js`](./src/gpt61-pure-lib.js)
+  - **Claude Opus 5.5**：[通关报告](./docs/opus-pure-playthrough-report.md) ｜ [自编写库 `src/opus-pure-lib.js`](./src/opus-pure-lib.js)

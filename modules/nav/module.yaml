@@ -1,0 +1,18 @@
+# 官方 L1 参考模块(spec §5.4):把 MVP 的 walk_to / interact / use_item / observe 的地图部分改写成只靠
+# L0 消息 + data dump 工作的模块。--pure 加载它 ≈ --assist 的寻路体验,同时验证「模块只靠协议就能做出寻路」。
+api_version: 1
+enabled: true
+data: true          # 需要 data dump(地图可走格 / 场景表);agent-pal 启动时没有就先导一份
+description: Official L1 navigation built only on L0 messages + the data dump - pathfinding walk_to, interact (walk up, face, search), use_item (optionally facing an object), and an ASCII local map
+run:
+  command: node index.mjs
+rpc:
+  walk_to: walkTo
+  interact: interact
+  use_item: useItem
+  view: view
+packets:
+  SMSG_SCENE_ENTER: onSceneEnter
+  SMSG_PLAYER_UPDATE: onPlayerUpdate
+  SMSG_OBJECT_UPDATE: onObjectUpdate
+  SMSG_MODE: onMode

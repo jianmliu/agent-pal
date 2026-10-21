@@ -1,0 +1,18 @@
+{
+  "walk_to": {
+    "description": "Pathfind and walk to grid cell (x, y) using the map's walkable cells from the data dump plus live objects. Avoids other touch triggers (doors, exits) on the way; stops early if something triggers (cutscene, dialog, scene change). Coordinates: rotated grid, up = y-1, down = y+1, left = x-1, right = x+1.",
+    "input": { "type": "object", "properties": { "x": { "type": "integer" }, "y": { "type": "integer" } }, "required": ["x", "y"], "additionalProperties": false }
+  },
+  "interact": {
+    "description": "Walk next to the object with this id (from SMSG_SCENE_ENTER / SMSG_OBJECT_UPDATE), face it and press the search/talk key. This is how you talk to NPCs and examine things.",
+    "input": { "type": "object", "properties": { "id": { "type": "integer" } }, "required": ["id"], "additionalProperties": false }
+  },
+  "use_item": {
+    "description": "Use an item (name or id) on party member `target`. Pass `facing` = an object id to walk up to and face it first: item scripts check what you are facing.",
+    "input": { "type": "object", "properties": { "item": { "type": ["string", "integer"] }, "target": { "type": "integer", "minimum": 0, "default": 0 }, "facing": { "type": "integer" } }, "required": ["item"], "additionalProperties": false }
+  },
+  "view": {
+    "description": "ASCII map around you: @ you, # blocked, . walkable, blank = off-map, letters = objects (listed below the map with id, kind, position).",
+    "input": { "type": "object", "properties": {}, "additionalProperties": false }
+  }
+}

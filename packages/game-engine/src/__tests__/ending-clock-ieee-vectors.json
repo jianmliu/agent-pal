@@ -1,0 +1,1204 @@
+{
+  "oracle": "Python Fraction.from_float exact sum, CPython float nearest-even; seed 7645",
+  "vectors": [
+    {
+      "origin": "8000000000000000",
+      "parts": [],
+      "expected": "8000000000000000"
+    },
+    {
+      "origin": "4062bfffffffffff",
+      "parts": [
+        "3d10000000000000"
+      ],
+      "expected": "4062c00000000000"
+    },
+    {
+      "origin": "4062c00000000000",
+      "parts": [
+        "3d10000000000000"
+      ],
+      "expected": "4062c00000000000"
+    },
+    {
+      "origin": "4062c00000000000",
+      "parts": [
+        "3d28000000000000"
+      ],
+      "expected": "4062c00000000002"
+    },
+    {
+      "origin": "c341c37937e08000",
+      "parts": [
+        "4341c37937e08000",
+        "3ff0000000000000"
+      ],
+      "expected": "3ff0000000000000"
+    },
+    {
+      "origin": "c341c37937e08000",
+      "parts": [
+        "3ff0000000000000",
+        "4341c37937e08000"
+      ],
+      "expected": "3ff0000000000000"
+    },
+    {
+      "origin": "0000000000000000",
+      "parts": [
+        "0000000000000001",
+        "0000000000000001",
+        "0000000000000001"
+      ],
+      "expected": "0000000000000003"
+    },
+    {
+      "origin": "7fefffffffffffff",
+      "parts": [
+        "7c90000000000000"
+      ],
+      "expected": "overflow"
+    },
+    {
+      "origin": "ffefffffffffffff",
+      "parts": [
+        "7fefffffffffffff",
+        "0000000000000001"
+      ],
+      "expected": "0000000000000001"
+    },
+    {
+      "origin": "435c01be518d00d8",
+      "parts": [
+        "4faa742a96b53db0",
+        "41758d7bc4805740",
+        "4bfeffe1edc5851e"
+      ],
+      "expected": "4faa742a96b53db0"
+    },
+    {
+      "origin": "4e9634e68a947b76",
+      "parts": [
+        "59a23a522cd0c8a2"
+      ],
+      "expected": "59a23a522cd0c8a2"
+    },
+    {
+      "origin": "9196a22cdaa488a0",
+      "parts": [
+        "1f7c3605031ca8f8"
+      ],
+      "expected": "1f7c3605031ca8f8"
+    },
+    {
+      "origin": "7a32624859fc4a7a",
+      "parts": [
+        "63faaa88a853be04",
+        "61976d7dc97adc4c",
+        "4098128774b88c4a"
+      ],
+      "expected": "7a32624859fc4a7a"
+    },
+    {
+      "origin": "fddad753a8ee5af8",
+      "parts": [
+        "50acd2a1fdbab7d2",
+        "333518a6e8335a0a",
+        "249d7608ffe45b50",
+        "000001e5feff8287",
+        "061397e54e04c29c",
+        "79eee0c8bcbb175e",
+        "4c7048861fd57d9e",
+        "28d40c20a42d8b8f"
+      ],
+      "expected": "fddad753a8ee5af8"
+    },
+    {
+      "origin": "a67bc2d4269d2300",
+      "parts": [
+        "2d390333894ff42a",
+        "0788e3b2afd1df22",
+        "4733c08d290eca2c",
+        "268ed3c8b23a19e8",
+        "26615fc75f16de20",
+        "61b713476a694c2a"
+      ],
+      "expected": "61b713476a694c2a"
+    },
+    {
+      "origin": "6eb9ea1363517a36",
+      "parts": [
+        "41e7cbc01f05c3f7",
+        "3b3a4202d65c0300",
+        "174bb871f014d110",
+        "45515f7ab657289c"
+      ],
+      "expected": "6eb9ea1363517a36"
+    },
+    {
+      "origin": "a306a93cbd4236cc",
+      "parts": [
+        "4b9ab6e153843ce0",
+        "34c535e133bb8a35",
+        "264cee15ef0a79b8"
+      ],
+      "expected": "4b9ab6e153843ce0"
+    },
+    {
+      "origin": "4eb499ce363a7990",
+      "parts": [
+        "3c17c7992f543324",
+        "77fc8bc799c6f358"
+      ],
+      "expected": "77fc8bc799c6f358"
+    },
+    {
+      "origin": "57526b6e1176a418",
+      "parts": [
+        "163084cca1cc7800",
+        "4f4be9f2fca2a690",
+        "2e3ee7e5075b3dea",
+        "7af7aa2b10767c30"
+      ],
+      "expected": "7af7aa2b10767c30"
+    },
+    {
+      "origin": "d71ae93fad50b05c",
+      "parts": [
+        "5981e6c6dba58264",
+        "43e5185f0233aa08",
+        "365054b873dc1b9c",
+        "5a0279693c56b200",
+        "338ad83ea0856c98",
+        "0d173d4957c44f60"
+      ],
+      "expected": "5a028b500332574d"
+    },
+    {
+      "origin": "b8aa2b725aaa8ce8",
+      "parts": [
+        "5aea23f4849d58a8",
+        "0c7949a1a4dad02a",
+        "0d2b015878b5b824",
+        "3aad97b562b5d720",
+        "372bc0572f2b4c0b",
+        "00000f64faabb1a1",
+        "12f430734f67096e",
+        "0000000002cd0732"
+      ],
+      "expected": "5aea23f4849d58a8"
+    },
+    {
+      "origin": "5e2bdfa487461ad8",
+      "parts": [
+        "10df5fb95ab19260",
+        "79adad2c5ff1e87a",
+        "1f819668d88152b2",
+        "27c489a0c79e782e"
+      ],
+      "expected": "79adad2c5ff1e87a"
+    },
+    {
+      "origin": "b581bf05d443dca8",
+      "parts": [],
+      "expected": "b581bf05d443dca8"
+    },
+    {
+      "origin": "1440989e05a7b08c",
+      "parts": [
+        "19e5af258188a17a",
+        "2997f3e54436da62"
+      ],
+      "expected": "2997f3e54436da62"
+    },
+    {
+      "origin": "f656567f0da529d2",
+      "parts": [],
+      "expected": "f656567f0da529d2"
+    },
+    {
+      "origin": "17c006e7c2a81540",
+      "parts": [
+        "21b2339442aaed70",
+        "31c8634c53da25a7",
+        "10f3667d5b87da99",
+        "1c12f1aaf8092cf4"
+      ],
+      "expected": "31c8634c53da25a7"
+    },
+    {
+      "origin": "c0c8920813995218",
+      "parts": [
+        "33e660c38af08964",
+        "463e8641118f61a4",
+        "3da7c0ed331f3700",
+        "2b78234edeb5db28"
+      ],
+      "expected": "463e8641118f61a4"
+    },
+    {
+      "origin": "61270e0321856a60",
+      "parts": [
+        "79291bdd5039ce60",
+        "7733d530dad7af92",
+        "59a7248c34ef4bd5",
+        "7c82558f008049ee"
+      ],
+      "expected": "7c82558f008049ee"
+    },
+    {
+      "origin": "9831d4b8b0ce3b4c",
+      "parts": [
+        "01f277e2723d7820",
+        "467fa8b3b9b7de48",
+        "5d5a35f8faf399c6",
+        "65af71ef24cfcfa8"
+      ],
+      "expected": "65af71ef24cfcfa8"
+    },
+    {
+      "origin": "05399e5f0ef01ea0",
+      "parts": [
+        "12515c384a8e30c9"
+      ],
+      "expected": "12515c384a8e30c9"
+    },
+    {
+      "origin": "99f0c22c223e9120",
+      "parts": [
+        "28c9efe9b95cdf48",
+        "4a7436d0e9b73782",
+        "2b872390c86887f4",
+        "22b51007240280a2"
+      ],
+      "expected": "4a7436d0e9b73782"
+    },
+    {
+      "origin": "8d5464ae0490fbf0",
+      "parts": [
+        "175c1c8fc4ed1ba4",
+        "0a49ef7112c4d420",
+        "0fc652396df4186f",
+        "2e0e95c4906e758a",
+        "43439350ddd996be",
+        "672a7f25a441f6af",
+        "11802d2d4f7570f8",
+        "595c0f0050254b46"
+      ],
+      "expected": "672a7f25a441f6af"
+    },
+    {
+      "origin": "ba5057be3ab50a68",
+      "parts": [
+        "44c6d3814ef7dd90",
+        "0139fae232ee2958",
+        "3fccb8ec4c957797",
+        "458c4341c9605e5a"
+      ],
+      "expected": "458c44af01754dd8"
+    },
+    {
+      "origin": "51b20b46db1d82ce",
+      "parts": [],
+      "expected": "51b20b46db1d82ce"
+    },
+    {
+      "origin": "1cbdf266dd91a6da",
+      "parts": [
+        "56f79dd953013b11",
+        "331874bd2264100f"
+      ],
+      "expected": "56f79dd953013b11"
+    },
+    {
+      "origin": "80000b3b19739879",
+      "parts": [
+        "3cb3952fdc7cd173",
+        "065a0082f50f2a40"
+      ],
+      "expected": "3cb3952fdc7cd173"
+    },
+    {
+      "origin": "b775aad4e62820a4",
+      "parts": [],
+      "expected": "b775aad4e62820a4"
+    },
+    {
+      "origin": "000000000000f679",
+      "parts": [
+        "0165bf078abf355c",
+        "7341857fc7db04f4",
+        "5992333a5b86d023",
+        "000000287bd0d4eb",
+        "0cb963fffc547671",
+        "45df3d06732d43dc"
+      ],
+      "expected": "7341857fc7db04f4"
+    },
+    {
+      "origin": "a4b491f6258cadce",
+      "parts": [],
+      "expected": "a4b491f6258cadce"
+    },
+    {
+      "origin": "4a3ead4b082dfc64",
+      "parts": [
+        "305095eb603bbe8a"
+      ],
+      "expected": "4a3ead4b082dfc64"
+    },
+    {
+      "origin": "90ec9cac5c636240",
+      "parts": [
+        "6d320497fb154cf0",
+        "1bf705ad975e4ab1",
+        "51f2f6b6f0d12700",
+        "3ef3cb12f2d0dd29",
+        "27603157b049ebd6",
+        "0a92f339e95fd112",
+        "71a9fb004bae8074"
+      ],
+      "expected": "71a9fb004bae8074"
+    },
+    {
+      "origin": "818b4f01eb9893da",
+      "parts": [
+        "6b56d7a3f46c65c6",
+        "1128c5c9797ea7a6",
+        "78b1c44e03905eac",
+        "3aa006fe747f538a",
+        "2b021cc463c4dc60",
+        "5bb86a217cd7134e",
+        "77ccc757925ef390",
+        "7785e2d91ab85116"
+      ],
+      "expected": "78b1c48a4e9aa6c1"
+    },
+    {
+      "origin": "e630151d43c099c6",
+      "parts": [
+        "12908b303079d820",
+        "6d6c1ec88c0f25d8",
+        "34132f8f777749d7",
+        "5aff8cc981e886c0",
+        "68494c2b418e0e76",
+        "743cf5c345d11cfe",
+        "77852fcd6778610e",
+        "005f528678b1e151"
+      ],
+      "expected": "77852fcd6778610f"
+    },
+    {
+      "origin": "25105607c5636538",
+      "parts": [
+        "6c1b293ec4da6bdd",
+        "258f396b195e8492",
+        "08434fb1f35c951f",
+        "0b8f8d7d90f0e508",
+        "5bf3241e66a27aa4"
+      ],
+      "expected": "6c1b293ec4da6bdd"
+    },
+    {
+      "origin": "e7a33a4457c33e44",
+      "parts": [
+        "58063415fe0bed51",
+        "6287892bb8c80878",
+        "644c001e0d8a0718",
+        "0d6b35ce289ee459",
+        "0a3a674047356d9b"
+      ],
+      "expected": "e7a33a4457c33e44"
+    },
+    {
+      "origin": "12660e662468ee40",
+      "parts": [],
+      "expected": "12660e662468ee40"
+    },
+    {
+      "origin": "766d77afec6d348c",
+      "parts": [
+        "24c1fda7ed8c3dcc",
+        "474e6d745c34e150",
+        "47b5d34487af49c0",
+        "6d73a734c783d364",
+        "0ab9d116dc68f697"
+      ],
+      "expected": "766d77afec6d348c"
+    },
+    {
+      "origin": "9fdc5f1158c9c81e",
+      "parts": [
+        "4da4228fbbd5c05a",
+        "240f46df4ff1ff40",
+        "024ca4852adb3054",
+        "50f39124fd910750",
+        "56b055b749e3f6d6",
+        "44168047fd00d558"
+      ],
+      "expected": "56b055b749e3f6d6"
+    },
+    {
+      "origin": "5afac8d82bc717c0",
+      "parts": [],
+      "expected": "5afac8d82bc717c0"
+    },
+    {
+      "origin": "617a1eb1b67f8c5e",
+      "parts": [
+        "0fc9d3bb551103f2",
+        "647683844dcdbd68",
+        "3a2fad54a77a71c2",
+        "3cd844566568c943",
+        "3de78be2dce36a72",
+        "21a6f69715cc7640"
+      ],
+      "expected": "647683844dcdbd82"
+    },
+    {
+      "origin": "02ab972a3c890236",
+      "parts": [
+        "6eaf9975c7b77898",
+        "686fdd7092c68740",
+        "000004ec8044ed63",
+        "386715d2adcbbda0",
+        "77bcdd8e37243472",
+        "408b02cc7cb6aa2c"
+      ],
+      "expected": "77bcdd8e37243472"
+    },
+    {
+      "origin": "8153c8581b2ca11e",
+      "parts": [
+        "3a26e3ca68e72419",
+        "452af672961a5adf",
+        "00000000037d0987"
+      ],
+      "expected": "452af672961a5adf"
+    },
+    {
+      "origin": "80001648d70a227b",
+      "parts": [
+        "084c1e279c6d1ef0",
+        "51626d0f4dfe12d0",
+        "6f319f91a9c25f78",
+        "0fd666229ef9cb8d",
+        "6fa0363ae4583781"
+      ],
+      "expected": "6fa0597a07abbc40"
+    },
+    {
+      "origin": "149e8f37529301d0",
+      "parts": [],
+      "expected": "149e8f37529301d0"
+    },
+    {
+      "origin": "90e33f32fc4dd128",
+      "parts": [
+        "56b2d9401887de7b",
+        "42c734d449b57258",
+        "36fed5e3ae8d2942",
+        "688091f75abab1f0",
+        "5927d28175dc93dd",
+        "51bd8d01f962dd9e",
+        "2bc9688b7f801bd6"
+      ],
+      "expected": "688091f75abab1f0"
+    },
+    {
+      "origin": "2ebe164800fe86e2",
+      "parts": [],
+      "expected": "2ebe164800fe86e2"
+    },
+    {
+      "origin": "899867ddb11d523a",
+      "parts": [
+        "7189f766c8aa8cef"
+      ],
+      "expected": "7189f766c8aa8cef"
+    },
+    {
+      "origin": "e886c314ff7222fa",
+      "parts": [
+        "19aa25419753001c",
+        "624e1bd7e492c9b2",
+        "00000000000000d1"
+      ],
+      "expected": "e886c314ff7222fa"
+    },
+    {
+      "origin": "6fcfa3a6775d4bac",
+      "parts": [
+        "021951f44e0a9898",
+        "7886a663359b5a60",
+        "0000005a78a7de91",
+        "35b2b73fc1b24508",
+        "50cfbb66e4ad13e0",
+        "60d312edbf077290",
+        "3b5247be32205c2e"
+      ],
+      "expected": "7886a663359b5a60"
+    },
+    {
+      "origin": "9ed55f73b40fbf70",
+      "parts": [
+        "0000471f8668af6c"
+      ],
+      "expected": "9ed55f73b40fbf70"
+    },
+    {
+      "origin": "f20f025e87dbcda0",
+      "parts": [
+        "686cbe51ca1d3fd8",
+        "6a708063cee01a19"
+      ],
+      "expected": "f20f025e87dbcda0"
+    },
+    {
+      "origin": "f8bb7383dfaf3ab0",
+      "parts": [],
+      "expected": "f8bb7383dfaf3ab0"
+    },
+    {
+      "origin": "2b1417a7fbc4fa9e",
+      "parts": [],
+      "expected": "2b1417a7fbc4fa9e"
+    },
+    {
+      "origin": "358b10a57e996d20",
+      "parts": [
+        "7b93c355c46d7700",
+        "699d2cf9eb064202",
+        "282a98abb214c159",
+        "30be0a72b17b45a1"
+      ],
+      "expected": "7b93c355c46d7700"
+    },
+    {
+      "origin": "2fada865aac88fb8",
+      "parts": [
+        "09f19b09aa95c6fa"
+      ],
+      "expected": "2fada865aac88fb8"
+    },
+    {
+      "origin": "1f5670610ce3a3f0",
+      "parts": [
+        "52ed127f3745f7fc"
+      ],
+      "expected": "52ed127f3745f7fc"
+    },
+    {
+      "origin": "dd42d0d9e7a27d80",
+      "parts": [
+        "3960bce0d3784f92",
+        "3133a75464830be0",
+        "3a01a62d8570e315",
+        "03169c369c701fb0"
+      ],
+      "expected": "dd42d0d9e7a27d80"
+    },
+    {
+      "origin": "d21b4756ddbf22cc",
+      "parts": [],
+      "expected": "d21b4756ddbf22cc"
+    },
+    {
+      "origin": "91d67e092b08efc0",
+      "parts": [
+        "38e3c75afde0dc8c",
+        "74fd6da4326924a7",
+        "5ae4e25f0ee39cbb",
+        "15fc84c2c290cb7c",
+        "5277ab10ce3469d0",
+        "2bf01f6244bdb79c",
+        "1a9db8e92cf4ed74"
+      ],
+      "expected": "74fd6da4326924a7"
+    },
+    {
+      "origin": "f2d2bc39792ca71c",
+      "parts": [
+        "3cf490eaf33a1d08",
+        "5c64df021f8ae86a",
+        "4a25c1430dea5c9d",
+        "70a8f289fb3af4e0",
+        "2e2815133bad5442",
+        "545a61addf134840",
+        "6697706a5ed203db",
+        "1c9d504bb2f0a444"
+      ],
+      "expected": "f2d2bc39792988cb"
+    },
+    {
+      "origin": "44cbe56c64b0c9c8",
+      "parts": [
+        "000000000006060a",
+        "65375427aea620f0",
+        "6230581d9cc3371c"
+      ],
+      "expected": "65375427aea62100"
+    },
+    {
+      "origin": "a99374d2c21ec978",
+      "parts": [
+        "120e1325984b846c",
+        "325a509b928f0bb8",
+        "5cea119e4af020e6",
+        "7ab504f7bc539f44",
+        "545fdd1c610612b6",
+        "5e953eddf0af8298",
+        "654c752bee631860",
+        "5a079adff906e680"
+      ],
+      "expected": "7ab504f7bc539f44"
+    },
+    {
+      "origin": "12e2ab0f1754dd30",
+      "parts": [
+        "6552bb179cfbf365",
+        "6ed85e7d0b6fdf44",
+        "0132d22a1df2ce74",
+        "5fc177c9a15b47bd",
+        "1c46b24cfb5b9124"
+      ],
+      "expected": "6ed85e7d0b6fdf44"
+    },
+    {
+      "origin": "442b52d5a3d8f7f8",
+      "parts": [
+        "64dd549f6ad7d37c",
+        "67927946ac823b58",
+        "1cf49a6edc4bb328",
+        "20df9d20af43cdb8",
+        "1542617606072dba",
+        "5b9a16c2cba48b00"
+      ],
+      "expected": "67927946ac823d2d"
+    },
+    {
+      "origin": "164ef4e0e6082e82",
+      "parts": [],
+      "expected": "164ef4e0e6082e82"
+    },
+    {
+      "origin": "cfbd1568f41336c0",
+      "parts": [
+        "62af727e206219a2",
+        "7b3967c563cadd25",
+        "1b131dd8f2927c8c",
+        "1e45de366b31b711",
+        "32ddea1919017012",
+        "3a35d4df0f5f4473",
+        "054695018558f2a8"
+      ],
+      "expected": "7b3967c563cadd25"
+    },
+    {
+      "origin": "6f4701017967e65c",
+      "parts": [
+        "5b00e599ef636370"
+      ],
+      "expected": "6f4701017967e65c"
+    },
+    {
+      "origin": "eaa502c77653ef2c",
+      "parts": [
+        "3a931eef251f7f42",
+        "07e2893b0059594f"
+      ],
+      "expected": "eaa502c77653ef2c"
+    },
+    {
+      "origin": "e2d518bb35154800",
+      "parts": [],
+      "expected": "e2d518bb35154800"
+    },
+    {
+      "origin": "3f7fe3f10ea443c0",
+      "parts": [
+        "74ea34106494aac2",
+        "3c75105d25b0158d",
+        "1da7edd7d03f32f6",
+        "4a147e7013afbb5e",
+        "5acff052b2a6e338",
+        "6c9278a5030418ee",
+        "1f5793d5d710af6a"
+      ],
+      "expected": "74ea34106494aac2"
+    },
+    {
+      "origin": "956836e9ff23852e",
+      "parts": [
+        "2e902d752816601b",
+        "0184ceb57e3deece"
+      ],
+      "expected": "2e902d752816601b"
+    },
+    {
+      "origin": "967a1f378524ff2e",
+      "parts": [
+        "2e889e02673f8c68",
+        "18f1223b8e644e50",
+        "0439e9b7be3a573e",
+        "28064aa552e7632d",
+        "543edeb23d1f418e"
+      ],
+      "expected": "543edeb23d1f418e"
+    },
+    {
+      "origin": "00122d46aaec6988",
+      "parts": [
+        "4987ce03f805242c",
+        "67c20db0a2b11524",
+        "142fa9e18d2958f3"
+      ],
+      "expected": "67c20db0a2b11524"
+    },
+    {
+      "origin": "8000000000000039",
+      "parts": [
+        "56e8bfd69129a940"
+      ],
+      "expected": "56e8bfd69129a940"
+    },
+    {
+      "origin": "713b6f495f55b652",
+      "parts": [],
+      "expected": "713b6f495f55b652"
+    },
+    {
+      "origin": "5d72244a38ee3e50",
+      "parts": [
+        "47849c91bfb95f94",
+        "4104395f2205f168"
+      ],
+      "expected": "5d72244a38ee3e50"
+    },
+    {
+      "origin": "17c738e5a6acf822",
+      "parts": [
+        "000000000085c238",
+        "378531eab6691c77",
+        "31a656fc76838904"
+      ],
+      "expected": "378531eab6691c77"
+    },
+    {
+      "origin": "48d1077f1b5f5ec0",
+      "parts": [
+        "15522df7a9718f78",
+        "00cdff9be2020621",
+        "4870b7a8b19ce60c",
+        "294f680d099b3e16",
+        "4fe20510b6712984",
+        "32607434ba000d09",
+        "7e145310720549f0",
+        "58d00514b933517a"
+      ],
+      "expected": "7e145310720549f0"
+    },
+    {
+      "origin": "378abdb0fad5d578",
+      "parts": [
+        "39ae4a800399f85e",
+        "33bade4769a4f2b1"
+      ],
+      "expected": "39ae4a8003a0a7ca"
+    },
+    {
+      "origin": "e562bef2ca015a50",
+      "parts": [
+        "2de9096b91b64904",
+        "742c62438c3a26a4",
+        "164ad0677c6c4ce1"
+      ],
+      "expected": "742c62438c3a26a4"
+    },
+    {
+      "origin": "a3bef27273961e58",
+      "parts": [
+        "54d99b21da7c1beb",
+        "62102c7783fccf29",
+        "62f52398be858a94",
+        "1708c1cb39a52d44"
+      ],
+      "expected": "62f523d970639a87"
+    },
+    {
+      "origin": "b76c50e80898e500",
+      "parts": [
+        "69e2401b583b1e30",
+        "6df97af232532dca",
+        "19408d830b699aa9"
+      ],
+      "expected": "6df97af232532dca"
+    },
+    {
+      "origin": "f917b03fb9eb00d6",
+      "parts": [
+        "17a07554369c2aa9",
+        "7d3babb000340ce8",
+        "12fca0371579fb3a",
+        "442817d79ceec69e",
+        "1ed3e932b3189832",
+        "4372f8262bb57e2e"
+      ],
+      "expected": "7d3babb000340ce8"
+    },
+    {
+      "origin": "df617d513939ad30",
+      "parts": [
+        "374427a10a2e896e",
+        "3aecde87c3f3e136"
+      ],
+      "expected": "df617d513939ad30"
+    },
+    {
+      "origin": "0212212215214b30",
+      "parts": [
+        "04a5c194e1522905",
+        "36d0bb6a4f23ba28",
+        "7274afda77171b68",
+        "695ac285c4f2716c"
+      ],
+      "expected": "7274afda77171b68"
+    },
+    {
+      "origin": "764535b1238810f4",
+      "parts": [
+        "0a4300f0964203fe",
+        "0792195c84f8e420",
+        "13064132c43efcfc",
+        "0ffe66dcd8448441"
+      ],
+      "expected": "764535b1238810f4"
+    },
+    {
+      "origin": "4d3eb317f9c3232c",
+      "parts": [
+        "15fb6be23a155222",
+        "3edc74bad1d5601e",
+        "54f022dbf2ef9ce6",
+        "6700085fb29bcce8",
+        "2a12dc5c13a75ce4",
+        "496013eb13872544",
+        "430b42ec8686644a"
+      ],
+      "expected": "6700085fb29bcce8"
+    },
+    {
+      "origin": "0d3ab9b83c0c374c",
+      "parts": [],
+      "expected": "0d3ab9b83c0c374c"
+    },
+    {
+      "origin": "8a3d54299efcf2c0",
+      "parts": [
+        "4e89d0abc49f6dc4",
+        "302e1e32a8a97c1a",
+        "63958743b4271b93",
+        "6f128ce16eed9e1f",
+        "48c6b95c931c043d",
+        "7956f02bb6bf1e60",
+        "718c1bbf0bf6a206",
+        "602f3dc53ed7d348"
+      ],
+      "expected": "7956f02bb6bf1e60"
+    },
+    {
+      "origin": "d39b78b2133937d6",
+      "parts": [
+        "13e3db691b91f49d",
+        "211f4fb9a55c4b9a",
+        "3aa29926a9387405",
+        "63905da144c08d98",
+        "5782c77f852b3369"
+      ],
+      "expected": "63905da144c08d98"
+    },
+    {
+      "origin": "f0cce9768255d042",
+      "parts": [
+        "49b89a3714dad58f",
+        "1a9be24f054d0803"
+      ],
+      "expected": "f0cce9768255d042"
+    },
+    {
+      "origin": "ef2b9e908f4aae84",
+      "parts": [
+        "3e6e3ec3c94002e8",
+        "08293190f786326a",
+        "7a96b190992be60c",
+        "596f4514e901563c",
+        "61cdf116db50271e",
+        "40040f57817dc1be",
+        "2c8d88b26e8a0649",
+        "67f06eab23dbf00a"
+      ],
+      "expected": "7a96b190992be60c"
+    },
+    {
+      "origin": "96565ff0de50ce80",
+      "parts": [
+        "4c8d51157ff29ddd",
+        "42e2db9f0be6e900"
+      ],
+      "expected": "4c8d51157ff29ddd"
+    },
+    {
+      "origin": "89e06cd246031300",
+      "parts": [
+        "2bf161574be80386",
+        "6099a9fa1fb1342c",
+        "480a8742b12df0b8",
+        "370b3582d28f7f38",
+        "3e0f514165605256",
+        "5bcbce7eb513fa47",
+        "54cc856451f8d9b8",
+        "06ba9130aad6caa6"
+      ],
+      "expected": "6099a9fa1fb1342c"
+    },
+    {
+      "origin": "0b0e2adf2316b184",
+      "parts": [
+        "4564b97cd03c6bd0",
+        "3c761064dd23575c"
+      ],
+      "expected": "4564b97cd03c6bd0"
+    },
+    {
+      "origin": "849e16bae22f396e",
+      "parts": [],
+      "expected": "849e16bae22f396e"
+    },
+    {
+      "origin": "fcca6c4b7d811b30",
+      "parts": [
+        "2f07bc0b4b365026",
+        "58f41bc1b249e35f",
+        "000000398ad1fdc9",
+        "071306c298122bae",
+        "2604e10244db6233"
+      ],
+      "expected": "fcca6c4b7d811b30"
+    },
+    {
+      "origin": "c4c002de835c8b80",
+      "parts": [
+        "0bc7de99191c9df4",
+        "57e719537269fcb6",
+        "2de9c977e8150f40",
+        "719fe9f95edc1494"
+      ],
+      "expected": "719fe9f95edc1494"
+    },
+    {
+      "origin": "b67e58ab1646ca7a",
+      "parts": [],
+      "expected": "b67e58ab1646ca7a"
+    },
+    {
+      "origin": "8ebacbb176731380",
+      "parts": [
+        "4d2b294fb13e4360",
+        "5e9f69bf56c1bc00"
+      ],
+      "expected": "5e9f69bf56c1bc00"
+    },
+    {
+      "origin": "642c617193269188",
+      "parts": [
+        "1a5f4cfe477ee2f0",
+        "264b388c8b91130d",
+        "5cea67cdac9c20c0",
+        "7b1302af852bd1cc",
+        "62e847222ca033b0",
+        "759349e6f8755b35"
+      ],
+      "expected": "7b1302af852bd1cc"
+    },
+    {
+      "origin": "04a44ff409806ac0",
+      "parts": [
+        "0d5a1f2d34179f12",
+        "4751b7c4aecb6f13"
+      ],
+      "expected": "4751b7c4aecb6f13"
+    },
+    {
+      "origin": "b6e7e3f5982756f8",
+      "parts": [
+        "3ed3c0c40e0fa6b2"
+      ],
+      "expected": "3ed3c0c40e0fa6b2"
+    },
+    {
+      "origin": "e2f3ee2ccfe1bcac",
+      "parts": [
+        "338348158fd6d570",
+        "1da7208e5bbdf9d0"
+      ],
+      "expected": "e2f3ee2ccfe1bcac"
+    },
+    {
+      "origin": "0000000000123d10",
+      "parts": [],
+      "expected": "0000000000123d10"
+    },
+    {
+      "origin": "459f4ec295072d54",
+      "parts": [
+        "66ef38adf29c53ba",
+        "112003bb98334028"
+      ],
+      "expected": "66ef38adf29c53ba"
+    },
+    {
+      "origin": "1cfd60218e77e680",
+      "parts": [],
+      "expected": "1cfd60218e77e680"
+    },
+    {
+      "origin": "a1e8267c3da2c01c",
+      "parts": [
+        "612e025c4bf3c881"
+      ],
+      "expected": "612e025c4bf3c881"
+    },
+    {
+      "origin": "b0780b360c75db50",
+      "parts": [
+        "5800e4e044bf9d45",
+        "303da118fc4b8ce9",
+        "0ebfb560ea4891a9",
+        "0e3068b1cd7c72dc",
+        "0db9f4dcbddb13c3",
+        "4dc10e84f665776f",
+        "1873d20288dc4c5c"
+      ],
+      "expected": "5800e4e044bf9d45"
+    },
+    {
+      "origin": "5bbada149deff682",
+      "parts": [
+        "4e8e7628d00849ce",
+        "09c33e0fc7ea1701"
+      ],
+      "expected": "5bbada149deff682"
+    },
+    {
+      "origin": "c6720c461641eb9c",
+      "parts": [
+        "0ba910ecfefa8fb8",
+        "32263c231eadf1d7"
+      ],
+      "expected": "c6720c461641eb9c"
+    },
+    {
+      "origin": "0b459080f19ef000",
+      "parts": [
+        "23b4dbe3a0a8d5cf",
+        "006dda7dd9e3a416",
+        "603b58add5f2662a",
+        "6e915f872dfcbe34",
+        "7cce146fd14cb797",
+        "53e94af4fd6a45c4",
+        "46b999bd3183fc0a"
+      ],
+      "expected": "7cce146fd14cb797"
+    },
+    {
+      "origin": "5c12679dc94a29f0",
+      "parts": [
+        "00000000000007d5",
+        "272f90c73f85b5ec",
+        "1caf3188854c60f3",
+        "3d98462664a2ea10",
+        "02a6f7795faa96be",
+        "385fac02f868d2f8",
+        "09cd68f2985850db"
+      ],
+      "expected": "5c12679dc94a29f0"
+    },
+    {
+      "origin": "085aa671fab089a6",
+      "parts": [
+        "2943b87a2c18e9fc",
+        "336167a587fa4841",
+        "0ba3831edf3ec6c8",
+        "6ff76ca9757d00f7",
+        "5e043c3b98646926",
+        "71ac09c186a5b63c",
+        "3ec8864b59537fb6",
+        "35ebe86fb812d6e2"
+      ],
+      "expected": "71ac09c189934b6b"
+    },
+    {
+      "origin": "6c9bf9924a14ebd4",
+      "parts": [
+        "1eda6cffc4d1658c",
+        "4e6738315cabb0ac",
+        "113635738ad44498",
+        "1e984d8f1c4626c0",
+        "60cf1fae5119a050",
+        "782dcc01603c47a6",
+        "43dce86083acccc4"
+      ],
+      "expected": "782dcc01603c47a6"
+    },
+    {
+      "origin": "870c447baf0b1162",
+      "parts": [
+        "57657ee6c5acf947",
+        "261802e73fab71b0",
+        "56d74faca440f128",
+        "7032e2d7ef22d68d",
+        "33ebf575799c65a0",
+        "7df246accb691948",
+        "4d3e6f512a4707da"
+      ],
+      "expected": "7df246accb691948"
+    },
+    {
+      "origin": "f1acdad8ee997200",
+      "parts": [
+        "1558246779aae3c4"
+      ],
+      "expected": "f1acdad8ee997200"
+    },
+    {
+      "origin": "6acc8cbaff20a35a",
+      "parts": [
+        "1df16a4f1f0b1a74",
+        "4f1d8de6aa127693",
+        "1d7522fea2f4ed66",
+        "1a06da507984d2ca",
+        "5be032d04a611b6c",
+        "64f9882daa1c21ca",
+        "40eaca73ca2ec5d8",
+        "7ae392f9fdc4efb0"
+      ],
+      "expected": "7ae392f9fdc4efb0"
+    },
+    {
+      "origin": "d98522b3a1912e30",
+      "parts": [
+        "05bada61e660621e",
+        "495f89d6a9a937ab",
+        "602465f7945b88d4",
+        "725dcdc3607feb46",
+        "2f3ca3ca5cffe990"
+      ],
+      "expected": "725dcdc3607feb46"
+    }
+  ],
+  "durationUnits": {
+    "0.1": "20240225330731062958807743960839173035771409219554670346925747641684641915737541925025262154524732028946691051478781323139692622934787833054137395084177741572448183924369913497496024679618604611012849275635362753437969198873755325100252100205308964846037946531406109226174033240187414252888919866362827531551747834260750336",
+    "20.1": "4068285291476943716516058047020783108384919186503213957850033927120401462804836324900685001200427214686823980924825553211117363415683821139090599441875440037978389251117582867854414325400850090542470692331052767003029073752845553383264969196488717440711259001221990729362718729104210284812538684491330813629055052994737864704",
+    "80.1": "16212420489915579379511270960303095347914165541131954164882532254920963649443907876556901579278949622730230073523546098933594848687684568480793252922986770690489989591918569527579281391002560860599099943070664515492085906078280964595145711795735239029854978065345619595698638129327654517165750827172360750744666880466554454016"
+  }
+}

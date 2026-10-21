@@ -1,0 +1,17 @@
+# 参考模块(也是 M0b 的 --pure 验收):只靠 L0 消息走出当前场景。
+# 不读障碍数据(那要等 M2 的 data dump):未知格当可走,撞墙(REJECT blocked)就记下来重新规划。
+api_version: 1
+enabled: true
+description: Walk out of the current scene using only L0 protocol messages (BFS toward touch triggers, learning walls by bumping into them)
+run:
+  command: node index.mjs
+rpc:
+  leave_scene: leaveScene
+  model: describeModel
+packets:
+  SMSG_SCENE_ENTER: onSceneEnter
+  SMSG_PLAYER_UPDATE: onPlayerUpdate
+  SMSG_OBJECT_UPDATE: onObjectUpdate
+  SMSG_MODE: onMode
+lifecycle:
+  before_quit: beforeQuit

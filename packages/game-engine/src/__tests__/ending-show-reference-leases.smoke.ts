@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {EndingShowReferenceLeases,endingShowDigest} from '../services/ending-show-reference-leases';
+import {createEndingShowCursor} from '../services/script-ending-show-cursor';
+const front=new Uint8Array(64000),backup=new Uint8Array(64000),bitmap=new Uint8Array(7),target=new Uint8Array(64000),surface={byteBuffer:front,backup},reader={decompressChunk:()=>bitmap},binding={surface,screen:front,reader,decompress:reader.decompressChunk};
+const c=createEndingShowCursor(1,{operation:0x76,operand:[0,1,0]},bitmap,target,false);Object.assign(c,{bitmapDigest:endingShowDigest(bitmap),targetDigest:endingShowDigest(target)});
+const scope=new EndingShowReferenceLeases();c.lease=scope.acquire('owner',c,binding,bitmap,target);scope.publish(c.lease,c,0);
+assert.ok(scope.resolve(c.lease,'owner',c,binding,surface));assert.ok(scope.matchesProgress(c.lease,c,0));
+scope.publish(c.lease,c,1);assert.equal(scope.matchesProgress(c.lease,c,0),false);assert.ok(scope.matchesProgress(c.lease,c,1));scope.publish(c.lease,c,0);
+const changed=structuredClone(c);changed.step=1;assert.equal(scope.matchesProgress(c.lease,changed,0),false);
+const replacement={...binding,reader:{decompressChunk:reader.decompressChunk}};assert.equal(scope.resolve(c.lease,'owner',c,replacement,surface),null);
+const sourceChanged=structuredClone(c);sourceChanged.operands[0]=2;assert.equal(scope.resolve(c.lease,'owner',sourceChanged,binding,surface),null);
+const duplicate=scope.acquire('owner',c,binding,bitmap,target);assert.notEqual(duplicate.id,c.lease.id);scope.release(duplicate);
+const other=new EndingShowReferenceLeases();assert.equal(other.resolve(c.lease,'owner',c,binding,surface),null);
+scope.consumeProgress(c.lease);assert.equal(scope.matchesProgress(c.lease,c,0),false);scope.publish(c.lease,c,0);scope.transfer('owner','next');c.lease.owner='next';assert.ok(scope.resolve(c.lease,'next',c,binding,surface));scope.clear();assert.equal(scope.resolve(c.lease,'owner',c,binding,surface),null);
+console.log('ending-show-reference-leases smoke passed');

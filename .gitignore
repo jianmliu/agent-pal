@@ -1,0 +1,11 @@
+node_modules/
+packages/game-engine/dist/
+pal-assets/
+pal-data/
+runs/
+saves/
+npx-dist/
+*.tgz
+*.palrec
+*.mp4
+.DS_Store

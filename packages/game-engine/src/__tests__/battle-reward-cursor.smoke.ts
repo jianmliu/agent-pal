@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+const api:any=await import('../services/battle-reward-cursor').catch(()=>({}));
+assert.equal(typeof api.createBattleRewardCursor,'function','victory rewards need an authoritative plain cursor');
+const c=api.createBattleRewardCursor(12,-3,true);
+assert.deepEqual(JSON.parse(JSON.stringify(c)),c);
+assert.equal(c.stage,'normalize');
+assert.equal(c.kind,'victory-rewards');
+const first=api.reserveRewardEffect(c);
+assert.throws(()=>api.reserveRewardEffect(c),/reserved/,'synchronous reentry cannot replay writers');
+assert.equal(c.stage,'normalize','reserve never acknowledges an effect');
+api.ackRewardEffect(c,first,'summary-present');
+assert.equal(c.stage,'summary-present');
+assert.throws(()=>api.ackRewardEffect(c,first,'cash-apply'),/reservation/);
+for(const bad of [NaN,Infinity])assert.throws(()=>api.createBattleRewardCursor(bad,1,false),/finite/);
+assert.throws(()=>api.copyBattleRewardCursor({...c,page:{get kind(){throw false;}}}),TypeError);
+console.log('BATTLE-REWARD-CURSOR PASSED');
+for(const patch of [{stage:'unknown'},{displayIndex:0.5},{recoverySubstep:2},{page:{kind:'magic',role:0,label:null,delta:null,magic:{value:10},timeout:3000}},{wait:{token:0,timeout:3000,remaining:3000,lastPoll:0,continue:true}}])assert.throws(()=>api.copyBattleRewardCursor({...api.createBattleRewardCursor(1,1,false),...patch}),TypeError,'cursor stage/page/index metadata must remain exact finite scalar data');

@@ -1,0 +1,50 @@
+{
+  "name": "@onchainpal/pal-formats",
+  "version": "0.1.0",
+  "description": "Dependency-free decoders for PAL (仙剑 DOS) data: MKF / YJ_1 / RLE / sprite / map + struct reader. Shared by game-engine, voxel-lab and pal-tui.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./binary-helper": {
+      "types": "./types/binary-helper.d.ts",
+      "import": "./dist/binary-helper.js"
+    },
+    "./map": {
+      "types": "./types/map.d.ts",
+      "import": "./dist/map.js"
+    },
+    "./mkf": {
+      "types": "./types/mkf.d.ts",
+      "import": "./dist/mkf.js"
+    },
+    "./rle": {
+      "types": "./types/rle.d.ts",
+      "import": "./dist/rle.js"
+    },
+    "./sprite": {
+      "types": "./types/sprite.d.ts",
+      "import": "./dist/sprite.js"
+    },
+    "./yj_1": {
+      "types": "./types/yj_1.d.ts",
+      "import": "./dist/yj_1.js"
+    }
+  },
+  "files": [
+    "dist",
+    "types"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jianmliu/onchainpal.git",
+    "directory": "packages/pal-formats"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

@@ -1,0 +1,989 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>仙剑 · 远程屏幕</title>
+<style>
+  :root {
+    --bg: #0c0e11; --panel: #14171c; --line: #242932; --fg: #dde1e7; --dim: #7d8691; --faint: #4a515b;
+    --accent: #e0b25a; --live: #e5484d; --ok: #5fb37a; --warn: #d9a441; --bad: #e06a5a;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font: 15px/1.5 ui-sans-serif, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+  .mono { font-family: ui-monospace, Menlo, monospace; }
+  body { display: grid; grid-template-columns: minmax(0, 1fr) clamp(380px, 27vw, 520px); gap: 12px; padding: 12px; }
+  @media (max-width: 1100px) { body { grid-template-columns: minmax(0, 1fr); } }
+
+  main { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 8px; min-width: 0; }
+  /* 画面尽量大:宽度撑满这一栏,但不超过「窗口高度减去下面的状态栏」按 320:200 折算的宽度(不出现纵向滚动条) */
+  #screen { position: relative; width: min(100%, calc((100vh - 24px - var(--below, 150px)) * 1.6)); overflow: hidden; border-radius: 4px; }
+  @media (max-width: 1100px) { #screen { width: 100%; } }
+  #below { width: 100%; display: flex; flex-direction: column; gap: 6px; }
+  #info { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+  .member { flex: 1 1 150px; max-width: 260px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .member.down { opacity: .55; }
+  .member .who { display: flex; justify-content: space-between; gap: 8px; font-size: 15px; }
+  .member .who .lv { color: var(--dim); font-size: 13px; }
+  .bar { position: relative; height: 16px; border-radius: 3px; background: #1c2127; overflow: hidden; font-size: 12px; line-height: 16px; }
+  .bar i { position: absolute; inset: 0 auto 0 0; background: #3f8f5c; transition: width .3s; }
+  .bar.mp i { background: #3d6ea3; } .bar.low i { background: #b0563f; }
+  .bar span { position: relative; padding: 0 6px; color: #e9edf2; font-variant-numeric: tabular-nums; }
+  #facts { flex: 2 1 300px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px 14px; align-content: center; }
+  @media (max-width: 520px) { #facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  #facts div { display: flex; flex-direction: column; min-width: 0; }
+  #facts .k { color: var(--faint); font-size: 12px; }
+  #facts .v { font-size: 16px; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #facts .v.fight { color: var(--live); }
+  canvas { display: block; width: 100%; aspect-ratio: 320 / 200; image-rendering: pixelated; background: #000; }
+  #start { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.7); cursor: pointer; font-size: 20px; color: var(--accent); z-index: 3; }
+  #danmaku { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+  .dm { position: absolute; left: 100%; white-space: nowrap; font-size: clamp(16px, 2vw, 30px); color: #fff; text-shadow: 0 0 3px #000, 0 0 3px #000, 1px 1px 0 #000;
+        animation: fly var(--dur, 9s) linear forwards; will-change: transform; }
+  .dm.ai { color: var(--accent); font-weight: 600; }
+  @keyframes fly { to { transform: translateX(calc(-100vw - 100%)); } }
+  #hud { color: var(--dim); font-size: 14px; }
+  #hud b { color: var(--fg); font-weight: normal; }
+  .bad { color: var(--bad) !important; }
+  #keys { color: var(--faint); font-size: 14px; text-align: center; }
+
+  aside { display: flex; flex-direction: column; gap: 12px; min-height: 0; height: calc(100vh - 24px); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; display: flex; flex-direction: column; min-height: 0; }
+  .card h2 { margin: 0; padding: 10px 12px; font-size: 14px; font-weight: 600; letter-spacing: .06em; color: var(--dim); border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 8px; }
+  .card h2 .grow { flex: 1; }
+
+  #status { padding: 12px; gap: 6px; }
+  #status .row { display: flex; align-items: center; gap: 4px 10px; flex-wrap: wrap; }
+  #status .row > * { white-space: nowrap; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: #2a1416; color: var(--live); }
+  .badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--live); animation: pulse 1.6s ease-in-out infinite; }
+  .badge.off { background: #1c2026; color: var(--dim); } .badge.off::before { background: var(--dim); animation: none; }
+  @keyframes pulse { 50% { opacity: .3; } }
+  #viewers { color: var(--dim); font-size: 14px; }
+  #speedBox { margin-left: auto; font-size: 14px; color: var(--dim); }
+  #speedBox select { background: #0f1216; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; font: inherit; font-size: 14px; padding: 1px 4px; }
+  #role { font-size: 14px; color: var(--dim); }
+  #now { display: flex; flex-direction: column; gap: 4px; }
+  #now .thought { font-size: 19px; line-height: 1.5; color: var(--fg); text-wrap: pretty; }
+  #now .thought.idle { color: var(--dim); font-size: 16px; }
+  #now .doing { font-size: 14px; color: var(--accent); }
+  #now .doing::before { content: "● "; animation: pulse 1s infinite; }
+  #now .doing.done { color: var(--dim); } #now .doing.done::before { content: ""; }
+
+  #mapCard { flex: none; }
+  #mapCard.closed #mapBody { display: none; }
+  #mapBody { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+  #mini { display: block; width: 100%; height: clamp(180px, 30vh, 320px); background: #06080a; border-radius: 4px; }
+  #mapLegend { font-size: 13px; color: var(--dim); display: flex; flex-wrap: wrap; gap: 2px 12px; }
+  #mapLegend .ex { white-space: nowrap; }
+  #mapLegend .ex::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+  #mapLegend .ex.used::before { background: var(--ok); }
+  #mapLegend .ex.new { color: var(--accent); } #mapLegend .ex.new::before { box-shadow: inset 0 0 0 2px var(--accent); }
+  #mapLegend .dead { color: var(--bad); }
+  #mapToggle { font-size: 13px; padding: 1px 8px; margin-left: 6px; }
+
+  #feedCard { flex: 1 1 55%; }
+  #feed, #chat { list-style: none; margin: 0; padding: 6px 0; overflow-y: auto; flex: 1; min-height: 120px; }
+  #feed > li { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+  #feed > li + li { border-top: 1px solid #1a1e24; }
+  #feed .thought { font-size: 17px; line-height: 1.6; color: var(--fg); white-space: pre-line; overflow-wrap: anywhere; }
+  #feed .acts { list-style: none; margin: 0; padding: 0 0 0 10px; border-left: 2px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
+  #feed .acts:empty { display: none; }
+  #feed .speak { color: var(--accent); font-size: 13px; }
+  #feed .speak::before { content: "♪ "; }
+  #feed > li.chapter { margin: 8px 12px; padding: 12px 14px; border: 1px solid #5a4a26; border-radius: 6px; background: #1b1810; }
+  #feed > li.chapter + li, #feed > li + li.chapter { border-top: 1px solid #5a4a26; }
+  #feed > li.chapter + li:not(.chapter) { border-top: 0; }
+  #feed .chapter .title, #chapters summary { color: var(--accent); font-weight: 600; }
+  #feed .chapter .title { font-size: 17px; }
+  #feed .chapter .text, #chapters .text { white-space: pre-line; line-height: 1.7; overflow-wrap: anywhere; }
+  #chapCard { flex: none; }
+  #chapters { max-height: 26vh; overflow-y: auto; padding: 6px 12px 10px; display: flex; flex-direction: column; gap: 4px; }
+  #chapters summary { cursor: pointer; font-size: 15px; }
+  #chapters .text { color: #c6ccd4; font-size: 15px; padding: 4px 0 6px 14px; }
+  #voiceBtn { font-size: 13px; padding: 1px 8px; }
+  #feed .act { font-size: 14px; color: var(--dim); display: flex; gap: 6px; align-items: baseline; }
+  #feed .act .what { min-width: 0; overflow-wrap: anywhere; }
+  #feed .out.ok { color: var(--ok); } #feed .out.soft { color: var(--warn); } #feed .out.fail { color: var(--bad); }
+  #feed .out.run { color: var(--accent); animation: pulse 1s infinite; }
+  #feed .ms { color: var(--faint); font-size: 13px; font-variant-numeric: tabular-nums; margin-left: auto; white-space: nowrap; }
+  #feed .time { font-size: 13px; color: var(--faint); }
+  #feed .act.fight { flex-wrap: wrap; align-items: center; row-gap: 3px; }
+  #feed .act.fight .what { color: var(--fg); }
+  #feed .moves { display: inline-flex; flex-wrap: wrap; gap: 3px 4px; min-width: 0; flex: 1 1 60%; }
+  #feed .chip { padding: 0 6px; border-radius: 999px; background: #1e232b; color: var(--dim); font-size: 13px; line-height: 22px; white-space: nowrap; }
+  #feed .chip.run { color: var(--accent); animation: pulse 1s infinite; }
+  #feed .chip.no { color: var(--faint); text-decoration: line-through; }
+  #feed .more { font-size: 13px; color: var(--faint); }
+  #feed .out.none { color: var(--faint); }
+  #feed .story { font-size: 14px; color: #a9b4c2; border-left: 2px solid #33404f; margin-left: -12px; padding-left: 10px; display: flex; flex-direction: column; gap: 1px; }
+  #feed .story .line { overflow-wrap: anywhere; }
+  #feed .story summary { color: var(--faint); cursor: pointer; }
+  #feed .act.scene { color: var(--faint); }
+  #feed .act.sub { color: var(--dim); padding-left: 12px; }
+  #feed .act.sub.bad { color: var(--bad); }
+
+  #chatCard { flex: 1 1 45%; }
+  .card[hidden] { display: none; }
+  #chat li { padding: 3px 12px; overflow-wrap: anywhere; }
+  #chat .who { color: #8fb4d9; margin-right: 6px; }
+  #chat li.ai .who { color: var(--accent); }
+  #chat li.ai { background: #1d1a12; }
+  #chat li.sys { color: var(--faint); font-size: 14px; }
+  #say { display: flex; gap: 6px; padding: 8px; border-top: 1px solid var(--line); }
+  #say input { min-width: 0; background: #0f1216; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 6px 8px; font: inherit; }
+  #say input:focus { outline: 1px solid var(--accent); border-color: var(--accent); }
+  #nick { width: 96px; } #msg { flex: 1; }
+  button { background: #222831; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 4px 10px; font: inherit; cursor: pointer; }
+  button:hover { border-color: var(--accent); }
+  #dmToggle { font-size: 13px; padding: 1px 8px; }
+  .empty { color: var(--faint); padding: 8px 12px; font-size: 14px; }
+
+  /* 回放条(回放模式才有:replay.mjs) */
+  #replay { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+  #replay[hidden] { display: none; }
+  #replay button { min-width: 84px; }
+  #replay select { background: #0f1216; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; font: inherit; font-size: 14px; padding: 2px 4px; }
+  #rpSeek { flex: 1; min-width: 0; accent-color: var(--accent); }
+  #rpTime { font-size: 14px; color: var(--dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  /* 录屏用(?capture):不要回放条和调试行 */
+  body.capture #replay, body.capture #hud, body.capture #start, body.capture #voiceBtn, body.capture #mapToggle { display: none; }
+  body.capture * { animation: none !important; }
+
+  /* 窄屏:上下堆叠,页面自己滚动。放在最后,盖过上面按「一屏高」写的规则 */
+  @media (max-width: 1100px) {
+    html, body { height: auto; }
+    aside { height: auto; }
+    #feedCard, #chatCard { flex: none; }
+    #chapters { max-height: none; }
+    #feed, #chat { flex: none; height: 300px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div id="screen">
+    <canvas id="cvs" width="320" height="200"></canvas>
+    <div id="danmaku"></div>
+    <div id="start">点击开始(启用声音、键盘)</div>
+  </div>
+  <div id="below">
+    <div id="replay" hidden>
+      <button id="rpPlay" type="button" title="空格">▶ 播放</button>
+      <select id="rpRec" aria-label="第几轮" hidden></select>
+      <input id="rpSeek" type="range" min="0" max="0" step="100" value="0" aria-label="进度" title="← → 退 / 进 5 秒">
+      <span id="rpTime" class="mono">0:00 / 0:00</span>
+      <select id="rpRate" aria-label="回放倍速"></select>
+    </div>
+    <div id="info"><div id="facts"></div></div>
+    <div id="hud" class="mono">连接中…</div>
+    <div id="keys">方向键 移动 · Enter/空格 确认 · Esc 菜单 · R 重复 · A 自动 · D 防御 · E 物品 · W 投掷 · Q 逃跑 · S 状态 · F 法术</div>
+  </div>
+</main>
+<aside>
+  <section class="card" id="status">
+    <div class="row"><span id="liveBadge" class="badge off">未连接</span><span id="viewers"></span><span id="speedBox"><span id="speedPick" hidden>场景 <select id="speedScene" aria-label="场景倍速" title="走路、怪的追击、按帧计的计时(1× = 原版 10 帧/秒)"></select> 战斗 <select id="speedBattle" aria-label="战斗倍速" title="战斗帧,以及对白、过场延时、菜单(1× = 原版)"></select></span><span id="speedLabel"></span></span><span id="role"></span></div>
+    <div id="now"><div class="thought idle">等 AI 开口…</div></div>
+  </section>
+  <section class="card" id="mapCard">
+    <h2><span class="grow">小地图<span id="mapPlace"></span></span><button id="mapToggle" type="button">收起</button></h2>
+    <div id="mapBody">
+      <canvas id="mini"></canvas>
+      <div id="mapLegend"><span>亮的地方是走过的;进了场景才有地图</span></div>
+    </div>
+  </section>
+  <section class="card" id="chapCard" hidden>
+    <h2><span class="grow">章节小结</span><span id="chapCount"></span></h2>
+    <div id="chapters"></div>
+  </section>
+  <section class="card" id="feedCard">
+    <h2><span class="grow" id="feedTitle">AI 的想法</span><button id="voiceBtn" type="button" hidden>配音 开</button><span id="calls"></span></h2>
+    <ul id="feed"><li class="empty">AI 写下的想法会出现在这里,它做的操作挂在下面</li></ul>
+  </section>
+  <section class="card" id="chatCard" hidden>
+    <h2><span class="grow">聊天 · 弹幕</span><button id="dmToggle" type="button">弹幕 开</button></h2>
+    <ul id="chat"><li class="sys">发的话会飘在画面上;AI 可以用 chat 工具读到并回话(只当建议,不一定照做)</li></ul>
+    <form id="say" autocomplete="off"><input id="nick" maxlength="16" aria-label="昵称"><input id="msg" maxlength="140" placeholder="说点什么…" aria-label="消息"><button type="submit">发送</button></form>
+  </section>
+</aside>
+<script>
+'use strict';
+const W = 320, H = 200;
+const $ = (id) => document.getElementById(id);
+const cvs = $('cvs'), ctx = cvs.getContext('2d');
+const img = ctx.createImageData(W, H), px = new Uint32Array(img.data.buffer);
+const lut = new Uint32Array(256);
+let indices = new Uint8Array(W * H), palRgb = new Uint8Array(768), shake = 0, dirty = false;
+
+// /watch = 观战:只看不按(服务端也按 role=watch 拒收按键;--watch-only 时全员观战,以 hello 为准)
+let watching = location.pathname === '/watch';
+const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch { /* */ } } };
+
+// ---- 键盘 → 引擎 Key 枚举名(与 input-service 的 KeyCodesToPalKeys 一致) ----
+const KEYMAP = {
+  ArrowUp: 'Up', ArrowDown: 'Down', ArrowLeft: 'Left', ArrowRight: 'Right',
+  Numpad8: 'Up', Numpad2: 'Down', Numpad4: 'Left', Numpad6: 'Right',
+  Enter: 'Search', NumpadEnter: 'Search', Space: 'Search', ControlLeft: 'Search', ControlRight: 'Search',
+  Escape: 'Menu', Insert: 'Menu', Numpad0: 'Menu',
+  PageUp: 'PageUp', PageDown: 'PageDown', Home: 'Home', End: 'End', Numpad9: 'PageUp', Numpad3: 'PageDown', Numpad7: 'Home', Numpad1: 'End',
+  KeyR: 'Repeat', KeyA: 'Auto', KeyD: 'Defend', KeyE: 'UseItem', KeyW: 'ThrowItem', KeyQ: 'Flee', KeyS: 'Status', KeyF: 'Force'
+};
+
+// ---- 延迟统计 ----
+let ws = null, inputSeq = 0, pingRtt = null, recvFrames = 0, fps = 0, recvBytes = 0, kbps = 0;
+const pendingInputs = new Map();        // 输入序号 → 按下时刻
+const lat = [];                         // 按键 → 处理了这次按键之后的第一帧 到达(毫秒)
+const pct = (a, q) => { if (!a.length) return null; const s = [...a].sort((x, y) => x - y); return s[Math.min(s.length - 1, Math.floor(q * s.length))]; };
+
+// ---- 声音 ----
+let actx = null, sfxGain = null, musicEl = null, musicBase = '';
+const sfxBuf = new Map();
+async function playSfx(n) {
+  if (!actx) return;
+  let p = sfxBuf.get(n);
+  if (!p) { p = fetch(`/sfx/${n}.wav`).then((r) => r.ok ? r.arrayBuffer() : null).then((b) => b && actx.decodeAudioData(b)).catch(() => null); sfxBuf.set(n, p); }
+  const buf = await p; if (!buf) return;
+  const src = actx.createBufferSource(); src.buffer = buf; src.connect(sfxGain || actx.destination); src.start();
+}
+function playMusic(n, loop) {
+  if (!musicEl) return;
+  if (!n) { musicEl.pause(); musicEl.removeAttribute('src'); return; }
+  musicEl.loop = loop !== false; musicEl.src = `${musicBase}${n}.mp3`; if (!rp || rp.playing) musicEl.play().catch(() => {});   // 本地没有 MP3/ 就静默
+}
+let lastMusic = null;
+
+// ---- 解说的配音:一句播完再播下一句(不叠);播的时候把游戏的音乐 / 音效压低 ----
+const DUCK = 0.3, VOICE_WAIT_MS = 20000;
+const voiceQ = [];
+let voiceNow = null, voiceStop = null, voiceOn = store.get('pal-voice') !== 'off', musicVol = 1, duckTimer = 0;
+function duck(on) {
+  const to = on ? DUCK : 1;
+  if (sfxGain) sfxGain.gain.setTargetAtTime(to, actx.currentTime, 0.08);
+  clearInterval(duckTimer);                                    // 音乐是 <audio>(别的源,进不了 WebAudio):音量一小步一小步挪
+  duckTimer = setInterval(() => {
+    musicVol += Math.sign(to - musicVol) * Math.min(0.1, Math.abs(to - musicVol));
+    if (musicEl) musicEl.volume = musicVol;
+    if (Math.abs(to - musicVol) < 0.001) clearInterval(duckTimer);
+  }, 30);
+}
+function pumpVoice() {
+  if (voiceNow) return;
+  let ev; do { ev = voiceQ.shift(); } while (ev && performance.now() - ev.got > VOICE_WAIT_MS);    // 等太久的不播了:话已经过时
+  if (!ev) { duck(false); return; }
+  const a = new Audio(`/voice/${ev.audio}`); voiceNow = a;
+  let guard = 0;
+  const done = () => { if (voiceNow !== a) return; clearTimeout(guard); a.pause(); voiceNow = null; ev.mark?.remove(); pumpVoice(); };
+  voiceStop = done;
+  a.addEventListener('ended', done); a.addEventListener('error', done);
+  guard = setTimeout(done, (ev.audioMs || 15000) + 5000);       // 文件坏了 / 一直不触发 ended:别把后面的堵死
+  duck(true);
+  if (ev.li) { ev.mark = el('div', 'speak', '正在播'); ev.li.querySelector('.time, .title')?.after(ev.mark); }
+  a.play().catch(done);
+}
+/** 排一句配音。还没点「开始」(浏览器不让出声)或关了配音就不排;积压只留最近 3 句 */
+function sayVoice(ev, li) {
+  if (!ev.audio || !voiceOn || !actx || (rp && rp.rate !== 1)) return;   // 回放换了倍速:配音对不上画面,不播
+  voiceQ.push({ audio: ev.audio, audioMs: ev.audioMs, got: performance.now(), li });
+  while (voiceQ.length > 3) voiceQ.shift();
+  pumpVoice();
+}
+function setVoice(on) {
+  voiceOn = on; store.set('pal-voice', on ? 'on' : 'off'); $('voiceBtn').textContent = `配音 ${on ? '开' : '关'}`;
+  if (!on) { voiceQ.length = 0; if (voiceNow) voiceStop(); }
+}
+$('voiceBtn').addEventListener('click', () => setVoice(!voiceOn));
+setVoice(voiceOn);
+
+// ---- 直播:AI 的想法(主)+ 它做了什么(次,翻成人话) ----
+const DIR_ZH = { up: '上', down: '下', left: '左', right: '右' };
+const BATTLE_ZH = { attack: '攻击', defend: '防御', flee: '逃跑', repeat: '照上回合打', auto: '自动战斗', magic: '施法', item: '用物品', throw: '投掷' };
+const q = (v) => `「${v}」`;
+/** 一次工具调用翻成一句人话 */
+function describe(name, a = {}) {
+  switch (name) {
+    case 'walk_to': return `走到 (${a.x}, ${a.y})`;
+    case 'step': return `往${DIR_ZH[a.direction] || a.direction}走 ${a.n ?? 1} 步`;
+    case 'interact': return '上前搭话 / 互动';
+    case 'search': return '调查四周';
+    case 'advance': return '把对白往下看';
+    case 'choose': return `选了第 ${(a.index ?? 0) + 1} 项`;
+    case 'use_item': return `使用${q(a.item)}`;
+    case 'equip': return `给${a.member != null && typeof a.member === 'string' ? a.member : '队员'}换上${q(a.item)}`;
+    case 'save': return `存档(第 ${a.slot} 格)`;
+    case 'load': return `读档(第 ${a.slot} 格)`;
+    case 'guide': return a.query ? `翻攻略找${q(a.query)}` : '翻攻略';
+    case 'atlas': return `看${q(a.place)}的地图`;
+    case 'panorama': return '看全景';
+    case 'map': return '看地图';
+    case 'cast': return `施展${q(a.spell)}`;
+    case 'grind': return a.target_level ? `练级到 ${a.target_level} 级` : '练级';
+    case 'list_saves': return '看存档列表';
+    case 'battle': { const b = BATTLE_ZH[a.action || 'attack'] || a.action; return a.name ? `${b}${q(a.name)}` : a.target != null && (a.action || 'attack') === 'attack' ? `${b}第 ${a.target + 1} 个敌人` : b; }
+    case 'press': return `按了 ${a.key}`;
+    case 'wait': return `等 ${((a.ms ?? 1000) / 1000).toFixed(1).replace(/\.0$/, '')} 秒`;
+    case 'observe': return '看了看周围';
+    case 'screenshot': return '截了张图';
+    default: return name;
+  }
+}
+const HIDDEN = new Set(['observe', 'screenshot']);              // 只是看一眼:不占位置
+const MODE_ZH = { battle: '战斗', dialog: '对话', menu: '菜单', control: '行走', busy: '过场' };
+const MODE_ENTER = { battle: '遇敌了', dialog: '有人说话', menu: '打开了菜单', crashed: '引擎出错' };
+/**
+ * 进了 dialog 模式不一定是有人说话:得到物品、炼成蛊、学会仙术这类系统提示也是 dialog。
+ * 对白文字(story 事件)和操作结果是分开到的,先按「有人说话」写,2 秒内到的文字全是系统提示就改口。
+ */
+const SYS_LINE = /得到|獲得|获得|失去|煉成|練成|炼成|练成|學會|学会|領悟|习得|習得|升級|升级|修行|銀兩|金錢|無法|不足|已滿|裝備|找到|花費/;
+const isSysText = (lines) => lines.length > 0 && lines.every((l) => SYS_LINE.test(l) && !/[：:]/.test(l.slice(0, 8)));
+let lastStory = null, lastSpoke = null;                         // 最近一段文字 / 最近一个写了「有人说话」的结果
+const sysFix = (t) => t.replace('有人说话', '游戏提示');
+/** 战斗结局(工具原话里带):团灭 / 打赢 / 逃掉;没有就 null */
+function battleEnd(ev) {
+  const note = String(ev.note || '');
+  // 团灭后模式是 dialog(胜败乃兵家常事):结局要先于「之后的模式」判断
+  if (/battle (is )?over: lost|lost a battle|you were defeated/.test(note)) return { cls: 'fail', text: '💀 团灭,回到存档' };
+  if (/battle over: won/.test(note)) {
+    const ups = [...note.matchAll(/([^\s,;]+) Lv(\d+)→(\d+)/g)].map((m) => `${m[1]} 升到 ${m[3]} 级`);
+    const cash = note.match(/cash \+(\d+)/);
+    return { cls: 'ok', text: ['✓ 打赢了', cash ? `银两 +${cash[1]}` : '', ...ups].filter(Boolean).join(' · ') };
+  }
+  if (/battle over: fled/.test(note)) return { cls: 'soft', text: '逃掉了' };
+  if (/battle over:/.test(note)) return { cls: 'none', text: '战斗被剧情打断' };
+  return null;
+}
+/**
+ * 没成 / 中途停下的原因翻成中文(工具原话是英文,以前只放在悬停里):按连跑日志里最常见的几十种写法匹配,
+ * 认不出的返回空串(页面只显示「没成」,原话仍在悬停里)。
+ */
+const REASONS = [
+  [/the only route passes monster/, () => '路上有怪挡着,得先打'],
+  [/no direct path .* a route exists via/, () => '这片区域走不通,要从别的出口绕'],
+  [/^no path from|not connected to where you are/, () => '那里走不到(被墙隔开,或要走别的出口)'],
+  [/blocked repeatedly; blocked by object/, () => '被人或东西挡住了'],
+  [/blocked repeatedly|then blocked/, () => '被挡住了'],
+  [/no reachable side of object/, () => '走不到它跟前'],
+  [/object \d+ not found/, () => '这里没有这个人 / 东西'],
+  [/could not get in front of object/, () => '走不到对方面前'],
+  [/is (.+?)'s spell, but it is (.+?)'s turn/, (m) => `轮到${m[2]}出手,这招是${m[1]}的`],
+  [/needs (\d+) MP, .* has (\d+)/, (m) => `真气不够(要 ${m[1]},只有 ${m[2]})`],
+  [/no living enemy at index/, () => '选的敌人已经倒下'],
+  [/cannot be thrown/, () => '这件东西不能投掷'],
+  [/the item was not used/, () => '物品没起作用'],
+  [/the spell cannot be used right now/, () => '这招现在放不出来(被封,或没有可选的目标)'],
+  [/can only be cast in battle/, () => '这招只能在战斗里用'],
+  [/a monster is right next to you/, () => '怪就在旁边,现在施法会被拖进战斗'],
+  [/nobody in the party knows/, () => '队里没人会这招'],
+  [/has no effect on object/, () => '这件东西对它没用'],
+  [/menu did not open/, () => '菜单没打开'],
+  [/is equipment, not a usable item/, () => '这是装备,要用「换装备」'],
+  [/cannot wear/, () => '这个人穿不了'],
+  [/is not equipment/, () => '这不是装备'],
+  [/cannot be used here/, () => '这件东西在这里用不了'],
+  [/no item matching/, () => '背包里没有这件东西'],
+  [/no menu open/, () => '没有打开的菜单'],
+  [/is disabled here/, () => '这一项现在选不了'],
+  [/index out of range/, () => '没有这一项'],
+  [/every monster group I can reach is too strong/, () => '附近的怪都太强,练不动'],
+  [/no monster group reachable/, () => '够得着的怪都打完了'],
+  [/grind stopped: left the scene/, () => '练级时走出了这片区域'],
+  [/No atlas image/, () => '没有这里的地图'],
+  [/^No match for/, () => '攻略里没找到'],
+  [/advanced \d+ time\(s\); mode now busy/, () => '对白还没播完'],
+  [/advanced 0 time/, () => '没有对白可看'],
+  [/mode now dialog/, () => '有人说话'],
+  [/mode now battle/, () => '遇敌了'],
+];
+function reasonZh(note) {
+  for (const [re, f] of REASONS) { const m = String(note || '').match(re); if (m) return f(m); }
+  return '';
+}
+/**
+ * 结果翻成人话。before = 调用前的模式:只在模式「变了」时说遇敌了 / 有人说话(一直在战斗里就不重复说);
+ * 这时候本来就做不了的操作(战斗中走路、对白中施法)不算失败,标成灰色的「做不了」。
+ */
+function outcome(ev, before) {
+  const end = battleEnd(ev);
+  if (end) return end;
+  if (ev.ok === null || ev.ok === undefined) return { cls: 'none', text: '' };
+  const note = String(ev.note || '');
+  const refused = !ev.ok && note.match(/mode is (\w+) \(need/);
+  if (refused) return { cls: 'none', text: `${MODE_ZH[refused[1]] || refused[1]}中,做不了` };
+  if (!ev.ok && /^not in battle/.test(note)) return { cls: 'none', text: '不在战斗中,做不了' };
+  const enter = ev.mode && ev.mode !== before && MODE_ENTER[ev.mode] ? MODE_ENTER[ev.mode] : '';
+  if (ev.ok) return { cls: 'ok', text: '✓' + (enter ? ',' + enter : '') };
+  const soft = ev.label && !/^failed$/i.test(ev.label);
+  const why = reasonZh(note);
+  if (soft || enter) return { cls: 'soft', text: (enter ? `被打断:${enter}` : '中途停下') + (why && why !== enter ? ` · ${why}` : '') };
+  return { cls: 'fail', text: '✗ 没成' + (why ? `:${why}` : '') };
+}
+const fmtMs = (ms) => (ms >= 1000 ? (ms / 1000).toFixed(1) + 's' : ms + 'ms');
+const clock = (at) => new Date(at).toLocaleTimeString('zh-CN', { hour12: false });
+const percent = (f) => `${Math.round((f ?? 0) * 100)}%`;
+const feed = $('feed'), calls = new Map();
+let group = null, thoughts = 0, lastThought = '';
+let fight = null;                         // 正在进行的战斗卡:战斗里的每个指令是卡上的一个小标签,不各占一行
+let fighting = false;                     // 还在同一场战斗里(想法插进来后另起一张「继续战斗」)
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function stick(list, fn) { const atBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 40; fn(); if (atBottom) list.scrollTop = list.scrollHeight; }
+/** 时间线上新开一条:一段想法(没有想法时是空的),之后的操作挂在它下面 */
+function newGroup(text, at) {
+  feed.querySelector('.empty')?.remove();
+  const li = el('li');
+  if (text) { li.append(el('div', 'time', clock(at)), el('div', 'thought', text)); }
+  const acts = el('ul', 'acts'); li.append(acts);
+  stick(feed, () => { feed.append(li); while (feed.children.length > 200) feed.firstChild.remove(); });
+  group = { li, acts, hasThought: !!text, rows: [] };
+  return group;
+}
+/**
+ * 往当前这段想法下面挂一行(没有想法时开一条空的)。
+ * mine = 这一行是 AI 的一次操作(晚到的想法可以把它认领过去);游戏事件(对白、练级进度)不跟着想法走
+ */
+function addRow(row, at, mine = false) {
+  const g = group || newGroup('', at);
+  stick(feed, () => g.acts.append(row));
+  g.rows.push({ row, at, mine });
+  return row;
+}
+function setNow(doing, done) {
+  const now = $('now'); now.replaceChildren();
+  const short = lastThought.length > 120 ? lastThought.slice(0, 118) + '…' : lastThought;
+  now.append(el('div', short ? 'thought' : 'thought idle', short || '等 AI 开口…'));
+  if (doing) now.append(el('div', done ? 'doing done' : 'doing', doing));
+}
+function openFight(at) {
+  const row = el('li', 'act fight');
+  const moves = el('span', 'moves');
+  row.append(el('span', 'what', fighting ? '⚔ 继续战斗' : '⚔ 战斗'), moves, el('span', 'out run', '…'), el('span', 'ms', ''));
+  addRow(row, at, true);
+  fight = { row, moves, ms: 0, n: 0, hidden: 0 };
+  fighting = true;
+  return fight;
+}
+/** 收起战斗卡;over = 这场打完了(否则只是想法插了进来,下一步另起一张) */
+function closeFight(o, over = true) {
+  if (over) fighting = false;
+  if (!fight) return;
+  const out = fight.row.querySelector('.out');
+  out.className = 'out ' + (o ? o.cls : 'none'); out.textContent = o ? o.text : '';
+  fight = null;
+}
+// 解说模式:另有一个解说进程(「文官」)替玩家 AI(「武将」)说话 —— 对观众是一个主播边打边说。
+// 时间线的主体换成解说;武将自己写的想法不再上屏(它的操作照旧挂在解说下面)
+let narrated = false;
+function setNarrated(on) {
+  if (narrated === on) return; narrated = on;
+  $('feedTitle').textContent = on ? '解说' : 'AI 的想法';
+  $('voiceBtn').hidden = !on;
+  const empty = feed.querySelector('.empty'); if (empty) empty.textContent = on ? '解说会出现在这里,AI 做的操作挂在下面' : 'AI 写下的想法会出现在这里,它做的操作挂在下面';
+}
+const chapters = [];
+function showChapters() {
+  $('chapCard').hidden = !chapters.length; $('chapCount').textContent = chapters.length ? `${chapters.length} 章` : '';
+  const box = $('chapters'), wasOpen = new Set([...box.querySelectorAll('details[open]')].map((d) => d.dataset.key));
+  box.replaceChildren(...chapters.map((c, i) => {
+    const d = el('details'); d.dataset.key = String(c.chapter ?? c.seq);
+    d.open = wasOpen.has(d.dataset.key);
+    d.append(el('summary', '', c.title), el('div', 'text', c.text));
+    return d;
+  }).reverse());                                                 // 最新的一章在最上面
+}
+function addChapter(ev) {
+  const i = chapters.findIndex((c) => (ev.chapter != null ? c.chapter === ev.chapter : c.seq === ev.seq));
+  if (i >= 0) chapters.splice(i, 1);
+  chapters.push(ev); showChapters();
+}
+function onAgent(ev, quiet) {
+  if (ev.type === 'commentary') {
+    setNarrated(true);
+    if (ev.kind === 'chapter') {
+      addChapter(ev);
+      closeFight(null, false);
+      feed.querySelector('.empty')?.remove();
+      const li = el('li', 'chapter'); li.append(el('div', 'title', ev.title), el('div', 'text', ev.text));
+      stick(feed, () => feed.append(li));
+      group = null;                                               // 小结之后的操作另起一条,不挂在卡片里
+      if (!quiet) sayVoice(ev, li);
+      return;
+    }
+    if (fight) closeFight(null, false);
+    const g = newGroup(ev.text, ev.at);
+    lastThought = ev.text.replace(/\s+/g, ' ');
+    thoughts++; $('calls').textContent = `${thoughts} 段`;
+    if (!quiet) { setNow(''); sayVoice(ev, g.li); }
+    return;
+  }
+  if (ev.type === 'thought') {
+    if (narrated) return;
+    // 模型的话与它的工具调用是同一条消息发出的,但话要绕 live-narrate 一道,常比调用晚到几毫秒:
+    // 刚开始不到 0.8 秒的操作算这段话的(模型两次调用之间至少要推理一两秒,抓不到上一轮的)
+    const prev = group, late = prev ? prev.rows.filter((r) => r.mine && ev.at - r.at < 800) : [];
+    if (fight && !late.some((r) => r.row === fight.row)) closeFight(null, false);   // 战斗打到一半它开口了:这段话之后的指令另起一张卡
+    const g = newGroup(ev.text, ev.at);
+    for (const r of late) { g.acts.append(r.row); g.rows.push(r); prev.rows.splice(prev.rows.indexOf(r), 1); }
+    if (prev && !prev.hasThought && !prev.rows.length) prev.li.remove();
+    lastThought = ev.text.replace(/\s+/g, ' ');
+    thoughts++; $('calls').textContent = `${thoughts} 段`;
+    if (!quiet) setNow('');
+  } else if (ev.type === 'call') {
+    // 战斗里弹出的对白(剧情战)也算这场战斗的一步
+    const inFight = ev.before === 'battle' || (fighting && ev.before === 'dialog' && ev.name === 'advance');
+    const c = { ev, row: null, chip: null, fight: null };
+    calls.set(ev.i, c);
+    if (!HIDDEN.has(ev.name)) {
+      if (inFight) {
+        const f = fight || openFight(ev.at);
+        const chip = el('span', 'chip run', describe(ev.name, ev.args));
+        stick(feed, () => { f.moves.append(chip); f.n++; });
+        // 长战斗只留最近十来步,前面的并成「前 N 步」
+        while (f.moves.querySelectorAll('.chip').length > 12) { f.moves.querySelector('.chip').remove(); f.hidden++; }
+        if (f.hidden) { let more = f.moves.querySelector('.more'); if (!more) { more = el('span', 'more'); f.moves.prepend(more); } more.textContent = `前 ${f.hidden} 步 …`; }
+        c.chip = chip; c.fight = f;
+      } else {
+        closeFight(null);
+        const row = el('li', 'act');
+        row.append(el('span', 'what', '→ ' + describe(ev.name, ev.args)), el('span', 'out run', '…'), el('span', 'ms', ''));
+        c.row = addRow(row, ev.at, true);
+      }
+    }
+    if (!quiet) setNow(`${inFight ? '战斗中:' : '正在'}${describe(ev.name, ev.args)}…`);
+  } else if (ev.type === 'result') {
+    const c = calls.get(ev.i); if (!c) return;
+    calls.delete(ev.i);
+    const o = outcome(ev, c.ev.before);
+    if (c.chip) {
+      // 战斗里的一步:小标签上只标「成 / 做不了」,结局写在卡片右边
+      c.chip.className = 'chip ' + (ev.ok === false && !battleEnd(ev) ? 'no' : 'ok');
+      if (ev.note) c.chip.title = (ev.ok === false && reasonZh(ev.note) ? reasonZh(ev.note) + '\n' : '') + ev.note;
+      c.fight.ms += ev.ms; c.fight.row.querySelector('.ms').textContent = fmtMs(c.fight.ms);
+      // 打完了:有结局(赢 / 逃 / 团灭),或者已经不在战斗里(战斗中弹对白不算,剧情战会来回切)
+      const end = battleEnd(ev);
+      if (end || (ev.mode && ev.mode !== 'battle' && ev.mode !== 'dialog')) {
+        if (!fight) fight = c.fight;                            // 想法把卡拆开过:结局写在最后一张上
+        closeFight(end);
+      }
+    } else if (c.row) {
+      const out = c.row.querySelector('.out'); out.className = 'out ' + o.cls; out.textContent = o.text;
+      if (o.text.includes('有人说话')) {
+        if (lastStory && ev.at - lastStory.at < 2000 && lastStory.sys) out.textContent = sysFix(o.text);
+        else lastSpoke = { out, at: ev.at };
+      }
+      c.row.querySelector('.ms').textContent = fmtMs(ev.ms);
+      if (ev.note) c.row.title = ev.note;                       // 工具原话(英文)放悬停里
+      c.row.classList.remove('busy');
+    }
+    if (!quiet) setNow(`${describe(ev.name, c.ev.args)}${o.text ? ' · ' + o.text : ''} — 等它想下一步`, true);
+  } else if (ev.type === 'story') {
+    // 游戏里新出现的对白:最多露 3 行,其余折叠
+    lastStory = { at: ev.at, sys: isSysText(ev.lines) };
+    if (lastStory.sys && lastSpoke && ev.at - lastSpoke.at < 2000) lastSpoke.out.textContent = sysFix(lastSpoke.out.textContent);
+    lastSpoke = null;
+    const box = el('li', 'story' + (lastStory.sys ? ' sys' : ''));
+    ev.lines.slice(0, 3).forEach((l) => box.append(el('div', 'line', l)));
+    if (ev.lines.length > 3) {
+      const d = el('details'); d.append(el('summary', '', `还有 ${ev.lines.length - 3} 行${lastStory.sys ? '提示' : '对白'}`));
+      ev.lines.slice(3).forEach((l) => d.append(el('div', 'line', l)));
+      box.append(d);
+    }
+    addRow(box, ev.at);
+  } else if (ev.type === 'scene') {
+    closeFight(null);
+    // 同一个地方里换屋子(地名相同)不值得占一行
+    if (ev.place && ev.place === ev.fromPlace) return;
+    addRow(el('li', 'act scene', ev.place ? `📍 来到 ${ev.place}` : '📍 换了场景'), ev.at);
+  } else if (ev.type === 'progress') {
+    // 练级里的一场:挂在时间线上,让一个跑几分钟的 grind 有过程可看
+    const text = `第 ${ev.n} 场${ev.foes ? `(${ev.foes.replace(/\+/g, '、')})` : ''}:${ev.lost ? '💀 团灭' : ev.fled ? '逃掉了' : '打赢了'} · 队伍血量 ${percent(ev.hpBefore)} → ${percent(ev.hpAfter)}`;
+    addRow(el('li', 'act sub ' + (ev.lost ? 'bad' : ''), text), ev.at);
+    if (!quiet) setNow(`练级中:${text}`);
+  }
+}
+
+// ---- 直播:聊天 + 弹幕 ----
+const chat = $('chat');
+let danmakuOn = store.get('pal-danmaku') !== 'off', lane = 0;
+let chatOn = false;                       // 观众能不能发言(主持人 --chat 才开);不开就不出聊天框,也不飘弹幕
+function setChat(on) { chatOn = !!on; $('chatCard').hidden = !chatOn; if (!chatOn) $('danmaku').replaceChildren(); }
+function onChat(ev, quiet) {
+  if (!chatOn) return;
+  const li = el('li', ev.ai ? 'ai' : '');
+  li.append(el('span', 'who', ev.ai ? 'AI' : ev.from), document.createTextNode(ev.text));
+  stick(chat, () => { chat.append(li); while (chat.children.length > 200) chat.firstChild.remove(); });
+  if (!quiet && danmakuOn) {
+    const d = el('div', 'dm' + (ev.ai ? ' ai' : ''), ev.ai ? `AI:${ev.text}` : ev.text);
+    d.style.top = `${4 + (lane++ % 6) * 11}%`;
+    d.style.setProperty('--dur', `${Math.min(14, 7 + ev.text.length / 12)}s`);
+    d.addEventListener('animationend', () => d.remove());
+    $('danmaku').append(d);
+  }
+}
+function sys(text) { stick(chat, () => chat.append(el('li', 'sys', text))); }
+function onLive(ev, quiet = false) {
+  if (ev.type === 'chat') {
+    onChat(ev, quiet);
+    // AI 用 chat 说给观众的话也是它的想法(实测 sonnet 更爱这样说,而不是在回复里写):同样进时间线
+    if (ev.ai) onAgent({ type: 'thought', text: ev.text, at: ev.at }, quiet);
+  } else onAgent(ev, quiet);
+}
+$('dmToggle').textContent = `弹幕 ${danmakuOn ? '开' : '关'}`;
+$('dmToggle').addEventListener('click', () => {
+  danmakuOn = !danmakuOn; store.set('pal-danmaku', danmakuOn ? 'on' : 'off');
+  $('dmToggle').textContent = `弹幕 ${danmakuOn ? '开' : '关'}`;
+  if (!danmakuOn) $('danmaku').replaceChildren();
+});
+const nick = $('nick');
+nick.value = store.get('pal-nick') || `观众${Math.floor(100 + Math.random() * 900)}`;
+nick.addEventListener('change', () => store.set('pal-nick', nick.value.trim()));
+$('say').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const text = $('msg').value.trim();
+  if (!text || ws?.readyState !== 1) return;
+  ws.send(JSON.stringify({ t: 'chat', from: nick.value.trim() || '观众', text }));
+  $('msg').value = '';
+});
+
+// ---- 增量解码(同 host.mjs encodeDelta):0 = 没变,1 = deflate 整份,2 = deflate(与上一份异或) ----
+async function inflate(u8) {
+  const out = new Response(new Blob([u8]).stream().pipeThrough(new DecompressionStream('deflate-raw')));
+  return new Uint8Array(await out.arrayBuffer());
+}
+async function applyDelta(enc, data, ref) {
+  if (enc === 0) return ref;
+  const raw = await inflate(data);
+  if (raw.length !== ref.length) throw new Error(`delta: ${raw.length} bytes, want ${ref.length}`);
+  if (enc === 2) for (let i = 0; i < raw.length; i++) raw[i] ^= ref[i];
+  return raw;
+}
+
+/** 倍速:1 = 原版速度;场景和战斗分开。在玩的人能调(下拉),观战的只看 */
+let speedNow = null;
+const SPEEDS = [0.5, 1, 1.5, 2, 3, 4];
+const fmtX = (x) => `${x}×`;
+function fillSpeed(sel, x) {
+  const all = SPEEDS.includes(x) ? SPEEDS : [...SPEEDS, x].sort((a, b) => a - b);
+  sel.replaceChildren(...all.map((v) => { const o = document.createElement('option'); o.value = String(v); o.textContent = v === 1 ? '1× 原版' : fmtX(v); return o; }));
+  sel.value = String(x);
+}
+function setSpeed(x) {
+  speedNow = x;
+  const pick = $('speedPick'), label = $('speedLabel');
+  if (x == null) { pick.hidden = true; label.textContent = ''; return; }
+  if (x === 'fast') { pick.hidden = true; label.textContent = '快节奏'; label.title = '引擎的旧节奏:场景约原版 4 倍、战斗约 1.7 倍'; return; }
+  label.title = '';
+  if (watching) {
+    pick.hidden = true;
+    label.textContent = x.scene === x.battle ? `${fmtX(x.scene)}${x.scene === 1 ? ' 原版速度' : ''}` : `场景 ${fmtX(x.scene)} · 战斗 ${fmtX(x.battle)}`;
+    return;
+  }
+  pick.hidden = false; label.textContent = '';
+  fillSpeed($('speedScene'), x.scene); fillSpeed($('speedBattle'), x.battle);
+}
+for (const [id, key] of [['speedScene', 'scene'], ['speedBattle', 'battle']]) {
+  $(id).addEventListener('change', (e) => { if (ws?.readyState === 1) ws.send(JSON.stringify({ t: 'speed', x: { [key]: Number(e.target.value) } })); e.target.blur(); });
+}
+// ---- 小地图:整张场景图压暗,走过的地方恢复原亮度;队伍位置;出口(走过 = 绿点,没走过 = 橙圈) ----
+// 底图用摆正的实景图(art);它还没出、或者这个场景出不来,就用平面图(plan)兜底。两张逐格对齐,坐标都是网格坐标,每张图带仿射变换 m
+const mini = $('mini'), mctx = mini.getContext('2d');
+const mm = { key: '', views: {}, imgs: {}, pts: [], pos: null, exits: [], dirty: true, pending: 0 };
+let mapOpen = store.get('pal-minimap') !== 'closed';
+function setMapOpen(open) {
+  mapOpen = open; store.set('pal-minimap', open ? 'open' : 'closed');
+  $('mapCard').classList.toggle('closed', !open); $('mapToggle').textContent = open ? '收起' : '展开'; mm.dirty = true;
+}
+$('mapToggle').addEventListener('click', () => setMapOpen(!mapOpen));
+function onMap(m) {
+  const key = `${m.boot || 0}/${m.scene}-${m.v}`;
+  if (m.fresh || key !== mm.key) {
+    mm.key = key; mm.views = m.views || {}; mm.imgs = {}; mm.pts = []; mm.exits = [];
+    for (const name of Object.keys(mm.views)) {
+      const img = new Image(); mm.pending++;
+      img.onload = () => { mm.pending--; if (mm.key === key) { mm.imgs[name] = img; mm.dirty = true; } }; img.onerror = () => { mm.pending--; }; img.src = `/minimap/${key}-${name}.png`;
+    }
+    $('mapPlace').textContent = ` · ${m.place || '场景 ' + m.scene}`;
+  }
+  if (m.add?.length) mm.pts.push(...m.add);
+  if (m.pos) mm.pos = m.pos;
+  if (m.exits) { mm.exits = m.exits; legend(); }
+  mm.dirty = true;
+}
+function legend() {
+  const box = $('mapLegend'); box.replaceChildren();
+  const ex = mm.exits;
+  if (!ex.length) { box.append(el('span', '', '这个场景没有认出出口')); return; }
+  // 同一个去向的多个出口并成一条:「走过几个 / 共几个」
+  const by = new Map(); for (const x of ex) { const cur = by.get(x.to) || { to: x.to, place: x.place, u: 0, n: 0 }; cur.n++; if (x.used) cur.u++; by.set(x.to, cur); }
+  for (const x of by.values()) {
+    const name = `→ ${x.place || '场景 ' + x.to}`;
+    box.append(el('span', 'ex ' + (x.u ? 'used' : 'new'), x.n > 1 ? `${name}(走过 ${x.u}/${x.n})` : x.u ? name : `${name}(没走过)`));
+  }
+  if (ex.length === 1 && ex[0].used) box.append(el('span', 'dead', '只有来时的路:死路'));
+  else if (ex.every((x) => x.used)) box.append(el('span', 'dead', '出口都走过了'));
+}
+function drawMap() {
+  if (!mm.dirty || !mapOpen) return; mm.dirty = false;
+  const dpr = Math.min(2, devicePixelRatio || 1), cw = mini.clientWidth, ch = mini.clientHeight;
+  if (!cw || !ch) return;
+  if (mini.width !== Math.round(cw * dpr) || mini.height !== Math.round(ch * dpr)) { mini.width = Math.round(cw * dpr); mini.height = Math.round(ch * dpr); }
+  mctx.setTransform(dpr, 0, 0, dpr, 0, 0); mctx.clearRect(0, 0, cw, ch);
+  // 实景图要等画面亮起来才出,有的场景出不来:那就用平面图
+  const name = mm.imgs.art ? 'art' : 'plan', v = mm.views[name], img = mm.imgs[name];
+  if (!v || !img) return;
+  // 整图等比放进卡片
+  const k = Math.min(cw / v.w, ch / v.h), ox = (cw - v.w * k) / 2, oy = (ch - v.h * k) / 2, m = v.m;
+  const X = (g) => ox + (m[0] * g[0] + m[1] * g[1] + m[2]) * k, Y = (g) => oy + (m[3] * g[0] + m[4] * g[1] + m[5]) * k;
+  mctx.imageSmoothingEnabled = name !== 'plan' || k < 1;                                       // 平面图放大时保持方块的硬边
+  mctx.drawImage(img, ox, oy, v.w * k, v.h * k);
+  mctx.fillStyle = `rgba(6, 8, 10, ${name === 'plan' ? 0.6 : 0.5})`; mctx.fillRect(ox, oy, v.w * k, v.h * k);              // 没走过的:压暗(不用 ctx.filter,Safari 没有)
+  if (mm.pts.length) {
+    const R = Math.max(3, v.rad * k);                          // 走过的格子周围一圈都算看过
+    mctx.save(); mctx.beginPath();
+    for (const g of mm.pts) { const x = X(g), y = Y(g); mctx.moveTo(x + R, y); mctx.arc(x, y, R, 0, Math.PI * 2); }
+    mctx.clip(); mctx.drawImage(img, ox, oy, v.w * k, v.h * k); mctx.restore();
+    // 走过的路本身再描一条亮带:暗场景里光靠「恢复原亮度」看不出来
+    const r = Math.max(2, R * 0.4);
+    mctx.save(); mctx.beginPath();
+    for (const g of mm.pts) { const x = X(g), y = Y(g); mctx.moveTo(x + r, y); mctx.arc(x, y, r, 0, Math.PI * 2); }
+    mctx.clip(); mctx.fillStyle = name === 'plan' ? 'rgba(255, 214, 110, .5)' : 'rgba(255, 226, 140, .42)'; mctx.fillRect(ox, oy, v.w * k, v.h * k); mctx.restore();
+  }
+  for (const e of mm.exits) {
+    const g = [e.gx, e.gy];
+    mctx.beginPath(); mctx.arc(X(g), Y(g), 5, 0, Math.PI * 2);
+    if (e.used) { mctx.fillStyle = '#5fb37a'; mctx.fill(); mctx.lineWidth = 1.5; mctx.strokeStyle = '#06080a'; mctx.stroke(); }
+    else { mctx.fillStyle = 'rgba(6, 8, 10, .7)'; mctx.fill(); mctx.lineWidth = 2.5; mctx.strokeStyle = '#e0b25a'; mctx.stroke(); }
+  }
+  if (mm.pos) {
+    mctx.beginPath(); mctx.arc(X(mm.pos), Y(mm.pos), 5.5, 0, Math.PI * 2); mctx.fillStyle = '#ff4fd8'; mctx.fill(); mctx.lineWidth = 2; mctx.strokeStyle = '#fff'; mctx.stroke();
+  }
+}
+addEventListener('resize', () => { mm.dirty = true; });
+setMapOpen(mapOpen);
+
+// ---- 状态栏:队伍(等级、HP / MP 条)、所在场景、银两、开播时长、战绩、AI 操作次数 ----
+let statusNow = null;
+const fmtDur = (ms) => { const sec = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60); return h ? `${h} 小时 ${m} 分` : `${m} 分 ${String(sec % 60).padStart(2, '0')} 秒`; };
+function bar(cls, cur, max) {
+  const b = el('div', `bar ${cls}${cls === 'hp' && max && cur / max < 0.3 ? ' low' : ''}`), fill = document.createElement('i');
+  fill.style.width = `${max ? Math.max(0, Math.min(100, cur / max * 100)) : 0}%`;
+  b.append(fill, el('span', '', `${cls === 'hp' ? 'HP' : 'MP'} ${cur ?? '—'}/${max ?? '—'}`));
+  return b;
+}
+function fact(k, v, cls = '') { const d = el('div'); d.append(el('span', 'k', k), el('span', 'v ' + cls, v)); return d; }
+function setStatus(m) {
+  statusNow = m;
+  const info = $('info'), facts = $('facts');
+  info.querySelectorAll('.member').forEach((x) => x.remove());
+  for (const r of m.party || []) {
+    const card = el('div', 'member' + (r.hp > 0 ? '' : ' down'));
+    const who = el('div', 'who'); who.append(el('span', '', r.name), el('span', 'lv', `Lv ${r.level ?? '—'}`));
+    card.append(who, bar('hp', r.hp, r.maxHp), bar('mp', r.mp, r.maxMp));
+    info.insertBefore(card, facts);
+  }
+  const st = m.stats, rows = [];
+  const where = m.place || (m.scene == null ? '' : `场景 ${m.scene}`);
+  const here = fact('所在', m.scene == null || !(m.party || []).length ? '还没进游戏' : m.inBattle ? `战斗中 · ${where}` : where, m.inBattle ? 'fight' : '');
+  if (m.scene != null) here.title = `场景 ${m.scene}`;
+  rows.push(here);
+  if (m.cash != null && (m.party || []).length) rows.push(fact('银两', String(m.cash)));
+  if (st) {
+    rows.push(fact('开播', fmtDur(nowMs() - st.startedAt)));
+    rows.push(fact('战绩', `${st.won} 胜 ${st.fled} 逃 ${st.lost} 灭`));
+    rows.push(fact('AI 操作', `${st.calls} 步`));
+  }
+  facts.replaceChildren(...rows);
+  fitBelow();
+}
+/** 画面下方这一条有多高,画面就让出多高(CSS 里的 --below) */
+function fitBelow() { document.documentElement.style.setProperty('--below', `${$('below').offsetHeight + 8}px`); }
+addEventListener('resize', fitBelow);
+setInterval(() => { if (statusNow?.stats) setStatus(statusNow); }, 1000);     // 开播时长每秒走
+
+function setRole(role, live) {
+  watching = role === 'watch';
+  $('role').textContent = watching ? '观战中' : '你在玩';
+  $('keys').hidden = watching;
+  fitBelow();
+  setSpeed(speedNow);
+  const start = $('start'); if (start) start.textContent = watching ? '点击开始观看(启用声音)' : '点击开始(启用声音、键盘)';
+  const b = $('liveBadge'); b.textContent = rp ? '回放' : live ? '直播中' : '已连接'; b.className = live && !rp ? 'badge' : 'badge off';
+  if (rp) $('role').textContent = '';
+}
+
+// ---- 回放(replay.mjs):同一个页面,时钟换成录像的时钟;能暂停、拖动、换倍速、换轮 ----
+const params = new URLSearchParams(location.search);
+let rp = null;                            // { recs, i, pos, dur, playing, rate };直播时是 null
+let rpDragging = false;
+const nowMs = () => (rp ? rp.recs[rp.i].startT + rp.pos : Date.now());
+const fmtPos = (ms) => { const sec = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60); return `${h ? h + ':' + String(m).padStart(2, '0') : m}:${String(sec % 60).padStart(2, '0')}`; };
+const rpSend = (msg) => { if (ws?.readyState === 1) ws.send(JSON.stringify({ t: 'replay', ...msg })); };
+function setupReplay(info) {
+  const first = !rp;
+  // 断线重连:接着刚才的位置放;第一次进来:看地址里的 ?rec=第几轮(从 1 数)&t=秒&rate=倍速&paused
+  const at = first ? { i: Math.max(0, Math.min(info.recs.length - 1, (Number(params.get('rec')) || 1) - 1)), pos: (Number(params.get('t')) || 0) * 1000, playing: !params.has('paused'), rate: Number(params.get('rate')) || 1 } : rp;
+  rp = { recs: info.recs, i: at.i, pos: at.pos, dur: info.recs[at.i].dur, playing: at.playing, rate: at.rate };
+  $('replay').hidden = false; $('viewers').textContent = '';
+  const sel = $('rpRec'); sel.hidden = info.recs.length < 2;
+  sel.replaceChildren(...info.recs.map((r, i) => { const o = document.createElement('option'); o.value = String(i); o.textContent = `第 ${i + 1} 轮 · ${clock(r.startT)} · ${fmtPos(r.dur)}`; return o; }));
+  const rate = $('rpRate');
+  rate.replaceChildren(...(info.rates || [1]).map((x) => { const o = document.createElement('option'); o.value = String(x); o.textContent = `${x}×`; return o; }));
+  if (rp.rate !== 1) rpSend({ op: 'rate', x: rp.rate });
+  rpSend({ op: 'seek', rec: rp.i, ms: rp.pos, play: rp.playing });
+  fitBelow();
+}
+function onReplay(m) {
+  if (!rp) return;
+  const was = rp.playing, wasRate = rp.rate;
+  if (m.reset) {
+    // 换了位置:页面上跟着时间走的东西全部清掉,服务端接着会把这一刻该有的重发一遍
+    voiceQ.length = 0; if (voiceNow) voiceStop();
+    mm.key = ''; mm.views = {}; mm.imgs = {}; mm.pts = []; mm.pos = null; mm.exits = []; mm.dirty = true; $('mapPlace').textContent = '';
+    statusNow = null; $('info').querySelectorAll('.member').forEach((x) => x.remove()); $('facts').replaceChildren();
+    lastStory = null; lastSpoke = null;
+  }
+  rp.i = m.i; rp.pos = m.pos; rp.dur = m.dur; rp.playing = m.playing; rp.rate = m.rate;
+  if (m.ack != null) { rp.ack = m.ack; rp.sent = m.sent; }
+  $('rpPlay').textContent = m.playing ? '❚❚ 暂停' : m.ended ? '↻ 重放' : '▶ 播放';
+  $('rpRec').value = String(m.i); $('rpRate').value = String(m.rate);
+  const seek = $('rpSeek'); seek.max = String(m.dur);
+  if (!rpDragging) { seek.value = String(m.pos); $('rpTime').textContent = `${fmtPos(m.pos)} / ${fmtPos(m.dur)}`; }
+  if (musicEl && (was !== m.playing || wasRate !== m.rate || m.reset)) {
+    musicEl.playbackRate = Math.max(0.25, Math.min(4, m.rate));
+    if (!m.playing) musicEl.pause(); else if (musicEl.getAttribute('src')) musicEl.play().catch(() => {});
+  }
+  if (!m.playing && voiceNow) { voiceQ.length = 0; voiceStop(); }
+  if (wasRate !== m.rate && m.rate !== 1) { voiceQ.length = 0; if (voiceNow) voiceStop(); }
+}
+$('rpPlay').addEventListener('click', (e) => { rpSend({ op: rp?.playing ? 'pause' : 'play' }); e.currentTarget.blur(); });
+$('rpRec').addEventListener('change', (e) => { rpSend({ op: 'seek', rec: Number(e.target.value), ms: 0 }); e.target.blur(); });
+$('rpRate').addEventListener('change', (e) => { rpSend({ op: 'rate', x: Number(e.target.value) }); e.target.blur(); });
+$('rpSeek').addEventListener('input', (e) => { rpDragging = true; $('rpTime').textContent = `${fmtPos(Number(e.target.value))} / ${fmtPos(rp?.dur || 0)}`; });
+$('rpSeek').addEventListener('change', (e) => { rpDragging = false; rpSend({ op: 'seek', ms: Number(e.target.value) }); e.target.blur(); });
+addEventListener('keydown', (e) => {
+  if (!rp || e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.target instanceof HTMLButtonElement) return;
+  if (e.code === 'Space') { rpSend({ op: rp.playing ? 'pause' : 'play' }); e.preventDefault(); }
+  else if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') { rpSend({ op: 'seek', ms: rp.pos + (e.code === 'ArrowLeft' ? -5000 : 5000) }); e.preventDefault(); }
+});
+if (params.has('capture')) document.body.classList.add('capture');
+/**
+ * 录屏用(replay-capture.mjs 逐帧调):停着,把时间线推到 ms;等这一步的消息都处理完、小地图底图到齐、画面画好再返回。
+ * 返回这一步有没有新东西(没有的话这一帧和上一帧一样,不用再截)
+ */
+let rpAck = 0, rpSec = -1;
+window.rpStep = async (ms) => {
+  const n = ++rpAck, t0 = performance.now();
+  rpSend({ op: 'step', ms, ack: n });
+  while (rp.ack !== n || mm.pending > 0) { if (performance.now() - t0 > 10000) throw new Error('rpStep: timed out'); await new Promise((r) => setTimeout(r, 2)); }
+  const sec = Math.floor(ms / 1000), changed = rp.sent > 0 || sec !== rpSec || mm.dirty; rpSec = sec;
+  if (!changed) return false;
+  if (statusNow?.stats) setStatus(statusNow);                     // 「开播」时长跟着录像的钟走
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  return true;
+};
+
+async function handle(data) {
+  if (typeof data === 'string') {
+    const m = JSON.parse(data);
+    if (m.t === 'pong') pingRtt = performance.now() - m.ts;
+    else if (m.t === 'audio') { if ('sfx' in m) playSfx(m.sfx); if ('music' in m) { lastMusic = m; playMusic(m.music, m.loop); } }
+    else if (m.t === 'hello') { setChat(m.chat); setNarrated(!!m.commentator); if (m.replay) setupReplay(m.replay); setRole(m.role, m.live); setSpeed(m.speed); }
+    else if (m.t === 'replay') onReplay(m);
+    else if (m.t === 'speed') setSpeed(m.x);
+    else if (m.t === 'history') {
+      feed.replaceChildren(); calls.clear(); group = null; fight = null; fighting = false; thoughts = 0; lastThought = '';
+      chapters.length = 0; for (const c of m.chapters || []) chapters.push(c); showChapters();
+      if (chapters.length) setNarrated(true);
+      for (const ev of m.events) onLive(ev, true);
+      setNow('');
+    }
+    else if (m.t === 'live') onLive(m);
+    else if (m.t === 'status') setStatus(m);
+    else if (m.t === 'map') onMap(m);
+    else if (m.t === 'viewers' && !rp) $('viewers').textContent = `${m.n} 人在线${m.watchers ? ` · ${m.watchers} 人观战` : ''}`;
+    else if (m.t === 'chat-throttled') sys('说太快了,歇一秒');
+    return;
+  }
+  const b = new Uint8Array(data);
+  if (b[0] === 2) {
+    palRgb = await applyDelta(b[1], b.subarray(2), palRgb);
+    for (let i = 0; i < 256; i++) lut[i] = 0xff000000 | (palRgb[i * 3 + 2] << 16) | (palRgb[i * 3 + 1] << 8) | palRgb[i * 3];
+    dirty = true;
+  } else if (b[0] === 1) {
+    const dv = new DataView(b.buffer);
+    indices = await applyDelta(b[10], b.subarray(11), indices);
+    shake = dv.getInt8(5);
+    const ack = dv.getUint32(6, true), now = performance.now();
+    for (const [id, t] of pendingInputs) if (id <= ack) { lat.push(now - t); pendingInputs.delete(id); }
+    if (lat.length > 200) lat.splice(0, lat.length - 200);
+    dirty = true; recvFrames++;
+  }
+}
+
+function connect() {
+  ws = new WebSocket(`ws://${location.host}/ws${watching ? '?role=watch' : ''}`);
+  ws.binaryType = 'arraybuffer';
+  // 增量要按到达顺序一条条解(解压是异步的);每次重连 host 会先发整份
+  let chain = Promise.resolve();
+  ws.onmessage = (ev) => {
+    recvBytes += typeof ev.data === 'string' ? ev.data.length : ev.data.byteLength;
+    chain = chain.then(() => handle(ev.data)).catch((err) => { console.error(err); ws.close(); });
+  };
+  ws.onclose = () => { hud(true); const b = $('liveBadge'); b.textContent = '已断开'; b.className = 'badge off'; setTimeout(connect, 1000); };
+}
+
+function draw() {
+  if (dirty) {
+    dirty = false;
+    for (let y = 0; y < H; y++) {
+      const sy = y + shake;                            // 正 = 内容上移(同引擎 VIDEO_UpdateScreen 的奇数次)
+      const row = y * W;
+      if (sy < 0 || sy >= H) { px.fill(0xff000000, row, row + W); continue; }
+      const src = sy * W;
+      for (let x = 0; x < W; x++) px[row + x] = lut[indices[src + x]];
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+  drawMap();
+  requestAnimationFrame(draw);
+}
+
+function hud(down = false) {
+  const h = $('hud');
+  if (down) { h.innerHTML = '<span class="bad">已断开,重连中…</span>'; return; }
+  const p50 = pct(lat, 0.5), p95 = pct(lat, 0.95), last = lat[lat.length - 1];
+  const f = (v) => v == null ? '—' : v.toFixed(0) + 'ms';
+  h.innerHTML = `收帧 <b>${fps}</b>/s <b>${kbps.toFixed(1)}</b>KB/s · 往返 <b>${f(pingRtt)}</b>`
+    + (watching ? '' : ` · 按键→画面 最近 <b>${f(last)}</b> 中位 <b>${f(p50)}</b> p95 <b class="${p95 > 100 ? 'bad' : ''}">${f(p95)}</b> (${lat.length} 次)`);
+}
+setInterval(() => { fps = recvFrames; recvFrames = 0; kbps = recvBytes / 1024; recvBytes = 0; if (ws?.readyState === 1) ws.send(JSON.stringify({ t: 'ping', ts: performance.now() })); hud(); }, 1000);
+
+const held = new Set();
+function key(code, down) {
+  const name = KEYMAP[code]; if (!name || watching || ws?.readyState !== 1) return false;
+  if (down) { if (held.has(code)) return true; held.add(code); } else if (!held.delete(code)) return true;
+  const id = ++inputSeq;
+  if (down) pendingInputs.set(id, performance.now());
+  ws.send(JSON.stringify({ t: 'key', key: name, down, id }));
+  return true;
+}
+const typing = (e) => e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement;
+addEventListener('keydown', (e) => { if (typing(e)) return; if (e.repeat) { if (KEYMAP[e.code] && !watching) e.preventDefault(); return; } if (key(e.code, true)) e.preventDefault(); });
+addEventListener('keyup', (e) => { if (typing(e)) return; if (key(e.code, false)) e.preventDefault(); });
+addEventListener('blur', () => { for (const code of [...held]) key(code, false); });
+$('msg').addEventListener('focus', () => { for (const code of [...held]) key(code, false); });
+
+$('start').addEventListener('click', async (e) => {
+  e.currentTarget.remove();
+  try { actx = new AudioContext(); sfxGain = actx.createGain(); sfxGain.connect(actx.destination); } catch { /* */ }
+  musicEl = new Audio(); musicEl.volume = musicVol;
+  try { musicBase = (await (await fetch('/config.json')).json()).musicBase || ''; } catch { /* */ }
+  if (lastMusic) playMusic(lastMusic.music, lastMusic.loop);
+});
+
+setRole(watching ? 'watch' : 'play', false);
+connect();
+// OBS 的浏览器源没人点「开始」:地址加 ?autostart 就自己开(普通浏览器不点一下不让出声,所以不默认)
+if (params.has('autostart')) $('start').click();
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

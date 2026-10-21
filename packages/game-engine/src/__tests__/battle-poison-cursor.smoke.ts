@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+const mod=await import('../services/battle-poison-cursor').catch(()=>null);
+assert.ok(mod,'owned poison execution requires an explicit source-selecting child cursor');
+const {createBattlePoisonCursor,selectPoisonFrame,commitPoisonFrame,pushPoisonFrame,returnPoisonFrame,writePoisonReturn,copyPoisonCursor}=mod;
+const c=createBattlePoisonCursor({side:'party',actor:0,slot:1,poisonId:2},100,3,{scriptSuccess:true,curEquipPart:-1});
+assert.equal(selectPoisonFrame(c).currentPC,100);assert.equal(c.stage,'execute-script');
+commitPoisonFrame(c,{...selectPoisonFrame(c),currentPC:101});
+pushPoisonFrame(c,200,4);assert.equal(c.frames.length,2);assert.deepEqual(selectPoisonFrame(c).parentReturn,{opcodePC:101,nextPC:102,returnPolicy:'discard'});
+commitPoisonFrame(c,{...selectPoisonFrame(c),frameWait:{frame:0,remainingFrames:2,stage:'sleep',remainingMs:100},effect:'explicit'});
+const dto=copyPoisonCursor(c);dto.frames[1].currentPC=999;assert.equal(selectPoisonFrame(c).currentPC,200);
+returnPoisonFrame(c,250);assert.equal(selectPoisonFrame(c).currentPC,102);assert.equal(c.nextEntry,null);
+returnPoisonFrame(c,110);assert.equal(c.stage,'write-next-entry');let writes=0;writePoisonReturn(c,n=>{assert.equal(n,110);writes++;});assert.equal(c.stage,'returned');assert.equal(writes,1);assert.throws(()=>writePoisonReturn(c,()=>writes++));assert.equal(writes,1);
+assert.throws(()=>createBattlePoisonCursor({side:'enemy',actor:-1,slot:0,poisonId:1},1,0,{scriptSuccess:true,curEquipPart:-1}));
+assert.throws(()=>selectPoisonFrame({...c,version:2} as any));
+console.log('BATTLE-POISON-CURSOR PASSED (source PC, nested discard return, frame stage, detached data, once-only writer)');

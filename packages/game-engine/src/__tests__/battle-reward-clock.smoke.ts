@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {createBattleRewardCursor} from '../services/battle-reward-cursor';
+const api:any=await import('../services/battle-reward-wait').catch(()=>({}));
+assert.equal(typeof api.createRewardWaitScope,'function','native reward poll requires a private scoped pre-sleep cut');
+const c=createBattleRewardCursor(1,1,false);let reads=0,now=100;
+const perf={now:()=>{reads++;return now;}},binding={kind:'browser-performance',performance:perf,now:perf.now};
+const scope=api.createRewardWaitScope(c,()=>null,()=>binding);
+assert.equal(scope.supports({performance:perf,now:perf.now}),true);assert.equal(reads,0);
+assert.equal(scope.supports({performance:{now:perf.now},now:perf.now}),false);
+scope.begin(7,3000,3100,binding);scope.poll(100,true);
+assert.deepEqual(c.wait,{token:7,timeout:3000,remaining:3000,lastPoll:100,continue:true});
+for(const park of [5000.333333333333,27000.333333333332])scope.shift(park);
+assert.equal(scope.deadline,35100.666666666664);
+assert.equal(c.wait.remaining,3000,'prior page parks never spend a new page budget');scope.close();assert.equal(c.wait,null);
+console.log('BATTLE-REWARD-CLOCK PASSED');
+const publishingCursor=createBattleRewardCursor(1,1,false);let publishing:any;
+publishing=api.createRewardWaitScope(publishingCursor,()=>{publishing.latch(2);return Promise.resolve();},()=>binding);publishing.begin(8,3000,3100,{performance:perf,now:perf.now});publishing.poll(100,true);publishing.pause();assert.equal(publishing.takeLatched(),2,'human input during synchronous timing/publication remains attached to this exact parked page');publishing.close();
+const mismatched=api.createRewardWaitScope(createBattleRewardCursor(1,1,false),()=>{throw new Error('must defer before timing');},()=>({kind:'process'}));mismatched.begin(9,3000,3100,{performance:perf,now:perf.now});mismatched.poll(100,true);assert.equal(mismatched.pause(),null);assert.equal(reads,0);mismatched.close();
+
+const dateBinding={kind:'date',Date,getTime:Date.prototype.getTime,now:Date.now};
+const dateScope=api.createRewardWaitScope(createBattleRewardCursor(0,0,false),()=>null,()=>dateBinding);
+assert.equal(dateScope.supports(dateBinding),true);assert.equal(dateScope.supports({...dateBinding,Date:class extends Date{}}),false);assert.equal(dateScope.supports({...dateBinding,now:()=>0}),false);assert.equal(dateScope.supports({...dateBinding,getTime:()=>0}),false);dateScope.close();

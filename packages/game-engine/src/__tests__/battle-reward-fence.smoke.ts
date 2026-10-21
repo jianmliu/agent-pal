@@ -1,0 +1,3 @@
+import assert from 'node:assert/strict';
+import {retainBattleRewardTask,releaseBattleRewardTask,hasBattleRewardTask,battleRewardTaskCount} from '../services/battle-reward-fence';
+const old={},successor={};retainBattleRewardTask(old,['parent','helper','helper']);retainBattleRewardTask(successor,['helper']);assert.equal(battleRewardTaskCount(),2);assert.throws(()=>retainBattleRewardTask(old,['helper']));releaseBattleRewardTask(old);releaseBattleRewardTask(old);assert.equal(hasBattleRewardTask('parent'),false);assert.equal(hasBattleRewardTask('helper'),true);assert.equal(battleRewardTaskCount(),1);releaseBattleRewardTask(successor);assert.equal(hasBattleRewardTask('helper'),false);assert.equal(battleRewardTaskCount(),0);console.log('BATTLE-REWARD-FENCE PASSED');

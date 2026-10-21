@@ -1,0 +1,27 @@
+{
+  "name": "@onchainpal/palkit",
+  "version": "0.1.0",
+  "description": "PAL domain kit: NPC card → persona mapping, scene/room registry, static NPC placements. Engine- and transport-agnostic; shared by the PAL server and the graphical client.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "types"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jianmliu/onchainpal.git",
+    "directory": "packages/palkit"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

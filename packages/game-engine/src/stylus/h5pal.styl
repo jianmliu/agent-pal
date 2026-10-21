@@ -1,0 +1,109 @@
+@require 'includes/settings.styl'
+
+body
+  margin: 0
+  padding: 0
+
+.ui.content
+  width: 640px
+  height: 400px
+  margin: 0 auto
+  overflow: hidden
+
+.page
+  margin: 8px
+  margin-bottom: 160px
+
+#wrap
+  position: relative
+  width: 320px
+  height: 200px
+  overflow: hidden
+  background: #000
+  transform: scale(2)
+  transform-origin: top left
+
+#cvs
+  position: absolute
+  width: 100%
+  height: 100%
+  image-rendering: pixelated
+  left: 0
+  top: 0
+  z-index: 5
+  background: transparent
+  border-radius: 12px
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.8)
+
+#pal-overview-layer
+  position: absolute
+  width: 220px
+  height: 220px
+  right: 12px
+  bottom: 12px
+  border-radius: 16px
+  border: 2px solid rgba(255,255,255,0.2)
+  background-size: contain
+  background-position: center
+  filter: saturate(0.6)
+  opacity: 0
+  transition: opacity 200ms ease
+  pointer-events: none
+  z-index: 5
+
+#pal-overview-veil
+  display: none
+
+#pal-overview-indicator
+  position: absolute
+  left: 0
+  top: 0
+  width: 36px
+  height: 24px
+  border-radius: 6px
+  border: 2px solid rgba(255, 110, 110, 0.95)
+  background: rgba(255, 90, 90, 0.28)
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.85), 0 0 16px rgba(255, 110, 110, 0.65)
+  z-index: 1
+  pointer-events: none
+  opacity: 0
+  animation: overviewPulse 1.8s ease-in-out infinite
+
+@keyframes overviewPulse
+  0%
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.75), 0 0 12px rgba(255, 120, 120, 0.45)
+  50%
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 22px rgba(255, 150, 150, 0.9)
+  100%
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.75), 0 0 12px rgba(255, 120, 120, 0.45)
+
+#debug
+  position: absolute
+  width: 100%
+  height: 100%
+  left: 0
+  top: 0
+  z-index: 2
+
+#debugLayer
+  position: absolute
+  width: 100%
+  height: 100%
+  left: 0
+  top: 0
+  z-index: 2
+
+.debugObj
+  position: absolute
+  width: 10px
+  height: 10px
+  box-sizing: border-box
+  background: rgba(255,255,255,0.4)
+  overflow: hidden
+
+.debugObj: hover
+  background: rgba(255,255,255,0.8)
+  overflow: visible
+
+.control-panel
+  display: none

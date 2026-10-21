@@ -1,0 +1,38 @@
+{
+  "name": "@onchainpal/agent-pal",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Agent-PAL — Autonomous AI coding harness (--pure L0 protocol + run_code sandbox + live host & replay) for classic Chinese Paladin (1995 DOS).",
+  "bin": {
+    "agent-pal": "bin/agent-pal.mjs"
+  },
+  "scripts": {
+    "build:engine": "pnpm --filter @onchainpal/game-engine build",
+    "mcp": "node bin/agent-pal.mjs",
+    "mcp:pure": "node bin/agent-pal.mjs --pure --modules modules",
+    "http:pure": "node bin/agent-pal.mjs --pure --seed 1 --http 8086 --modules modules",
+    "host:pure": "node bin/agent-pal.mjs --pure --host 8090 --http 8086 --modules modules --record",
+    "replay": "node scripts/palrec-replay.mjs",
+    "replay:export": "node scripts/palrec-export.mjs",
+    "replay:runlog": "node src/record-replay.mjs",
+    "data:dump": "pnpm run build:engine && node bin/agent-pal.mjs data dump --maps all",
+    "demo:compiler": "node src/bytecode-compiler-demo.mjs",
+    "pack:npx": "pnpm run build:engine && node scripts/pack-npx.mjs --pack",
+    "test": "pnpm run test:unit && pnpm run test:pure",
+    "test:unit": "node packages/agent-pal-protocol/test/protocol.test.mjs && node test/bytecode-compiler.test.mjs && node test/l0.test.mjs && node test/code-runner.test.mjs && node test/modules.test.mjs && node test/nav.test.mjs && node test/palrec.test.mjs && node --test test/replay.test.mjs",
+    "test:pure": "pnpm run build:engine && node src/pure-smoke.mjs --skip-if-no-assets && node test/data-dump.test.mjs --skip-if-no-assets"
+  },
+  "dependencies": {
+    "@onchainpal/agent-pal-protocol": "workspace:*",
+    "@onchainpal/game-engine": "workspace:*"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0",
+    "playwright": "^1.57.0",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

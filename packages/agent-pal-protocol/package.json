@@ -1,0 +1,18 @@
+{
+  "name": "@onchainpal/agent-pal-protocol",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Agent-PAL 线协议 v0(docs/specs/agent-pal.md §4):CMSG / SMSG 的 opcode 表、载荷校验与编解码。仙剑单机专用,不放进核心仓的 @onchainpal/shared。",
+  "main": "src/index.mjs",
+  "types": "src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.mjs",
+      "types": "./src/index.d.ts"
+    }
+  },
+  "scripts": {
+    "test:protocol": "node test/protocol.test.mjs"
+  }
+}

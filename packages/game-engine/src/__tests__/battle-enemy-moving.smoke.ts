@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import { BattleService } from '../services/battle-service';
+const service = new BattleService();
+assert.equal(service.isEnemyMoving(), false, 'missing battle state is not enemy turn');
+service.replaceState({ enemyMoving: false } as any);
+assert.equal(service.isEnemyMoving(), false);
+service.set('enemyMoving', true);
+assert.equal(service.isEnemyMoving(), true, 'enemy turn reads current battle state');
+service.set('enemyMoving', false);
+assert.equal(service.isEnemyMoving(), false, 'player turn immediately reflects state');
+console.log('battle-enemy-moving smoke: ok');

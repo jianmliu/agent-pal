@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {ScreenFadeReferenceLeases,screenFadeDigest} from '../services/screen-fade-reference-leases';
+import {createScreenFadeSource} from '../services/script-screen-fade-cursor';
+const leases=new ScreenFadeReferenceLeases(),front=new Uint8Array(64000),backup=new Uint8Array(64000),s={byteBuffer:front,backup},c=createScreenFadeSource(5,{operation:0x73,operand:[0,0,0,0]},null),digest=screenFadeDigest(front);
+assert.equal(leases.hasReferences,false);c.phase='screen';const lease=leases.acquire('owner',c,front,backup,digest);c.screen={target:Array.from(front),substep:0,nominalMs:4,requestedMs:4,remainingMs:4,frontDigest:digest,backupDigest:digest,targetDigest:digest,width:320,height:200,pitch:320,lease};
+assert.equal(leases.hasReferences,true);leases.publish(lease,c.screen);assert.ok(leases.matchesProgress(lease,c.screen));c.screen.remainingMs=3;assert.equal(leases.matchesProgress(lease,c.screen),false);c.screen.remainingMs=4;assert.ok(leases.resolve(lease,'owner',c,s));s.byteBuffer=new Uint8Array(front);assert.equal(leases.resolve(lease,'owner',c,s),null);s.byteBuffer=front;
+assert.equal(leases.resolve(lease,'foreign',c,s),null);leases.transfer('owner','next');assert.equal(leases.resolve(lease,'owner',c,s),null);lease.owner='next';assert.ok(leases.resolve(lease,'next',c,s));leases.releaseOwner('next');assert.equal(leases.hasReferences,false);assert.equal(leases.resolve(lease,'next',c,s),null);
+const next=leases.acquire('next',c,front,backup,digest);leases.clear();assert.equal(leases.hasReferences,false);assert.equal(leases.resolve(next,'next',c,s),null);
+const scopeA=new ScreenFadeReferenceLeases(),scopeB=new ScreenFadeReferenceLeases(),frontA=new Uint8Array(64000),backupA=new Uint8Array(64000),frontB=new Uint8Array(64000),backupB=new Uint8Array(64000),ca=JSON.parse(JSON.stringify(c)),cb=JSON.parse(JSON.stringify(c));
+const la=scopeA.acquire('o',ca,frontA,backupA,digest),lb=scopeB.acquire('o',cb,frontB,backupB,digest);ca.screen.lease=la;cb.screen.lease=lb;
+assert.ok(scopeB.resolve(la,'o',cb,{byteBuffer:frontB,backup:backupB})===null,'equivalent renderer scopes must not share a lease identity');
+console.log('screen-fade-reference-leases: passed');

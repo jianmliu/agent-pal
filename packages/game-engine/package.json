@@ -1,0 +1,88 @@
+{
+  "name": "@onchainpal/game-engine",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "2D PAL client engine (ESM/TS).",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./js/pal/surface": {
+      "import": "./dist/js/pal/surface.js"
+    },
+    "./js/pal/ui": {
+      "import": "./dist/js/pal/ui.js"
+    },
+    "./services/input-service": {
+      "import": "./dist/services/input-service.js"
+    },
+    "./services/dialog-service": {
+      "import": "./dist/services/dialog-service.js"
+    },
+    "./js/pal/panorama-renderer": {
+      "import": "./dist/js/pal/panorama-renderer.js"
+    },
+    "./services/scene-service": {
+      "import": "./dist/services/scene-service.js"
+    },
+    "./js/pal/palette": {
+      "import": "./dist/js/pal/palette.js"
+    },
+    "./services/world-service": {
+      "import": "./dist/services/world-service.js"
+    },
+    "./js/pal/play": {
+      "import": "./dist/js/pal/play.js"
+    },
+    "./services/index": {
+      "import": "./dist/services/index.js"
+    },
+    "./ai/ai-gateway": {
+      "import": "./dist/ai/ai-gateway.js"
+    },
+    "./services/script-object-adapter": {
+      "import": "./dist/services/script-object-adapter.js"
+    },
+    "./js/pal/sound": {
+      "import": "./dist/js/pal/sound.js"
+    },
+    "./js/pal/music": {
+      "import": "./dist/js/pal/music.js"
+    },
+    "./services/voc": {
+      "import": "./dist/services/voc.js"
+    },
+    "./services/resource-service": {
+      "import": "./dist/services/resource-service.js"
+    },
+    "./services/execution-scheduler": {
+      "import": "./dist/services/execution-scheduler.js"
+    },
+    "./services/battle-command-execution": {
+      "import": "./dist/services/battle-command-execution.js"
+    }
+  },
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "@latticexyz/recs": "^2.2.23",
+    "@onchainpal/pal-formats": "workspace:*",
+    "jquery": "^3.7.1",
+    "opencc-js": "^1.0.5",
+    "rxjs": "^7.8.2",
+    "sprintf-js": "^1.1.3",
+    "@onchainpal/palkit": "workspace:*",
+    "@onchainpal/shared": "workspace:*",
+    "viem": "^2.51.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.4",
+    "@types/sprintf-js": "^1.1.4",
+    "esbuild": "^0.28.0"
+  }
+}

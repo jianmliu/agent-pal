@@ -1,0 +1,16 @@
+{
+  "leave_scene": {
+    "description": "Walk until the scene changes, using only L0 messages: BFS toward the nearest touch trigger, treating unknown cells as walkable and learning walls from REJECT blocked. Advances dialog, waits through cutscenes and auto-fights battles on the way. Returns the new scene, moves used and walls learned.",
+    "input": {
+      "type": "object",
+      "properties": {
+        "maxMoves": { "type": "integer", "minimum": 1, "maximum": 5000, "default": 800 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "model": {
+    "description": "Dump this module's world model (built only from SMSG packets): scene, player, touch triggers, learned walls.",
+    "input": { "type": "object", "properties": {}, "additionalProperties": false }
+  }
+}
