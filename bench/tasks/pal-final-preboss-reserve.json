@@ -1,0 +1,77 @@
+{
+  "id": "pal-final-preboss-reserve",
+  "version": 1,
+  "title": "王宫侍卫与树妖：保留决战资源（单种子试题）",
+  "difficulty": 4,
+  "start": {
+    "saves": "pal-final-preboss-reserve.saves.json.gz",
+    "slot": 3
+  },
+  "seeds": [
+    42
+  ],
+  "brief": "你们三人已在王宫侍卫战前。先打败王座前的侍卫，随后击败树妖；这一段要为拜月教主保留隐蛊、三份酒和乾坤资金。胜后灵儿与阿奴会暂时离队，到此即完成，不要触发拜月。不得使用酒神、乾坤一掷、隐蛊或逃跑。可以使用治疗与补蓝药。",
+  "goal": {
+    "all": [
+      {
+        "battleWon": {}
+      },
+      {
+        "textSeen": "拜月教主：哼．．．可惡的小鬼！"
+      },
+      {
+        "cashAtLeast": 64609
+      },
+      {
+        "hasItem": {
+          "name": "隱蠱",
+          "min": 1
+        }
+      },
+      {
+        "hasItem": {
+          "name": "酒",
+          "min": 3
+        }
+      }
+    ]
+  },
+  "fail": {
+    "any": [
+      {
+        "partyWiped": true
+      },
+      {
+        "battleFled": {}
+      },
+      {
+        "battleTerminated": true
+      }
+    ]
+  },
+  "milestones": [],
+  "budget": {
+    "toolCalls": 180,
+    "tokens": 2160000,
+    "virtualSeconds": 1800
+  },
+  "tiers": [
+    "B"
+  ],
+  "battlePolicy": {
+    "forbiddenActions": [
+      "flee",
+      "auto"
+    ],
+    "forbiddenSpells": [
+      "酒神",
+      "乾坤一擲",
+      "乾坤一掷"
+    ]
+  },
+  "disallowTools": [
+    "load",
+    "save",
+    "list_saves"
+  ]
+}

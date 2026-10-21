@@ -1,0 +1,166 @@
+{
+ "source": "手写参考解:屋外右侧树上摘香蕉 → 经 186 进巨树迷宫 192 → 三次藤桥/树洞传送(3427、3429、3431)到窄路 → 对小猴子(3482)用香蕉再与它说话;途中遭遇战用 battle auto",
+ "steps": [
+  [
+   "walk_to",
+   {
+    "x": 61,
+    "y": 84
+   }
+  ],
+  [
+   "interact",
+   {
+    "id": 3086
+   }
+  ],
+  [
+   "advance",
+   {}
+  ],
+  [
+   "walk_to",
+   {
+    "x": 67,
+    "y": 111
+   }
+  ],
+  [
+   "walk_to",
+   {
+    "x": 90,
+    "y": 115
+   }
+  ],
+  [
+   "step",
+   {
+    "direction": "down",
+    "n": 7
+   }
+  ],
+  [
+   "walk_to",
+   {
+    "x": 137,
+    "y": 119
+   }
+  ],
+  [
+   "battle",
+   {
+    "action": "auto"
+   }
+  ],
+  [
+   "battle",
+   {
+    "action": "auto"
+   }
+  ],
+  [
+   "step",
+   {
+    "direction": "down",
+    "n": 3
+   }
+  ],
+  [
+   "step",
+   {
+    "direction": "left",
+    "n": 9
+   }
+  ],
+  [
+   "walk_to",
+   {
+    "x": 120,
+    "y": 122
+   }
+  ],
+  [
+   "step",
+   {
+    "direction": "left",
+    "n": 1
+   }
+  ],
+  [
+   "wait",
+   {
+    "ms": 600
+   }
+  ],
+  [
+   "step",
+   {
+    "direction": "down",
+    "n": 1
+   }
+  ],
+  [
+   "step",
+   {
+    "direction": "left",
+    "n": 4
+   }
+  ],
+  [
+   "step",
+   {
+    "direction": "down",
+    "n": 7
+   }
+  ],
+  [
+   "step",
+   {
+    "direction": "left",
+    "n": 5
+   }
+  ],
+  [
+   "walk_to",
+   {
+    "x": 111,
+    "y": 138
+   }
+  ],
+  [
+   "battle",
+   {
+    "action": "auto"
+   }
+  ],
+  [
+   "walk_to",
+   {
+    "x": 111,
+    "y": 138
+   }
+  ],
+  [
+   "use_item",
+   {
+    "item": "香蕉",
+    "facing": 3482
+   }
+  ],
+  [
+   "interact",
+   {
+    "id": 3482
+   }
+  ],
+  [
+   "advance",
+   {}
+  ]
+ ],
+ "par": {
+  "42": 22,
+  "43": 22,
+  "44": 22
+ }
+}

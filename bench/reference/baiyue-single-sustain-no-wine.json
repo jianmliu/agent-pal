@@ -1,0 +1,1040 @@
+{
+  "bySeed": {
+    "42": [
+      [
+        "battle",
+        {
+          "action": "item",
+          "name": "隱蠱",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "真元護體",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 2
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "天罡戰氣",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "元靈歸心術",
+          "target": 2
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "元靈歸心術",
+          "target": 2
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "真元護體",
+          "target": 2
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 2
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "item",
+          "name": "金剛符",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "天罡戰氣",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "元靈歸心術",
+          "target": 2
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ]
+    ],
+    "43": [
+      [
+        "battle",
+        {
+          "action": "item",
+          "name": "隱蠱",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "真元護體",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 2
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "天罡戰氣",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "真元護體",
+          "target": 2
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "天罡戰氣",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "item",
+          "name": "金剛符",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "元靈歸心術",
+          "target": 2
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "天罡戰氣",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲"
+        }
+      ]
+    ],
+    "44": [
+      [
+        "battle",
+        {
+          "action": "item",
+          "name": "隱蠱",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "真元護體",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 2
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "天罡戰氣",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "真元護體",
+          "target": 2
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "真元護體",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "天罡戰氣",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "乾坤一擲",
+          "target": 1
+        }
+      ]
+    ]
+  },
+  "par": {
+    "42": 45,
+    "43": 47,
+    "44": 42
+  },
+  "rounds": {
+    "42": 15,
+    "43": 17,
+    "44": 14
+  },
+  "provenance": {
+    "sourceSaveBytesSha256": "f422f1d4ed09461ec6b47362e40f790417b7d56c6a835dc1b5e06939913f0bf1",
+    "note": "Reference is a solvability witness, not an optimal policy or model score."
+  },
+  "source": "2026-10-17 reference repair: affected seeds restored from archived native passing action logs, then rechecked on current task/save/build. Goals, resources and seeds unchanged."
+}

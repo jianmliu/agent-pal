@@ -1,0 +1,55 @@
+{
+  "id": "classic10-baihe-medicine",
+  "version": 1,
+  "title": "经典存档 10:白河村凑齐药材,换来六神丹",
+  "difficulty": 2,
+  "start": {
+    "rpg": "10.rpg"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "brief": "你们(李逍遥、林月如)到了白河村,听说赵灵儿病倒后被村里的韩医仙收留。去医馆见韩医仙,按他的药方把药材凑齐:林月如会去张罗其中几味,剩下的得你自己想办法弄到。把药材交给医馆门口负责煎药的僮子,拿到他煎好的六神丹就算完成。",
+  "goal": {
+    "hasItem": {
+      "name": "六神丹"
+    }
+  },
+  "milestones": [
+    {
+      "id": "got-ginkgo",
+      "when": {
+        "hasItem": {
+          "name": "銀杏果"
+        }
+      }
+    },
+    {
+      "id": "got-carp",
+      "when": {
+        "hasItem": {
+          "name": "鯉魚"
+        }
+      }
+    },
+    {
+      "id": "got-antler",
+      "when": {
+        "hasItem": {
+          "name": "鹿茸"
+        }
+      }
+    }
+  ],
+  "budget": {
+    "toolCalls": 120,
+    "tokens": 1440000,
+    "virtualSeconds": 3600
+  },
+  "tiers": [
+    "B",
+    "C"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "id": "classic40-water-orb",
+  "version": 1,
+  "title": "经典存档 40:十年前的余杭 —— 换回水灵珠",
+  "difficulty": 3,
+  "start": {
+    "rpg": "40.rpg"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "brief": "你是李逍遥。危急关头之后,你会被送回十年前的家乡(山神庙、余杭一带)。在这段往事里帮该帮的人,并设法得到五灵珠中的水灵珠 —— 它此刻在一个孩子手里,孩子未必肯白给。水灵珠到手(物品栏里有水灵珠)就算完成。",
+  "goal": {
+    "hasItem": {
+      "name": "水靈珠"
+    }
+  },
+  "milestones": [
+    {
+      "id": "handkerchief-delivered",
+      "when": {
+        "textSeen": "貧道正是靈月"
+      }
+    },
+    {
+      "id": "got-wooden-sword",
+      "when": {
+        "hasItem": {
+          "name": "木劍"
+        }
+      }
+    },
+    {
+      "id": "opened-box",
+      "when": {
+        "textSeen": "箱中有若干童玩"
+      }
+    }
+  ],
+  "budget": {
+    "toolCalls": 250,
+    "tokens": 3000000,
+    "virtualSeconds": 2400
+  },
+  "tiers": [
+    "B",
+    "C"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "wine-to-drunk-taoist",
+  "version": 3,
+  "title": "桂花酒送醉道士,引出十里坡之约",
+  "difficulty": 2,
+  "start": { "newGame": true },
+  "seeds": [1, 2, 3],
+  "brief": "你是李逍遥,在余杭镇李家客栈帮工。客栈里有个讨酒喝的醉道士。想办法让他喝上酒,直到他和你约好下一次见面的地方。",
+  "goal": { "textSeen": "十里坡" },
+  "milestones": [
+    { "id": "served-dishes", "when": { "textSeen": "酒菜送來了" } },
+    { "id": "got-wine", "when": { "hasItem": { "name": "桂花酒" } } },
+    { "id": "met-taoist", "when": { "textSeen": "醉道士" } }
+  ],
+  "budget": { "toolCalls": 192, "tokens": 2304000, "virtualSeconds": 3600 },
+  "tiers": ["B", "C"]
+}

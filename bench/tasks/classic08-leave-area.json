@@ -1,0 +1,42 @@
+{
+  "id": "classic08-leave-area",
+  "version": 3,
+  "title": "经典存档 08:走出这片上下两层相连的区域",
+  "difficulty": 2,
+  "start": {
+    "rpg": "08.rpg"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "brief": "你们(李逍遥、赵灵儿)身处一片上下两层、有多条通道来回相连的区域:场景 35 和场景 38 是这片区域的两层,在它们之间来回不算离开。找到通往这片区域以外的出口,走到场景 35 / 38 以外的任何地方。",
+  "goal": {
+    "any": [
+      {
+        "sceneIs": 34
+      },
+      {
+        "sceneIs": 36
+      }
+    ]
+  },
+  "milestones": [
+    {
+      "id": "explored-upper-level",
+      "when": {
+        "sceneVisited": 38
+      }
+    }
+  ],
+  "budget": {
+    "toolCalls": 80,
+    "tokens": 960000,
+    "virtualSeconds": 2400
+  },
+  "tiers": [
+    "B",
+    "C"
+  ]
+}

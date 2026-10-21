@@ -1,0 +1,49 @@
+{
+  "id": "classic28-tower-chain",
+  "version": 2,
+  "title": "经典存档 28:锁妖塔——借天鬼皇破铜门,替沉思鬼解惑后通过",
+  "difficulty": 3,
+  "start": {
+    "rpg": "28.rpg"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "brief": "你们(李逍遥、林月如)闯进锁妖塔来救灵儿,眼下在塔里遇到一位蜀山前辈的遗骸。继续往塔深处走:更深的一层有一扇铜门挡住去路,凭你们自己打不开,得想办法让塔里的某个妖怪帮忙破门;门后又有个妖怪堵在通道口不肯让路,它被一个想了五百年的问题困住,要找到能替它解答的人。让它让开,穿过它把守的通道,走进后面的新区域(场景 156)才算完成。塔里有很多会主动撞上来的妖怪。",
+  "goal": {
+    "sceneVisited": 156
+  },
+  "milestones": [
+    {
+      "id": "ghost-king-agreed",
+      "when": {
+        "textSeen": "銅門旁邊等我"
+      }
+    },
+    {
+      "id": "through-bronze-gate",
+      "when": {
+        "sceneVisited": 154
+      }
+    },
+    {
+      "id": "got-heavenly-book",
+      "when": {
+        "hasItem": {
+          "name": "天書"
+        }
+      }
+    }
+  ],
+  "budget": {
+    "toolCalls": 345,
+    "tokens": 4140000,
+    "virtualSeconds": 1800
+  },
+  "tiers": [
+    "B",
+    "C"
+  ]
+}

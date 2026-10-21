@@ -1,0 +1,264 @@
+{
+  "source": "取隐蛊通关分支第4轮战前槽3，使用固定种子42验证侍卫→树妖资源保留；其他种子需要独立策略，暂不纳入此题。",
+  "bySeed": {
+    "42": [
+      [
+        "walk_to",
+        {
+          "x": 113,
+          "y": 88
+        }
+      ],
+      [
+        "advance",
+        {
+          "max": 30
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "天罡戰氣",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "武神",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "defend"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "元靈歸心術",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "defend"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "元靈歸心術",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "defend"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "武神",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "元靈歸心術",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "五氣朝元"
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "天罡戰氣",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "金剛咒",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "醉仙望月步",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "元靈歸心術",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "元靈歸心術",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "magic",
+          "name": "元靈歸心術",
+          "target": 1
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "attack",
+          "target": 0
+        }
+      ],
+      [
+        "battle",
+        {
+          "action": "item",
+          "name": "龍涎草",
+          "target": 1
+        }
+      ]
+    ]
+  },
+  "par": {
+    "42": 35
+  }
+}

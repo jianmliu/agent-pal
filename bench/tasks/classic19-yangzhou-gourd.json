@@ -1,0 +1,68 @@
+{
+  "id": "classic19-yangzhou-gourd",
+  "version": 1,
+  "title": "经典存档 19:扬州城追查紫金葫芦",
+  "difficulty": 3,
+  "start": {
+    "rpg": "19.rpg"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "brief": "你是李逍遥,和林月如刚到扬州城外。城里闹女飞贼,只许进不许出。进城投宿后,夜里会出事:去追那个女飞贼,把被偷的东西夺回来交还失主。失主会发现最值钱的紫金葫芦不见了,反而怀疑你们 —— 去城里打听线索,查出葫芦的下落并把它找出来。找到紫金葫芦之后会被官府当场拿下、押上公堂,到了公堂就算完成。路上遇到的战斗都不难。",
+  "goal": {
+    "all": [
+      {
+        "textSeen": "找到紫金葫蘆"
+      },
+      {
+        "sceneVisited": 81
+      }
+    ]
+  },
+  "milestones": [
+    {
+      "id": "night-alarm",
+      "when": {
+        "textSeen": "有賊啊"
+      }
+    },
+    {
+      "id": "recovered-bag",
+      "when": {
+        "hasItem": {
+          "name": "布包"
+        }
+      }
+    },
+    {
+      "id": "accused-by-merchant",
+      "when": {
+        "textSeen": "跟飛賊是不是一夥的"
+      }
+    },
+    {
+      "id": "met-widow",
+      "when": {
+        "textSeen": "姬三娘："
+      }
+    },
+    {
+      "id": "entered-well",
+      "when": {
+        "sceneVisited": 92
+      }
+    }
+  ],
+  "budget": {
+    "toolCalls": 230,
+    "tokens": 2760000,
+    "virtualSeconds": 1800
+  },
+  "tiers": [
+    "B",
+    "C"
+  ]
+}

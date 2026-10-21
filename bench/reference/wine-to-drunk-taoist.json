@@ -1,0 +1,1026 @@
+{
+ "source": "golden/scenarios/llm-seed-{1,2,3}.json(LLM --seed 实玩,去掉标题画面的 choose);seed 2 于 #29 之后由 LLM --seed 2 重新实玩生成(原 llm-seed-2 序列在 #18 后的时序下失效)",
+ "bySeed": {
+  "1": [
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 9
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 62,
+     "y": 51
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 60,
+     "y": 52
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 73
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 70
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 125,
+     "y": 109
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 121,
+     "y": 122
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 70
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 143,
+     "y": 106
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 130,
+     "y": 116
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 143,
+     "y": 106
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 6
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 32
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 5
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 7
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 10
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left"
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 9
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left",
+     "n": 2
+    }
+   ],
+   [
+    "search",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 60,
+     "y": 52
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 67
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 136
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 66
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 68
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 123,
+     "y": 125
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 22
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 20
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 21
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 102,
+     "y": 123
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 130,
+     "y": 116
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 133,
+     "y": 106
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 108,
+     "y": 97
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "桂花酒",
+     "facing": 63
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "save",
+    {
+     "slot": 1,
+     "note": "给醉道士桂花酒后,约十里坡山神庙;李大娘叫我"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 140
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 94
+    }
+   ]
+  ],
+  "2": [
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 60,
+     "y": 52
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "down"
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 73
+    }
+   ],
+   [
+    "observe",
+    {
+     "full": true
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 126,
+     "y": 109
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 120,
+     "y": 120
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 120,
+     "y": 135
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "down",
+     "n": 15
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 138
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 66
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 68
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "observe",
+    {
+     "full": true
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 124,
+     "y": 125
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 21
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 20
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 21
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 102,
+     "y": 123
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 130,
+     "y": 116
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 73
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "up",
+     "n": 3
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "down",
+     "n": 3
+    }
+   ],
+   [
+    "press",
+    {
+     "key": "Up",
+     "ms": 50
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "down",
+     "n": 3
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 133,
+     "y": 106
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 108,
+     "y": 97
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "桂花酒",
+     "facing": 63
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ]
+  ],
+  "3": [
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 9
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 60,
+     "y": 51
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 73
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 141,
+     "y": 113
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 125,
+     "y": 109
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "down",
+     "n": 6
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 70
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 67
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 145,
+     "y": 136
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 66
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 68
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 123,
+     "y": 125
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 23
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 22
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 24
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 21
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 20
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 21
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 102,
+     "y": 123
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 130,
+     "y": 116
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 73
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 133,
+     "y": 107
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 108,
+     "y": 97
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "桂花酒",
+     "facing": 63
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "save",
+    {
+     "slot": 1,
+     "note": "酒给醉道士后,李大娘叫我过去"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 123,
+     "y": 125
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 102,
+     "y": 123
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 130,
+     "y": 116
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "right",
+     "n": 1
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 143,
+     "y": 106
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 9
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 9
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 60,
+     "y": 39
+    }
+   ],
+   [
+    "search",
+    {}
+   ],
+   [
+    "step",
+    {
+     "direction": "right",
+     "n": 1
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left",
+     "n": 1
+    }
+   ],
+   [
+    "save",
+    {
+     "slot": 2,
+     "note": "房间内,密道触发点(60,39)白天不触发;待去十里坡山神庙赴约"
+    }
+   ]
+  ]
+ },
+ "par": {
+  "1": 64,
+  "2": 42,
+  "3": 53
+ }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "classic40-phoenix-handkerchief",
+  "version": 1,
+  "title": "经典存档 40:山神庙里受伤的老婆婆",
+  "difficulty": 1,
+  "start": { "rpg": "40.rpg" },
+  "seeds": [42, 43, 44],
+  "brief": "你是李逍遥。眼下的危急关头过去之后,你会被送到一个熟悉又陌生的地方。有人会求你去帮一位受了伤的老婆婆。找到她、取得她身边人的信任,并接下她托付给你的东西(一件信物)。拿到这件信物就算完成。",
+  "goal": { "hasItem": { "name": "鳳紋手絹" } },
+  "milestones": [
+    { "id": "entered-temple", "when": { "sceneVisited": 249 } },
+    { "id": "old-woman-calls", "when": { "textSeen": "老婦人" } }
+  ],
+  "budget": { "toolCalls": 80, "tokens": 960000, "virtualSeconds": 1800 },
+  "tiers": ["B", "C"]
+}

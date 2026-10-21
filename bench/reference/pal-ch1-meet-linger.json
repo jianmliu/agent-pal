@@ -1,0 +1,2001 @@
+{
+ "source": "capstone 参考解:前缀 = wine-to-drunk-taoist 各种子参考解(到十里坡之约为止),其后手工逐段推进(--seed 确定性,bench 起点);岛上第 4 场(绿叶小妖×2+绿叶妖精)打不过 Lv1,逃跑成功与否随种子与时机变化,故按种子给;seed 3 于 #51(W4 战斗时序)后重推:第 4 场先砍绿叶妖精一刀再逃,一次逃成",
+ "bySeed": {
+  "1": [
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 9
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 62,
+     "y": 51
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 60,
+     "y": 52
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 73
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 70
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 125,
+     "y": 109
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 121,
+     "y": 122
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 70
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 143,
+     "y": 106
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 130,
+     "y": 116
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 143,
+     "y": 106
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 6
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 32
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 5
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 7
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 10
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left"
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 9
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left",
+     "n": 2
+    }
+   ],
+   [
+    "search",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 60,
+     "y": 52
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 67
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 136
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 66
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 68
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 123,
+     "y": 125
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 22
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 20
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 21
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 102,
+     "y": 123
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 130,
+     "y": 116
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 133,
+     "y": 106
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 108,
+     "y": 97
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "桂花酒",
+     "facing": 63
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 123,
+     "y": 125
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 20
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 102,
+     "y": 123
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 140
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 140,
+     "y": 90
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 121,
+     "y": 121
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 121
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 111,
+     "y": 163
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 95,
+     "y": 78
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 132,
+     "y": 113
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 37
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 37
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 86,
+     "y": 76
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 140
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 140
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 140,
+     "y": 90
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 124
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 124,
+     "y": 114
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 74,
+     "y": 46
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 118,
+     "y": 139
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 110
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 115,
+     "y": 95
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "止血草"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 81
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "flee"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "flee"
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "flee"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 242
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 242
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 241
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 241
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 243
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 243
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 238
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 238
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 239
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 239
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 240
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 240
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 89,
+     "y": 89
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 88,
+     "y": 37
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left"
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "up"
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "up"
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 204
+    }
+   ],
+   [
+    "advance",
+    {}
+   ]
+  ],
+  "2": [
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 60,
+     "y": 52
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "down"
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 73
+    }
+   ],
+   [
+    "observe",
+    {
+     "full": true
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 126,
+     "y": 109
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 120,
+     "y": 120
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 120,
+     "y": 135
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "down",
+     "n": 15
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 138
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 66
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 68
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "observe",
+    {
+     "full": true
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 124,
+     "y": 125
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 21
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 20
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 21
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 102,
+     "y": 123
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 130,
+     "y": 116
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 73
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "up",
+     "n": 3
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "down",
+     "n": 3
+    }
+   ],
+   [
+    "press",
+    {
+     "key": "Up",
+     "ms": 50
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "down",
+     "n": 3
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 133,
+     "y": 106
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 108,
+     "y": 97
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "桂花酒",
+     "facing": 63
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 123,
+     "y": 125
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 20
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 102,
+     "y": 123
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 140
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 140,
+     "y": 90
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 121,
+     "y": 121
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 121
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 111,
+     "y": 163
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 95,
+     "y": 78
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 132,
+     "y": 113
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 37
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 37
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 86,
+     "y": 76
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 140
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 140
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 140,
+     "y": 90
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 124
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 124,
+     "y": 114
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 74,
+     "y": 46
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 118,
+     "y": 139
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 110
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 115,
+     "y": 95
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 81
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "flee"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 242
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 242
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 241
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 241
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 243
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 243
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 238
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 238
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 239
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 239
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 240
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 240
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 89,
+     "y": 89
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 88,
+     "y": 37
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left"
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "up"
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "up"
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 204
+    }
+   ],
+   [
+    "advance",
+    {}
+   ]
+  ],
+  "3": [
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 9
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 60,
+     "y": 51
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 73
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 125,
+     "y": 109
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "down",
+     "n": 6
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 70
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 67
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 145,
+     "y": 136
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 66
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 68
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 57
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 123,
+     "y": 125
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 23
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 22
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 24
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 21
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 20
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 21
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 102,
+     "y": 123
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 130,
+     "y": 116
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 73
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 133,
+     "y": 107
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 108,
+     "y": 97
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 122,
+     "y": 113
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "桂花酒",
+     "facing": 63
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 63
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 123,
+     "y": 125
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 20
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 102,
+     "y": 123
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 140
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 140,
+     "y": 90
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 121,
+     "y": 121
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 121
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 111,
+     "y": 163
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 95,
+     "y": 78
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 132,
+     "y": 113
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 37
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 37
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 86,
+     "y": 76
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 140
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 137,
+     "y": 140
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 140,
+     "y": 90
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 124
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 124,
+     "y": 114
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 74,
+     "y": 46
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 118,
+     "y": 139
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 110
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 115,
+     "y": 95
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "醃肉"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 81
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "attack",
+     "target": 1
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "flee"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 242
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 242
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 241
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 241
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 243
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 243
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 238
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 238
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 239
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 239
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 240
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 240
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 89,
+     "y": 89
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 88,
+     "y": 37
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left"
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "up"
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 204
+    }
+   ],
+   [
+    "advance",
+    {}
+   ]
+  ]
+ },
+ "par": {
+  "1": 126,
+  "2": 100,
+  "3": 111
+ }
+}

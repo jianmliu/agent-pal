@@ -1,0 +1,41 @@
+{
+  "id": "classic28-tower-gate",
+  "version": 1,
+  "title": "经典存档 28:锁妖塔——请塔里的妖怪帮忙打开铜门",
+  "difficulty": 3,
+  "start": {
+    "rpg": "28.rpg"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "brief": "你们(李逍遥、林月如)闯进锁妖塔来救灵儿,眼下在塔里遇到一位蜀山前辈的遗骸。继续往塔深处走:更深的一层有一扇铜门挡住去路,凭你们自己打不开,得想办法让塔里的某个妖怪帮忙破门。穿过铜门、走进门后的区域(场景 154)才算完成。塔里有很多会主动撞上来的妖怪。",
+  "goal": {
+    "sceneVisited": 154
+  },
+  "milestones": [
+    {
+      "id": "entered-148",
+      "when": {
+        "sceneVisited": 148
+      }
+    },
+    {
+      "id": "ghost-king-agreed",
+      "when": {
+        "textSeen": "銅門旁邊等我"
+      }
+    }
+  ],
+  "budget": {
+    "toolCalls": 320,
+    "tokens": 3840000,
+    "virtualSeconds": 1800
+  },
+  "tiers": [
+    "B",
+    "C"
+  ]
+}

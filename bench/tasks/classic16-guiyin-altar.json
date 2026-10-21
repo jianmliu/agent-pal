@@ -1,0 +1,18 @@
+{
+  "id": "classic16-guiyin-altar",
+  "version": 1,
+  "title": "经典存档 16:穿过鬼阴山,找到鬼阴坛",
+  "difficulty": 3,
+  "start": { "rpg": "16.rpg" },
+  "seeds": [42, 43, 44],
+  "brief": "你们(李逍遥、赵灵儿、林月如)来到鬼阴山下:韩医仙的女儿梦慈被苗人掳到了山上的鬼阴坛。闯过山路,在山上相互连通的山洞之间找出正确的路,进入鬼阴坛(场景 69)就算完成 —— 不需要去找坛里的长老,也不需要打赢他。山上的鬼阴山本身(场景 68)和各个山洞都不算鬼阴坛。",
+  "goal": { "sceneVisited": 69 },
+  "milestones": [
+    { "id": "on-the-mountain", "when": { "sceneVisited": 68 } },
+    { "id": "through-cave-74", "when": { "sceneVisited": 74 } },
+    { "id": "through-cave-73", "when": { "sceneVisited": 73 } }
+  ],
+  "fail": { "partyWiped": true },
+  "budget": { "toolCalls": 80, "tokens": 960000, "virtualSeconds": 1800 },
+  "tiers": ["B", "C"]
+}

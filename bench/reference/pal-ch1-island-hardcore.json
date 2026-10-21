@@ -1,0 +1,602 @@
+{
+ "source": "从刚登上仙灵岛的存档(压轴题 seed 2 参考解回放到进走廊前、存槽 1)出发:走廊里每场前用食物回满血再 battle auto、一场不逃 + 基础压轴题参考解出走廊后的部分(荷叶迷阵、石像、仙灵洞天)。起点只带糯米糕、水果各一,第三场后就没有回血物资,余量最紧。",
+ "bySeed": {
+  "1": [
+   [
+    "walk_to",
+    {
+     "x": 74,
+     "y": 46
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "糯米糕"
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "水果"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 242
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 242
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 241
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 241
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 243
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 243
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 238
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 238
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 239
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 239
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 240
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 240
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 89,
+     "y": 89
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 88,
+     "y": 37
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left"
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "up"
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "up"
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 204
+    }
+   ],
+   [
+    "advance",
+    {}
+   ]
+  ],
+  "2": [
+   [
+    "walk_to",
+    {
+     "x": 74,
+     "y": 46
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "糯米糕"
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "水果"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 242
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 242
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 241
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 241
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 243
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 243
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 238
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 238
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 239
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 239
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 240
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 240
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 89,
+     "y": 89
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 88,
+     "y": 37
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left"
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "up"
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "up"
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 204
+    }
+   ],
+   [
+    "advance",
+    {}
+   ]
+  ],
+  "3": [
+   [
+    "walk_to",
+    {
+     "x": 74,
+     "y": 46
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "糯米糕"
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "水果"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 116,
+     "y": 64
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 242
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 242
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 241
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 241
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 243
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 243
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 238
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 238
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 239
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 239
+    }
+   ],
+   [
+    "use_item",
+    {
+     "item": "破天鎚",
+     "facing": 240
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 240
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 89,
+     "y": 89
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 88,
+     "y": 37
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "left"
+    }
+   ],
+   [
+    "step",
+    {
+     "direction": "up"
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "interact",
+    {
+     "id": 204
+    }
+   ],
+   [
+    "advance",
+    {}
+   ]
+  ]
+ },
+ "par": {
+  "1": 31,
+  "2": 33,
+  "3": 30
+ }
+}

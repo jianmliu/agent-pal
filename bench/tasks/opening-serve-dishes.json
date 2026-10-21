@@ -1,0 +1,27 @@
+{
+  "id": "opening-serve-dishes",
+  "version": 3,
+  "title": "开场跑腿:把酒菜端给客栈里的两位苗人客人",
+  "difficulty": 1,
+  "start": {
+    "newGame": true
+  },
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "brief": "你是李逍遥,在婶婶李大娘的客栈里帮工。听李大娘的吩咐,把酒菜送到客人桌上。",
+  "goal": {
+    "textSeen": "酒菜送來了"
+  },
+  "budget": {
+    "toolCalls": 174,
+    "tokens": 2088000,
+    "virtualSeconds": 1800
+  },
+  "tiers": [
+    "B",
+    "C"
+  ]
+}

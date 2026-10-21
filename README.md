@@ -15,7 +15,11 @@
    - 接管 `Date.now` / `setTimeout` 与引擎随机数发生器，保证相同种子下跨模型评测与 JSONL 轨迹重放 100% 比特级可复现。
 3. **融合版静态字节码拓扑编译器 (`src/bytecode-compiler.mjs`)**
    - 融合 **Claude Opus 5.5** 与 **GPT-6.1-Sol** 在 `--pure` 通关过程中独立发明的字节码编译算法：自动从 `scripts.json` 编译 `0x0044` 树藤跳跃、`0x0070`/`0x007A` 双向移动浮板、`0x006E` 相对偏移塌陷滑坡、嵌墙暗门/绳索（`triggerMode 1..3`, `search: true`）、同场景 `0x0059 + 0x0046` 五神石传送阵，以及跨场景多连通分量（孤岛）换乘图。
-4. **直播观战、无损录制与多倍速回放 (`src/host.mjs`, `src/palrec.mjs`, `src/replay.mjs`)**
+4. **Agent-PAL-Bench 评测基准 (`bench/`)**
+   - **题库模式 (`bench run`)**：覆盖 23 道经典迷宫、剧情锁与 Boss 战切片任务（`tasks/*.json`），支持 `A`（纯像素）、`B`（标准无攻略）、`C`（开卷带攻略）三档评测、参考解自动校验（`bench check`）、确定性重放防篡改核验（`bench verify`）与帕累托前沿 HTML 排行榜（`bench board`）。
+   - **拜月决战与端到端通关模式 (`bench baiyue` & `--pure`)**：支持从不同难度存档起点（标准、禁酒神、蓝量受限、脆弱高危）或从 `Scene 1` 新游戏全自主打通最终 Boss 拜月教主（`32,760 HP`）。
+   - **闭卷知识测验 (`bench quiz`)**：不开游戏、按 `bench/quiz/*.json` 检验模型对剧情/迷宫的先验记忆，量化“知道（Know）”与“做到（Do）”之间的执行鸿沟。
+5. **直播观战、无损录制与多倍速回放 (`src/host.mjs`, `src/palrec.mjs`, `src/replay.mjs`)**
    - **实时观战与录制 (`--host 8090 --record`)**：浏览器打开 `http://127.0.0.1:8090/watch` 实时观看 AI 操作、状态栏、小地图与对白时间线，同时边跑边落盘为 `.palrec` 增量调色板录像文件。
    - **免引擎交互式回放 (`agent-pal replay`)**：无需游戏资产或启动引擎，直接在浏览器中以 `0.25x–8x` 倍速拖动进度条回放任意 `.palrec` 录像。
    - **视频渲染导出 (`agent-pal export` / `src/record-replay.mjs`)**：支持将 `.palrec` 录像（含内置 WAV 音效与背景音乐）直接混流导出为高清像素放大 MP4，或将 `--seed` 确定性运行日志（`.jsonl`）重放渲染为 MP4。
@@ -49,6 +53,12 @@ agent-pal/
 ├── modules/
 │   ├── nav/                          # 纯 L0 协议单场景网格寻路与视野模块
 │   └── pure-walker/                  # 纯 L0 协议最小示例模块
+├── bench/
+│   ├── bench.mjs                     # Agent-PAL-Bench 命令行入口 (run / baiyue / quiz / check / verify / board)
+│   ├── tasks/                        # 23 道标准化评测题目定义 (含拜月专项与各章经典切片)
+│   ├── reference/                    # 每道题各随机种子的确定性参考解与 par 步数
+│   ├── quiz/                         # 23 道配对闭卷知识测验题库
+│   └── saves/                        # 评测题目压缩起始存档库 (.json.gz)
 ├── scripts/
 │   ├── palrec-replay.mjs             # 启动 .palrec 浏览器回放服务
 │   ├── palrec-export.mjs             # 将 .palrec 导出为带音效/BGM 的 MP4 视频
@@ -104,7 +114,30 @@ pnpm run build:engine
    node src/record-replay.mjs ./runs/run-xxx.jsonl ./replayed.mp4
    ```
 
-### 3.4 运行静态字节码拓扑编译器实机演示与测试套件
+### 3.4 运行 Agent-PAL-Bench（题库模式 / 拜月通关模式 / 闭卷测验）
+
+```bash
+# 1. 校验全部 23 道题库与配对闭卷测验格式
+node bin/agent-pal.mjs bench validate
+
+# 2. 在确定性虚拟时钟下回放验证题库参考解
+node bin/agent-pal.mjs bench check opening-serve-dishes classic28-tower-gate
+
+# 3. 题库模式：评测指定模型在指定档位 (A/B/C) 下的闯关表现
+node bin/agent-pal.mjs bench run --model anthropic/claude-opus-5-5 --tier B --tasks opening-serve-dishes,classic08-leave-area
+
+# 4. 拜月通关模式：运行最终 Boss 拜月教主专项基准
+node bin/agent-pal.mjs bench baiyue --model openai/gpt-6.1-sol --tier B
+
+# 5. 闭卷测验模式：测量模型先验记忆分 (Prior Knowledge vs. Execution Gap)
+node bin/agent-pal.mjs bench quiz --model google/gemini-4-argon
+
+# 6. 确定性重放防篡改核验与生成 HTML 排行榜
+node bin/agent-pal.mjs bench verify ./bench/out/<run-dir>
+node bin/agent-pal.mjs bench board --out ./bench/out/board.html
+```
+
+### 3.5 运行静态字节码拓扑编译器实机演示与测试套件
 
 ```bash
 # 运行全部单元测试与 --pure 冒烟测试

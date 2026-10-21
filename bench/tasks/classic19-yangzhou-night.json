@@ -1,0 +1,48 @@
+{
+  "id": "classic19-yangzhou-night",
+  "version": 1,
+  "title": "经典存档 19:在扬州客栈投宿,熬到半夜出事",
+  "difficulty": 2,
+  "start": {
+    "rpg": "19.rpg"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "brief": "你是李逍遥,和林月如刚走到扬州城门外,天色已晚。进城找地方过夜:向客栈掌柜要一间房,住进去休息,一直到夜里出了事(有人在外面喊捉贼)为止。听到喊捉贼就算完成。",
+  "goal": {
+    "all": [
+      {
+        "sceneVisited": 97
+      },
+      {
+        "textSeen": "有賊啊"
+      }
+    ]
+  },
+  "milestones": [
+    {
+      "id": "entered-city",
+      "when": {
+        "sceneVisited": 82
+      }
+    },
+    {
+      "id": "booked-room",
+      "when": {
+        "textSeen": "只剩下樓上"
+      }
+    }
+  ],
+  "budget": {
+    "toolCalls": 80,
+    "tokens": 960000,
+    "virtualSeconds": 1800
+  },
+  "tiers": [
+    "B",
+    "C"
+  ]
+}

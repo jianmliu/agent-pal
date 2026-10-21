@@ -1,0 +1,54 @@
+{
+  "id": "classic31-banana-monkeys",
+  "version": 1,
+  "title": "经典存档 31:让大树迷宫里挡路的小猴子让开",
+  "difficulty": 2,
+  "start": {
+    "rpg": "31.rpg"
+  },
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "brief": "你是李逍遥,刚从救了你们的老婆婆家里出发,要去找金翅凤凰的巢、取凤凰蛋壳给灵儿安胎。巢在附近一棵巨树的树洞迷宫里(树上的藤桥、树洞会把你送到迷宫的另一处,迷宫里有野兽出没)。进了迷宫后,会有一只小猴子堵在窄路上不让你过,硬挤是挤不过去的。想办法让这第一只小猴子心甘情愿地让路 —— 它收下你给的东西、让出路来,就算完成。",
+  "goal": {
+    "any": [
+      {
+        "textSeen": "給你香蕉"
+      },
+      {
+        "eventObject": {
+          "scene": 192,
+          "idx": 3482,
+          "state": 0
+        }
+      }
+    ]
+  },
+  "milestones": [
+    {
+      "id": "got-bananas",
+      "when": {
+        "hasItem": {
+          "name": "香蕉"
+        }
+      }
+    },
+    {
+      "id": "entered-tree-maze",
+      "when": {
+        "sceneVisited": 192
+      }
+    }
+  ],
+  "budget": {
+    "toolCalls": 80,
+    "tokens": 960000,
+    "virtualSeconds": 1800
+  },
+  "tiers": [
+    "B",
+    "C"
+  ]
+}

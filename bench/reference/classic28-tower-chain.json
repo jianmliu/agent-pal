@@ -1,0 +1,2147 @@
+{
+ "source": "脚本化实玩(--seed 各自录):前半段即 classic28-tower-gate 的参考解(遗骸 → 147 → 167 → 148 放出天鬼皇 → 铜门 (49,90) 调查 → walk_to (47,90) 进 154);154 里 walk_to (100,98) 先和通道口的沉思鬼 2582 对话听到问题 → walk_to (90,69) 直接 interact 书中仙 2580(隔一个不可见挡块,两格外调查)拿到天书 → 回 (100,98) 再和沉思鬼对话 → walk_to (106,98) 进场景 156。walk_to 被怪打断就 battle auto 再接着走。沉思鬼本身挡死通道,没听过问题时书中仙不给天书。;main #75 之后 seed 42 按同一航点计划自适应重推(铜门后的遭遇战位置变了);2026-10-17: seeds43/44 re-recorded with the same waypoint/quest plan, finishing encounters and resuming approaches before interaction; ordinary literal B/C tools only, no goal/state/resource edits.",
+ "bySeed": {
+  "42": [
+   [
+    "interact",
+    {
+     "id": 2483
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2511
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "choose",
+    {
+     "index": 1
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2507
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 47,
+     "y": 90
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2582
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2580
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2582
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 106,
+     "y": 98
+    }
+   ]
+  ],
+  "43": [
+   [
+    "interact",
+    {
+     "id": 2483
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 72,
+     "y": 46
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2511
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "choose",
+    {
+     "index": 1
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2507
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 47,
+     "y": 90
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2582
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2582
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2582
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2582
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2582
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2582
+    }
+   ],
+   [
+    "advance",
+    {
+     "max": 40
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2580
+    }
+   ],
+   [
+    "advance",
+    {
+     "max": 40
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2582
+    }
+   ],
+   [
+    "advance",
+    {
+     "max": 40
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 106,
+     "y": 98
+    }
+   ]
+  ],
+  "44": [
+   [
+    "interact",
+    {
+     "id": 2483
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 58,
+     "y": 53
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 54,
+     "y": 75
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 117,
+     "y": 126
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2511
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "choose",
+    {
+     "index": 1
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 49,
+     "y": 90
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2507
+    }
+   ],
+   [
+    "advance",
+    {}
+   ],
+   [
+    "walk_to",
+    {
+     "x": 47,
+     "y": 90
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2582
+    }
+   ],
+   [
+    "advance",
+    {
+     "max": 40
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2580
+    }
+   ],
+   [
+    "advance",
+    {
+     "max": 40
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 100,
+     "y": 98
+    }
+   ],
+   [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "interact",
+    {
+     "id": 2582
+    }
+   ],
+   [
+    "advance",
+    {
+     "max": 40
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 106,
+     "y": 98
+    }
+   ]
+  ]
+ },
+ "par": {
+  "42": 114,
+  "43": 115,
+  "44": 109
+ }
+}

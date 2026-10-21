@@ -4,6 +4,7 @@ pal-assets/
 pal-data/
 runs/
 saves/
+bench/out/
 npx-dist/
 *.tgz
 *.palrec

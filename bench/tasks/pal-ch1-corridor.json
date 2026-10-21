@@ -1,0 +1,620 @@
+{
+  "id": "pal-ch1-corridor",
+  "version": 1,
+  "title": "仙灵岛走廊到初见灵儿",
+  "difficulty": 3,
+  "start": {
+    "saves": "pal-ch1-corridor.saves.json.gz",
+    "slot": 1
+  },
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "brief": "你已进入仙灵岛走廊。继续探索岛上的道路与机关，进入仙灵洞天，直到与那位少女相遇、她和你说上话。",
+  "goal": {
+    "all": [
+      {
+        "sceneVisited": 14
+      },
+      {
+        "textSeen": "少女：咦．．我的衣服呢"
+      }
+    ]
+  },
+  "milestones": [
+    {
+      "id": "reached-leaf-maze",
+      "when": {
+        "sceneVisited": 17
+      }
+    },
+    {
+      "id": "statues-1",
+      "when": {
+        "any": [
+          {
+            "eventObject": {
+              "scene": 17,
+              "idx": 238,
+              "state": 0
+            }
+          },
+          {
+            "eventObject": {
+              "scene": 17,
+              "idx": 239,
+              "state": 0
+            }
+          },
+          {
+            "eventObject": {
+              "scene": 17,
+              "idx": 240,
+              "state": 0
+            }
+          },
+          {
+            "eventObject": {
+              "scene": 17,
+              "idx": 241,
+              "state": 0
+            }
+          },
+          {
+            "eventObject": {
+              "scene": 17,
+              "idx": 242,
+              "state": 0
+            }
+          },
+          {
+            "eventObject": {
+              "scene": 17,
+              "idx": 243,
+              "state": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "statues-3",
+      "when": {
+        "any": [
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 238,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 239,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 240,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 238,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 239,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 241,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 238,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 239,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 242,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 238,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 239,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 243,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 238,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 240,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 241,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 238,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 240,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 242,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 238,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 240,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 243,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 238,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 241,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 242,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 238,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 241,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 243,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 238,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 242,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 243,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 239,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 240,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 241,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 239,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 240,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 242,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 239,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 240,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 243,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 239,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 241,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 242,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 239,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 241,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 243,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 239,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 242,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 243,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 240,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 241,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 242,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 240,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 241,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 243,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 240,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 242,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 243,
+                  "state": 0
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 241,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 242,
+                  "state": 0
+                }
+              },
+              {
+                "eventObject": {
+                  "scene": 17,
+                  "idx": 243,
+                  "state": 0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "statues-6",
+      "when": {
+        "textSeen": "第六具石像亦應聲而碎"
+      }
+    },
+    {
+      "id": "entered-xianling-dongtian",
+      "when": {
+        "sceneVisited": 14
+      }
+    },
+    {
+      "id": "found-clothes",
+      "when": {
+        "textSeen": "怎麼會有女孩子的衣裳"
+      }
+    }
+  ],
+  "budget": {
+    "toolCalls": 105,
+    "tokens": 1260000,
+    "virtualSeconds": 1800
+  },
+  "tiers": [
+    "B",
+    "C"
+  ],
+  "fail": {
+    "partyWiped": true
+  }
+}

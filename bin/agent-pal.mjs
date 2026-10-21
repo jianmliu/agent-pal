@@ -57,6 +57,8 @@ if (process.argv.includes('--help') || process.argv.includes('-h')) {
                                           浏览器交互式回放观战页 (http://127.0.0.1:8096/replay)
   agent-pal export <file.palrec> [-o out.mp4] [--scale 4]
                                           将 .palrec 录像导出为 MP4 视频
+  agent-pal bench <run|baiyue|quiz|check|verify|board|validate> [...]
+                                          运行 Agent-PAL-Bench (题库模式 / 拜月通关模式 / 闭卷测验)
 
 选项:
   --assets DIR   你自己的仙剑 DOS 版游戏目录(含 PAT.MKF、MAP.MKF 等),也可用环境变量 PAL_ASSET_DIR
@@ -92,6 +94,12 @@ if (process.argv[2] === 'replay') {
 if (process.argv[2] === 'export') {
   process.argv.splice(2, 1);
   await import('../scripts/palrec-export.mjs');
+  process.exit(0);
+}
+
+if (process.argv[2] === 'bench') {
+  process.argv.splice(2, 1);
+  await import('../bench/bench.mjs');
   process.exit(0);
 }
 
