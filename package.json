@@ -13,6 +13,8 @@
     "mcp:pure": "node bin/agent-pal.mjs --pure --modules modules",
     "http:pure": "node bin/agent-pal.mjs --pure --seed 1 --http 8086 --modules modules",
     "host:pure": "node bin/agent-pal.mjs --pure --host 8090 --http 8086 --modules modules --record",
+    "play": "node bin/agent-pal.mjs --host 8090",
+    "play:record": "node bin/agent-pal.mjs --host 8090 --record",
     "replay": "node scripts/palrec-replay.mjs",
     "replay:export": "node scripts/palrec-export.mjs",
     "replay:runlog": "node src/record-replay.mjs",
@@ -23,7 +25,7 @@
     "test": "pnpm run test:unit && pnpm run test:bench && pnpm run test:pure",
     "test:unit": "node packages/agent-pal-protocol/test/protocol.test.mjs && node test/bytecode-compiler.test.mjs && node test/l0.test.mjs && node test/code-runner.test.mjs && node test/modules.test.mjs && node test/nav.test.mjs && node test/palrec.test.mjs && node --test test/replay.test.mjs",
     "test:bench": "node bench/test/bench.test.mjs && node bench/test/baiyue.test.mjs && node bench/test/battle-metrics.test.mjs && node --test bench/test/provider-cancellation.test.mjs && node bench/bench.mjs validate",
-    "test:pure": "pnpm run build:engine && node src/pure-smoke.mjs --skip-if-no-assets && node test/data-dump.test.mjs --skip-if-no-assets"
+    "test:pure": "pnpm run build:engine && node src/pure-smoke.mjs --skip-if-no-assets && node test/data-dump.test.mjs --skip-if-no-assets && node test/host.test.mjs --skip-if-no-assets"
   },
   "dependencies": {
     "@onchainpal/agent-pal-protocol": "workspace:*",

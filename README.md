@@ -97,6 +97,13 @@ pnpm run build:engine
    node bin/agent-pal.mjs --pure --host 8090 --http 8086 --modules modules --record ./recordings --assets /path/to/pal-assets
    # 浏览器打开 http://127.0.0.1:8090/watch 即可实时观战
    ```
+4. **真人玩家手工游玩 / 人机同局协作模式 (`--host 8090`)**：
+   ```bash
+   # 纯手工游玩（实时时钟 + 原生音效 + 小地图 + 0.25x~8x 调速 + 自动边玩边录 .palrec）
+   pnpm run play:record
+   # 浏览器打开 http://127.0.0.1:8090/ 即可用键盘或屏幕按钮游玩；
+   # 若同时加上 --http 8086 或 --mcp，真人玩家与 AI 可在同一个实时会话里随时交替接管操作！
+   ```
 
 ### 3.3 回放与视频导出 (`Replay`)
 
