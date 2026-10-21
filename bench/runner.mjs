@@ -23,10 +23,16 @@ import { fileURLToPath } from 'node:url';
 import { loadTask, listTasks, loadReference } from './task.mjs';
 import { taskFingerprint, runtimeFingerprint } from './start.mjs';
 import { systemPrompt, firstMessage, PROMPT_VERSION } from './prompt.mjs';
+import { costOf } from './providers.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const benchCli = path.join(here, 'bench.mjs');
 const mcpEpisode = path.join(here, 'mcp-episode.mjs');
+const CLAUDE_BIN = fs.existsSync('/Users/jianmingliu/.local/bin/claude') ? '/Users/jianmingliu/.local/bin/claude' : 'claude';
+const CODEX_BIN = fs.existsSync('/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex')
+  ? '/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex'
+  : 'codex';
+const AGY_BIN = fs.existsSync('/Users/jianmingliu/.local/bin/agy') ? '/Users/jianmingliu/.local/bin/agy' : 'agy';
 
 const slug = (s) => s.replace(/[^A-Za-z0-9._-]+/g, '_');
 const stamp = () => new Date().toISOString().replace(/[-:]/g, '').replace(/\..*/, '');
@@ -175,7 +181,8 @@ async function runClaudeCli(job, tmp) {
   const cfg = path.join(tmp, 'mcp.json');
   fs.writeFileSync(cfg, JSON.stringify({ mcpServers: { palbench: { type: 'http', url: ready.url } } }));
 
-  // 2) claude -p:只给本局工具,不读任何设置 / 项目文件,不落会话
+  // 2) claude -p:只给本局工具,不读任何设置 / 项目文件,不落会话;默认 effort=medium
+  const effort = process.env.BENCH_EFFORT || 'medium';
   const args = [
     '-p', firstMessage(task, ready.intro),
     '--system-prompt', systemPrompt(job.tier),
@@ -183,10 +190,11 @@ async function runClaudeCli(job, tmp) {
     '--tools', '', '--allowedTools', 'mcp__palbench',
     '--setting-sources', '', '--no-session-persistence',
     '--output-format', 'stream-json', '--verbose',
+    '--effort', effort,
     '--model', claudeModel
   ];
   const clientLog = fs.createWriteStream(job.clientLogFile);
-  const claude = spawn('claude', args, { cwd: tmp, stdio: ['ignore', 'pipe', err], env: cleanClaudeEnv() });
+  const claude = spawn(CLAUDE_BIN, args, { cwd: tmp, stdio: ['ignore', 'pipe', err], env: cleanClaudeEnv() });
   let final = null;
   const rl = readline.createInterface({ input: claude.stdout });
   rl.on('line', (l) => {
@@ -210,6 +218,147 @@ async function runClaudeCli(job, tmp) {
   const res = fs.existsSync(serverResult) ? JSON.parse(fs.readFileSync(serverResult, 'utf8')) : harnessFailure(job, 'harness-crash (no result)');
   fs.rmSync(serverResult, { force: true });
   fs.writeFileSync(job.resultFile, JSON.stringify(applyClientResult(res, final, claudeModel)));
+}
+
+async function runCodexCli(job, tmp) {
+  const codexModel = job.model.slice('codex-cli:'.length);
+  const effort = process.env.BENCH_EFFORT || 'medium';
+  const err = fs.openSync(job.stderrFile, 'a');
+  const serverResult = job.resultFile.replace(/\.json$/, '.server.json');
+  const server = spawn(process.execPath, [mcpEpisode, '--http'], {
+    stdio: ['ignore', 'pipe', err], env: { ...episodeEnv(tmp), BENCH_EPISODE: JSON.stringify({ ...job, resultFile: serverResult }) }
+  });
+  const ready = await new Promise((res) => {
+    const rl = readline.createInterface({ input: server.stdout });
+    rl.once('line', (l) => { try { res(JSON.parse(l)); } catch { res(null); } });
+    server.once('exit', () => res(null));
+  });
+  if (!ready) {
+    fs.closeSync(err);
+    fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, 'harness-crash (mcp server did not start)')));
+    return;
+  }
+  const task = loadTask(job.taskId);
+  const prompt = `${systemPrompt(job.tier)}\n\n${firstMessage(task, ready.intro)}`;
+  const args = [
+    'exec', '-',
+    '--json', '--ephemeral', '--skip-git-repo-check', '--dangerously-bypass-approvals-and-sandbox',
+    '-m', codexModel,
+    '-c', `model_reasoning_effort="${effort}"`,
+    '-c', 'mcp_servers.node_repl.enabled=false',
+    '-c', `mcp_servers.palbench.url="${ready.url}"`,
+    '--disable', 'shell_tool', '--disable', 'unified_exec', '--disable', 'plugins',
+    '--disable', 'apps', '--disable', 'hooks', '--disable', 'browser_use',
+    '--disable', 'computer_use', '--disable', 'image_generation',
+    '--disable', 'multi_agent', '--disable', 'multi_agent_v2', '--disable', 'code_mode',
+    '-c', 'web_search="disabled"'
+  ];
+  const clientLog = fs.createWriteStream(job.clientLogFile);
+  const t0 = Date.now();
+  const codex = spawn(CODEX_BIN, args, { cwd: tmp, stdio: ['pipe', 'pipe', err] });
+  codex.stdin.write(prompt);
+  codex.stdin.end();
+  let usage = { input_tokens: 0, cached_input_tokens: 0, output_tokens: 0, reasoning_output_tokens: 0 };
+  let turns = 0;
+  const rl = readline.createInterface({ input: codex.stdout });
+  rl.on('line', (l) => {
+    clientLog.write(l + '\n');
+    try {
+      const ev = JSON.parse(l);
+      if (ev.type === 'turn.completed' && ev.usage) {
+        turns++;
+        usage.input_tokens += ev.usage.input_tokens || 0;
+        usage.cached_input_tokens += ev.usage.cached_input_tokens || 0;
+        usage.output_tokens += ev.usage.output_tokens || 0;
+        usage.reasoning_output_tokens += ev.usage.reasoning_output_tokens || 0;
+      }
+    } catch {}
+  });
+  let timedOut = false;
+  const wall = setTimeout(() => { timedOut = true; codex.kill('SIGTERM'); }, job.wallSeconds * 1000);
+  const poll = setInterval(() => {
+    if (fs.existsSync(serverResult)) { clearInterval(poll); setTimeout(() => codex.kill('SIGTERM'), 15_000).unref(); }
+  }, 1000);
+  await exited(codex);
+  clearTimeout(wall); clearInterval(poll);
+  await new Promise((res) => clientLog.end(res));
+
+  server.kill(timedOut ? 'SIGTERM' : 'SIGINT');
+  await exited(server);
+  fs.closeSync(err);
+  const res = fs.existsSync(serverResult) ? JSON.parse(fs.readFileSync(serverResult, 'utf8')) : harnessFailure(job, 'harness-crash (no result)');
+  fs.rmSync(serverResult, { force: true });
+  res.external = true;
+  res.client = { name: 'codex-cli', model: codexModel, effort, numTurns: turns, durationMs: Date.now() - t0 };
+  res.tokensIn = usage.input_tokens;
+  res.tokensOut = usage.output_tokens;
+  res.tokensCached = usage.cached_input_tokens;
+  res.tokensCacheWrite = 0;
+  res.cost = costOf(`openai:${codexModel}`, { tokensIn: res.tokensIn, tokensOut: res.tokensOut, cacheRead: res.tokensCached });
+  if (!turns && !res.toolCalls) res.endReason = res.endReason || 'client-error';
+  fs.writeFileSync(job.resultFile, JSON.stringify(res));
+}
+
+async function runAgyCli(job, tmp) {
+  const agyModel = job.model.slice('agy-cli:'.length);
+  const err = fs.openSync(job.stderrFile, 'a');
+  const serverResult = job.resultFile.replace(/\.json$/, '.server.json');
+  const server = spawn(process.execPath, [mcpEpisode, '--http'], {
+    stdio: ['ignore', 'pipe', err], env: { ...episodeEnv(tmp), BENCH_EPISODE: JSON.stringify({ ...job, resultFile: serverResult }) }
+  });
+  const ready = await new Promise((res) => {
+    const rl = readline.createInterface({ input: server.stdout });
+    rl.once('line', (l) => { try { res(JSON.parse(l)); } catch { res(null); } });
+    server.once('exit', () => res(null));
+  });
+  if (!ready) {
+    fs.closeSync(err);
+    fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, 'harness-crash (mcp server did not start)')));
+    return;
+  }
+  const helperFile = path.join(tmp, 'palbench.mjs');
+  fs.writeFileSync(helperFile, `#!/usr/bin/env node
+const [,, name, rawArgs] = process.argv;
+const args = rawArgs ? JSON.parse(rawArgs) : {};
+const r = await fetch(${JSON.stringify(ready.url)}, {
+  method: 'POST', headers: { 'content-type': 'application/json' },
+  body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: name === '--list' ? 'tools/list' : 'tools/call', params: name === '--list' ? {} : { name, arguments: args } })
+});
+const j = await r.json();
+if (name === '--list') console.log(JSON.stringify(j.result?.tools || [], null, 2));
+else console.log((j.result?.content || []).map(c => c.text || '').join('\\n'));
+`);
+  const listRes = await fetch(ready.url, {
+    method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/list', params: {} })
+  }).then((r) => r.json());
+  const toolsDoc = (listRes.result?.tools || []).map((t) => `- \`node ${helperFile} ${t.name} '${JSON.stringify(Object.fromEntries(Object.keys(t.inputSchema?.properties || {}).map((k) => [k, '<' + k + '>'])))}'\`: ${t.description}`).join('\n');
+  const task = loadTask(job.taskId);
+  const prompt = `${systemPrompt(job.tier)}\n\n### Tool Execution Interface\nCall game tools by executing \`node ${helperFile} <tool_name> '<json_args>'\` via \`run_command\`. Do NOT access any other files or directories outside \`${tmp}\`.\nAvailable tools:\n${toolsDoc}\n\n${firstMessage(task, ready.intro)}`;
+  const agyLog = path.join(tmp, 'agy.log');
+  const t0 = Date.now();
+  const agy = spawn(AGY_BIN, ['-p', prompt, '--dangerously-skip-permissions', '--print-timeout', `${job.wallSeconds}s`, '--log-file', agyLog], {
+    cwd: tmp, stdio: ['ignore', 'pipe', err]
+  });
+  const clientLog = fs.createWriteStream(job.clientLogFile);
+  agy.stdout.on('data', (d) => clientLog.write(d));
+  let timedOut = false;
+  const wall = setTimeout(() => { timedOut = true; agy.kill('SIGTERM'); }, (job.wallSeconds + 90) * 1000);
+  const poll = setInterval(() => {
+    if (fs.existsSync(serverResult)) { clearInterval(poll); setTimeout(() => agy.kill('SIGTERM'), 10_000).unref(); }
+  }, 1000);
+  await exited(agy);
+  clearTimeout(wall); clearInterval(poll);
+  await new Promise((res) => clientLog.end(res));
+
+  server.kill(timedOut ? 'SIGTERM' : 'SIGINT');
+  await exited(server);
+  fs.closeSync(err);
+  const res = fs.existsSync(serverResult) ? JSON.parse(fs.readFileSync(serverResult, 'utf8')) : harnessFailure(job, 'harness-crash (no result)');
+  fs.rmSync(serverResult, { force: true });
+  res.external = true;
+  res.client = { name: 'agy-cli', model: agyModel, effort: 'medium', durationMs: Date.now() - t0 };
+  fs.writeFileSync(job.resultFile, JSON.stringify(res));
 }
 
 /**
@@ -249,7 +398,7 @@ export async function runBench({ model, tier = 'B', hints = 'standard', tasks, s
   const runFile = path.join(runDir, 'run.json');
   const fresh = {
     scoring: plan.every(p=>p.task.scoring?.secondary==='battleRounds') ? 'battleRounds' : plan.some(p=>p.task.scoring?.secondary==='battleRounds') ? 'mixed' : 'cost',
-    runId: path.basename(runDir), model, tier, hints, external: model.startsWith('claude-cli:'),
+    runId: path.basename(runDir), model, tier, hints, external: /^(claude|codex|agy)-cli:/.test(model),
     // par 冻进 run.json:参考解以后重录(引擎修了战斗数值等)不改写这次运行的效率分
     tasks: plan.map((p) => ({ id: p.task.id, version: p.task.version, seeds: p.seeds, par: parFor(p.task.id, p.seeds), ...(p.task.scoring ? { fingerprint: taskFingerprint(p.task) } : {}) })),
     promptVersion: PROMPT_VERSION, code: codeRev(runDir), startedAt: new Date().toISOString()
@@ -284,7 +433,10 @@ export async function runBench({ model, tier = 'B', hints = 'standard', tasks, s
       for (const f of [job.logFile]) if (fs.existsSync(f)) fs.rmSync(f);          // 上次中断的半截日志
       const t0 = Date.now();
       try {
-        await (model.startsWith('claude-cli:') ? runClaudeCli(job, tmp) : runBuiltin(job, tmp));
+        await (model.startsWith('claude-cli:') ? runClaudeCli(job, tmp)
+          : model.startsWith('codex-cli:') ? runCodexCli(job, tmp)
+          : model.startsWith('agy-cli:') ? runAgyCli(job, tmp)
+          : runBuiltin(job, tmp));
       } catch (err) {
         fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, `harness-crash (${err?.message || err})`)));
       }
