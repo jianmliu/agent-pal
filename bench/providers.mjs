@@ -27,8 +27,8 @@ import { setTimeout as sleep } from 'node:timers/promises';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const PRICES = JSON.parse(fs.readFileSync(path.join(here, 'prices.json'), 'utf8'));
-/** 每轮输出上限,所有 provider 一致。 */
-const MAX_OUTPUT_TOKENS = 4096;
+/** 每轮输出上限,所有 provider 一致(支持 BENCH_MAX_OUTPUT_TOKENS 覆盖,给长链思考模型留足余量)。 */
+const MAX_OUTPUT_TOKENS = Number(process.env.BENCH_MAX_OUTPUT_TOKENS) || 16384;
 // Keep usage totals compatible, but distinguish measured counts from absent/malformed values.
 const reportedTokens = (value) => Number.isFinite(value) && value >= 0;
 const reportedSum = (primary, total, ...optional) => reportedTokens(primary) && reportedTokens(total) && optional.every(value => value === undefined || reportedTokens(value));
