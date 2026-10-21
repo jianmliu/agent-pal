@@ -259,6 +259,17 @@ export function createCodeRunner(opts = {}) {
 
   const activeRuns = [];
 
+  function abortActive(reason = 'aborted by human takeover') {
+    let count = 0;
+    for (const c of activeRuns) {
+      if (!c.finished && !c.abortedReason) {
+        c.abortedReason = reason;
+        count++;
+      }
+    }
+    return count;
+  }
+
   const realNowMs = () => Number(process.hrtime.bigint() / 1000000n);
 
   function createPalContext(ctx) {
@@ -270,13 +281,14 @@ export function createCodeRunner(opts = {}) {
     const resolveCtx = () => {
       const target = !ctx.finished ? ctx : activeRuns.at(-1);
       if (!target) throw new RunCodeAbortedError(ctx.runId);
+      if (target.abortedReason) throw new RunCodeAbortedError(target.runId, target.abortedReason);
       checkDeadline(target);
       if (target.timedOut) throw new RunCodeAbortedError(target.runId, `run_code #${target.runId} timed out after ${target.timeoutMs} ms`);
       return target;
     };
     const isAborted = () => {
       const target = !ctx.finished ? ctx : activeRuns.at(-1);
-      if (!target) return true;
+      if (!target || target.abortedReason) return true;
       checkDeadline(target);
       return !!target.timedOut;
     };
@@ -469,6 +481,7 @@ export function createCodeRunner(opts = {}) {
     world,
     global: shared,
     deliver,
+    abortActive,
     hasTool: (name) => customTools.has(name),
     tools: () => [...customTools.values()].map(({ name, description, inputSchema }) => ({ name, description, inputSchema })),
     async runCode({ code, args = {}, timeout_ms, timeoutMs } = {}) {

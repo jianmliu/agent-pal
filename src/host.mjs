@@ -159,7 +159,7 @@ export function serveMedia(req, res, url, { voiceDir = '', musicDir = '' } = {})
 /**
  * 起 pal-host。e = bootEngine() 的引擎(实时模式);返回 { server, port, close, stats }。
  */
-export async function startHost(e, { port = 8090, live = null, readonly = false, agent = null, voiceDir = process.env.AGENT_PAL_VOICE_DIR || '', musicDir = process.env.AGENT_PAL_MUSIC_DIR || '', record = null, recordFps = Number(process.env.AGENT_PAL_RECORD_FPS) || 30, recordMeta = {}, log = (s) => process.stderr.write(s + '\n') } = {}) {
+export async function startHost(e, { port = 8090, live = null, readonly = false, agent = null, onTakeover = null, onHandback = null, voiceDir = process.env.AGENT_PAL_VOICE_DIR || '', musicDir = process.env.AGENT_PAL_MUSIC_DIR || '', record = null, recordFps = Number(process.env.AGENT_PAL_RECORD_FPS) || 30, recordMeta = {}, log = (s) => process.stderr.write(s + '\n') } = {}) {
   // 字面量 import:打包版(scripts/pack-npx.mjs)里 esbuild 才会把它们打进同一个文件(与引擎共用模块实例)
   const sound = (await import('@onchainpal/game-engine/js/pal/sound')).default;
   const music = (await import('@onchainpal/game-engine/js/pal/music')).default;
@@ -172,11 +172,74 @@ export async function startHost(e, { port = 8090, live = null, readonly = false,
   const broadcastJson = (obj) => { const f = wsFrame(1, Buffer.from(JSON.stringify(obj))); for (const c of clients) send(c, f); };
   const sendJson = (c, obj) => send(c, wsFrame(1, Buffer.from(JSON.stringify(obj))));
   const audience = () => { let watchers = 0; for (const c of clients) if (c.watch) watchers++; return { t: 'viewers', n: clients.size, watchers }; };
+
+  // ---- 人机协作(只在 --host 且非 --watch-only 时生效;无头 AI 模式完全不触碰) ----
+  let userSpeed = e.speed;
+  const coop = { holder: 'ai', story1x: false, storySlowed: false };
+  const hasPlayClient = () => { for (const c of clients) if (!c.watch) return true; return false; };
+  const isStoryNow = () => {
+    if (readonly) return false;
+    try {
+      const sc = e.worldService?.getSceneId?.() ?? 0;
+      if (sc <= 0 || e.worldService?.isInBattle?.() || e.probes?.menu) return false;
+      if (e.dialogService?.getStatus?.()?.active) return true;
+      const m = agent?.mode?.();
+      return m === 'dialog' || m === 'busy';
+    } catch { return false; }
+  };
+  const isFastUserSpeed = () => userSpeed === 'fast' || (userSpeed && (userSpeed.scene > 1 || userSpeed.battle > 1));
+  const coopSnapshot = () => ({ t: 'coop', holder: coop.holder, story1x: coop.story1x, storySlowed: coop.storySlowed, userSpeed });
+  const broadcastCoop = () => { const msg = coopSnapshot(); broadcastJson(msg); rec?.page(msg); };
+  const syncStorySpeed = () => {
+    if (readonly || typeof e.setSpeed !== 'function') return;
+    const shouldSlow = coop.story1x && hasPlayClient() && isStoryNow() && isFastUserSpeed();
+    if (shouldSlow && !coop.storySlowed) {
+      coop.storySlowed = true;
+      e.setSpeed({ scene: 1, battle: 1 });
+      broadcastCoop();
+    } else if (!shouldSlow && coop.storySlowed) {
+      coop.storySlowed = false;
+      e.setSpeed(userSpeed);
+      broadcastCoop();
+    }
+  };
+  const setCoop = (patch = {}, reason = 'ui') => {
+    if (readonly) return false;
+    let changed = false;
+    if (typeof patch.story1x === 'boolean' && patch.story1x !== coop.story1x) {
+      coop.story1x = patch.story1x;
+      changed = true;
+    }
+    if ((patch.holder === 'human' || patch.holder === 'ai') && patch.holder !== coop.holder) {
+      coop.holder = patch.holder;
+      changed = true;
+      if (coop.holder === 'human') {
+        try { onTakeover?.(`human takeover (${reason})`); } catch { /* */ }
+      } else {
+        try { Promise.resolve(onHandback?.()).catch(() => {}); } catch { /* */ }
+      }
+    }
+    syncStorySpeed();
+    if (changed) broadcastCoop();
+    return true;
+  };
+  const prevIsHumanTakeover = e.isHumanTakeover, prevStoryPaceMs = e.storyPaceMs;
+  e.isHumanTakeover = () => !readonly && coop.holder === 'human' && hasPlayClient();
+  e.storyPaceMs = () => (!readonly && coop.story1x && coop.holder === 'ai' && hasPlayClient() ? 800 : 0);
+  const coopTimer = !readonly ? setInterval(syncStorySpeed, 100) : null;
+
   /** 调倍速(引擎说了算:确定性模式不让调,不合法的不收);变了就告诉所有浏览器 */
   const setSpeed = (x) => {
     if (typeof e.setSpeed !== 'function' || !e.validSpeed?.(x)) return false;
-    const before = JSON.stringify(e.speed), after = e.setSpeed(x);
+    const before = JSON.stringify(userSpeed);
+    if (coop.storySlowed) {
+      e.setSpeed(userSpeed);
+      coop.storySlowed = false;
+    }
+    const after = e.setSpeed(x);
+    userSpeed = after;
     if (JSON.stringify(after) !== before) { broadcastJson({ t: 'speed', x: after }); rec?.page({ t: 'speed', x: after }); }
+    syncStorySpeed();
     return true;
   };
   const unsubscribe = live ? live.subscribe((ev) => { broadcastJson({ t: 'live', ...ev }); rec?.page({ t: 'live', ...ev }); }) : () => {};
@@ -310,6 +373,7 @@ export async function startHost(e, { port = 8090, live = null, readonly = false,
   const keyEvent = (c, name, down, id) => {
     const k = Key?.[name];
     if (c.watch || !KEY_NAMES.includes(name) || typeof k !== 'number') return;   // 观战连接只看不按
+    if (down && !readonly && coop.holder !== 'human') setCoop({ holder: 'human' }, `key:${name}`);
     const mine = held.get(c);
     if (down) { if (mine.has(name)) return; mine.add(name); input.pressKey(k); }
     else { if (!mine.delete(name)) return; input.releaseKey(k); }
@@ -360,7 +424,21 @@ export async function startHost(e, { port = 8090, live = null, readonly = false,
         let x; try { x = JSON.parse(body).x; } catch { /* */ }
         const ok = x !== undefined && setSpeed(x);
         res.writeHead(ok ? 200 : 400, { 'content-type': 'application/json' });
-        res.end(JSON.stringify({ ok: !!ok, speed: e.speed }));
+        res.end(JSON.stringify({ ok: !!ok, speed: userSpeed }));
+      });
+      return;
+    }
+    if (url.pathname === '/coop') {
+      const origin = req.headers.origin;
+      if (req.method !== 'POST' || (origin && origin !== `http://${req.headers.host}`) || !/^application\/json\b/i.test(req.headers['content-type'] || '')) { res.writeHead(403); return res.end(); }
+      let body = '';
+      req.setEncoding('utf8');
+      req.on('data', (d) => { body += d; if (body.length > 1024) req.destroy(); });
+      req.on('end', () => {
+        let patch = null; try { patch = JSON.parse(body); } catch { /* */ }
+        const ok = patch && typeof patch === 'object' && setCoop(patch, 'http');
+        res.writeHead(ok ? 200 : 400, { 'content-type': 'application/json' });
+        res.end(JSON.stringify({ ok: !!ok, ...coopSnapshot() }));
       });
       return;
     }
@@ -399,7 +477,7 @@ export async function startHost(e, { port = 8090, live = null, readonly = false,
     if (!wsAccept(req, socket)) return;
     socket.watch = readonly || wsUrl.searchParams.get('role') === 'watch';
     clients.add(socket); held.set(socket, new Set());
-    sendJson(socket, { t: 'hello', w: W, h: H, keys: KEY_NAMES, role: socket.watch ? 'watch' : 'play', live: !!live, chat: !!live?.viewerChat, commentator: !!live?.commentator, speed: e.speed });
+    sendJson(socket, { t: 'hello', w: W, h: H, keys: KEY_NAMES, role: socket.watch ? 'watch' : 'play', live: !!live, chat: !!live?.viewerChat, commentator: !!live?.commentator, speed: userSpeed, coop: coopSnapshot() });
     if (live) sendJson(socket, { t: 'history', events: live.history(), chapters: live.chapters() });
     sendJson(socket, snapshot());
     broadcastJson(audience());
@@ -415,6 +493,7 @@ export async function startHost(e, { port = 8090, live = null, readonly = false,
         let msg; try { msg = JSON.parse(data.toString('utf8')); } catch { continue; }
         if (msg.t === 'key') keyEvent(socket, String(msg.key), !!msg.down, Number(msg.id));
         else if (msg.t === 'speed' && !socket.watch) setSpeed(msg.x);        // 在玩的人可以调倍速;观战的不行
+        else if (msg.t === 'coop' && !socket.watch) setCoop(msg, 'ws');      // 切换接管 / 交回 AI / 剧情自动 1x
         else if (msg.t === 'chat' && live?.viewerChat) {
           const now = Date.now();                          // 一个连接每秒最多一句
           if (now - (socket.lastChat || 0) < 1000) { sendJson(socket, { t: 'chat-throttled' }); continue; }
@@ -424,7 +503,14 @@ export async function startHost(e, { port = 8090, live = null, readonly = false,
         else if (msg.t === 'ping') send(socket, wsFrame(1, Buffer.from(JSON.stringify({ t: 'pong', ts: msg.ts, frames, sentFrames, bytesOut }))));
       }
     });
-    const bye = () => { if (clients.delete(socket)) { releaseAll(socket); broadcastJson(audience()); } };
+    const bye = () => {
+      if (clients.delete(socket)) {
+        releaseAll(socket);
+        if (!hasPlayClient() && coop.holder === 'human') setCoop({ holder: 'ai' }, 'disconnect');
+        else syncStorySpeed();
+        broadcastJson(audience());
+      }
+    };
     socket.on('close', bye); socket.on('error', bye); socket.on('end', bye);
   });
 
@@ -434,9 +520,10 @@ export async function startHost(e, { port = 8090, live = null, readonly = false,
   if (rec) log(`[agent-pal] recording → ${record} (≤ ${recordFps} fps)`);
   return {
     server, port: actual,
-    stats: () => ({ frames, sentFrames, clients: clients.size, lastInputId, bytesOut }),
+    stats: () => ({ frames, sentFrames, clients: clients.size, lastInputId, bytesOut, coop: coopSnapshot() }),
+    coop: { get: coopSnapshot, set: setCoop },
     minimap,
     recording: rec ? { file: record, stats: rec.stats } : null,
-    close: () => { unsubscribe(); clearInterval(recTimer); rec?.close(); clearInterval(mapTimer); clearInterval(mapTick); clearInterval(statusTimer); clearInterval(pushTimer); for (const c of clients) c.destroy(); server.close(); sound.play = origSfx; music.play = origPlay; music.stop = origStop; e.probes.onFrame = prevOnFrame; }
+    close: () => { unsubscribe(); clearInterval(coopTimer); clearInterval(recTimer); rec?.close(); clearInterval(mapTimer); clearInterval(mapTick); clearInterval(statusTimer); clearInterval(pushTimer); if (coop.storySlowed) { try { e.setSpeed(userSpeed); } catch { /* */ } } e.isHumanTakeover = prevIsHumanTakeover; e.storyPaceMs = prevStoryPaceMs; for (const c of clients) c.destroy(); server.close(); sound.play = origSfx; music.play = origPlay; music.stop = origStop; e.probes.onFrame = prevOnFrame; }
   };
 }

@@ -166,12 +166,13 @@ if ((i < 0 && hi < 0) || process.argv.includes('--mcp')) startMcp();
 if (hi >= 0) {
   if (si >= 0) process.stderr.write('[agent-pal] --host 是实时模式;--seed 的虚拟时钟只在工具调用时走,画面会停住\n');
   const { startHost } = await import('../src/host.mjs');
-  const { getAgent, runLogFile } = await import('../src/mcp.mjs');
+  const { getAgent, runLogFile, abortAi, syncExternalState } = await import('../src/mcp.mjs');
   // 录制:回放文件和这一轮的运行日志同名(.jsonl → .palrec),放在 --record 给的目录;没给目录就和运行日志放一起
   const ri = process.argv.indexOf('--record'), rarg = ri >= 0 ? process.argv[ri + 1] : undefined;
   const recordDir = ri >= 0 ? (rarg && !rarg.startsWith('--') ? rarg : path.dirname(runLogFile)) : (process.env.AGENT_PAL_RECORD_DIR || '');
   let record = null;
   if (recordDir) { fs.mkdirSync(recordDir, { recursive: true }); record = path.join(recordDir, path.basename(runLogFile).replace(/\.jsonl$/, '') + '.palrec'); }
   await startHost(await getEngine(), { port: Number(process.argv[hi + 1]) || 8090, live, agent: await getAgent(), readonly: process.argv.includes('--watch-only'),
+    onTakeover: abortAi, onHandback: syncExternalState,
     record, recordMeta: { runLog: path.basename(runLogFile) } });
 }

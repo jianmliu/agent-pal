@@ -61,8 +61,13 @@
   .badge.off { background: #1c2026; color: var(--dim); } .badge.off::before { background: var(--dim); animation: none; }
   @keyframes pulse { 50% { opacity: .3; } }
   #viewers { color: var(--dim); font-size: 14px; }
-  #speedBox { margin-left: auto; font-size: 14px; color: var(--dim); }
+  #speedBox { margin-left: auto; font-size: 14px; color: var(--dim); display: inline-flex; align-items: center; gap: 6px; }
   #speedBox select { background: #0f1216; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; font: inherit; font-size: 14px; padding: 1px 4px; }
+  #story1xLabel { display: inline-flex; align-items: center; gap: 3px; cursor: pointer; user-select: none; color: var(--fg); font-size: 13px; margin-left: 4px; }
+  #story1xLabel input { accent-color: var(--accent); margin: 0; cursor: pointer; }
+  #storyBadge { font-size: 12px; padding: 1px 6px; border-radius: 999px; background: #2b2414; color: var(--accent); border: 1px solid #5a4a26; }
+  #coopBtn { font-size: 13px; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+  #coopBtn.human { background: #183324; color: var(--ok); border-color: var(--ok); }
   #role { font-size: 14px; color: var(--dim); }
   #now { display: flex; flex-direction: column; gap: 4px; }
   #now .thought { font-size: 19px; line-height: 1.5; color: var(--fg); text-wrap: pretty; }
@@ -178,12 +183,12 @@
     </div>
     <div id="info"><div id="facts"></div></div>
     <div id="hud" class="mono">连接中…</div>
-    <div id="keys">方向键 移动 · Enter/空格 确认 · Esc 菜单 · R 重复 · A 自动 · D 防御 · E 物品 · W 投掷 · Q 逃跑 · S 状态 · F 法术</div>
+    <div id="keys">方向键 移动 · Enter/空格 确认 · Esc 菜单 · ` 接管/交回AI · R 重复 · A 自动 · D 防御 · E 物品 · W 投掷 · Q 逃跑 · S 状态 · F 法术</div>
   </div>
 </main>
 <aside>
   <section class="card" id="status">
-    <div class="row"><span id="liveBadge" class="badge off">未连接</span><span id="viewers"></span><span id="speedBox"><span id="speedPick" hidden>场景 <select id="speedScene" aria-label="场景倍速" title="走路、怪的追击、按帧计的计时(1× = 原版 10 帧/秒)"></select> 战斗 <select id="speedBattle" aria-label="战斗倍速" title="战斗帧,以及对白、过场延时、菜单(1× = 原版)"></select></span><span id="speedLabel"></span></span><span id="role"></span></div>
+    <div class="row"><span id="liveBadge" class="badge off">未连接</span><span id="viewers"></span><span id="speedBox"><span id="speedPick" hidden>场景 <select id="speedScene" aria-label="场景倍速" title="走路、怪的追击、按帧计的计时(1× = 原版 10 帧/秒)"></select> 战斗 <select id="speedBattle" aria-label="战斗倍速" title="战斗帧,以及对白、过场延时、菜单(1× = 原版)"></select><label id="story1xLabel" title="开启后：平时按所选倍速加速，遇到剧情对话或过场动画自动恢复 1× 原速"><input id="story1x" type="checkbox"> 剧情1×</label><span id="storyBadge" hidden>📖 1×中</span></span><span id="speedLabel"></span></span><button id="coopBtn" type="button" hidden title="按任意游戏键自动接管；点此或按 ` 键在真人接管与交回 AI 之间切换">🎮 接管</button><span id="role"></span></div>
     <div id="now"><div class="thought idle">等 AI 开口…</div></div>
   </section>
   <section class="card" id="mapCard">
@@ -682,6 +687,34 @@ function setSpeed(x) {
 for (const [id, key] of [['speedScene', 'scene'], ['speedBattle', 'battle']]) {
   $(id).addEventListener('change', (e) => { if (ws?.readyState === 1) ws.send(JSON.stringify({ t: 'speed', x: { [key]: Number(e.target.value) } })); e.target.blur(); });
 }
+
+// ---- 人机协作:剧情自动 1× + 按键接管 / 交回 AI ----
+let coopNow = { holder: 'ai', story1x: store.get('pal-story1x') !== 'off', storySlowed: false };
+function setCoop(c) {
+  if (c && typeof c === 'object') coopNow = { ...coopNow, ...c };
+  const btn = $('coopBtn'), badge = $('storyBadge'), chk = $('story1x');
+  if (chk) chk.checked = !!coopNow.story1x;
+  if (badge) badge.hidden = watching || !!rp || !coopNow.storySlowed;
+  if (btn) {
+    btn.hidden = watching || !!rp;
+    const isHuman = coopNow.holder === 'human';
+    btn.className = isHuman ? 'human' : '';
+    btn.textContent = isHuman ? '🤖 交回 AI' : '🎮 接管';
+  }
+  if (!watching && !rp) {
+    $('role').textContent = coopNow.holder === 'human' ? '你在玩(已接管)' : 'AI 协作中';
+  }
+}
+$('story1x').addEventListener('change', (e) => {
+  const on = !!e.target.checked;
+  store.set('pal-story1x', on ? 'on' : 'off');
+  if (ws?.readyState === 1) ws.send(JSON.stringify({ t: 'coop', story1x: on }));
+  e.target.blur();
+});
+$('coopBtn').addEventListener('click', (e) => {
+  if (ws?.readyState === 1) ws.send(JSON.stringify({ t: 'coop', holder: coopNow.holder === 'human' ? 'ai' : 'human' }));
+  e.currentTarget.blur();
+});
 // ---- 小地图:整张场景图压暗,走过的地方恢复原亮度;队伍位置;出口(走过 = 绿点,没走过 = 橙圈) ----
 // 底图用摆正的实景图(art);它还没出、或者这个场景出不来,就用平面图(plan)兜底。两张逐格对齐,坐标都是网格坐标,每张图带仿射变换 m
 const mini = $('mini'), mctx = mini.getContext('2d');
@@ -800,13 +833,14 @@ setInterval(() => { if (statusNow?.stats) setStatus(statusNow); }, 1000);     //
 
 function setRole(role, live) {
   watching = role === 'watch';
-  $('role').textContent = watching ? '观战中' : '你在玩';
+  $('role').textContent = watching ? '观战中' : (coopNow.holder === 'human' ? '你在玩(已接管)' : 'AI 协作中');
   $('keys').hidden = watching;
   fitBelow();
   setSpeed(speedNow);
+  setCoop(coopNow);
   const start = $('start'); if (start) start.textContent = watching ? '点击开始观看(启用声音)' : '点击开始(启用声音、键盘)';
   const b = $('liveBadge'); b.textContent = rp ? '回放' : live ? '直播中' : '已连接'; b.className = live && !rp ? 'badge' : 'badge off';
-  if (rp) $('role').textContent = '';
+  if (rp) { $('role').textContent = ''; $('coopBtn').hidden = true; $('storyBadge').hidden = true; }
 }
 
 // ---- 回放(replay.mjs):同一个页面,时钟换成录像的时钟;能暂停、拖动、换倍速、换轮 ----
@@ -885,9 +919,18 @@ async function handle(data) {
     const m = JSON.parse(data);
     if (m.t === 'pong') pingRtt = performance.now() - m.ts;
     else if (m.t === 'audio') { if ('sfx' in m) playSfx(m.sfx); if ('music' in m) { lastMusic = m; playMusic(m.music, m.loop); } }
-    else if (m.t === 'hello') { setChat(m.chat); setNarrated(!!m.commentator); if (m.replay) setupReplay(m.replay); setRole(m.role, m.live); setSpeed(m.speed); }
+    else if (m.t === 'hello') {
+      setChat(m.chat); setNarrated(!!m.commentator); if (m.replay) setupReplay(m.replay);
+      if (m.coop) setCoop(m.coop);
+      setRole(m.role, m.live); setSpeed(m.speed);
+      if (!watching && !m.replay && ws?.readyState === 1) {
+        const want1x = store.get('pal-story1x') !== 'off';
+        if (want1x !== !!m.coop?.story1x) ws.send(JSON.stringify({ t: 'coop', story1x: want1x }));
+      }
+    }
     else if (m.t === 'replay') onReplay(m);
     else if (m.t === 'speed') setSpeed(m.x);
+    else if (m.t === 'coop') { setCoop(m); if (m.userSpeed) setSpeed(m.userSpeed); }
     else if (m.t === 'history') {
       feed.replaceChildren(); calls.clear(); group = null; fight = null; fighting = false; thoughts = 0; lastThought = '';
       chapters.length = 0; for (const c of m.chapters || []) chapters.push(c); showChapters();
@@ -966,7 +1009,16 @@ function key(code, down) {
   return true;
 }
 const typing = (e) => e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement;
-addEventListener('keydown', (e) => { if (typing(e)) return; if (e.repeat) { if (KEYMAP[e.code] && !watching) e.preventDefault(); return; } if (key(e.code, true)) e.preventDefault(); });
+addEventListener('keydown', (e) => {
+  if (typing(e)) return;
+  if (!watching && !rp && e.code === 'Backquote' && !e.repeat) {
+    if (ws?.readyState === 1) ws.send(JSON.stringify({ t: 'coop', holder: coopNow.holder === 'human' ? 'ai' : 'human' }));
+    e.preventDefault();
+    return;
+  }
+  if (e.repeat) { if (KEYMAP[e.code] && !watching) e.preventDefault(); return; }
+  if (key(e.code, true)) e.preventDefault();
+});
 addEventListener('keyup', (e) => { if (typing(e)) return; if (key(e.code, false)) e.preventDefault(); });
 addEventListener('blur', () => { for (const code of [...held]) key(code, false); });
 $('msg').addEventListener('focus', () => { for (const code of [...held]) key(code, false); });

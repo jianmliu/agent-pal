@@ -163,5 +163,22 @@ await t('5. pal.readData / pal.ensureDataDump: 按需读取静态表并拦截越
   assert.match(r2.error, /stay inside dataDir/);
 });
 
+await t('6. runner.abortActive: 真人按键接管时立即中止正在运行的 run_code 脚本', async () => {
+  const p = runner.runCode({
+    code: `
+      await pal.step('down');
+      await new Promise((r) => setTimeout(r, 30));
+      await pal.step('down');
+      return 'should not reach';
+    `
+  });
+  await new Promise((r) => setTimeout(r, 10));
+  const aborted = runner.abortActive('human player took over in browser');
+  assert.equal(aborted, 1);
+  const res = await p;
+  assert.equal(res.ok, false);
+  assert.match(res.error, /human player took over in browser/);
+});
+
 process.stdout.write(`\nCODE-RUNNER TESTS PASSED ✅ (${n})\n`);
 process.exit(0);

@@ -1344,6 +1344,9 @@ export function createAgent(e, opts = {}) {
       let interrupted = false, rode = null;
       const scene0 = worldService.getSceneId();
       for (const [i, dir] of path.entries()) {
+        if (typeof e.isHumanTakeover === 'function' && e.isHumanTakeover()) {
+          return { ok: false, note: `stopped after ${steps} steps (human player took over in browser)` };
+        }
         const q0 = playerPos();
         const objs0 = objects();
         const ok = await stepOnce(dir);
@@ -1409,6 +1412,9 @@ export function createAgent(e, opts = {}) {
     let moved = 0;
     const scene0 = worldService.getSceneId();
     for (let i = 0; i < n; i++) {
+      if (typeof e.isHumanTakeover === 'function' && e.isHumanTakeover()) {
+        return { ok: moved > 0, note: `moved ${moved}, then stopped (human player took over in browser)` };
+      }
       const q0 = playerPos();
       const objs0 = objects();
       const ok = await stepOnce(dirName);
@@ -1535,8 +1541,14 @@ export function createAgent(e, opts = {}) {
   async function advanceInner(max) {
     let n = 0;
     while (n < max) {
+      if (typeof e.isHumanTakeover === 'function' && e.isHumanTakeover()) break;
       const m = mode();
       if (m !== 'dialog' && m !== 'anykey') break;
+      const paceMs = typeof e.storyPaceMs === 'function' ? e.storyPaceMs() : 0;
+      if (paceMs > 0) {
+        await sleep(paceMs);
+        if (typeof e.isHumanTakeover === 'function' && e.isHumanTakeover()) break;
+      }
       const top = waitsSvc()?.top();
       if (top && (top.kind === 'dialog' || top.kind === 'anykey')) {
         const r = await respondTop({ advance: true }, 5000);
@@ -2510,6 +2522,7 @@ export function createAgent(e, opts = {}) {
     try {
       while (!why) {
         checkBudget();
+        if (typeof e.isHumanTakeover === 'function' && e.isHumanTakeover()) { why = 'human player took over in browser'; break; }
         if (lv() >= targetLevel) { why = `reached Lv${targetLevel}`; break; }
         if (battles >= maxBattles) { why = `fought ${maxBattles} battles (max_battles)`; break; }
         if (realNow() - t0 > budgetS * 1000) { why = `time budget (${budgetS}s) used up`; break; }

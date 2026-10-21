@@ -306,8 +306,19 @@ try {
   c.send({ t: 'speed', x: 1 });
   assert.deepEqual((await waitFor(c.inbox, (m) => m.t === 'speed', 'speed back')).x, { scene: 1, battle: 1 });
 
-  // 按键:回执序号出现在之后的画面帧头里;stats 也记着
+  // 按键:回执序号出现在之后的画面帧头里;stats 也记着;按键同时触发人机协作接管(holder = human)
+  assert.equal(e.isHumanTakeover(), false);
   c.send({ t: 'key', key: 'Search', down: true, id: 7 });
+  const coopTakeover = await waitFor(c.inbox, (m) => m.t === 'coop' && m.holder === 'human', 'coop takeover on key');
+  assert.equal(coopTakeover.holder, 'human');
+  assert.equal(e.isHumanTakeover(), true);
+  // 交回 AI 控制 + 开启剧情原速(story1x)
+  c.send({ t: 'coop', holder: 'ai', story1x: true });
+  const coopBack = await waitFor(c.inbox, (m) => m.t === 'coop' && m.holder === 'ai', 'coop handback');
+  assert.equal(coopBack.holder, 'ai');
+  assert.equal(coopBack.story1x, true);
+  assert.equal(e.isHumanTakeover(), false);
+  assert.equal(e.storyPaceMs(), 800);
   const acked = await waitFor(c.inbox, (m) => isFrame(m) && m.ack >= 7, 'frame acking input 7');
   assert.ok(acked.no > f0.no);
   c.send({ t: 'key', key: 'Search', down: false, id: 8 });

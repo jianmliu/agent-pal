@@ -440,6 +440,24 @@ const textResult = (text, isError = false) => ({ content: [{ type: 'text', text 
  * 产生的 SMSG 在释放队列之后才投给模块 —— 模块的 packet 处理函数里可能再发指令。
  * 模块方法与 run_code 本身不进外层串行队列:它们内部的每条 SendMessage 各自排队,否则会等自己。
  */
+const READONLY_TOOLS = new Set(['observe', 'screenshot', 'guide', 'atlas', 'map', 'panorama', 'list_saves', 'chat', 'session_quit', 'module_reload']);
+
+/** 把真人玩家在浏览器端或 L0 之外对引擎造成的状态变更同步给 run_code (pal.world) 与 L2 模块。 */
+export async function syncExternalState() {
+  if (!l0Ref) return [];
+  const events = l0Ref.sync();
+  if (events && events.length) {
+    await codeRunner.deliver(events);
+    if (modules && modules.count) await modules.deliver(events);
+  }
+  return events || [];
+}
+
+/** 人机协作(--host)下真人按键接管时立即中止正在运行的 run_code 脚本。 */
+export function abortAi(reason = 'human player took over control in browser') {
+  return codeRunner.abortActive(reason);
+}
+
 export async function dispatch(name, args = {}) {
   record({type:'replay_request',name,args});
   return timedEntry("dispatch", name, args, () => dispatchInner(name,args));
@@ -450,20 +468,22 @@ async function dispatchInner(name, args = {}) {
     record({ type: 'call', name, args });
     return textResult(runChat(live, args));
   }
+  await getAgent();
+  await syncExternalState();
+  if (engineRef?.isHumanTakeover?.() && !READONLY_TOOLS.has(name)) {
+    return textResult('Human player currently holds control in browser (🎮 真人玩家正在浏览器手动操作中). Wait until the player clicks "🤖 交回 AI" in the browser before executing actions.', true);
+  }
   if (name === 'run_code') {
-    await getAgent();
     const r = await codeRunner.runCode(args);
     return textResult(JSON.stringify(r, null, 2), !r.ok);
   }
   if (name === 'module_reload') {
-    await getAgent();
     const m = await ensureModules();
     const r = await m.reload(args);
     record({ type: 'module_reload', args, result: r });
     return textResult(JSON.stringify(r, null, 2));
   }
   if (codeRunner.hasTool(name)) {
-    await getAgent();
     const r = await codeRunner.invokeTool(name, args);
     return textResult(typeof r === 'string' ? r : JSON.stringify(r, null, 2));
   }
@@ -476,7 +496,6 @@ async function dispatchInner(name, args = {}) {
     }
     if (modules.has(modName)) {
       record({ type: 'module_call', name: rpcName, args });
-      await getAgent();
       const r = await modules.invoke(rpcName, args);
       record({ type: 'module_result', name: rpcName, result: r });
       return textResult(typeof r === 'string' ? r : JSON.stringify(r, null, 1));
