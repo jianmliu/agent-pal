@@ -727,14 +727,14 @@ console.log('  ✓ ⑩ provider 退避不受虚拟时钟影响');
   const stub = new Proxy({}, { get: () => async () => ({ ok: true, note: 'stub' }) });   // 任何 agent 动作都「成功」
   for (const [tier, names] of Object.entries(TIER_TOOLS)) {
     for (const name of names) {
-      if (name === 'screenshot' || BOOK_TOOLS.has(name)) continue;
+      if (name === 'screenshot' || name === 'run_code' || BOOK_TOOLS.has(name)) continue;
       const r = await runTool(stub, name, {});
       assert.ok(!(r && r.unknown), `tier ${tier}: tool ${name} is not dispatched by runTool`);
     }
   }
   assert.deepEqual(TIER_TOOLS.C.filter((n) => !TIER_TOOLS.B.includes(n)), [...BOOK_TOOLS]);
-  // 每档的工具在 MCP 工具表里都有定义(按源码核对:mcp.mjs 要引擎包,测试里不导入)
-  const mcpSrc = fs.readFileSync(new URL('../../src/mcp.mjs', import.meta.url), 'utf8');
+  // 每档的工具在 MCP 工具表里都有定义(按源码核对:mcp.mjs / pure.mjs)
+  const mcpSrc = fs.readFileSync(new URL('../../src/mcp.mjs', import.meta.url), 'utf8') + '\n' + fs.readFileSync(new URL('../../src/pure.mjs', import.meta.url), 'utf8');
   for (const n of new Set(Object.values(TIER_TOOLS).flat())) assert.match(mcpSrc, new RegExp(`name: '${n}'`), `tool ${n} has no MCP definition`);
   // 提示 v3:B / C 档可在地图上施法(cast),A 档仍只有画面与按键;提示里讲了 cast
   assert.ok(TIER_TOOLS.B.includes('cast') && TIER_TOOLS.C.includes('cast') && !TIER_TOOLS.A.includes('cast'));
@@ -947,5 +947,17 @@ console.log('  ✓ ㉑ 存档起点:文件名受限、存档在库、槽位有�
     }
   }
 }
+
+// ㉒ Tier P (Pure 编程档):只暴露 L0 原语 + run_code(无 walk_to / interact / map),提示词含 run_code / pal.world / global 说明
+{
+  assert.ok(TIER_TOOLS.P.includes('run_code') && TIER_TOOLS.P.includes('observe') && TIER_TOOLS.P.includes('step'));
+  assert.ok(!TIER_TOOLS.P.includes('walk_to') && !TIER_TOOLS.P.includes('interact') && !TIER_TOOLS.P.includes('map'));
+  assert.match(systemPrompt('P'), /run_code/);
+  assert.match(systemPrompt('P'), /pal\.world/);
+  assert.match(systemPrompt('P'), /global/);
+  const hc = loadTask('pal-ch1-island-hardcore');
+  assert.ok(!toolNames(hc, 'P').includes('save') && toolNames(hc, 'P').includes('run_code'));
+}
+console.log('  ✓ ㉒ Tier P (Pure 编程档):L0 原语 + run_code 工具面与系统提示');
 
 console.log('\nBENCH TESTS PASSED ✅');

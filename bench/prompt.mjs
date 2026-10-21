@@ -9,6 +9,7 @@ const TIER_HINTS = {
 };
 // C = B 的全部说明 + 查资料(只写「同 B」的话模型根本看不到 B 的说明)
 TIER_HINTS.C = `${TIER_HINTS.B}\n另外可以用 guide 查攻略 / 剧本,用 atlas 看本场景的标注全图。`;
+TIER_HINTS.P = '你处于 Pure 编程档(Tier P):没有内置寻路(walk_to)或高层互动工具(interact / map),只有底层 L0 协议原语(observe / step / search / advance / choose / battle / use_item / press / wait / save / load / list_saves)以及内联 JavaScript 沙盒工具 `run_code`。在 `run_code` 中:1) `pal.world` 保存由 SMSG_* 消息构建的实时世界状态(scene, map, mode, player, gx, gy, facing, objectList, members, items, cash, dialog, menu, battle);2) 可调用 `await pal.step(dir, n)`、`await pal.interact()`、`await pal.advance()`、`await pal.choose(i)`、`await pal.battle(type, extra)` 或 `await pal.send({ op: "CMSG_..." })` 推进游戏;3) `global` 对象跨 `run_code` 调用持久保留,请把自写的 BFS/A* 寻路函数、已探明的障碍物、地图连通记忆与战斗策略保存在 `global` 上复用;4) 可通过 `await pal.readData("scenes.json")` / `"objects.json"` / `"script.json"` 按需查阅静态数据表。旋转网格坐标:up = gy-1, down = gy+1, left = gx-1, right = gx+1。';
 
 export function systemPrompt(tier) {
   return [

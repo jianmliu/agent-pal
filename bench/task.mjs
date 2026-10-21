@@ -12,7 +12,7 @@ import { BATTLE_ACTIONS } from './battle-metrics.mjs';
 const here = path.dirname(fileURLToPath(import.meta.url));
 export const TASK_DIR = path.join(here, 'tasks');
 export const REFERENCE_DIR = path.join(here, 'reference');
-export const TIERS = ['A', 'B', 'C'];
+export const TIERS = ['A', 'B', 'C', 'P'];
 
 /** 校验题目对象;返回错误列表(空 = 合法)。 */
 export function validateTask(t) {

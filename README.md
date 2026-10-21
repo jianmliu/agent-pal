@@ -132,11 +132,14 @@ node bin/agent-pal.mjs bench validate
 # 2. 在确定性虚拟时钟下回放验证题库参考解
 node bin/agent-pal.mjs bench check opening-serve-dishes classic28-tower-gate
 
-# 3. 题库模式：评测指定模型在指定档位 (A/B/C) 下的闯关表现
-node bin/agent-pal.mjs bench run --model anthropic/claude-opus-5-5 --tier B --tasks opening-serve-dishes,classic08-leave-area
+# 3. 题库模式：评测指定模型在指定档位 (A=像素 / B=标准 / C=开卷 / P=Pure编程档) 下的闯关表现
+node bin/agent-pal.mjs bench run --model anthropic:claude-opus-4-6 --tier B --tasks opening-serve-dishes,classic08-leave-area
 
-# 4. 拜月通关模式：运行最终 Boss 拜月教主专项基准
-node bin/agent-pal.mjs bench baiyue --model openai/gpt-6.1-sol --tier B
+# 4. Tier P (Pure 编程档)：禁用官方 walk_to/interact/map，考察模型用 run_code + global + pal.readData 现场编程解题
+node bin/agent-pal.mjs bench run --model ollama:kimi-k3:cloud --tier P --tasks opening-serve-dishes,pal-ch1-meet-linger
+
+# 5. 拜月通关模式：运行最终 Boss 拜月教主专项基准 (支持 --tier B 或 --tier P)
+node bin/agent-pal.mjs bench run --model ollama:deepseek-v4-pro:0813-cloud --tier P --tasks baiyue-single-origin
 
 # 5. 闭卷测验模式：测量模型先验记忆分 (Prior Knowledge vs. Execution Gap)
 node bin/agent-pal.mjs bench quiz --model google/gemini-4-argon

@@ -73,7 +73,8 @@ export async function initializeTask({ e, a, task, runTool, tracker }) {
 
 /** Freeze the actual runtime and assets, including dirty source/build content. */
 export function runtimeFingerprint() {
-  const repo = path.resolve(here, '../../..');
+  const standaloneRoot = path.resolve(here, '..');
+  const repo = fs.existsSync(path.join(standaloneRoot, 'packages/game-engine/dist')) ? standaloneRoot : path.resolve(here, '../../..');
   const excluded = new Set(['out', 'saves', 'reference', 'tasks', 'quiz', 'test']);
   const digestDir = (dir, filter = () => true) => {
     const h = crypto.createHash('sha256');
@@ -92,6 +93,7 @@ export function runtimeFingerprint() {
     return h.digest('hex');
   };
   const assets = [process.env.PAL_ASSET_DIR,
+    path.join(standaloneRoot, 'pal-assets'),
     path.join(repo, 'apps/pal-playground/public/pal-assets'),
     path.join(repo, 'apps/pal-playground/dist/pal-assets')]
     .find(dir => dir && (fs.existsSync(path.join(dir, 'PAT.MKF')) || fs.existsSync(path.join(dir, 'pat.mkf'))));

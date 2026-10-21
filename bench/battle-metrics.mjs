@@ -71,12 +71,14 @@ export function actionError(task, name, args = {}) {
   if (task.battlePolicy && args.referenceID != null) {
     return 'battle referenceID is not supported by this task; use the full spell/item name';
   }
-  if ((task.battlePolicy?.forbiddenActions || []).includes(args.action)) {
-    return `battle action "${args.action}" is not allowed in this task`;
+  const act = args.action ?? args.type;
+  const normalizedAct = act === 'combo' ? 'coop' : act;
+  if ((task.battlePolicy?.forbiddenActions || []).includes(normalizedAct) || (task.battlePolicy?.forbiddenActions || []).includes(act)) {
+    return `battle action "${act}" is not allowed in this task`;
   }
-  const spell = String(args.name ?? '').trim();
+  const spell = String(args.name ?? args.magic ?? '').trim();
   // Match the Agent's fuzzy-name resolution too, so prefixes cannot escape policy.
-  if (args.action === 'magic' && (task.battlePolicy?.forbiddenSpells || [])
+  if (normalizedAct === 'magic' && (task.battlePolicy?.forbiddenSpells || [])
       .some(blocked => spell && (blocked.includes(spell) || spell.includes(blocked)))) {
     return `battle spell "${spell}" is not allowed in this task`;
   }
