@@ -161,12 +161,47 @@ pnpm run demo:compiler
 
 ---
 
-## 4. 三大前沿模型 `--pure` 全自主通关文档与代码库
+## 4. 技术报告（Technical Report）、专题论文与 `--pure` 通关档案
 
+### 4.1 Agent-PAL-Bench 技术报告与综述博客
+- **📄 主技术报告（Technical Report v0.4）**：
+  - **中文版**：[*Agent-PAL-Bench：以经典中文角色扮演游戏评测文本智能体的长程决策能力* (`docs/agent-pal-bench-draft.md`)](./docs/agent-pal-bench-draft.md)
+  - **英文版**：[*Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction* (`docs/agent-pal-bench-draft.en.md`)](./docs/agent-pal-bench-draft.en.md)
+  - **LaTeX 源码**：[`docs/agent-pal-bench-draft.tex`](./docs/agent-pal-bench-draft.tex)
+- **⚔️ 华山论剑全景综述博客**：
+  - [《大模型华山论剑，广发英雄帖：外来三剑客（Argon、Claude、GPT）更厉害，还是中国模型更懂中国传统游戏？》(`docs/huashan-sword-summit-blog.zh.md`)](./docs/huashan-sword-summit-blog.zh.md)
+- **🔬 四大代表性关卡认知行为与反事实消融专题报告（对应技术报告 `§5.8–§5.11`）**：
+  1. **祈雨祭坛 (`§5.8`)**：[《大理祈雨祭坛 45° 等距旋转陷阱、十万字内省死循环与 1 步认知探针》(`docs/rain-altar-epistemic-trap.zh.md`)](./docs/rain-altar-epistemic-trap.zh.md)
+  2. **白河采药 (`§5.9`)**：[《白河村三味药材：先验攻略污染、零样本清图开销与止损弹性》(`docs/baihe-luck-vs-character.zh.md`)](./docs/baihe-luck-vs-character.zh.md)
+  3. **扬州葫芦 (`§5.11`)**：[《扬州女飞贼与紫金葫芦长链：局部错误先验锚定、漏捡自省与跨场景空间图复用》(`docs/yangzhou-gourd-long-horizon.zh.md`)](./docs/yangzhou-gourd-long-horizon.zh.md)
+  4. **拜月决战 (`§5.10`)**：[《南诏王宫拜月决战：双层先验结构、禁招反事实消融与批量结算控制变量消元法》(`docs/baiyue-prior-vs-reflection.zh.md`)](./docs/baiyue-prior-vs-reflection.zh.md)
+- **📊 72 局经 `bench verify` 核验的评测轨迹与交互式排行榜**：
+  - 轨迹归档目录：[`bench/out/`](./bench/out/) ｜ 帕累托前沿看板：[`bench/out/board.html`](./bench/out/board.html)
+
+### 4.2 三大前沿模型 `--pure` 全自主通关文档与代码库（对应技术报告 `§5.7`）
 - **深度对比文章**：
   - 中文版：[docs/three-models-play-agent-pal.zh.md](./docs/three-models-play-agent-pal.zh.md)
   - 英文版：[docs/three-models-play-agent-pal.md](./docs/three-models-play-agent-pal.md)
 - **分模型通关报告与自编写代码库**：
-  - **Gemini 4 Argon**：[通关报告](./docs/argon-pure-playthrough-report.md) ｜ [自编写库 `src/argon-pure-lib.js`](./src/argon-pure-lib.js)
-  - **GPT-6.1-Sol**：[通关报告](./docs/gpt61-pure-playthrough-report.md) ｜ [自编写库 `src/gpt61-pure-lib.js`](./src/gpt61-pure-lib.js)
-  - **Claude Opus 5.5**：[通关报告](./docs/opus-pure-playthrough-report.md) ｜ [自编写库 `src/opus-pure-lib.js`](./src/opus-pure-lib.js)
+  - **Gemini 4 Argon**：[通关报告](./docs/argon-pure-playthrough-report.md) ｜ [自编写库 `src/argon-pure-lib.js`](./src/argon-pure-lib.js)（731 行）
+  - **GPT-6.1-Sol**：[通关报告](./docs/gpt61-pure-playthrough-report.md) ｜ [自编写库 `src/gpt61-pure-lib.js`](./src/gpt61-pure-lib.js)（135 行）
+  - **Claude Opus 5.5**：[通关报告](./docs/opus-pure-playthrough-report.md) ｜ [自编写库 `src/opus-pure-lib.js`](./src/opus-pure-lib.js)（1,427 行）
+
+---
+
+## 5. 引用格式（Citation）
+
+如果您在学术论文、技术报告或评测文章中引用 **Agent-PAL-Bench 技术报告** 或使用本仓库代码与评测轨迹，请使用以下 BibTeX 条目：
+
+```bibtex
+@techreport{liu2026agentpalbench,
+  title       = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction},
+  author      = {Liu, Jianming},
+  year        = {2026},
+  month       = oct,
+  number      = {Agent-PAL-Bench Technical Report v0.4},
+  institution = {Agent-PAL Project},
+  url         = {https://github.com/jianmliu/agent-pal},
+  note        = {Technical Report and Open-Source Benchmark Repository: \url{https://github.com/jianmliu/agent-pal}}
+}
+```

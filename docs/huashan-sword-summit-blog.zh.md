@@ -1,6 +1,9 @@
 # 大模型华山论剑，广发英雄帖：外来三剑客（Argon、Claude、GPT）更厉害，还是中国模型更懂中国传统游戏？
 
 > **当 1995 年的《仙剑奇侠传》遇上 2026 年的顶尖大模型——背熟“五灵相克、酒神乾坤”的笔试学霸，到了真刀真枪的迷宫与 Boss 战实操里，究竟能不能打赢一张白纸的“洋和尚”？**
+>
+> 📄 **完整技术报告（Technical Report）**：[*Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction*](./agent-pal-bench-draft.en.md)（[中文版技术报告](./agent-pal-bench-draft.md) ｜ [英文版](./agent-pal-bench-draft.en.md) ｜ [LaTeX 源码](./agent-pal-bench-draft.tex)）  
+> 💻 **开源评测仓库与 72 局可复现轨迹（GitHub）**：[https://github.com/jianmliu/agent-pal](https://github.com/jianmliu/agent-pal)（含交互式排行榜 [`bench/out/board.html`](../bench/out/board.html) 与 `bench verify` 防篡改重放日志）
 
 如果要在中文世界里挑一款最具图腾意义的传统游戏，作为 AI 智能体（Agent）“华山论剑”的试金石，1995 年大宇资讯出品的 DOS 原版**《仙剑奇侠传》**（*The Legend of Sword and Fairy*）几乎是不二之选。
 
@@ -228,3 +231,62 @@
 **敢不敢不看攻略、不背套路，来仙灵岛走一遭荷叶迷阵，去白河村猎一回梅花鹿，到扬州城夜追一次姬三娘，在南诏王宫被废掉“酒神乾坤”后接拜月教主三十六回合？**
 
 华山论剑台已开，我们坐等各路英雄甩出通过 `bench verify` 的通关重放日志（`.jsonl`），改写这份江湖榜单！
+
+---
+
+# 第五部分：技术报告（Technical Report）、开源仓库与引用格式（Citation）
+
+本文全部实验设计、评测协议、闭卷先验测验、反事实机制消融与确定性重放验证，均完整收录于 **Agent-PAL-Bench 技术报告（Technical Report v0.4）** 与开源 GitHub 仓库 [**`jianmliu/agent-pal`**](https://github.com/jianmliu/agent-pal)。
+
+### 5.1 技术报告与专题实验档案索引
+
+| 档案类别 | 文档标题与章节对应 | 仓库路径 / 链接 |
+| :--- | :--- | :--- |
+| **📄 主技术报告（中文版）** | *Agent-PAL-Bench：以经典中文角色扮演游戏评测文本智能体的长程决策能力（Technical Report v0.4）* | [`docs/agent-pal-bench-draft.md`](./agent-pal-bench-draft.md) |
+| **📄 主技术报告（英文版 / LaTeX）** | *Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction* | [`docs/agent-pal-bench-draft.en.md`](./agent-pal-bench-draft.en.md) ｜ [`docs/agent-pal-bench-draft.tex`](./agent-pal-bench-draft.tex) |
+| **📐 基准协议规范** | *Agent-PAL-Bench 评测设计规范与 CLI 手册* | [`docs/agent-pal-bench.md`](./agent-pal-bench.md) ｜ [`bench/README.md`](../bench/README.md) |
+| **🔬 专题实操报告一（对应技术报告 `§5.8`）** | *大理祈雨祭坛 45° 等距旋转陷阱、十万字内省死循环与 1 步认知探针* | [`docs/rain-altar-epistemic-trap.zh.md`](./rain-altar-epistemic-trap.zh.md) |
+| **🔬 专题实操报告二（对应技术报告 `§5.9`）** | *白河村三味药材：先验攻略污染、零样本清图开销与止损弹性* | [`docs/baihe-luck-vs-character.zh.md`](./baihe-luck-vs-character.zh.md) |
+| **🔬 专题实操报告三（对应技术报告 `§5.11`）** | *扬州女飞贼与紫金葫芦长链：局部错误先验锚定、漏捡自省与跨场景空间图复用* | [`docs/yangzhou-gourd-long-horizon.zh.md`](./yangzhou-gourd-long-horizon.zh.md) |
+| **🔬 专题实操报告四（对应技术报告 `§5.10`）** | *南诏王宫拜月决战：双层先验结构、禁招反事实消融与批量结算控制变量消元法* | [`docs/baiyue-prior-vs-reflection.zh.md`](./baiyue-prior-vs-reflection.zh.md) |
+| **⚔️ `--pure` 全游戏通关报告（对应技术报告 `§5.7`）** | *三大前沿模型 `--pure` 模式全自主通关对比与自编写运行时库（731 / 135 / 1,427 行）* | [三模型对比](./three-models-play-agent-pal.zh.md) ｜ [Argon](./argon-pure-playthrough-report.md) ｜ [GPT-6.1](./gpt61-pure-playthrough-report.md) ｜ [Opus 5.5](./opus-pure-playthrough-report.md) |
+| **📊 72 局可核验轨迹与排行榜** | *全部评测局次 JSONL 轨迹、`bench verify` 签名与帕累托前沿看板* | [`bench/out/`](../bench/out/) ｜ [`bench/out/board.html`](../bench/out/board.html) |
+
+### 5.2 一键复现与打榜命令
+
+```bash
+git clone https://github.com/jianmliu/agent-pal.git
+cd agent-pal && pnpm install
+
+# 1. 第一关·笔试：运行闭卷先验知识测验 (bench quiz)
+node bin/agent-pal.mjs bench quiz --model <provider:model>
+
+# 2. 第二关·实操：运行四大代表性关卡评测 (bench run)
+node bin/agent-pal.mjs bench run --model <provider:model> --tier B \
+  --tasks classic48-rain-orbs,classic10-baihe-medicine,classic19-yangzhou-gourd,baiyue-single-origin
+
+# 3. 确定性重放核验 (bench verify) 与更新 HTML 榜单 (bench board)
+node bin/agent-pal.mjs bench verify ./bench/out/<run-dir>
+node bin/agent-pal.mjs bench board --out ./bench/out/board.html
+```
+
+### 5.3 引用格式（Citation）
+
+如果您在论文、技术报告、评测基准或博客文章中引用 **Agent-PAL-Bench 技术报告** 或使用本开源仓库的评测工具与实验数据，请按以下格式引用：
+
+**文本引用格式（APA / GB/T 7714）：**
+> Liu, J. (2026). *Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction* (Agent-PAL-Bench Technical Report v0.4). GitHub Repository: https://github.com/jianmliu/agent-pal
+
+**BibTeX 引用格式：**
+```bibtex
+@techreport{liu2026agentpalbench,
+  title       = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction},
+  author      = {Liu, Jianming},
+  year        = {2026},
+  month       = oct,
+  number      = {Agent-PAL-Bench Technical Report v0.4},
+  institution = {Agent-PAL Project},
+  url         = {https://github.com/jianmliu/agent-pal},
+  note        = {Technical Report and Open-Source Benchmark Repository: \url{https://github.com/jianmliu/agent-pal}}
+}
+```

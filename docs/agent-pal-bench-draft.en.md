@@ -1,6 +1,8 @@
 # Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction
 
-> Working paper, version 0.4, evidence review dated 21 October 2026. Implemented mechanisms, development audits, exploratory agent runs, and proposed experiments are distinguished throughout. This is not a frozen benchmark release or a capability-matched model leaderboard. The English Markdown is the content source for the standalone English LaTeX version; the Chinese manuscript follows the same claims and results.
+> **Technical Report v0.4** | Date: 22 October 2026 | Official Code & Benchmark Repository: [https://github.com/jianmliu/agent-pal](https://github.com/jianmliu/agent-pal)
+> 
+> Implemented mechanisms, development audits, multi-model cognitive-behavioral and counterfactual ablation studies (with 72 `bench verify`-validated reproducible trajectories archived under [`bench/out/`](../bench/out/) and [`bench/out/board.html`](../bench/out/board.html)), and proposed full-catalog inferential experiments are distinguished throughout. The English Markdown ([`docs/agent-pal-bench-draft.en.md`](./agent-pal-bench-draft.en.md)) is the content source for the standalone English LaTeX technical report ([`docs/agent-pal-bench-draft.tex`](./agent-pal-bench-draft.tex)); the Chinese technical report ([`docs/agent-pal-bench-draft.md`](./agent-pal-bench-draft.md)) follows the same claims and results.
 
 ## Abstract
 
@@ -303,4 +305,33 @@ Agent-PAL-Bench provides a working protocol and task collection for text-mediate
 8. Karten et al. [The PokeAgent Challenge: Competitive and Long-Context Learning at Scale](https://arxiv.org/abs/2603.15563). 2026 technical report; NeurIPS 2025 competition.
 9. Zhang et al. [Mastering PokeGym: Graph-Guided Multimodal Evolution at Test Time](https://arxiv.org/abs/2604.08340v2). 2026 technical report, revised August 2026.
 
-**Project materials:** [experiment log](agent-pal-bench-experiment-log.en.md), [evidence index](agent-pal-bench-evidence.json), [review findings](agent-pal-bench-review.md), [benchmark design](../specs/agent-pal-bench.md), [Argon `--pure` playthrough report](../specs/argon-pure-playthrough-report.md), [GPT-6.1-Sol `--pure` playthrough & three-model report](../specs/gpt61-pure-playthrough-report.md), [Claude Opus 5.5 `--pure` playthrough & cross-model report](../specs/opus-pure-playthrough-report.md), [Rain Altar 45° symmetry & epistemic probe study](rain-altar-epistemic-trap.zh.md), [Baihe Village priors & exploration character study](baihe-luck-vs-character.zh.md), [Baiyue boss priors, retry RL & no-cheese ablation study](baiyue-prior-vs-reflection.zh.md), [Yangzhou gourd long-horizon detective & spatial graph reuse study](yangzhou-gourd-long-horizon.zh.md), [runner documentation](../../apps/agent-pal/bench/README.md), and [Chinese manuscript](agent-pal-bench-draft.md). Local audit implementation and frozen experiment paths are recorded in the evidence index; these are not public artifact URLs.
+**Open-Source Repository & Technical Report Materials ([https://github.com/jianmliu/agent-pal](https://github.com/jianmliu/agent-pal)):**
+- **Benchmark & Protocol Specification**: [benchmark design (`docs/agent-pal-bench.md`)](./agent-pal-bench.md), [runner & CLI documentation (`bench/README.md`)](../bench/README.md), [experiment log (`docs/agent-pal-bench-experiment-log.en.md`)](./agent-pal-bench-experiment-log.en.md), [evidence index (`docs/agent-pal-bench-evidence.json`)](./agent-pal-bench-evidence.json), and [review findings (`docs/agent-pal-bench-review.md`)](./agent-pal-bench-review.md).
+- **Four Diagnostic Behavioral & Counterfactual Ablation Case Studies**:
+  1. [Dali Rain Altar 45° symmetry & epistemic probe study (`docs/rain-altar-epistemic-trap.zh.md`)](./rain-altar-epistemic-trap.zh.md)
+  2. [Baihe Village priors & exploration character study (`docs/baihe-luck-vs-character.zh.md`)](./baihe-luck-vs-character.zh.md)
+  3. [Yangzhou gourd long-horizon detective & spatial graph reuse study (`docs/yangzhou-gourd-long-horizon.zh.md`)](./yangzhou-gourd-long-horizon.zh.md)
+  4. [Baiyue boss priors, retry RL & no-cheese ablation study (`docs/baiyue-prior-vs-reflection.zh.md`)](./baiyue-prior-vs-reflection.zh.md)
+- **`--pure` Mode End-to-End Full-Game Self-Coding Reports & Runtime Libraries**:
+  - [Three-model `--pure` playthrough comparison (`docs/three-models-play-agent-pal.md`)](./three-models-play-agent-pal.md) | [Chinese version (`docs/three-models-play-agent-pal.zh.md`)](./three-models-play-agent-pal.zh.md)
+  - [Gemini 4 Argon `--pure` playthrough report (`docs/argon-pure-playthrough-report.md`)](./argon-pure-playthrough-report.md) ([`src/argon-pure-lib.js`](../src/argon-pure-lib.js), 731 lines)
+  - [GPT-6.1-Sol `--pure` playthrough report (`docs/gpt61-pure-playthrough-report.md`)](./gpt61-pure-playthrough-report.md) ([`src/gpt61-pure-lib.js`](../src/gpt61-pure-lib.js), 135 lines)
+  - [Claude Opus 5.5 `--pure` playthrough report (`docs/opus-pure-playthrough-report.md`)](./opus-pure-playthrough-report.md) ([`src/opus-pure-lib.js`](../src/opus-pure-lib.js), 1,427 lines)
+- **Overview Blog & Verifiable Trajectory Archive**: [Huashan Sword Summit Blog (`docs/huashan-sword-summit-blog.zh.md`)](./huashan-sword-summit-blog.zh.md), [interactive leaderboard (`bench/out/board.html`)](../bench/out/board.html), [Chinese technical report (`docs/agent-pal-bench-draft.md`)](./agent-pal-bench-draft.md), and [LaTeX source (`docs/agent-pal-bench-draft.tex`)](./agent-pal-bench-draft.tex).
+
+## Citation
+
+If you cite the **Agent-PAL-Bench Technical Report** or use this repository, benchmark tasks, or verifiable trajectories in your research or engineering articles, please use the following BibTeX entry:
+
+```bibtex
+@techreport{liu2026agentpalbench,
+  title       = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction},
+  author      = {Liu, Jianming},
+  year        = {2026},
+  month       = oct,
+  number      = {Agent-PAL-Bench Technical Report v0.4},
+  institution = {Agent-PAL Project},
+  url         = {https://github.com/jianmliu/agent-pal},
+  note        = {Technical Report and Open-Source Benchmark Repository: \url{https://github.com/jianmliu/agent-pal}}
+}
+```

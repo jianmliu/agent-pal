@@ -15,13 +15,13 @@
 \setlength{\emergencystretch}{2em}
 \setlist{nosep,leftmargin=*}
 
-\title{Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction}
-\author{Working draft for anonymous review}
-\date{20 October 2026}
+\title{Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction\\[0.4em]{\large Technical Report v0.4}}
+\author{Jianming Liu\\{\small Official Repository: \url{https://github.com/jianmliu/agent-pal}}}
+\date{22 October 2026}
 \begin{document}
 \maketitle
 
-{\footnotesize Working paper, version 0.4, evidence review dated 21 October 2026. Implemented mechanisms, development audits, exploratory agent runs, and proposed experiments are distinguished throughout. This is not a frozen benchmark release or a capability-matched model leaderboard. The English Markdown is the content source for the standalone English LaTeX version; the Chinese manuscript follows the same claims and results.\par}
+{\footnotesize \textbf{Technical Report v0.4} \,|\, Date: 22 October 2026 \,|\, Official Code \& Benchmark Repository: \url{https://github.com/jianmliu/agent-pal}. Implemented mechanisms, development audits, multi-model cognitive-behavioral and counterfactual ablation studies (with 72 \nolinkurl{bench verify}-validated reproducible trajectories archived under \nolinkurl{bench/out/} and \nolinkurl{bench/out/board.html}), and proposed full-catalog inferential experiments are distinguished throughout. The English Markdown (\nolinkurl{docs/agent-pal-bench-draft.en.md}) is the content source for the standalone English LaTeX technical report (\nolinkurl{docs/agent-pal-bench-draft.tex}); the Chinese technical report (\nolinkurl{docs/agent-pal-bench-draft.md}) follows the same claims and results.\par}
 
 \begin{abstract}
 
@@ -440,5 +440,28 @@ Agent-PAL-Bench provides a working protocol and task collection for text-mediate
 \item Zhang et al. \href{https://arxiv.org/abs/2604.08340v2}{Mastering PokeGym: Graph-Guided Multimodal Evolution at Test Time}. 2026 technical report, revised August 2026.
 
 \end{enumerate}
-\textbf{Project materials:} \href{agent-pal-bench-experiment-log.en.md}{experiment log}, \href{agent-pal-bench-evidence.json}{evidence index}, \href{agent-pal-bench-review.md}{review findings}, \href{../specs/agent-pal-bench.md}{benchmark design}, \href{../specs/argon-pure-playthrough-report.md}{Argon \nolinkurl{--pure} playthrough report}, \href{../specs/gpt61-pure-playthrough-report.md}{GPT-6.1-Sol \nolinkurl{--pure} playthrough \& three-model report}, \href{../specs/opus-pure-playthrough-report.md}{Claude Opus 5.5 \nolinkurl{--pure} playthrough \& cross-model report}, \href{rain-altar-epistemic-trap.zh.md}{Rain Altar 45\ensuremath{^\circ} symmetry \& epistemic probe study}, \href{baihe-luck-vs-character.zh.md}{Baihe Village priors \& exploration character study}, \href{baiyue-prior-vs-reflection.zh.md}{Baiyue boss priors, retry RL \& no-cheese ablation study}, \href{yangzhou-gourd-long-horizon.zh.md}{Yangzhou gourd long-horizon detective \& spatial graph reuse study}, \href{../../apps/agent-pal/bench/README.md}{runner documentation}, and \href{agent-pal-bench-draft.md}{Chinese manuscript}. Local audit implementation and frozen experiment paths are recorded in the evidence index; these are not public artifact URLs.
+\textbf{Open-Source Repository \& Technical Report Materials (\url{https://github.com/jianmliu/agent-pal}):}
+\begin{itemize}
+\item \textbf{Benchmark \& Protocol Specification}: \href{agent-pal-bench.md}{benchmark design (\nolinkurl{docs/agent-pal-bench.md})}, \href{../bench/README.md}{runner \& CLI documentation (\nolinkurl{bench/README.md})}, \href{agent-pal-bench-experiment-log.en.md}{experiment log (\nolinkurl{docs/agent-pal-bench-experiment-log.en.md})}, \href{agent-pal-bench-evidence.json}{evidence index (\nolinkurl{docs/agent-pal-bench-evidence.json})}, and \href{agent-pal-bench-review.md}{review findings (\nolinkurl{docs/agent-pal-bench-review.md})}.
+\item \textbf{Four Diagnostic Behavioral \& Counterfactual Ablation Case Studies}: \href{rain-altar-epistemic-trap.zh.md}{Dali Rain Altar (\nolinkurl{docs/rain-altar-epistemic-trap.zh.md})}, \href{baihe-luck-vs-character.zh.md}{Baihe Village (\nolinkurl{docs/baihe-luck-vs-character.zh.md})}, \href{yangzhou-gourd-long-horizon.zh.md}{Yangzhou Gourd (\nolinkurl{docs/yangzhou-gourd-long-horizon.zh.md})}, and \href{baiyue-prior-vs-reflection.zh.md}{Final Boss Baiyue (\nolinkurl{docs/baiyue-prior-vs-reflection.zh.md})}.
+\item \textbf{\nolinkurl{--pure} Mode End-to-End Full-Game Self-Coding Reports \& Runtime Libraries}: \href{three-models-play-agent-pal.md}{Three-model \nolinkurl{--pure} comparison (\nolinkurl{docs/three-models-play-agent-pal.md})}, \href{argon-pure-playthrough-report.md}{Argon report} (\nolinkurl{src/argon-pure-lib.js}, 731 lines), \href{gpt61-pure-playthrough-report.md}{GPT-6.1-Sol report} (\nolinkurl{src/gpt61-pure-lib.js}, 135 lines), and \href{opus-pure-playthrough-report.md}{Claude Opus 5.5 report} (\nolinkurl{src/opus-pure-lib.js}, 1,427 lines).
+\item \textbf{Overview Blog \& Verifiable Trajectory Archive}: \href{huashan-sword-summit-blog.zh.md}{Huashan Sword Summit Blog (\nolinkurl{docs/huashan-sword-summit-blog.zh.md})}, \href{../bench/out/board.html}{interactive leaderboard (\nolinkurl{bench/out/board.html})}, and \href{agent-pal-bench-draft.md}{Chinese technical report (\nolinkurl{docs/agent-pal-bench-draft.md})}.
+\end{itemize}
+
+\section*{Citation}
+{\small
+\begin{verbatim}
+@techreport{liu2026agentpalbench,
+  title       = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a
+                 Chinese Role-Playing Game Through Text-Based Interaction},
+  author      = {Liu, Jianming},
+  year        = {2026},
+  month       = oct,
+  number      = {Agent-PAL-Bench Technical Report v0.4},
+  institution = {Agent-PAL Project},
+  url         = {https://github.com/jianmliu/agent-pal},
+  note        = {Technical Report and Open-Source Benchmark Repository}
+}
+\end{verbatim}
+}
 \end{document}
