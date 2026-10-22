@@ -2,7 +2,7 @@
 
 > **当 1995 年的《仙剑奇侠传》遇上 2026 年的顶尖大模型——背熟“五灵相克、酒神乾坤”的笔试学霸，到了真刀真枪的迷宫与 Boss 战实操里，究竟能不能打赢一张白纸的“洋和尚”？**
 >
-> 📄 **完整技术报告（Technical Report）**：[*Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction*](./agent-pal-bench-draft.en.md)（[中文版技术报告](./agent-pal-bench-draft.md) ｜ [英文版](./agent-pal-bench-draft.en.md) ｜ [LaTeX 源码](./agent-pal-bench-draft.tex)）  
+> 📄 **完整技术报告（Technical Report）**：[*Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction*](./agent-pal-bench-draft.pdf)（[PDF 排版版](./agent-pal-bench-draft.pdf) ｜ [中文版技术报告](./agent-pal-bench-draft.md) ｜ [英文版](./agent-pal-bench-draft.en.md) ｜ [LaTeX 源码](./agent-pal-bench-draft.tex)）  
 > 💻 **开源评测仓库与 72 局可复现轨迹（GitHub）**：[https://github.com/jianmliu/agent-pal](https://github.com/jianmliu/agent-pal)（含交互式排行榜 [`bench/out/board.html`](../bench/out/board.html) 与 `bench verify` 防篡改重放日志）
 
 如果要在中文世界里挑一款最具图腾意义的传统游戏，作为 AI 智能体（Agent）“华山论剑”的试金石，1995 年大宇资讯出品的 DOS 原版**《仙剑奇侠传》**（*The Legend of Sword and Fairy*）几乎是不二之选。
@@ -243,7 +243,7 @@
 | 档案类别 | 文档标题与章节对应 | 仓库路径 / 链接 |
 | :--- | :--- | :--- |
 | **📄 主技术报告（中文版）** | *Agent-PAL-Bench：以经典中文角色扮演游戏评测文本智能体的长程决策能力（Technical Report v0.4）* | [`docs/agent-pal-bench-draft.md`](./agent-pal-bench-draft.md) |
-| **📄 主技术报告（英文版 / LaTeX）** | *Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction* | [`docs/agent-pal-bench-draft.en.md`](./agent-pal-bench-draft.en.md) ｜ [`docs/agent-pal-bench-draft.tex`](./agent-pal-bench-draft.tex) |
+| **📄 主技术报告（英文版 / PDF / LaTeX）** | *Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction* | [`docs/agent-pal-bench-draft.pdf`](./agent-pal-bench-draft.pdf) ｜ [`docs/agent-pal-bench-draft.en.md`](./agent-pal-bench-draft.en.md) ｜ [`docs/agent-pal-bench-draft.tex`](./agent-pal-bench-draft.tex) |
 | **📐 基准协议规范** | *Agent-PAL-Bench 评测设计规范与 CLI 手册* | [`docs/agent-pal-bench.md`](./agent-pal-bench.md) ｜ [`bench/README.md`](../bench/README.md) |
 | **🔬 专题实操报告一（对应技术报告 `§5.8`）** | *大理祈雨祭坛 45° 等距旋转陷阱、十万字内省死循环与 1 步认知探针* | [`docs/rain-altar-epistemic-trap.zh.md`](./rain-altar-epistemic-trap.zh.md) |
 | **🔬 专题实操报告二（对应技术报告 `§5.9`）** | *白河村三味药材：先验攻略污染、零样本清图开销与止损弹性* | [`docs/baihe-luck-vs-character.zh.md`](./baihe-luck-vs-character.zh.md) |

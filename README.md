@@ -165,6 +165,7 @@ pnpm run demo:compiler
 
 ### 4.1 Agent-PAL-Bench 技术报告与综述博客
 - **📄 主技术报告（Technical Report v0.4）**：
+  - **PDF 正式排版稿**：[`docs/agent-pal-bench-draft.pdf`](./docs/agent-pal-bench-draft.pdf)
   - **中文版**：[*Agent-PAL-Bench：以经典中文角色扮演游戏评测文本智能体的长程决策能力* (`docs/agent-pal-bench-draft.md`)](./docs/agent-pal-bench-draft.md)
   - **英文版**：[*Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction* (`docs/agent-pal-bench-draft.en.md`)](./docs/agent-pal-bench-draft.en.md)
   - **LaTeX 源码**：[`docs/agent-pal-bench-draft.tex`](./docs/agent-pal-bench-draft.tex)
