@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "ollama_minimax-m2.7_cloud-B-20261021T021042",
+  "model": "ollama:minimax-m2.7:cloud",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 7
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "83c5e13",
+  "startedAt": "2026-10-21T02:10:42.095Z",
+  "finishedAt": "2026-10-21T02:14:42.122Z"
+}

@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "codex-cli_gpt-6.1-sol-B-20261021T040223",
+  "model": "codex-cli:gpt-6.1-sol",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 40
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "0884035",
+  "startedAt": "2026-10-21T04:02:23.333Z",
+  "finishedAt": "2026-10-21T04:04:20.444Z"
+}

@@ -1,0 +1,58 @@
+{
+  "runId": "ollama_minimax-m3_cloud-B-baiyue",
+  "model": "ollama:minimax-m3:cloud",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "code": "0884035-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "battleRounds",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 0,
+  "progress": 0,
+  "costMeanOnSuccess": null,
+  "costTotal": 0,
+  "tokensTotal": 256609,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "baiyue-single-origin",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0,
+      "tokensMean": 256609,
+      "costTotal": 0,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "fail-condition": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "fail-condition",
+          "progress": 0,
+          "toolCalls": 10,
+          "successAt": null,
+          "invalidCalls": 0,
+          "tokensIn": 248014,
+          "tokensOut": 8595,
+          "cost": 0,
+          "virtualSeconds": 32.39,
+          "battleRounds": null,
+          "par": 35,
+          "efficiency": null
+        }
+      ]
+    }
+  ]
+}

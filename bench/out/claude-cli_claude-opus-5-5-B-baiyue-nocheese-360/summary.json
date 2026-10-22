@@ -1,0 +1,58 @@
+{
+  "runId": "claude-cli_claude-opus-5-5-B-baiyue-nocheese-360",
+  "model": "claude-cli:claude-opus-5-5",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "0884035-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "battleRounds",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 0,
+  "progress": 0,
+  "costMeanOnSuccess": null,
+  "costTotal": 43.30305160000002,
+  "tokensTotal": 110696213,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "baiyue-single-origin",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0.013888888888888888,
+      "tokensMean": 110696213,
+      "costTotal": 43.30305160000002,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "budget-toolCalls": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "budget-toolCalls",
+          "progress": 0,
+          "toolCalls": 360,
+          "successAt": null,
+          "invalidCalls": 5,
+          "tokensIn": 110601223,
+          "tokensOut": 94990,
+          "cost": 43.30305160000002,
+          "virtualSeconds": 1199.185,
+          "battleRounds": null,
+          "par": 35,
+          "efficiency": null
+        }
+      ]
+    }
+  ]
+}

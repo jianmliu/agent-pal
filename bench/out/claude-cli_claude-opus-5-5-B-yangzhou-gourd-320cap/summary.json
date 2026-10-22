@@ -1,0 +1,58 @@
+{
+  "runId": "claude-cli_claude-opus-5-5-B-yangzhou-gourd-320cap",
+  "model": "claude-cli:claude-opus-5-5",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "66bf78d-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 0.6924049999999999,
+  "costTotal": 0.6924049999999999,
+  "tokensTotal": 1090293,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic19-yangzhou-gourd",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": 280,
+      "invalidRate": 0.07857142857142857,
+      "tokensMean": 1090293,
+      "costTotal": 0.6924049999999999,
+      "costMeanOnSuccess": 0.6924049999999999,
+      "efficiencyMean": 0.264,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 280,
+          "successAt": 280,
+          "invalidCalls": 22,
+          "tokensIn": 1084024,
+          "tokensOut": 6269,
+          "cost": 0.6924049999999999,
+          "virtualSeconds": 641.645,
+          "battleRounds": null,
+          "par": 74,
+          "efficiency": 0.264
+        }
+      ]
+    }
+  ]
+}

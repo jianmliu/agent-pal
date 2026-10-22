@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "claude-cli_claude-opus-5-5-B-s43",
+  "model": "claude-cli:claude-opus-5-5",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seeds": [
+        43
+      ],
+      "par": {
+        "43": 40
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "0884035-dirty",
+  "startedAt": "2026-10-21T04:26:21.393Z",
+  "finishedAt": "2026-10-21T04:30:03.935Z"
+}

@@ -1,0 +1,58 @@
+{
+  "runId": "ollama_minimax-m3_cloud-B-20261021T024726",
+  "model": "ollama:minimax-m3:cloud",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "code": "3f5679d",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 0,
+  "costTotal": 0,
+  "tokensTotal": 737301,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": 65,
+      "invalidRate": 0.27692307692307694,
+      "tokensMean": 737301,
+      "costTotal": 0,
+      "costMeanOnSuccess": 0,
+      "efficiencyMean": 0.108,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 65,
+          "successAt": 65,
+          "invalidCalls": 18,
+          "tokensIn": 725640,
+          "tokensOut": 11661,
+          "cost": 0,
+          "virtualSeconds": 76.008,
+          "battleRounds": null,
+          "par": 7,
+          "efficiency": 0.108
+        }
+      ]
+    }
+  ]
+}

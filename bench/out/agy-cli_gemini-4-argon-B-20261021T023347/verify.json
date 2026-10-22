@@ -1,0 +1,22 @@
+{
+  "verifiedAt": "2026-10-21T02:57:39.033Z",
+  "code": "3f5679d",
+  "episodes": [
+    {
+      "file": "classic48-rain-orbs__s42.jsonl",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "13281849c7c51d811c4af40a91618441f7709bda6161fd89227dea046bc6f0b3",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "code 3f5679d differs from the run's 3ccdd34"
+      ]
+    }
+  ]
+}

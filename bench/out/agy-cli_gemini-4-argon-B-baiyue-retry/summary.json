@@ -1,0 +1,58 @@
+{
+  "runId": "agy-cli_gemini-4-argon-B-baiyue-retry",
+  "model": "agy-cli:gemini-4-argon",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "0884035-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "battleRounds",
+  "battleRoundsMeanOnSuccess": 7,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 0,
+  "costTotal": 0,
+  "tokensTotal": 0,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "baiyue-single-origin",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": 7,
+      "toolCallsMedianOnSuccess": 42,
+      "invalidRate": 0,
+      "tokensMean": 0,
+      "costTotal": 0,
+      "costMeanOnSuccess": 0,
+      "efficiencyMean": 0.833,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 42,
+          "successAt": 42,
+          "invalidCalls": 0,
+          "tokensIn": 0,
+          "tokensOut": 0,
+          "cost": 0,
+          "virtualSeconds": 115.262,
+          "battleRounds": 7,
+          "par": 35,
+          "efficiency": 0.833
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "model": "ollama:gpt-oss:120b-cloud",
+  "quizPromptVersion": 2,
+  "code": "83c5e13",
+  "at": "2026-10-21T02:04:53.521Z",
+  "score": 0,
+  "taskMean": 0,
+  "errors": 4,
+  "cost": null,
+  "tokens": 602,
+  "perTask": {
+    "classic48-rain-orbs": {
+      "version": 1,
+      "n": 5,
+      "correct": 0,
+      "score": 0
+    }
+  },
+  "answers": [
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q1",
+      "q": "圣灵珠要放到祭坛旁的什么东西上?",
+      "answer": "答案:石像",
+      "final": "石像",
+      "correct": false,
+      "error": null,
+      "tokensIn": 221,
+      "tokensOut": 381,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q2",
+      "q": "按画面方位,五座平台正中间放哪颗灵珠?",
+      "answer": "",
+      "final": "",
+      "correct": false,
+      "error": "HTTP 429: {\"error\":\"too many concurrent requests\"}\n",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q3",
+      "q": "按画面方位,左上方的平台放哪颗灵珠?",
+      "answer": "",
+      "final": "",
+      "correct": false,
+      "error": "HTTP 429: {\"error\":\"too many concurrent requests\"}\n",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q4",
+      "q": "按画面方位,右上方的平台放哪颗灵珠?",
+      "answer": "",
+      "final": "",
+      "correct": false,
+      "error": "HTTP 429: {\"error\":\"too many concurrent requests\"}\n",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q5",
+      "q": "按画面方位,左下方的平台放哪颗灵珠?",
+      "answer": "",
+      "final": "",
+      "correct": false,
+      "error": "HTTP 429: {\"error\":\"too many concurrent requests\"}\n",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    }
+  ]
+}

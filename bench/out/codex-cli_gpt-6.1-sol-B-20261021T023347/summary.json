@@ -1,0 +1,58 @@
+{
+  "runId": "codex-cli_gpt-6.1-sol-B-20261021T023347",
+  "model": "codex-cli:gpt-6.1-sol",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "3ccdd34",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 0.054836800000000005,
+  "costTotal": 0.054836800000000005,
+  "tokensTotal": 160392,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": 13,
+      "invalidRate": 0,
+      "tokensMean": 160392,
+      "costTotal": 0.054836800000000005,
+      "costMeanOnSuccess": 0.054836800000000005,
+      "efficiencyMean": 0.538,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 13,
+          "successAt": 13,
+          "invalidCalls": 0,
+          "tokensIn": 159861,
+          "tokensOut": 531,
+          "cost": 0.054836800000000005,
+          "virtualSeconds": 41.945,
+          "battleRounds": null,
+          "par": 7,
+          "efficiency": 0.538
+        }
+      ]
+    }
+  ]
+}

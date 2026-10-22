@@ -1,0 +1,58 @@
+{
+  "runId": "ollama_kimi-k3_cloud-B-baiyue-240cap",
+  "model": "ollama:kimi-k3:cloud",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "code": "0884035-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "battleRounds",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 0,
+  "progress": 0,
+  "costMeanOnSuccess": null,
+  "costTotal": 0,
+  "tokensTotal": 1740114,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "baiyue-single-origin",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0.016666666666666666,
+      "tokensMean": 1740114,
+      "costTotal": 0,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "budget-toolCalls": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "budget-toolCalls",
+          "progress": 0,
+          "toolCalls": 240,
+          "successAt": null,
+          "invalidCalls": 4,
+          "tokensIn": 1707541,
+          "tokensOut": 32573,
+          "cost": 0,
+          "virtualSeconds": 915.26,
+          "battleRounds": null,
+          "par": 35,
+          "efficiency": null
+        }
+      ]
+    }
+  ]
+}

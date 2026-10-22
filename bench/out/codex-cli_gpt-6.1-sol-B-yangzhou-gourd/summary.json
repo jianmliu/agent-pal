@@ -1,0 +1,58 @@
+{
+  "runId": "codex-cli_gpt-6.1-sol-B-yangzhou-gourd",
+  "model": "codex-cli:gpt-6.1-sol",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "66bf78d-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 1.3123676000000002,
+  "costTotal": 1.3123676000000002,
+  "tokensTotal": 8362327,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic19-yangzhou-gourd",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": 218,
+      "invalidRate": 0.0779816513761468,
+      "tokensMean": 8362327,
+      "costTotal": 1.3123676000000002,
+      "costMeanOnSuccess": 1.3123676000000002,
+      "efficiencyMean": 0.339,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 218,
+          "successAt": 218,
+          "invalidCalls": 17,
+          "tokensIn": 8354450,
+          "tokensOut": 7877,
+          "cost": 1.3123676000000002,
+          "virtualSeconds": 448.445,
+          "battleRounds": null,
+          "par": 74,
+          "efficiency": 0.339
+        }
+      ]
+    }
+  ]
+}

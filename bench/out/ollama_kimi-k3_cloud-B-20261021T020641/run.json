@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "ollama_kimi-k3_cloud-B-20261021T020641",
+  "model": "ollama:kimi-k3:cloud",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 7
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "83c5e13",
+  "startedAt": "2026-10-21T02:06:41.895Z",
+  "finishedAt": "2026-10-21T02:08:14.221Z"
+}

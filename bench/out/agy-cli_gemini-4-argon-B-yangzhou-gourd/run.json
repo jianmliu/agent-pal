@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "agy-cli_gemini-4-argon-B-yangzhou-gourd",
+  "model": "agy-cli:gemini-4-argon",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic19-yangzhou-gourd",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 74
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "66bf78d-dirty",
+  "startedAt": "2026-10-22T14:11:04.807Z",
+  "finishedAt": "2026-10-22T14:26:05.079Z"
+}

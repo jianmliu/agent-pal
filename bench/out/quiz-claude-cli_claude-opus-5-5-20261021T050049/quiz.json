@@ -1,0 +1,189 @@
+{
+  "model": "claude-cli:claude-opus-5-5",
+  "quizPromptVersion": 2,
+  "code": "0884035-dirty",
+  "at": "2026-10-21T05:00:49.571Z",
+  "score": 0.07692307692307693,
+  "taskMean": 0.1111111111111111,
+  "errors": 0,
+  "cost": 0.17320800000000003,
+  "tokens": 14809,
+  "perTask": {
+    "classic48-rain-orbs": {
+      "version": 1,
+      "n": 5,
+      "correct": 0,
+      "score": 0
+    },
+    "classic10-baihe-medicine": {
+      "version": 1,
+      "n": 5,
+      "correct": 0,
+      "score": 0
+    },
+    "baiyue-single-origin": {
+      "version": 1,
+      "n": 3,
+      "correct": 1,
+      "score": 0.3333333333333333
+    }
+  },
+  "answers": [
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q1",
+      "q": "圣灵珠要放到祭坛旁的什么东西上?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 796,
+      "tokensOut": 328,
+      "cost": 0.012920000000000001
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q2",
+      "q": "按画面方位,五座平台正中间放哪颗灵珠?",
+      "answer": "答案:土灵珠",
+      "final": "土灵珠",
+      "correct": false,
+      "error": null,
+      "tokensIn": 796,
+      "tokensOut": 169,
+      "cost": 0.00974
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q3",
+      "q": "按画面方位,左上方的平台放哪颗灵珠?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 796,
+      "tokensOut": 168,
+      "cost": 0.00972
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q4",
+      "q": "按画面方位,右上方的平台放哪颗灵珠?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 795,
+      "tokensOut": 220,
+      "cost": 0.010752000000000001
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q5",
+      "q": "按画面方位,左下方的平台放哪颗灵珠?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 796,
+      "tokensOut": 156,
+      "cost": 0.00948
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q1",
+      "q": "药方里需要李逍遥自己去弄到的三味药材是什么?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 789,
+      "tokensOut": 480,
+      "cost": 0.015904
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q2",
+      "q": "银杏果要到哪里去摘?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 778,
+      "tokensOut": 439,
+      "cost": 0.014995999999999999
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q3",
+      "q": "钓鲤鱼用的钓竿可以向村里的什么人借?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 790,
+      "tokensOut": 297,
+      "cost": 0.012251999999999999
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q4",
+      "q": "借到钓竿后要站在什么地方钓鲤鱼?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 788,
+      "tokensOut": 405,
+      "cost": 0.014395999999999999
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q5",
+      "q": "鹿跑得快追不上,要靠什么东西才能拿到鹿茸?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 794,
+      "tokensOut": 351,
+      "cost": 0.013364000000000001
+    },
+    {
+      "task": "baiyue-single-origin",
+      "id": "q1",
+      "q": "乾坤一掷是哪位队员的技能？",
+      "answer": "答案:林月如",
+      "final": "林月如",
+      "correct": false,
+      "error": null,
+      "tokensIn": 772,
+      "tokensOut": 438,
+      "cost": 0.014928
+    },
+    {
+      "task": "baiyue-single-origin",
+      "id": "q2",
+      "q": "酒神是哪位队员的技能？",
+      "answer": "DOS仙剑: 酒神 is Li Xiaoyao's skill, learned from 酒剑仙's... Actually 酒神 is a Li Xiaoyao spell learned late (from 剑仙's teaching, uses 酒 items). Yes, 李逍遥.\n\n答案:李逍遥",
+      "final": "李逍遥",
+      "correct": true,
+      "error": null,
+      "tokensIn": 769,
+      "tokensOut": 105,
+      "cost": 0.008244000000000001
+    },
+    {
+      "task": "baiyue-single-origin",
+      "id": "q3",
+      "q": "赵灵儿用于全队恢复HP的法术叫什么？",
+      "answer": "答案:观音咒",
+      "final": "观音咒",
+      "correct": false,
+      "error": null,
+      "tokensIn": 780,
+      "tokensOut": 1014,
+      "cost": 0.026512
+    }
+  ]
+}

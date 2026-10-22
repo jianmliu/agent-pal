@@ -1,0 +1,58 @@
+{
+  "runId": "ollama_deepseek-v4-pro_0813-cloud-B-20261021T024726",
+  "model": "ollama:deepseek-v4-pro:0813-cloud",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "code": "3f5679d",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 0,
+  "progress": 0,
+  "costMeanOnSuccess": null,
+  "costTotal": null,
+  "tokensTotal": 0,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0,
+      "tokensMean": 0,
+      "costTotal": null,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "harness-crash (exit null)": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "harness-crash (exit null)",
+          "progress": 0,
+          "toolCalls": 0,
+          "successAt": null,
+          "invalidCalls": 0,
+          "tokensIn": 0,
+          "tokensOut": 0,
+          "cost": null,
+          "virtualSeconds": 0,
+          "battleRounds": null,
+          "par": 7,
+          "efficiency": null
+        }
+      ]
+    }
+  ]
+}

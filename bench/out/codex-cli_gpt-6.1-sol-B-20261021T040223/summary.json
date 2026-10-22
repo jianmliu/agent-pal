@@ -1,0 +1,58 @@
+{
+  "runId": "codex-cli_gpt-6.1-sol-B-20261021T040223",
+  "model": "codex-cli:gpt-6.1-sol",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "0884035",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 0.386634,
+  "costTotal": 0.386634,
+  "tokensTotal": 2294709,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": 117,
+      "invalidRate": 0.06837606837606838,
+      "tokensMean": 2294709,
+      "costTotal": 0.386634,
+      "costMeanOnSuccess": 0.386634,
+      "efficiencyMean": 0.342,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 117,
+          "successAt": 117,
+          "invalidCalls": 8,
+          "tokensIn": 2291857,
+          "tokensOut": 2852,
+          "cost": 0.386634,
+          "virtualSeconds": 264.577,
+          "battleRounds": null,
+          "par": 40,
+          "efficiency": 0.342
+        }
+      ]
+    }
+  ]
+}

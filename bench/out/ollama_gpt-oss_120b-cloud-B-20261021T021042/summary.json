@@ -1,0 +1,58 @@
+{
+  "runId": "ollama_gpt-oss_120b-cloud-B-20261021T021042",
+  "model": "ollama:gpt-oss:120b-cloud",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "code": "83c5e13",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 0,
+  "progress": 0,
+  "costMeanOnSuccess": null,
+  "costTotal": 0,
+  "tokensTotal": 483644,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0.025,
+      "tokensMean": 483644,
+      "costTotal": 0,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "budget-toolCalls": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "budget-toolCalls",
+          "progress": 0,
+          "toolCalls": 80,
+          "successAt": null,
+          "invalidCalls": 2,
+          "tokensIn": 463783,
+          "tokensOut": 19861,
+          "cost": 0,
+          "virtualSeconds": 31.873,
+          "battleRounds": null,
+          "par": 7,
+          "efficiency": null
+        }
+      ]
+    }
+  ]
+}

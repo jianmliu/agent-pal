@@ -1,0 +1,58 @@
+{
+  "runId": "claude-cli_claude-opus-5-5-B-20261021T023347",
+  "model": "claude-cli:claude-opus-5-5",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "3ccdd34",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 0.17296219999999998,
+  "costTotal": 0.17296219999999998,
+  "tokensTotal": 87817,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": 10,
+      "invalidRate": 0,
+      "tokensMean": 87817,
+      "costTotal": 0.17296219999999998,
+      "costMeanOnSuccess": 0.17296219999999998,
+      "efficiencyMean": 0.7,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 10,
+          "successAt": 10,
+          "invalidCalls": 0,
+          "tokensIn": 86214,
+          "tokensOut": 1603,
+          "cost": 0.17296219999999998,
+          "virtualSeconds": 40.591,
+          "battleRounds": null,
+          "par": 7,
+          "efficiency": 0.7
+        }
+      ]
+    }
+  ]
+}

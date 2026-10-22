@@ -1,0 +1,58 @@
+{
+  "runId": "ollama_deepseek-v4.1-flash_cloud-B-baiyue-nocheese",
+  "model": "ollama:deepseek-v4.1-flash:cloud",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "code": "0884035-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "battleRounds",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 0,
+  "progress": 0,
+  "costMeanOnSuccess": null,
+  "costTotal": 0,
+  "tokensTotal": 2568019,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "baiyue-single-origin",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0.18292682926829268,
+      "tokensMean": 2568019,
+      "costTotal": 0,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "stuck": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "stuck",
+          "progress": 0,
+          "toolCalls": 82,
+          "successAt": null,
+          "invalidCalls": 15,
+          "tokensIn": 2449144,
+          "tokensOut": 118875,
+          "cost": 0,
+          "virtualSeconds": 407.971,
+          "battleRounds": null,
+          "par": 35,
+          "efficiency": null
+        }
+      ]
+    }
+  ]
+}

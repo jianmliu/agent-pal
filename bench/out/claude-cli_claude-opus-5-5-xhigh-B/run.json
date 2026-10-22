@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "claude-cli_claude-opus-5-5-xhigh-B",
+  "model": "claude-cli:claude-opus-5-5",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 7
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "0104ad6",
+  "startedAt": "2026-10-21T03:45:45.313Z",
+  "finishedAt": "2026-10-21T03:46:24.856Z"
+}

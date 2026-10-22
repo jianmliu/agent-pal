@@ -1,0 +1,58 @@
+{
+  "runId": "claude-cli_claude-opus-5-5-B-s43-240cap",
+  "model": "claude-cli:claude-opus-5-5",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "0884035-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 1.9008070000000004,
+  "costTotal": 1.9008070000000004,
+  "tokensTotal": 4251602,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": 143,
+      "invalidRate": 0.02097902097902098,
+      "tokensMean": 4251602,
+      "costTotal": 1.9008070000000004,
+      "costMeanOnSuccess": 1.9008070000000004,
+      "efficiencyMean": 0.28,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 43,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 143,
+          "successAt": 143,
+          "invalidCalls": 3,
+          "tokensIn": 4235555,
+          "tokensOut": 16047,
+          "cost": 1.9008070000000004,
+          "virtualSeconds": 341.02,
+          "battleRounds": null,
+          "par": 40,
+          "efficiency": 0.28
+        }
+      ]
+    }
+  ]
+}

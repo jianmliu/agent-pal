@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "claude-cli_claude-opus-5-5-B-20261021T040221",
+  "model": "claude-cli:claude-opus-5-5",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 40
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "0884035",
+  "startedAt": "2026-10-21T04:02:21.138Z",
+  "finishedAt": "2026-10-21T04:08:09.570Z"
+}

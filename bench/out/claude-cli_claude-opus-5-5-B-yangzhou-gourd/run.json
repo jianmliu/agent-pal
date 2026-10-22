@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "claude-cli_claude-opus-5-5-B-yangzhou-gourd",
+  "model": "claude-cli:claude-opus-5-5",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic19-yangzhou-gourd",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 74
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "66bf78d-dirty",
+  "startedAt": "2026-10-22T13:47:30.183Z",
+  "finishedAt": "2026-10-22T13:58:36.511Z"
+}

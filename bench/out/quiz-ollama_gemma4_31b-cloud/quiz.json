@@ -1,0 +1,189 @@
+{
+  "model": "ollama:gemma4:31b-cloud",
+  "quizPromptVersion": 2,
+  "code": "0884035-dirty",
+  "at": "2026-10-21T05:11:28.119Z",
+  "score": 0.07692307692307693,
+  "taskMean": 0.06666666666666667,
+  "errors": 0,
+  "cost": 0,
+  "tokens": 2117,
+  "perTask": {
+    "classic48-rain-orbs": {
+      "version": 1,
+      "n": 5,
+      "correct": 0,
+      "score": 0
+    },
+    "classic10-baihe-medicine": {
+      "version": 1,
+      "n": 5,
+      "correct": 1,
+      "score": 0.2
+    },
+    "baiyue-single-origin": {
+      "version": 1,
+      "n": 3,
+      "correct": 0,
+      "score": 0
+    }
+  },
+  "answers": [
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q1",
+      "q": "圣灵珠要放到祭坛旁的什么东西上?",
+      "answer": "答案:石台",
+      "final": "石台",
+      "correct": false,
+      "error": null,
+      "tokensIn": 157,
+      "tokensOut": 5,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q2",
+      "q": "按画面方位,五座平台正中间放哪颗灵珠?",
+      "answer": "答案:圣灵珠",
+      "final": "圣灵珠",
+      "correct": false,
+      "error": null,
+      "tokensIn": 160,
+      "tokensOut": 6,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q3",
+      "q": "按画面方位,左上方的平台放哪颗灵珠?",
+      "answer": "答案:红灵珠",
+      "final": "红灵珠",
+      "correct": false,
+      "error": null,
+      "tokensIn": 159,
+      "tokensOut": 6,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q4",
+      "q": "按画面方位,右上方的平台放哪颗灵珠?",
+      "answer": "答案:绿灵珠",
+      "final": "绿灵珠",
+      "correct": false,
+      "error": null,
+      "tokensIn": 158,
+      "tokensOut": 6,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q5",
+      "q": "按画面方位,左下方的平台放哪颗灵珠?",
+      "answer": "答案:绿灵珠",
+      "final": "绿灵珠",
+      "correct": false,
+      "error": null,
+      "tokensIn": 159,
+      "tokensOut": 6,
+      "cost": 0
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q1",
+      "q": "药方里需要李逍遥自己去弄到的三味药材是什么?",
+      "answer": "答案:三叶草、千年灵芝、冰川雪莲",
+      "final": "三叶草、千年灵芝、冰川雪莲",
+      "correct": false,
+      "error": null,
+      "tokensIn": 163,
+      "tokensOut": 15,
+      "cost": 0
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q2",
+      "q": "银杏果要到哪里去摘?",
+      "answer": "答案:南山",
+      "final": "南山",
+      "correct": false,
+      "error": null,
+      "tokensIn": 155,
+      "tokensOut": 5,
+      "cost": 0
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q3",
+      "q": "钓鲤鱼用的钓竿可以向村里的什么人借?",
+      "answer": "答案:村长",
+      "final": "村长",
+      "correct": false,
+      "error": null,
+      "tokensIn": 160,
+      "tokensOut": 5,
+      "cost": 0
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q4",
+      "q": "借到钓竿后要站在什么地方钓鲤鱼?",
+      "answer": "答案:河边",
+      "final": "河边",
+      "correct": false,
+      "error": null,
+      "tokensIn": 159,
+      "tokensOut": 5,
+      "cost": 0
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q5",
+      "q": "鹿跑得快追不上,要靠什么东西才能拿到鹿茸?",
+      "answer": "答案:陷阱",
+      "final": "陷阱",
+      "correct": true,
+      "error": null,
+      "tokensIn": 162,
+      "tokensOut": 5,
+      "cost": 0
+    },
+    {
+      "task": "baiyue-single-origin",
+      "id": "q1",
+      "q": "乾坤一掷是哪位队员的技能？",
+      "answer": "答案:林月如",
+      "final": "林月如",
+      "correct": false,
+      "error": null,
+      "tokensIn": 147,
+      "tokensOut": 6,
+      "cost": 0
+    },
+    {
+      "task": "baiyue-single-origin",
+      "id": "q2",
+      "q": "酒神是哪位队员的技能？",
+      "answer": "答案:刘协洲",
+      "final": "刘协洲",
+      "correct": false,
+      "error": null,
+      "tokensIn": 145,
+      "tokensOut": 6,
+      "cost": 0
+    },
+    {
+      "task": "baiyue-single-origin",
+      "id": "q3",
+      "q": "赵灵儿用于全队恢复HP的法术叫什么？",
+      "answer": "答案:天籁之音",
+      "final": "天籁之音",
+      "correct": false,
+      "error": null,
+      "tokensIn": 150,
+      "tokensOut": 7,
+      "cost": 0
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "scoring": "battleRounds",
+  "runId": "codex-cli_gpt-6.1-sol-B-baiyue-nocheese",
+  "model": "codex-cli:gpt-6.1-sol",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "baiyue-single-origin",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 35
+      },
+      "fingerprint": {
+        "task": "e1ab3166715096c7ab1a7d7e77c3626e75a5fb226f053ed97caff8a234a22038",
+        "save": "bd440080023640ed50d1a871654725783d8a94b1e29848ed80fa20b0c35dff58"
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "0884035-dirty",
+  "startedAt": "2026-10-21T16:32:03.946Z",
+  "runtime": {
+    "node": "v25.2.1",
+    "agent": "c1cb496991e91bb9232bd60560a1d08e58b14206222d5d4325460aced7ec17c5",
+    "engine": "3fd4841b40424a0b9dbe4c409cca5134b8eea168f36ea3913acf0c72187e343c",
+    "bench": "c530fa5bdc8c60c6567ace9a844c3190e0e11825bff1b2487749172655416877",
+    "assets": "f1b6ed6c9884a73672c83fea1ff0671be5af9825c5a3174e363710c4dcd4c643"
+  },
+  "finishedAt": "2026-10-21T16:38:32.432Z"
+}

@@ -1,0 +1,58 @@
+{
+  "runId": "ollama_minimax-m3_cloud-B-20261021T042101",
+  "model": "ollama:minimax-m3:cloud",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "code": "0884035-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 0,
+  "progress": 0.25,
+  "costMeanOnSuccess": null,
+  "costTotal": 0,
+  "tokensTotal": 1129732,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0.25,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0.14166666666666666,
+      "tokensMean": 1129732,
+      "costTotal": 0,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "budget-toolCalls": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "budget-toolCalls",
+          "progress": 0.25,
+          "toolCalls": 120,
+          "successAt": null,
+          "invalidCalls": 17,
+          "tokensIn": 1122378,
+          "tokensOut": 7354,
+          "cost": 0,
+          "virtualSeconds": 104.316,
+          "battleRounds": null,
+          "par": 40,
+          "efficiency": null
+        }
+      ]
+    }
+  ]
+}

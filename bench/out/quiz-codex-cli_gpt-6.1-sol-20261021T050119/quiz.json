@@ -1,0 +1,189 @@
+{
+  "model": "codex-cli:gpt-6.1-sol",
+  "quizPromptVersion": 2,
+  "code": "0884035-dirty",
+  "at": "2026-10-21T05:01:19.272Z",
+  "score": 0.6153846153846154,
+  "taskMean": 0.6222222222222222,
+  "errors": 0,
+  "cost": null,
+  "tokens": 0,
+  "perTask": {
+    "classic48-rain-orbs": {
+      "version": 1,
+      "n": 5,
+      "correct": 1,
+      "score": 0.2
+    },
+    "classic10-baihe-medicine": {
+      "version": 1,
+      "n": 5,
+      "correct": 5,
+      "score": 1
+    },
+    "baiyue-single-origin": {
+      "version": 1,
+      "n": 3,
+      "correct": 2,
+      "score": 0.6666666666666666
+    }
+  },
+  "answers": [
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q1",
+      "q": "圣灵珠要放到祭坛旁的什么东西上?",
+      "answer": "答案:石碑",
+      "final": "石碑",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q2",
+      "q": "按画面方位,五座平台正中间放哪颗灵珠?",
+      "answer": "答案:土灵珠",
+      "final": "土灵珠",
+      "correct": false,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q3",
+      "q": "按画面方位,左上方的平台放哪颗灵珠?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q4",
+      "q": "按画面方位,右上方的平台放哪颗灵珠?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q5",
+      "q": "按画面方位,左下方的平台放哪颗灵珠?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q1",
+      "q": "药方里需要李逍遥自己去弄到的三味药材是什么?",
+      "answer": "答案:银杏子、鹿茸、鲤鱼",
+      "final": "银杏子、鹿茸、鲤鱼",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q2",
+      "q": "银杏果要到哪里去摘?",
+      "answer": "答案:韩医仙家门前的银杏树",
+      "final": "韩医仙家门前的银杏树",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q3",
+      "q": "钓鲤鱼用的钓竿可以向村里的什么人借?",
+      "answer": "答案:渔夫",
+      "final": "渔夫",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q4",
+      "q": "借到钓竿后要站在什么地方钓鲤鱼?",
+      "answer": "答案:村外的小桥上",
+      "final": "村外的小桥上",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q5",
+      "q": "鹿跑得快追不上,要靠什么东西才能拿到鹿茸?",
+      "answer": "答案:捕兽夹",
+      "final": "捕兽夹",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "baiyue-single-origin",
+      "id": "q1",
+      "q": "乾坤一掷是哪位队员的技能？",
+      "answer": "答案:林月如",
+      "final": "林月如",
+      "correct": false,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "baiyue-single-origin",
+      "id": "q2",
+      "q": "酒神是哪位队员的技能？",
+      "answer": "答案:李逍遥",
+      "final": "李逍遥",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "baiyue-single-origin",
+      "id": "q3",
+      "q": "赵灵儿用于全队恢复HP的法术叫什么？",
+      "answer": "答案:五气朝元",
+      "final": "五气朝元",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    }
+  ]
+}

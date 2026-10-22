@@ -1,0 +1,20 @@
+{
+  "verifiedAt": "2026-10-21T03:28:38.096Z",
+  "code": "0104ad6",
+  "episodes": [
+    {
+      "file": "classic48-rain-orbs__s42.jsonl",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "57fc1d2c804ab66751d1839c81241aa23cfe1ab67a32a14da4a6c491f1e26522",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": []
+    }
+  ]
+}

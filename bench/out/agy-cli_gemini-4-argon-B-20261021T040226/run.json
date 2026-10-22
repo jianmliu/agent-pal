@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "agy-cli_gemini-4-argon-B-20261021T040226",
+  "model": "agy-cli:gemini-4-argon",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 40
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "0884035",
+  "startedAt": "2026-10-21T04:02:26.167Z",
+  "finishedAt": "2026-10-21T04:19:12.480Z"
+}

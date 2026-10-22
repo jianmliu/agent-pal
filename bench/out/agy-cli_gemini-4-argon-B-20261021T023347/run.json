@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "agy-cli_gemini-4-argon-B-20261021T023347",
+  "model": "agy-cli:gemini-4-argon",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 7
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "3ccdd34",
+  "startedAt": "2026-10-21T02:33:47.911Z",
+  "finishedAt": "2026-10-21T02:37:49.118Z"
+}

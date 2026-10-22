@@ -1,0 +1,135 @@
+{
+  "model": "codex-cli:gpt-6.1-sol",
+  "quizPromptVersion": 2,
+  "code": "66bf78d-dirty",
+  "at": "2026-10-22T13:48:07.862Z",
+  "score": 0.5555555555555556,
+  "taskMean": 0.575,
+  "errors": 0,
+  "cost": null,
+  "tokens": 0,
+  "perTask": {
+    "classic19-yangzhou-night": {
+      "version": 1,
+      "n": 4,
+      "correct": 3,
+      "score": 0.75
+    },
+    "classic19-yangzhou-gourd": {
+      "version": 1,
+      "n": 5,
+      "correct": 2,
+      "score": 0.4
+    }
+  },
+  "answers": [
+    {
+      "task": "classic19-yangzhou-night",
+      "id": "q1",
+      "q": "扬州城当时为什么只许进、不许出?",
+      "answer": "答案:城内闹女飞贼，官府封城缉捕",
+      "final": "城内闹女飞贼，官府封城缉捕",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic19-yangzhou-night",
+      "id": "q2",
+      "q": "扬州城里一共有几家客栈可以投宿?",
+      "answer": "答案:一家",
+      "final": "一家",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic19-yangzhou-night",
+      "id": "q3",
+      "q": "客栈掌柜给你们安排的是哪一间房?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic19-yangzhou-night",
+      "id": "q4",
+      "q": "住进房间以后,要做什么才能让剧情推进到半夜?",
+      "answer": "答案:调查床铺睡觉",
+      "final": "调查床铺睡觉",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic19-yangzhou-gourd",
+      "id": "q1",
+      "q": "从女飞贼手里夺回的布包,应该还给客栈里的什么人?",
+      "answer": "答案:古董商",
+      "final": "古董商",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic19-yangzhou-gourd",
+      "id": "q2",
+      "q": "在城里向谁打听,能得知有个新搬来的寡妇形迹可疑?",
+      "answer": "答案:小女孩",
+      "final": "小女孩",
+      "correct": false,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic19-yangzhou-gourd",
+      "id": "q3",
+      "q": "那个可疑的寡妇叫什么名字?",
+      "answer": "答案:姬三娘",
+      "final": "姬三娘",
+      "correct": true,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic19-yangzhou-gourd",
+      "id": "q4",
+      "q": "李逍遥是在什么地方亲眼看到寡妇偷偷丢掉东西的?",
+      "answer": "答案:寡妇家后院",
+      "final": "寡妇家后院",
+      "correct": false,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    },
+    {
+      "task": "classic19-yangzhou-gourd",
+      "id": "q5",
+      "q": "紫金葫芦最后是在哪里找到的?",
+      "answer": "答案:姬三娘家的地下密室",
+      "final": "姬三娘家的地下密室",
+      "correct": false,
+      "error": null,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cost": null
+    }
+  ]
+}

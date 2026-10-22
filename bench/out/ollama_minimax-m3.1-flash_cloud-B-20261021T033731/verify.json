@@ -1,0 +1,22 @@
+{
+  "verifiedAt": "2026-10-21T03:44:32.907Z",
+  "code": "0104ad6",
+  "episodes": [
+    {
+      "file": "classic48-rain-orbs__s42.jsonl",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "claimed": {
+        "success": false,
+        "endReason": "harness-crash (exit null)"
+      },
+      "digest": "375db0db4d54dac64370cd9d839f42c3645afb774a9584dae576876fbf242349",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "the episode did not finish normally (no end event); only its calls were replayed"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "runId": "codex-cli_gpt-6.1-sol-B-baiyue-nocheese",
+  "model": "codex-cli:gpt-6.1-sol",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "0884035-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "battleRounds",
+  "battleRoundsMeanOnSuccess": 37,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 0.8428228000000001,
+  "costTotal": 0.8428228000000001,
+  "tokensTotal": 4858525,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "baiyue-single-origin",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": 37,
+      "toolCallsMedianOnSuccess": 176,
+      "invalidRate": 0.017045454545454544,
+      "tokensMean": 4858525,
+      "costTotal": 0.8428228000000001,
+      "costMeanOnSuccess": 0.8428228000000001,
+      "efficiencyMean": 0.199,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 176,
+          "successAt": 176,
+          "invalidCalls": 3,
+          "tokensIn": 4848749,
+          "tokensOut": 9776,
+          "cost": 0.8428228000000001,
+          "virtualSeconds": 546.823,
+          "battleRounds": 37,
+          "par": 35,
+          "efficiency": 0.199
+        }
+      ]
+    }
+  ]
+}

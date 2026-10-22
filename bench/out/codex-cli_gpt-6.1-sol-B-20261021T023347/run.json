@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "codex-cli_gpt-6.1-sol-B-20261021T023347",
+  "model": "codex-cli:gpt-6.1-sol",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 7
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "3ccdd34",
+  "startedAt": "2026-10-21T02:33:47.911Z",
+  "finishedAt": "2026-10-21T02:34:20.452Z"
+}

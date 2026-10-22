@@ -1,0 +1,81 @@
+{
+  "model": "ollama:minimax-m3:cloud",
+  "quizPromptVersion": 2,
+  "code": "3f5679d",
+  "at": "2026-10-21T02:47:26.006Z",
+  "score": 0,
+  "taskMean": 0,
+  "errors": 0,
+  "cost": 0,
+  "tokens": 17214,
+  "perTask": {
+    "classic48-rain-orbs": {
+      "version": 1,
+      "n": 5,
+      "correct": 0,
+      "score": 0
+    }
+  },
+  "answers": [
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q1",
+      "q": "圣灵珠要放到祭坛旁的什么东西上?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 295,
+      "tokensOut": 895,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q2",
+      "q": "按画面方位,五座平台正中间放哪颗灵珠?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 299,
+      "tokensOut": 903,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q3",
+      "q": "按画面方位,左上方的平台放哪颗灵珠?",
+      "answer": "答案:不知道",
+      "final": "不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 297,
+      "tokensOut": 445,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q4",
+      "q": "按画面方位,右上方的平台放哪颗灵珠?",
+      "answer": "答案:风灵珠",
+      "final": "风灵珠",
+      "correct": false,
+      "error": null,
+      "tokensIn": 319,
+      "tokensOut": 8613,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q5",
+      "q": "按画面方位,左下方的平台放哪颗灵珠?",
+      "answer": "答案:火灵珠",
+      "final": "火灵珠",
+      "correct": false,
+      "error": null,
+      "tokensIn": 320,
+      "tokensOut": 4828,
+      "cost": 0
+    }
+  ]
+}

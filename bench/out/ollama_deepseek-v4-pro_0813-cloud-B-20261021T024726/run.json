@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "ollama_deepseek-v4-pro_0813-cloud-B-20261021T024726",
+  "model": "ollama:deepseek-v4-pro:0813-cloud",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 7
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "3f5679d",
+  "startedAt": "2026-10-21T02:47:26.126Z",
+  "finishedAt": "2026-10-21T02:57:26.155Z"
+}

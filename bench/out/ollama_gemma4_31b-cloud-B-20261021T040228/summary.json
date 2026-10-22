@@ -1,0 +1,58 @@
+{
+  "runId": "ollama_gemma4_31b-cloud-B-20261021T040228",
+  "model": "ollama:gemma4:31b-cloud",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "code": "0884035",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 0,
+  "progress": 0,
+  "costMeanOnSuccess": null,
+  "costTotal": 0,
+  "tokensTotal": 850329,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0,
+      "tokensMean": 850329,
+      "costTotal": 0,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "budget-toolCalls": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "budget-toolCalls",
+          "progress": 0,
+          "toolCalls": 120,
+          "successAt": null,
+          "invalidCalls": 0,
+          "tokensIn": 849001,
+          "tokensOut": 1328,
+          "cost": 0,
+          "virtualSeconds": 102.319,
+          "battleRounds": null,
+          "par": 40,
+          "efficiency": null
+        }
+      ]
+    }
+  ]
+}
