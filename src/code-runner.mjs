@@ -18,6 +18,92 @@ import util from 'node:util';
 import { SMSG } from '@onchainpal/agent-pal-protocol';
 
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+
+function instrumentLoops(src) {
+  let out = 'globalThis.__lg = 0;\n';
+  let i = 0;
+  const n = src.length;
+  const isIdent = (ch) => (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch === '_' || ch === '$';
+
+  const skipStringOrComment = () => {
+    const ch = src[i];
+    if (ch === "'" || ch === '"' || ch === '`') {
+      const q = ch;
+      out += src[i++];
+      while (i < n) {
+        if (src[i] === '\\') {
+          out += src.slice(i, i + 2);
+          i += 2;
+          continue;
+        }
+        if (src[i] === q) {
+          out += src[i++];
+          break;
+        }
+        out += src[i++];
+      }
+      return true;
+    }
+    if (ch === '/' && src[i + 1] === '/') {
+      while (i < n && src[i] !== '\n') out += src[i++];
+      return true;
+    }
+    if (ch === '/' && src[i + 1] === '*') {
+      out += src.slice(i, i + 2);
+      i += 2;
+      while (i < n && !(src[i] === '*' && src[i + 1] === '/')) out += src[i++];
+      if (i < n) {
+        out += src.slice(i, i + 2);
+        i += 2;
+      }
+      return true;
+    }
+    return false;
+  };
+
+  while (i < n) {
+    if (skipStringOrComment()) continue;
+    const prev = i > 0 ? src[i - 1] : '';
+    if (!isIdent(prev) && prev !== '.') {
+      let kwLen = 0;
+      if (src.startsWith('while', i) && !isIdent(src[i + 5] || '')) kwLen = 5;
+      else if (src.startsWith('for', i) && !isIdent(src[i + 3] || '')) kwLen = 3;
+      if (kwLen > 0) {
+        out += src.slice(i, i + kwLen);
+        i += kwLen;
+        while (i < n && /\s/.test(src[i])) out += src[i++];
+        if (src.startsWith('await', i) && !isIdent(src[i + 5] || '')) {
+          out += src.slice(i, i + 5);
+          i += 5;
+          while (i < n && /\s/.test(src[i])) out += src[i++];
+        }
+        if (src[i] === '(') {
+          let depth = 0;
+          while (i < n) {
+            if (skipStringOrComment()) continue;
+            const c = src[i];
+            out += c;
+            i++;
+            if (c === '(') depth++;
+            else if (c === ')') {
+              depth--;
+              if (depth === 0) break;
+            }
+          }
+          while (i < n && /\s/.test(src[i])) out += src[i++];
+          if (src[i] === '{') {
+            out += '{if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");';
+            i++;
+            continue;
+          }
+        }
+        continue;
+      }
+    }
+    out += src[i++];
+  }
+  return out;
+}
 const TOOL_NAME_RE = /^[A-Za-z][A-Za-z0-9_-]{0,60}$/;
 const capturedSetTimeout = globalThis.__agentPalRealSetTimeout || globalThis.setTimeout;
 const capturedClearTimeout = globalThis.clearTimeout;
@@ -279,12 +365,35 @@ export function createCodeRunner(opts = {}) {
       }
     };
     const resolveCtx = () => {
+      globalThis.__lg = 0;
+      globalThis.__lgLastMs = realNowMs();
       const target = !ctx.finished ? ctx : activeRuns.at(-1);
-      if (!target) throw new RunCodeAbortedError(ctx.runId);
-      if (target.abortedReason) throw new RunCodeAbortedError(target.runId, target.abortedReason);
+      if (!target) {
+        ctx.abortCount = (ctx.abortCount || 0) + 1;
+        throw new RunCodeAbortedError(ctx.runId);
+      }
+      if (target.abortedReason) {
+        target.abortCount = (target.abortCount || 0) + 1;
+        throw new RunCodeAbortedError(target.runId, target.abortedReason);
+      }
       checkDeadline(target);
-      if (target.timedOut) throw new RunCodeAbortedError(target.runId, `run_code #${target.runId} timed out after ${target.timeoutMs} ms`);
+      if (target.timedOut) {
+        target.abortCount = (target.abortCount || 0) + 1;
+        throw new RunCodeAbortedError(target.runId, `run_code #${target.runId} timed out after ${target.timeoutMs} ms`);
+      }
       return target;
+    };
+    const resolveCtxAsync = async () => {
+      try {
+        return resolveCtx();
+      } catch (err) {
+        const target = !ctx.finished ? ctx : activeRuns.at(-1);
+        const count = target ? (target.abortCount || 0) : (ctx.abortCount || 0);
+        if (count > 3) {
+          await new Promise(() => {});
+        }
+        throw err;
+      }
     };
     const isAborted = () => {
       const target = !ctx.finished ? ctx : activeRuns.at(-1);
@@ -301,41 +410,41 @@ export function createCodeRunner(opts = {}) {
     };
 
     async function send(cmsg) {
-      const active = resolveCtx();
+      const active = await resolveCtxAsync();
       const { l0, run } = await opts.getSession();
       const r = await run(async () => {
-        resolveCtx();
+        await resolveCtxAsync();
         return l0.send(cmsg, { via: 'run_code' });
       });
       active.counter.commandsSent++;
       const evs = [r.reply, ...r.events];
       await deliver(evs);
       if (opts.onEvents) await opts.onEvents(evs);
-      resolveCtx();
+      await resolveCtxAsync();
       return { reply: r.reply, events: r.events, ok: r.reply.op === 'SMSG_ACK', world };
     }
 
     async function observe() {
-      resolveCtx();
+      await resolveCtxAsync();
       const { l0, run } = await opts.getSession();
       const events = await run(async () => {
-        resolveCtx();
+        await resolveCtxAsync();
         return l0.observe();
       });
       await deliver(events);
       if (opts.onEvents) await opts.onEvents(events);
-      resolveCtx();
+      await resolveCtxAsync();
       return events;
     }
 
     async function clock() {
-      resolveCtx();
+      await resolveCtxAsync();
       const { l0 } = await opts.getSession();
       return l0.clock();
     }
 
     async function invoke(method, params = {}) {
-      resolveCtx();
+      await resolveCtxAsync();
       const m = String(method || '');
       if (customTools.has(m)) {
         return customTools.get(m).handler(params, pal);
@@ -364,6 +473,19 @@ export function createCodeRunner(opts = {}) {
       return JSON.parse(fs.readFileSync(target, 'utf8'));
     }
 
+    const BLOCKED_READ_RE = /(?:argon-pure-lib|gpt61-pure-lib|opus-pure-lib|bytecode-compiler|\/docs\/)/i;
+    const fsSafe = {
+      ...fs,
+      readFileSync(p, ...rest) {
+        if (BLOCKED_READ_RE.test(String(p))) throw new Error(`ENOENT: access to reference library blocked in --pure mode: ${p}`);
+        return fs.readFileSync(p, ...rest);
+      },
+      readdirSync(p, ...rest) {
+        const list = fs.readdirSync(p, ...rest);
+        return Array.isArray(list) ? list.filter((x) => !BLOCKED_READ_RE.test(String(x))) : list;
+      }
+    };
+
     const pal = {
       get runId() { return (!ctx.finished ? ctx : (activeRuns.at(-1) || ctx)).runId; },
       isAborted,
@@ -373,7 +495,7 @@ export function createCodeRunner(opts = {}) {
       get dataDir() { return process.env.AGENT_PAL_DATA_DIR || null; },
       ensureDataDump,
       readData,
-      fs,
+      fs: fsSafe,
       path,
       log,
       sleep: (ms = 10) => new Promise((r) => (globalThis.__agentPalRealSetTimeout || capturedSetTimeout)(r, ms)),
@@ -414,6 +536,9 @@ export function createCodeRunner(opts = {}) {
 
   async function executeFunction(fn, args = {}, timeoutMs = 30000) {
     await ensureHydrated();
+    globalThis.__lg = 0;
+    globalThis.__lgLastMs = realNowMs();
+    globalThis.__lgCheck = () => (realNowMs() - (globalThis.__lgLastMs || 0)) > 3000;
     const runId = ++runSeq;
     const tMs = Math.max(10, Number(timeoutMs) || 30000);
     const ctx = { runId, finished: false, timedOut: false, timeoutMs: tMs, deadline: realNowMs() + tMs, logs: [], counter: { commandsSent: 0 } };
@@ -491,12 +616,24 @@ export function createCodeRunner(opts = {}) {
       }
       let fn;
       try {
-        fn = new AsyncFunction('pal', 'console', 'global', 'args', code);
+        fn = new AsyncFunction('pal', 'console', 'global', 'args', 'setTimeout', 'clearTimeout', 'Date', code);
       } catch (err) {
         return { ok: false, error: `SyntaxError: ${err.message}`, logs: [], commandsSent: 0, world: summarizeWorld(world, shared, customTools) };
       }
+      try {
+        fn = new AsyncFunction('pal', 'console', 'global', 'args', 'setTimeout', 'clearTimeout', 'Date', instrumentLoops(code));
+      } catch {
+        // Fallback to uninstrumented fn if loop instrumentation ever fails to parse
+      }
+      const realSetTimeout = globalThis.__agentPalRealSetTimeout || capturedSetTimeout;
+      const realDate = new Proxy(Date, {
+        get(target, prop, receiver) {
+          if (prop === 'now') return () => Date.now() + realNowMs();
+          return Reflect.get(target, prop, receiver);
+        }
+      });
       opts.logEvent?.({ type: 'code_call', code, args, timeout_ms: effectiveTimeout });
-      const res = await executeFunction((pal, con, g, a) => fn(pal, con, g, a), args, effectiveTimeout);
+      const res = await executeFunction((pal, con, g, a) => fn(pal, con, g, a, realSetTimeout, capturedClearTimeout, realDate), args, effectiveTimeout);
       opts.logEvent?.({ type: 'code_result', ok: res.ok, runId: res.runId, commandsSent: res.commandsSent, ...(res.error ? { error: res.error } : {}) });
       return res;
     },

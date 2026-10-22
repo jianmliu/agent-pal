@@ -88,12 +88,18 @@ function userText(quiz, x) {
   return `${quiz.context ? quiz.context + '\n\n' : ''}问题:${x.q}`;
 }
 
+const CLAUDE_BIN = fs.existsSync('/Users/jianmingliu/.local/bin/claude') ? '/Users/jianmingliu/.local/bin/claude' : 'claude';
+const CODEX_BIN = fs.existsSync('/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex')
+  ? '/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex'
+  : 'codex';
+const AGY_BIN = fs.existsSync('/Users/jianmingliu/.local/bin/agy') ? '/Users/jianmingliu/.local/bin/agy' : 'agy';
+
 /** claude CLI 单轮:不给任何工具、不读设置、不落会话。 */
 function askClaudeCli(model, system, text) {
   return new Promise((resolve) => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bench-quiz-'));
     const args = ['-p', text, '--system-prompt', system, '--tools', '', '--setting-sources', '', '--no-session-persistence', '--output-format', 'json', '--model', model];
-    const child = spawn('claude', args, { cwd: tmp, stdio: ['ignore', 'pipe', 'pipe'], env: cleanClaudeEnv() });
+    const child = spawn(CLAUDE_BIN, args, { cwd: tmp, stdio: ['ignore', 'pipe', 'pipe'], env: cleanClaudeEnv() });
     let out = '';
     child.stdout.on('data', (d) => { out += d; });
     child.on('close', () => {
@@ -109,9 +115,46 @@ function askClaudeCli(model, system, text) {
   });
 }
 
+function askCodexCli(model, system, text) {
+  return new Promise((resolve) => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bench-quiz-'));
+    const args = [
+      'exec', '-', '--ephemeral', '--skip-git-repo-check', '--dangerously-bypass-approvals-and-sandbox',
+      '-m', model, '-c', 'model_reasoning_effort="low"', '-c', 'mcp_servers.node_repl.enabled=false',
+      '--disable', 'shell_tool', '--disable', 'unified_exec', '--disable', 'plugins',
+      '-c', 'web_search="disabled"'
+    ];
+    const child = spawn(CODEX_BIN, args, { cwd: tmp, stdio: ['pipe', 'pipe', 'pipe'] });
+    child.stdin.write(`${system}\n\n${text}`);
+    child.stdin.end();
+    let out = '';
+    child.stdout.on('data', (d) => { out += d; });
+    child.on('close', () => {
+      fs.rmSync(tmp, { recursive: true, force: true });
+      resolve({ text: out.trim(), usage: { tokensIn: 0, tokensOut: 0 }, cost: null, error: null });
+    });
+  });
+}
+
+function askAgyCli(model, system, text) {
+  return new Promise((resolve) => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bench-quiz-'));
+    const args = ['-p', `${system}\n\n${text}`, '--dangerously-skip-permissions'];
+    const child = spawn(AGY_BIN, args, { cwd: tmp, stdio: ['ignore', 'pipe', 'pipe'] });
+    let out = '';
+    child.stdout.on('data', (d) => { out += d; });
+    child.on('close', () => {
+      fs.rmSync(tmp, { recursive: true, force: true });
+      resolve({ text: out.trim(), usage: { tokensIn: 0, tokensOut: 0 }, cost: null, error: null });
+    });
+  });
+}
+
 async function ask(model, quiz, x) {
   const text = userText(quiz, x);
   if (model.startsWith('claude-cli:')) return askClaudeCli(model.slice('claude-cli:'.length), SYSTEM, text);
+  if (model.startsWith('codex-cli:')) return askCodexCli(model.slice('codex-cli:'.length), SYSTEM, text);
+  if (model.startsWith('agy-cli:')) return askAgyCli(model.slice('agy-cli:'.length), SYSTEM, text);
   const provider = createProvider(model);
   try {
     const r = await provider.turn({ system: SYSTEM, history: [{ role: 'user', text }], tools: [] });

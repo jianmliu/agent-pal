@@ -90,11 +90,13 @@ export function compareLogs(orig, replay, claimed = orig.end) {
 
 /** 子进程入口(bench.mjs --verify-episode):按日志重开一局、重打调用,重放日志写到 job.logFile。 */
 export async function verifyChild(job) {
+  delete process.env.BENCH_RESUME_FROM;
   const { createEpisode } = await import('./episode.mjs');
   const orig = readLog(job.source);
   const s = orig.start;
   const task = loadTask(s.task);
-  const ep = await createEpisode({ task, seed: s.seed, tier: s.tier, logFile: job.logFile, meta: { model: s.model, runId: s.runId, hints: s.hints ?? 'standard' } });
+  const budgetToolCalls = s.budgetToolCalls ?? (orig.end?.endReason === 'budget-toolCalls' ? orig.end.toolCalls : undefined);
+  const ep = await createEpisode({ task, seed: s.seed, tier: s.tier, logFile: job.logFile, meta: { model: s.model, runId: s.runId, hints: s.hints ?? 'standard', ...(budgetToolCalls ? { budgetToolCalls } : {}) } });
   for (const c of orig.calls) {
     if (ep.done) break;
     await ep.call(c.name, c.args);

@@ -2146,6 +2146,13 @@ export function createAgent(e, opts = {}) {
     });
     if (!resolved.ok) return resolved;
     ensureBattleCtx();
+    if (action === 'coop' && globalThis.uibattle) {
+      Object.defineProperty(globalThis.uibattle, 'battleStateCache', {
+        get: () => battleSvc.getState?.() || globalThis.Global?.battle,
+        set: () => {},
+        configurable: true,
+      });
+    }
     const result = e.submitCommand(observation, resolved.choice);
     if (!result.ok) return { ...result, note: result.note || `the game refused the owned command (${result.reason})` };
     const sameWait = () => { const current = e.commandWait?.(); return current?.kind === observation.kind && current?.revision === observation.revision; };

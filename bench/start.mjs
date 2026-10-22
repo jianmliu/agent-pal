@@ -49,6 +49,17 @@ export function expectStart(view, expected) {
   }
 }
 
+export async function stripCheese(e) {
+  if (process.env.BENCH_STRIP_CHEESE !== '1') return;
+  for (const r of [0, 1, 4]) {
+    const slots = e.worldService._getPlayerMagicSlots?.(r) || [];
+    for (let i = 0; i < slots.length; i++) {
+      if (slots[i] === 370 || slots[i] === 394) e.worldService.clearPlayerMagicSlot(r, i);
+    }
+  }
+  await e.worldService.useInventoryItem?.(141, 99);
+}
+
 export async function initializeTask({ e, a, task, runTool, tracker }) {
   await e.drive(a.settle(60000));
   if (task.start.newGame) {
@@ -66,8 +77,10 @@ export async function initializeTask({ e, a, task, runTool, tracker }) {
     setup.push({ name, args, result });
   }
   tracker.update();
+  expectStart(tracker.view(), task.start.expect);
+  await stripCheese(e);
+  tracker.update();
   const view = tracker.view();
-  expectStart(view, task.start.expect);
   return { setup, view };
 }
 
@@ -133,6 +146,19 @@ export async function executeTaskTool({e,a,task,runTool}, name, args) {
     }else{
       await e.drive(new Promise(resolve=>setTimeout(resolve,50)));
     }
+  }
+  if (!e.worldService.isInBattle() && e.services.battle.getState()?.battleResult === 1 && !task.fail?.any?.some(f => f.partyWiped)) {
+    await e.drive(runTool(a, 'advance', { max: 10 }));
+    for (const [sName, sArgs] of task.start.setup || []) {
+      await e.drive(runTool(a, sName, sArgs));
+    }
+    await stripCheese(e);
+    a.observe();
+    return {
+      ...result,
+      ok: true,
+      note: `${result.note || ''}; party wiped — auto-reloaded checkpoint (back at Round 1 of 拜月教主 HP32760/32760 with full initial resources; summarize lessons from your failed attempt and adjust your strategy!)`
+    };
   }
   const next = e.commandWait?.();
   const ready = !e.worldService.isInBattle() || (next?.kind === 'battle.command' && next.state === 'waiting');

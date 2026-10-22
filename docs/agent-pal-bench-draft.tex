@@ -1,0 +1,417 @@
+% Generated from agent-pal-bench-draft.en.md by sync-agent-pal-latex.py.
+% Edit the Markdown and regenerate; this is a standalone document.
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=*}
+
+\title{Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction}
+\author{Working draft for anonymous review}
+\date{20 October 2026}
+\begin{document}
+\maketitle
+
+{\footnotesize Working paper, version 0.4, evidence review dated 21 October 2026. Implemented mechanisms, development audits, exploratory agent runs, and proposed experiments are distinguished throughout. This is not a frozen benchmark release or a capability-matched model leaderboard. The English Markdown is the content source for the standalone English LaTeX version; the Chinese manuscript follows the same claims and results.\par}
+
+\begin{abstract}
+
+Persistent role-playing games combine dialogue comprehension, spatial exploration, cross-scene causality, and resource management. We introduce \textbf{Agent-PAL-Bench}, a text-based agent benchmark built on a headless execution environment for \emph{The Legend of Sword and Fairy}. Agents issue structured tool calls and receive textual game-state feedback; gameplay video is not an agent input. Beyond the default \nolinkurl{assist} (L1) layer that exposes high-level semantic tools, the environment implements a \nolinkurl{--pure} mode that exposes only low-level protocol primitives (L0) and in-session dynamic self-coding (\nolinkurl{run_code} and \nolinkurl{module_reload}). The reviewed working catalog contains 23 tasks and 67 planned task--seed episodes. Tasks specify starting states, state-based goals, budgets, information conditions, and reference trajectories. A current-build audit reaches the goal on 59/67 reference trajectories, exposing release-blocking failures rather than model errors. A separate, frozen two-task audit repairs missing appearance cues and premature goal detection, calibrates action budgets, and evaluates three built-in cloud agents and one externally scaffolded agent on game seed 42. All eight evaluation episodes exhaust their action budgets without success and pass trajectory replay; calibration and reference successes are reported separately. In addition, we validate the \nolinkurl{--pure} mode end-to-end under deterministic lockstep (\nolinkurl{--seed 1}) across three external agents (Argon, GPT-6.1-Sol, and Claude Opus 5.5): operating strictly from \nolinkurl{SMSG_*} state packets and \nolinkurl{CMSG_*} primitives, the three agents independently synthesize 731-line, 135-line, and 1,427-line runtime libraries in session scope (spanning bytecode-graph BFS pathfinders, connected-component dungeon planners, resistance-adaptive combat engines, and menu state machines), each completing all 11 chapters from a new game to the final boss (\nolinkurl{Baiyue}, 32,760 HP) across sequential save checkpoints (\nolinkurl{Slots 1–99}). Furthermore, across three targeted behavioral and ablation studies on \textbf{Dali Rain Altar (\nolinkurl{classic48-rain-orbs})}, \textbf{Baihe Village Medicine (\nolinkurl{classic10-baihe-medicine})}, and \textbf{Final Boss Baiyue (\nolinkurl{baiyue-single-origin})}---paired with a 13-question closed-book prior quiz (\nolinkurl{bench quiz}), cross-seed replication, budget expansion, and a counterfactual no-cheese ablation stripping \nolinkurl{Jiushen}, \nolinkurl{Qian Kun Yi Zhi}, and \nolinkurl{Yingu}---we evaluate 10--12 frontier and open-weight cloud models, uncovering: (1) how 45\ensuremath{^\circ} isometric chiral symmetry ambiguity triggers 100K-token deductive loops in reasoning LLMs and how 1-step epistemic probes and per-turn token circuit breakers resolve them; (2) how closed-book quizzes separate pretraining walkthrough contamination from genuine zero-shot room-by-room discovery and expose single-cutoff truncation illusions; and (3) a two-layer prior structure (walkthrough meta priors versus domain mechanics priors), recency-biased overcorrection during in-context retry learning, and the delayed batch-execution credit-assignment trap (\nolinkurl{ΔHP = x1 + x2 + x3}) versus controlled-variable linear elimination in turn-based combat. The findings identify observation fidelity, context retention, prior contamination, metacognitive stopping rules, tool-abstraction layer, and self-coded architectural divergence as measurement concerns. They do not establish a regional model advantage, a causal success-rate gain from the repairs, or a measure of planning alone.
+
+\end{abstract}
+\textbf{Keywords:} language agents; game benchmarks; Chinese RPGs; long-horizon planning; text interaction; tool self-coding; epistemic probing; reproducibility
+
+\section{Introduction}
+
+Knowing where to find the Water Spirit Orb is different from finding the relevant characters, retaining a necessary item, crossing scenes, and completing an exchange within an action budget. Knowing that a final boss requires damage is different from conserving resources through prerequisite fights and adapting when a healer is silenced or incapacitated. A persistent game lets us examine how an agent turns information into consequential actions.
+
+We use a Chinese fantasy RPG because dialogue, character relationships, implicit prerequisites, map mechanisms, equipment, and consumables interact in one authored world. Whether familiarity with Chinese game language and culture improves situated decisions is an open research question. Model developer location does not measure that familiarity. Scale, pretraining, reasoning budget, tools, information access, and agent scaffolding must be controlled before attributing differences to cultural knowledge.
+
+This paper contributes: (1) a working collection of replayable RPG segments, including same-goal starting-state variants, causal item chains, and synthetic combat configurations; (2) a protocol based on fixed saves, game seeds, virtual time, state predicates, and action replay; (3) explicit tool and hint conditions, distinguishing the built-in white-box high-level tool layer (\nolinkurl{assist} L1) from the low-level protocol and dynamic self-coding layer (\nolinkurl{--pure} L0 + \nolinkurl{run_code}/\nolinkurl{module_reload}); (4) a two-task development audit showing how missing observations, an early-success predicate, and context policy complicate failure attribution, complemented by an end-to-end \nolinkurl{--pure} self-coding playthrough from new game to final credits that validates L0 protocol completeness; and (5) three targeted cognitive-behavioral and counterfactual ablation studies across spatial symmetry puzzles (\nolinkurl{classic48-rain-orbs}), multi-stage open exploration (\nolinkurl{classic10-baihe-medicine}), and high-pressure boss combat (\nolinkurl{baiyue-single-origin}), quantifying deductive loop traps, zero-shot exploration overhead, in-context retry evolution, and batch-execution credit assignment. The implemented environment, development validations, targeted behavioral slices, and the proposed full-catalog inferential study have different evidential status.
+
+\section{Related Work}
+
+\href{https://arxiv.org/abs/2308.03688}{AgentBench} evaluates agents across interactive environments. \href{https://arxiv.org/abs/1806.11532}{TextWorld} supports state tracking and controlled generation of text games; our tasks use an existing authored RPG. \href{https://arxiv.org/abs/1909.05398}{Jericho} studies human-authored interactive fiction. Agent-PAL-Bench shares its exploration demands and also exposes party, equipment, consumable, and combat systems. \href{https://arxiv.org/abs/2203.07540}{ScienceWorld} distinguishes factual recall from applying knowledge in an interactive environment. \href{https://arxiv.org/abs/2010.03768}{ALFWorld} connects text and embodied environments, highlighting the distinction between text-mediated decisions and visual understanding. \href{https://arxiv.org/abs/2406.06613}{GameBench} and \href{https://arxiv.org/abs/2411.13543}{BALROG} provide broader game-based comparisons.
+
+RPG agency itself is not new: the \href{https://arxiv.org/abs/2603.15563}{PokeAgent Challenge} includes competitive battling and RPG speedrunning, and \href{https://arxiv.org/abs/2604.08340}{PokeGym} evaluates visually driven long-horizon tasks and adaptation. Our scope is a Chinese-language authored RPG with inspectable task predicates and structured text interaction. We make no priority claim for RPG planning, persistent worlds, or game-agent evaluation. Our reported scores cannot be compared directly to visual or differently scaffolded benchmarks.
+
+\section{Environment and Tasks}
+
+\subsection{Interaction and replay}
+
+Each episode runs an isolated game process from a new game, a classic RPG save, or a fixed benchmark save slot, with a game random seed. Tools include \nolinkurl{observe}, \nolinkurl{map}, movement, interaction, dialogue advance, menu choices, items, spells, and battle actions. Game simulation is paused between calls; advancing actions move virtual time, whereas observation and reference-material queries do not. Model inference latency therefore does not itself advance the game. Wall-time limits remain a separate harness constraint. Saves and map memory are isolated between episodes. Video is for human inspection, not the B/C-tier agent or grader. The reviewed task catalog opens no visual A-tier tasks.
+
+A task defines its start, goal predicates, optional milestones and failure conditions, budgets, and tools. The grader reads state such as scene visits, inventory, event-object state, battle outcomes, and dialogue history. \nolinkurl{check} replays references. \nolinkurl{verify} replays logged actions and compares per-step grading state and terminal game outcomes. It does not rerun model inference or independently validate token accounting, cost, or model-side stopping causes. Standard replay is not a proof that all observation text was complete or accurate; the appearance audit adds native observation checks and selected response-equivalence checks. A successful reference is a feasibility witness for that version and seed, not an optimal policy or a model result.
+
+The current general-task runner records a Git revision label, task versions, seeds, prompt version, and logs; battle-scored runs additionally record runtime/asset and task/save fingerprints. General-task runs do not automatically receive all those hashes. The frozen appearance experiment therefore supplies separate manifests. A \nolinkurl{-dirty} label alone cannot identify the exact executable, assets, or task contents.
+
+\subsection{Reviewed working catalog}
+
+The reviewed main working tree at base \nolinkurl{3e316b4c}, including uncommitted development tasks, contains \textbf{23 tasks and 67 planned task--seed episodes}: 23 support B and 18 also support C; 11 start from classic saves, eight from fixed benchmark saves, and four from a new game. These are development counts, not a fully validated release or 67 independent stories.
+
+{\small\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}>{\raggedright\arraybackslash}p{0.36\linewidth}@{}}
+\toprule
+Capability family & Example & Representative criterion \\
+\midrule\endfirsthead
+\toprule
+Capability family & Example & Representative criterion \\
+\midrule\endhead
+\bottomrule\endfoot
+Narrative progress & Serving guests; Yangzhou events & Required story or dialogue event occurs \\
+Spatial mechanisms & Fairy Island statues; tower gate & Scene or event state changes \\
+Cross-scene item chains & Handkerchief to Water Spirit Orb; rain ritual & Required item or causal goal is reached \\
+Survival and tactics & One-life island; Baiyue variants & Victory with task-specific restrictions \\
+Resource allocation & Palace prerequisite-fight reserve pilot & Story/battle predicates plus retained items and cash \\
+\end{longtable}
+}
+
+New-game, island, and corridor starts share the same first-meeting goal and ordinary failure rules, but have different starts and budgets. They do not isolate horizon at equal budget. The one-life variants add restrictions and are separate conditions. The palace reserve pilot has only seed 42; its reference has 35 calls and it is not a continuous guard--tree demon--Baiyue evaluation. Four Baiyue single-battle variants change resources or character capabilities and are synthetic configurations. They do not estimate the effect of natural leveling.
+
+\subsection{Information and context conditions}
+
+B provides structured text tools; C adds walkthrough and atlas access. Independently, \nolinkurl{standard} suppresses some script-derived purpose/requirement hints that \nolinkurl{full} exposes. Standard is not a guarantee of pixel-equivalent information: structured coordinates, IDs, navigation categories, and state summaries remain abstractions. Item-effect information may still be present under standard. \nolinkurl{observe(full=true)} requests expanded observation; it is distinct from the environment's \nolinkurl{hints=full} setting.
+
+The built-in loop retains the full text of only the latest \textbf{six tool results}, replacing older results with placeholders while preserving assistant text and call records. An earlier clue may disappear unless the agent records or reacquires it. Claude CLI manages its own context. Built-in usage is checked against the token budget after each model turn; external CLI usage is merged only at episode end, so the task token cap is not enforced incrementally there. These differences require separate reporting. Translating only the brief does not remove Chinese game dialogue; an English-only observation condition and comprehensive name masking are not implemented.
+
+\subsection{Assist (L1) versus pure (L0 + dynamic self-coding) execution modes}
+
+To separate the contribution of pre-authored high-level tool scaffolding from an agent's ability to synthesize its own policies and abstractions over raw protocol primitives, the environment implements two distinct execution layers: the default \nolinkurl{assist} (L1) mode and the \nolinkurl{--pure} (L0 + dynamic self-coding) mode.
+
+{\small\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}>{\raggedright\arraybackslash}p{0.36\linewidth}@{}}
+\toprule
+Dimension & \nolinkurl{assist} mode (built-in L1 tools) & \nolinkurl{--pure} mode (L0 primitives + self-coding) \\
+\midrule\endfirsthead
+\toprule
+Dimension & \nolinkurl{assist} mode (built-in L1 tools) & \nolinkurl{--pure} mode (L0 primitives + self-coding) \\
+\midrule\endhead
+\bottomrule\endfoot
+Exposed surface & Over 20 high-level semantic tools (\nolinkurl{walk_to}, \nolinkurl{interact}, \nolinkurl{cross_portal}, \nolinkurl{fight}, \nolinkurl{equip}, \nolinkurl{buy}, \nolinkurl{use_item}, \nolinkurl{map}, \nolinkurl{guide}) & Protocol and self-coding primitives (\nolinkurl{protocol_send}, \nolinkurl{protocol_observe}, \nolinkurl{run_code}, \nolinkurl{module_reload}) plus L0-only modules \\
+State visibility & White-box inspection of engine memory (\nolinkurl{worldService}, script opcodes \nolinkurl{0x001B}--\nolinkurl{0x0022}, internal wait stack) and direct cursor/facing mutation & Black-box reconstruction: \nolinkurl{pal.world} is built exclusively from incremental \nolinkurl{SMSG_*} server packets \\
+Navigation recovery & \nolinkurl{walk_to} aborts and returns control to the LLM whenever a battle or dialogue interrupts movement & Agents write closed-loop state machines in \nolinkurl{run_code} (e.g., \nolinkurl{global.goTo}) that fight encounters, drain dialogues, clear blockers, and resume pathfinding \\
+Combat and menus & \nolinkurl{grindTurn} supports only \nolinkurl{<45%} healing, AoE spells, and normal attacks; forbids \nolinkurl{Qian Kun Yi Zhi}, throws, \nolinkurl{Yingu}, \nolinkurl{Jiushen}, and protective buffs & Agents author multi-actor tactical engines and pure key/choice menu state machines (\nolinkurl{CMSG_KEY} + \nolinkurl{CMSG_CHOICE}) in persistent \nolinkurl{global} scope \\
+\end{longtable}
+}
+
+Under \nolinkurl{--pure} mode, all game progression must pass through L0 client messages (\nolinkurl{CMSG_MOVE}, \nolinkurl{CMSG_INTERACT}, \nolinkurl{CMSG_DIALOG_ADVANCE}, \nolinkurl{CMSG_CHOICE}, \nolinkurl{CMSG_BATTLE_ACTION}, \nolinkurl{CMSG_MENU_USE_ITEM}, \nolinkurl{CMSG_KEY}, \nolinkurl{CMSG_WAIT}, \nolinkurl{CMSG_SAVE}, \nolinkurl{CMSG_LOAD}). The session code runner (\nolinkurl{src/code-runner.mjs}) provides a persistent \nolinkurl{global} object across \nolinkurl{run_code} calls, packet listeners (\nolinkurl{pal.on}/\nolinkurl{pal.off}), dynamic MCP tool registration (\nolinkurl{pal.registerTool}), and deadline cancellation guards (\nolinkurl{RunCodeAbortedError}).
+
+\section{Metrics and Proposed Experimental Protocol}
+
+The implemented primary score is task success averaged across recorded seeds and then equally across tasks with results. \nolinkurl{complete} indicates whether planned episodes are present; incomplete runs must not enter a formal ranking. For runs consisting entirely of Baiyue battle-scored tasks, ties in success are broken by \textbf{mean battle rounds among wins}, lower first. Ordinary runs instead use mean monetary cost among successes; mixed scoring has no meaningful common efficiency tie-break. Tool calls are not combat rounds. No-success efficiency statistics are undefined, not zero.
+
+Diagnostic metrics include milestone progress, median calls to success, invalid-call rate, virtual time, tokens, and recorded cost. Invalid rate is total invalid calls divided by total tool calls, not an average of episode percentages. Expected movement/interaction interruptions caused by battle or dialogue are soft stops and are excluded from invalid calls. Failure progress counts achieved milestones divided by one plus the number of milestones; success sets it to one. Neither progress nor reference-relative call efficiency is an independent capability score. Zero recorded local/cloud cost can mean unpriced usage, not zero computation cost.
+
+The following is a \textbf{proposed} study, not a claim of completed preregistration or experiments:
+
+{\small\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.08\linewidth}>{\raggedright\arraybackslash}p{0.39\linewidth}>{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule
+ID & Matched comparison & Readout and required control \\
+\midrule\endfirsthead
+\toprule
+ID & Matched comparison & Readout and required control \\
+\midrule\endhead
+\bottomrule\endfoot
+E1 & Capability-matched model groups in B-standard & Task/family success differences and 95\% intervals; common loop, prompt, context, seeds, and budgets \\
+E2 & Same model and task in B versus C & Success change and tool use; fingerprinted guide and atlas; only tasks supporting both \\
+E3 & Closed-book quiz versus interactive execution & Knowledge--execution gap; quiz before trace exposure, no external retrieval \\
+E4 & Chinese, checked translated, and name-masked conditions & Paired outcomes; translate the stated information surface, preserve goals, distinguish brief-only from full language control \\
+E5 & Same-goal starts and short/long chains & Milestones and distance/budget sensitivity; analyze related tasks as families \\
+E6 & Audited natural-save chains and synthetic battle variants & Win rate first, winning rounds second for Baiyue; remaining resources and down events as diagnostics \\
+E7 & Unseen variants and seeds unused in development & Generalization and replay agreement; no test-trace tuning \\
+E8 & Same model and task in \nolinkurl{assist} (L1) versus \nolinkurl{--pure} (L0 + self-coding) & Success rate, underlying L0 command count, invalid-packet rate, and self-coded tool reuse; matched seeds, virtual time, and wall limits \\
+\end{longtable}
+}
+
+Freeze executable/build, assets, saves, tasks/references, goals, prompt, observation/context policy, model identity, decoding/reasoning settings, information sources, call/token/virtual-time/wall limits, and exclusions. Planned formal comparisons use at least three game seeds and three independent decoding samples per condition; this is a minimum grid, not a power guarantee. A fixed game seed does not fix cloud sampling. Publish per-episode outcomes, paired task/family differences, and uncertainty clustered by related task family. Many more independent families are needed for reliable group-level inference. Externally scaffolded agents remain separate; developer origin cannot identify a cultural effect.
+
+Every included task--seed pair must pass reference replay on the frozen build. Every recorded episode must be checked, but a matching replay alone does not convert a provider/harness failure into a valid model failure. Prespecify handling of infrastructure faults, stopping causes, and missing episodes. Public references and development traces create contamination risks; a private test split and independent audit remain future work.
+
+\section{Development Audits and Exploratory Results}
+
+\subsection{Main working-tree reference audit}
+
+On 16 October 2026, the reviewed 23-task working tree passed schema validation and no-engine tests. Full \nolinkurl{check --jobs 2} reached the goal on \textbf{59/67 reference trajectories}. Five Baiyue failures requested Qian Kun Yi Zhi from a member without that spell at the observed command window: fragile-stocked seed 42, mana-budget seed 43, origin seed 43, and sustain-no-wine seeds 42/43. Three tower references missed the target: tower-chain seeds 43/44 and tower-gate seed 43. These are reference failures, not model scores; their root causes and repairs remain open. Historical Baiyue reference successes on older builds do not override this current-build result. The one-seed palace reserve reference passed, but remains a development pilot.
+
+\subsection{Local-model pipeline pilot and historical evidence}
+
+Qwen2.5-3B (\nolinkurl{ollama:qwen2.5-bench-32k:3b}), built-in B-standard, ran the reference-passing handkerchief task on seeds 42/43/44, prompt version 3, code label \nolinkurl{3e316b4c-dirty}, and a 120-second wall limit. It completed \textbf{0/3}, made partial progress on two seeds, and ended \nolinkurl{agent-stopped} on all three after repeated text-only turns. Calls/invalid calls were 8/3, 4/3, and 6/3. All three trajectories passed replay. Its five-question closed-book quiz scored \textbf{0/5}. This validates two measurement paths on one model/task; it does not identify whether knowledge or tool use caused failure.
+
+A Qwen2.5-14B seed-42 attempt was killed at a 180-second wall limit and labeled \nolinkurl{harness-crash (exit null)}. A partial seed-43 trace also exists after the interrupted scheduling attempt; there is no complete result for it, and seed 44 has no completed result. The attempted run is excluded from model denominators. The fallback's zero calls are not a measurement of the actual partial trajectory. The timeout label requires repair before formal evaluation.
+
+Older repository notes report external Claude Sonnet 9/9 versus local Qwen 0/9 on a three-task pilot, B 0/3 versus C 1/3 on a first-meeting pilot, and 2/3 on a one-life island variant. These are historical, differently versioned records, not additional results in the present denominator or causal ablations. The reported GPT-6 Astra playthrough with roughly 22 hours of footage allowed walkthrough use, rollback, and human strategy discussion; it is development context rather than an independently scored benchmark episode. Model identity and the modifier-free claim require an archived playthrough manifest before use as research evidence.
+
+\subsection{Medicine and monkey observation/goal audit}
+
+The two audited tasks are \nolinkurl{classic10-baihe-medicine} and \nolinkurl{classic31-banana-monkeys}. The original B observation reduced some plants and animals to generic navigation labels, omitting cues visible in the rendered game. The audit first forwarded \nolinkurl{observe(full=true)} correctly so expanded inventory/state could be requested, and corrected item feedback that suggested interaction while dialogue was still open. The monkey goal previously accepted an opening banana-offering line before passage was actually clear. The revised goal requires event object 3482 in scene 192 to reach state 0; the reference now takes 23 calls rather than the prematurely accepted 22.
+
+A subsequent appearance repair shares a reviewed catalog between local \nolinkurl{observe} and scene-wide \nolinkurl{map}. It matches MGO sprite bytes by SHA-256 and MAP/GOP background pairs by their hashes. Coverage is \textbf{64 sprite resources and nine map/background pairs} from both reference routes, including non-goal objects. Captions describe broad leaves and hanging yellow curved fruit, a small tree with reddish-orange round fruit, a water bank, a brown antlered deer, and a circular toothed metal object. They do not name a quest purpose, required offering, reward, or action order. Briefs were unchanged. This supplies visible evidence without explicitly stating the solution.
+
+The catalog is a manually reviewed static/first-frame abstraction, not a runtime vision model or all-game coverage. Unknown or replaced content falls back to neutral descriptions; the lookup assumes immutable assets within a process. Background landmarks matter because some interactive locations have no individual sprite. Scene-wide \nolinkurl{map} can expose cues beyond the local observation; availability there does not prove every agent queried or used them. Unreviewed routes and dynamic states remain limitations.
+
+These repairs live in a separate audit worktree based at \nolinkurl{3e316b4c}; they are not installed in the main working tree described in Section 5.1. Real-agent comparisons used frozen copies of the previous controlled runtime, adding appearance rendering without changing its engine build. Separate native/source-build checks guard the implementation. A detached copy has a null Git label; explicit source/build/asset/save/task manifests, not the base commit alone, identify the experiment.
+
+\subsection{Budget calibration and protocol deviations}
+
+Fable via the same external CLI used game seeds 43/44 for action-budget calibration. At the original medicine cap of 120, seed 43 exhausted the budget and seed 44 succeeded in 111 calls. Two fresh medicine episodes at a 240-call cap succeeded in \textbf{146 and 125 calls}, with 11 and three invalid calls. Monkey calibration succeeded in \textbf{48 and 46 calls}, both with zero invalid calls, under an 80-call cap. Thus six calibration episodes comprise five successes and one failure, all replay-verified; they are not six independent successes or an unbiased success estimate.
+
+The predeclared call rule retained a budget if repeated success left at least 25\% spare calls; otherwise it selected a round ceiling at least 1.5 times observed successful exploration calls. Medicine was set to \textbf{240 calls}, at least 1.5 times 146, and monkey remained \textbf{80 calls}, with 40\% spare relative to 48. Virtual-time limits remained 3,600 and 1,800 seconds. These small, single-agent calibration samples justify provisional budgets, not a guarantee for every model.
+
+The initial medicine token reserve was 2,880,000. During seed-42 evaluation, Nemotron stopped at 216 calls on that token cap. This episode is retained as an \textbf{excluded token-budget diagnostic}, not a completed 240-call failure. A measured built-in turn peak of 20,533 tokens motivated a 32,000-token-per-allowed-call safety reserve: medicine v4 uses \textbf{7,680,000 tokens}, with calls/time unchanged. This correction occurred after observing evaluation data; seed 42 is held out for the action-cap decision, not a pristine untouched test set for the full protocol.
+
+One fresh Nemotron medicine episode was then run. The other three medicine episodes had already reached 240 calls under v3. Deterministic v3/v4 checks found identical initial observation, tool responses, and game outcomes for those fixed trajectories; the original model usage and task-version records remain intact. These checks are retrospective policy-invariance diagnostics, \textbf{not new model samples or evidence of equivalent external token enforcement}. Monkey v3 retains 960,000 tokens for built-in agents. CLI token caps are not incrementally enforced: Fable reported 12,055,420 medicine tokens and 2,866,716 monkey tokens, including cached input. The experiment is matched on game action limits, not equal token use or compute.
+
+\subsection{Seed-42 exploratory evaluation}
+
+Three Ollama Cloud agents used the built-in loop: \nolinkurl{ollama:gemma4:31b-cloud}, \nolinkurl{ollama:gpt-oss:120b-cloud}, and \nolinkurl{ollama:nemotron-3-super:cloud}. Each ran each task once, B-standard, seed 42. Cloud runs were serialized. This single sample per model/task does not support a stable capability ranking.
+
+{\small\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.32\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule
+Built-in agent & Successes / episodes & Medicine calls / invalid & Monkey calls / invalid \\
+\midrule\endfirsthead
+\toprule
+Built-in agent & Successes / episodes & Medicine calls / invalid & Monkey calls / invalid \\
+\midrule\endhead
+\bottomrule\endfoot
+Gemma4 31B Cloud & 0/2 & 240/1 & 80/0 \\
+GPT-OSS 120B Cloud & 0/2 & 240/24 & 80/16 \\
+Nemotron-3-Super Cloud & 0/2 & 240/56 & 80/6 \\
+\end{longtable}
+}
+
+The external condition is reported separately. \nolinkurl{claude-cli:fable[1m]} resolved to \nolinkurl{claude-fable-5-1} using CLI 2.1.294, as in the preceding controlled run.
+
+{\small\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.32\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule
+External agent & Successes / episodes & Medicine calls / invalid & Monkey calls / invalid \\
+\midrule\endfirsthead
+\toprule
+External agent & Successes / episodes & Medicine calls / invalid & Monkey calls / invalid \\
+\midrule\endhead
+\bottomrule\endfoot
+Claude Fable 5.1 via CLI & 0/2 & 240/28 & 80/2 \\
+\end{longtable}
+}
+
+All \textbf{eight included episodes} ended \nolinkurl{budget-toolCalls} without a provider/harness crash and passed official game-trajectory replay. They are eight valid recorded outcomes, not eight independent task families. Medicine raw versions are v3 for Gemma, GPT-OSS, and Fable and v4 for the replacement Nemotron run; monkey is v3. All six final source reference episodes (two tasks \ensuremath{\times} seeds 42/43/44) succeeded and passed replay. Reference feasibility and the five calibration successes are separate from evaluation's \textbf{0/8}.
+
+The immediately preceding feedback-corrected comparison had seven completed failures; its Nemotron monkey episode was stopped at 21 calls during the validity audit and must be excluded. An earlier original eight-episode comparison was also 0/8 but has different observations/goals. We do not pool these baselines. Prefixes of new trajectories at old action caps are retrospective diagnostics, not fresh matched trials. The new evaluation shows no observed success in this small sample; it does not establish that restoring cues has no effect, or that the remaining failures are purely planning errors.
+
+\subsection{Failure evidence and interpretation}
+
+Gemma's medicine run interacted with the doctor 112 times and advanced dialogue 117 times without acquiring an ingredient. Its monkey run repeated one off-route movement target 22 times. Thus zero or few invalid calls can coexist with no task progress. GPT-OSS repeatedly queried the doctor and attempted actions incompatible with dialogue/menu mode; its monkey episode tried items on indoor characters and acquired no banana or maze milestone. Nemotron's replacement medicine episode made 56 invalid calls and repeatedly queried the doctor (65 calls) or advanced dialogue; its monkey episode detoured through scenes 179, 202, and 214 without reaching the target maze. These traces support diagnoses of repetition, mode tracking, and failed exploration rather than resource exhaustion alone.
+
+Fable medicine acquired ginkgo at call 11 and carp at 27, but no antler by 240. It made 117 movement calls, 35 map calls, 25 waits, and six loads, repeated fishing after reloads, and never interacted with the ground trap or used a trap item. The scene's trap was pre-existing; the trace does not show the agent placing it incorrectly, nor establish that pickup/reposition is mandatory. The observed problem is persistence with ineffective pursuit and poor reuse of acquired progress. In the monkey episode, map call 3 supplied the broad-leaf/yellow-fruit description and the agent entered the maze at call 20, but later returned to the start and queried villagers instead of collecting the fruit. Calibration episodes did collect it. This is consistent with unstable clue retention and resource preparation; it does not by itself prove an internal reasoning or memory mechanism.
+
+Native tests establish selected observation contracts and reference solvability, not universal environment correctness. The built-in six-result context policy, CLI differences, manual caption coverage, game prior knowledge, exploration, and action planning all remain intertwined. These tasks measure an agent system under a specified information interface; they are not single-factor resource-planning tests.
+
+\subsection{Three-agent end-to-end validation of \nolinkurl{--pure} mode via self-coding playthroughs}
+
+On 19--20 October 2026, on the \nolinkurl{--pure} runtime introduced at commit \nolinkurl{1a13a6ef}, we conducted three independent end-to-end protocol completeness and self-coding validations of \nolinkurl{--pure} mode under identical deterministic lockstep (\nolinkurl{--pure --seed 1}) using \textbf{Argon}, \textbf{GPT-6.1-Sol} (\nolinkurl{gpt-6.1-sol}, \nolinkurl{reasoning_effort="medium"}, Codex CLI \nolinkurl{0.162.0-alpha.17.2}), and \textbf{Claude Opus 5.5} (\nolinkurl{claude-opus-5-5}, CLI \nolinkurl{2.1.294}). Operating exclusively through \nolinkurl{--pure} primitives (\nolinkurl{protocol_send}, \nolinkurl{protocol_observe}, \nolinkurl{run_code}, \nolinkurl{module_reload}) and the L0-only navigation module \nolinkurl{nav} (\nolinkurl{modules/nav/index.mjs}, 207 lines), all three agents started from a new game (\nolinkurl{Scene 1}, \nolinkurl{Li Xiaoyao Lv1}), completed all 11 story chapters, defeated the final boss (\nolinkurl{Baiyue Cult Leader}, 32,760 HP), and advanced through the full ending sequence and staff credits (scripts \nolinkurl{4342..4434}), recording sequential checkpoints across \nolinkurl{Slots 1–99}.
+
+{\small\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.24\linewidth}>{\raggedright\arraybackslash}p{0.26\linewidth}>{\raggedright\arraybackslash}p{0.26\linewidth}@{}}
+\toprule
+Dimension & Argon (\nolinkurl{--pure --seed 1}) & GPT-6.1-Sol (\nolinkurl{effort=medium}, \nolinkurl{--pure --seed 1}) & Claude Opus 5.5 (\nolinkurl{--pure --seed 1}) \\
+\midrule\endfirsthead
+\toprule
+Dimension & Argon (\nolinkurl{--pure --seed 1}) & GPT-6.1-Sol (\nolinkurl{effort=medium}, \nolinkurl{--pure --seed 1}) & Claude Opus 5.5 (\nolinkurl{--pure --seed 1}) \\
+\midrule\endhead
+\bottomrule\endfoot
+Sessions, calls, and wall time & 1 conversation across 3 server segments (Segment 1: 475 calls / 102.7 min; full trajectory: 1,738 turns / 1,704 calls) & \textbf{1 single uninterrupted session}: 845 calls (844 \nolinkurl{run_code}) / 147.8 min (2.46 h) & 2 relay rounds: 1,458 API turns / 1,453 calls (1,390 \nolinkurl{run_code}) / 228.5 min (3.81 h) \\
+Token usage and cache hit rate & Input \textbf{243.31M} (\textbf{236.65M cached / 97.26\%}, 6.66M uncached; Seg 1: 51.09M); output \textbf{1.36M} & Input \textbf{194.21M} (\textbf{192.06M cached / 98.89\%}, 2.15M uncached); output \textbf{167.0K} (65.0K reasoning) & CLI reported cost \textbf{\$165.2123} (R1 \$105.08 + R2 \$60.13); reconstructed input \textbf{\textasciitilde{}720M} (\textasciitilde{}99.7\% cached), output \textbf{\textasciitilde{}500K} \\
+Self-coded runtime library & \nolinkurl{src/argon-pure-lib.js} (731 lines / 35.7 KB) & \nolinkurl{src/gpt61-pure-lib.js} (135 dense one-liner lines / 115.9 KB) & \nolinkurl{src/opus-pure-lib.js} (1,427 lines / 217.7 KB) \\
+Spatial navigation and dungeon engineering & Wraps \nolinkurl{nav.walk_to} in a 40-step battle/dialogue recovery loop and actively engages blocking \nolinkurl{triggerMode >= 5} monsters (\nolinkurl{global.goTo}) & Independently synthesizes a connected-component flood-fill and bytecode portal compiler (\nolinkurl{global.flood}, \nolinkurl{exits}, \nolinkurl{dungeonRoute}, \nolinkurl{positionRoute}) over \nolinkurl{0059}+\nolinkurl{0046}, \nolinkurl{0044}/\nolinkurl{007A}/\nolinkurl{007B}/\nolinkurl{0070}, and search portals, sweeping all 36 \nolinkurl{Kuilei Bugs} in \textbf{9 min} & Synthesizes a bytecode-aware hybrid BFS (\nolinkurl{path2}) compiling \nolinkurl{0070}/\nolinkurl{0046} teleports, \nolinkurl{0044} vine rides, and \nolinkurl{006E} Trial Cave relative-offset floor pads into unified graph edges; builds connected-component planners (\nolinkurl{compsOf}, \nolinkurl{regionGraph}, \nolinkurl{farmTour}) to sweep all 36 \nolinkurl{Kuilei Bugs} \\
+Combat engine and low-level debugging & 478-line \nolinkurl{global.fightBattle}: tracks live HP deltas via \nolinkurl{SMSG_BATTLE_EVENT} and deduplicates per-round healing, revival, and MP refills & Resistance-adaptive \nolinkurl{global.fight}: parses live spell lists from prompt strings, queries \nolinkurl{enemy.elemResistance} and \nolinkurl{physicalResistance}, and chains \nolinkurl{Tiangang Zhanqi} + \nolinkurl{Zuixian Wangyuebu} when physical resistance is low & Evolves \nolinkurl{fight} \ensuremath{\rightarrow} \nolinkurl{fightSmart} \ensuremath{\rightarrow} \nolinkurl{fightHard} \ensuremath{\rightarrow} \nolinkurl{fightFinal}: diagnoses and fixes a one-turn \nolinkurl{b.prompt.revision} lag bug, and reverse-engineers \nolinkurl{Xiannv Sword} (\nolinkurl{002D:8,32760}) double-turn attacks to pair first-turn \nolinkurl{Tiangang Zhanqi} with second-turn normal strikes \\
+Endgame levels and resource state & \nolinkurl{Li Xiaoyao Lv43 / Zhao Ling'er Lv37 / A'nu Lv42} (post-boss), conserving \nolinkurl{Yingu}, \nolinkurl{Xuelianzi}, and \nolinkurl{Jiushen} & Optimizes resistance/MP-regen accessories and levels to \nolinkurl{Lv45/40/44} with \nolinkurl{$86,803} (\nolinkurl{Slot 98}); finishes at \nolinkurl{Li Xiaoyao Lv46 / Zhao Ling'er Lv41 / A'nu Lv45} with \nolinkurl{$38,817} (\nolinkurl{Slot 99}) & Farms Trial Cave and Nanzhao Palace to \nolinkurl{$118,565}, enters \nolinkurl{Slot 98} after \nolinkurl{Tree Demon} with \nolinkurl{$85,165}, and finishes at \nolinkurl{Li Xiaoyao Lv54 / Zhao Ling'er Lv50 / A'nu Lv52} with \nolinkurl{$21,159} (\nolinkurl{Slot 99}) \\
+Final boss (\nolinkurl{Baiyue}, 32,760 HP) tactics & Stealth-shield-\nolinkurl{Jiushen} burst: Round 1 \nolinkurl{Yingu} party stealth (3 turns) \ensuremath{\rightarrow} \nolinkurl{Zhenyuan Huti} on all members \ensuremath{\rightarrow} \nolinkurl{Xuelianzi} + 2\ensuremath{\times} \nolinkurl{Jiushen} (\nolinkurl{-4,837}, \nolinkurl{-3,572}) + \nolinkurl{Qian Kun Yi Zhi} / \nolinkurl{Wuying Poison}, winning in 11 rounds with 0 deaths & Shield-regen + \nolinkurl{Qian Kun Yi Zhi}: \nolinkurl{global.finalFight} maintains party \nolinkurl{Zhenyuan Huti}, clears adds with \nolinkurl{Jiushen}, sustains \nolinkurl{Tiangang}+\nolinkurl{Zuixian} strikes, keeps party healed via \nolinkurl{Wuqi Chaoyuan} + \nolinkurl{Jingang Zhou}, and casts \nolinkurl{Qian Kun Yi Zhi} every turn (\nolinkurl{$47,986} spent) & High-level dual-shield + \nolinkurl{Qian Kun Yi Zhi} barrage: maintains \nolinkurl{Jingang Zhou} + \nolinkurl{Zhenyuan Huti} + party heals (\nolinkurl{Wuqi Chaoyuan} / \nolinkurl{Yuanling Guixin Shu}), expends \nolinkurl{$64,006} across 12+ \nolinkurl{Qian Kun Yi Zhi} throws, and finishes with \nolinkurl{Jiushen} \\
+\end{longtable}
+}
+
+The three playthroughs illustrate a clear spectrum of self-coding paradigms and compute/efficiency trade-offs under identical L0 constraints:
+
+\begin{enumerate}
+\item \textbf{Compact tactical state machine and low-level precision (Argon, 731 lines)}: Concentrates 70\% of its library into a single 478-line coordinated combat state machine (\nolinkurl{global.fightBattle}), avoiding heavy grinding and instead exploiting \nolinkurl{Yingu} stealth windows, \nolinkurl{Zhenyuan Huti} damage halving, \nolinkurl{Wind Spirit Orb} (\nolinkurl{+50%} wind resistance) itemization, and per-round action deduplication to defeat \nolinkurl{Baiyue} at \nolinkurl{Lv42/35/40} in 11 rounds with zero party deaths.
+\item \textbf{Ultra-compact functional graph routing and single-session throughput (GPT-6.1-Sol, 135 lines, 845 calls in 1 session)}: Independently discovers connected-component flood-fill and bytecode portal compilation (\nolinkurl{global.flood}, \nolinkurl{dungeonRoute}, \nolinkurl{positionRoute}), but expresses its entire evolving runtime as dense functional one-liners (\nolinkurl{167.0K} total output tokens---one-eighth of Argon and one-third of Opus 5.5), clearing all 36 \nolinkurl{Kuilei Bugs} in the Trial Cave in 9 minutes and completing the game in a single uninterrupted 2.46-hour session at \nolinkurl{Lv45/40/44}.
+\item \textbf{Comprehensive bytecode graph compiler and economic scaling (Claude Opus 5.5, 1,427 lines)}: Formulates world traversal and resource collection as general graph-compilation problems over raw script bytecode (\nolinkurl{path2}, \nolinkurl{compsOf}, \nolinkurl{regionGraph}, \nolinkurl{farmTour}---subsequently extracted into the standalone module \nolinkurl{src/bytecode-compiler.mjs}), systematically clearing all 36 \nolinkurl{Kuilei Bugs} in the multi-floor Trial Cave (\nolinkurl{Scenes 217–219}) to accumulate \nolinkurl{$118,565} and \nolinkurl{Lv53/49/51}, then combining \nolinkurl{Jingang Zhou} / \nolinkurl{Zhenyuan Huti} mitigation with 12+ \nolinkurl{Qian Kun Yi Zhi} throws (\nolinkurl{$64,006} spent) and a \nolinkurl{Jiushen} finisher.
+
+\end{enumerate}
+Together, these three full playthroughs demonstrate that the \nolinkurl{--pure} L0 packet protocol and \nolinkurl{SMSG_*} state stream support diverse agent-synthesized architectures from new game to final credits, and that both closed-loop tactical state machines and bytecode-compiled graph planners surpass the static built-in L1 heuristics on multi-floor mazes and multi-phase bosses. Their evidential status must nevertheless be kept distinct: all three playthroughs are \textbf{interactive engineering and upper-bound validations} that permitted checkpoint reloads, cross-segment code refinement, and static data-table inspection (\nolinkurl{pal.readData}), not zero-rollback single-episode benchmark scores under fixed call budgets. They therefore do not enter the controlled evaluation denominator of Section 5.5.
+
+\subsection{Chiral symmetry ambiguity and epistemic probing in spatial puzzles (\nolinkurl{classic48-rain-orbs})}
+
+To examine the metacognitive stopping rules of reasoning LLMs in interactive state machines, we evaluated 12 model and reasoning configurations on \nolinkurl{classic48-rain-orbs} (placing the Five Spirit Orbs on the Dali Rain Altar, reference \nolinkurl{par = 7}, action budget \nolinkurl{80} calls, \nolinkurl{Tier B}, \nolinkurl{standard} hints, \nolinkurl{seed 42}). Closed-book testing (\nolinkurl{bench quiz}) yielded \nolinkurl{0%–20%} across all evaluated models, confirming that no model had memorized the object IDs or coordinate mappings of the five pillars.
+
+After the agent embeds the Holy Spirit Orb (\nolinkurl{Shengling Zhu}) into the stone tablet (\nolinkurl{id=4923}), the tablet inscription specifies orthogonal compass associations (West = Wind, East = Thunder, South = Earth, North = Fire, Center = Water), whereas the five raised altar pillars form a diagonal quincunx on the 45\ensuremath{^\circ} isometric grid: center pillar \nolinkurl{4929 (101, 94)} is surrounded by \nolinkurl{4926 (97, 90)}, \nolinkurl{4927 (105, 90)}, \nolinkurl{4925 (97, 98)}, and \nolinkurl{4928 (105, 98)} at offsets \nolinkurl{(±4, ±4)}. For a text-only agent observing grid coordinates \nolinkurl{(gx, gy)}, projecting orthogonal cardinal directions onto diagonal vertices induces a \textbf{1-bit chiral symmetry ambiguity} between a 45\ensuremath{^\circ} clockwise rotation (\nolinkurl{H+}) and a 45\ensuremath{^\circ} counterclockwise rotation (\nolinkurl{H-}), while inspecting (\nolinkurl{interact}) any pillar returns the identical string \nolinkurl{"A hemispherical recess sits atop the stone base"}. Pure internal deduction cannot resolve this 1-bit symmetry, whereas a single \nolinkurl{use_item} call is completely reversible and penalty-free (\nolinkurl{ok: false} without consuming the orb on mismatch).
+
+{\small\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}@{}}
+\toprule
+Rank & Model configuration & Channel / reasoning & Success & Calls & Invalid rate & API turns & Output tokens & Wall time & Behavioral signature \\
+\midrule\endfirsthead
+\toprule
+Rank & Model configuration & Channel / reasoning & Success & Calls & Invalid rate & API turns & Output tokens & Wall time & Behavioral signature \\
+\midrule\endhead
+\bottomrule\endfoot
+1 & \nolinkurl{Claude Opus 5.5} & \nolinkurl{claude-cli} (\nolinkurl{medium}) & 100\% & 10 & 0\% & 7 & 1,603 & 37.5s & Parallel 5-call \nolinkurl{use_item} burst after reading tablet; 0 errors \\
+2 & \nolinkurl{Claude Opus 5.5} & \nolinkurl{claude-cli} (\nolinkurl{xhigh}) & 100\% & 11 & 0\% & 8 & 2,158 & 40.0s & \textbf{1-step epistemic probe on pillar \nolinkurl{4925}, then 4-call parallel finish} \\
+2 & \nolinkurl{Gemini 4 Argon} & \nolinkurl{agy-cli} (\nolinkurl{medium}) & 100\% & 11 & 0\% & 11 & -- & 29.4s (vt) & Activates tablet at call 3; places 5 orbs sequentially \\
+4 & \nolinkurl{GPT-6.1-Sol} & \nolinkurl{codex-cli} (\nolinkurl{medium}) & 100\% & 13 & 0\% & 13 & 531 & 32.7s & Lowest total output (531 tokens); 0 invalid calls \\
+5 & \nolinkurl{GLM-5.3} & \nolinkurl{ollama} (\nolinkurl{4K} turn cap) & 100\% & 16--19 & 6\%--16\% & 13--17 & 15,046 & 189.0s & \nolinkurl{4,096}-token circuit breaker interrupts CoT loop; passes immediately \\
+6 & \nolinkurl{GLM-5.3 Flash} & \nolinkurl{ollama} (\nolinkurl{4K} turn cap) & 100\% & 23 & 4\% & 21 & 25,370 & 162.0s & 1 invalid call; steady empirical verification \\
+6 & \nolinkurl{Kimi K3} & \nolinkurl{ollama} (\nolinkurl{kimi-k3:cloud}) & 100\% & 23 & 13\% & 22 & 5,946 & 92.4s & Short CoT; resolves orientation via live placement trials \\
+8 & \nolinkurl{Gemma 4 31B} & \nolinkurl{ollama} (\nolinkurl{gemma4:31b-cloud}) & 100\% & 47 & 4\% & 47 & 665 & 24.1s & 14 tokens/turn average; rapid action-first exploration \\
+9 & \nolinkurl{DeepSeek V4.1 Flash} & \nolinkurl{ollama} (\nolinkurl{v4.1-flash:cloud}) & 100\% & 61 & 16\% & 61 & 20,542 & 95.0s & 337 tokens/turn; switches to empirical placement after \nolinkurl{interact} \\
+10 & \nolinkurl{MiniMax M3} & \nolinkurl{ollama} (\nolinkurl{minimax-m3:cloud}) & 100\% & 65 & 28\% & 64 & 11,661 & 334.9s & Explores terrain for 43 calls, decodes tablet at call 44, passes \\
+11 & \nolinkurl{GLM-5.3} (uncapped control) & \nolinkurl{ollama} (\nolinkurl{16K} turn cap) & 0\% & 19 (aborted) & 5\% & 19 & \ensuremath{>}25,000 & 360.0s (timeout) & Exhausts 16,384 reasoning tokens in a single turn at call 14 \\
+12 & \nolinkurl{DeepSeek V4 Pro} & \nolinkurl{ollama} (\nolinkurl{16K} cap / 600s) & 0\% & 71 (aborted) & 10\% & 71 & 103,616 & 600.0s (timeout) & \textbf{103,616 CoT tokens across 71 turns; 0 orb placement attempts} \\
+\end{longtable}
+}
+
+The trajectories highlight three distinct cognitive regimes:
+\begin{enumerate}
+\item \textbf{First-500-token geometric insight versus 15,800-token \nolinkurl{"Let's not assume"} paralysis (\nolinkurl{GLM-5.3} and the \nolinkurl{4,096} circuit-breaker effect)}: Under an uncapped per-turn output limit (\nolinkurl{16,384} tokens), \nolinkurl{GLM-5.3} solves the quincunx geometry and center Water pillar within its first 500 reasoning tokens, but then writes \nolinkurl{"Let's not assume. Let's find source..."} and spends the remaining 15,800 tokens in a self-verification loop until wall-clock timeout. Restoring the \nolinkurl{4,096}-token per-turn cap truncates the runaway reasoning turn and triggers the harness prompt to issue a tool call, acting as an \textbf{exogenous CoT circuit breaker} that immediately yields a 5-call parallel solution in 16--19 calls.
+\item \textbf{100K-token deductive obsession versus lightweight empirical probing (\nolinkurl{DeepSeek V4 Pro} versus \nolinkurl{DeepSeek V4.1 Flash})}: \nolinkurl{DeepSeek V4 Pro} repeatedly emits single-turn bursts of \nolinkurl{6,348–10,644} reasoning tokens (totaling \textbf{103,616 output tokens}), calling \nolinkurl{interact} on the pillars over a dozen times in search of textual proof without ever attempting a single \nolinkurl{use_item} orb placement. Its lighter sibling \nolinkurl{DeepSeek V4.1 Flash} (337 tokens/turn) immediately tests orb placements once \nolinkurl{interact} yields no directional clue, succeeding in 61 calls (95.0s).
+\item \textbf{One-step epistemic probing (\nolinkurl{Claude Opus 5.5 --effort xhigh})}: Increasing \nolinkurl{Claude Opus 5.5} from \nolinkurl{medium} to \nolinkurl{xhigh} reasoning adds only 555 output tokens (\nolinkurl{1,603 → 2,158}) while transforming its single-turn 5-call guess into a \textbf{two-stage epistemic probe}: at Turn 6 it dispatches a single \nolinkurl{use_item("Wind Orb", facing=4925)} call to query the environment, uses the \nolinkurl{ok: true} 1-bit feedback to collapse the chiral symmetry ambiguity (\nolinkurl{H+}), and dispatches the remaining four placements in parallel at Turn 7 (11 calls total).
+
+\end{enumerate}
+\subsection{Prior knowledge, exploration priors, and fast-pivoting elasticity in multi-stage quests (\nolinkurl{classic10-baihe-medicine})}
+
+On the multi-scene open quest \nolinkurl{classic10-baihe-medicine} across \nolinkurl{Scenes 48–53} (collecting ginkgo fruit, carp, and deer antler in Baihe Village to obtain \nolinkurl{Liushen Dan}, reference \nolinkurl{par = 40}, \nolinkurl{Tier B}, \nolinkurl{standard} hints), the initial \nolinkurl{120}-call cap on \nolinkurl{seed 42} reversed the Rain Altar ordering: \nolinkurl{Gemini 4 Argon} (90 calls) and \nolinkurl{GPT-6.1-Sol} (117 calls) succeeded, whereas \nolinkurl{Claude Opus 5.5} triggered the deer trap on call 120 just as its budget expired (\nolinkurl{0.50} progress). Surface inspection suggested phase luck in the southern hunting ground (\nolinkurl{Scene 48}), where the deer (\nolinkurl{id=797}) follows a deterministic transition graph \nolinkurl{(72,100) → (54,85)/(51,94) → one-time transient (61,66) → 4-state cycle {(72,62) → (59,55) → (58,46) → (68,76)}}: both \nolinkurl{GPT-6.1-Sol} (call 75) and \nolinkurl{Opus 5.5} (call 104) invoked \nolinkurl{use_item("Trap", facing=797)}, but the deer happened to sit on the cycle endpoint \nolinkurl{(58,46)} for \nolinkurl{GPT-6.1-Sol} and on the non-repeating transient \nolinkurl{(61,66)} for \nolinkurl{Opus 5.5}.
+
+To test whether this outcome reflected chance or systematic strategy, we conducted a \textbf{120\ensuremath{\rightarrow}240 budget expansion}, a \textbf{cross-seed replication on \nolinkurl{seed 43}}, and a \textbf{5-question closed-book quiz (\nolinkurl{bench/quiz.mjs})}:
+
+{\small\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}>{\raggedright\arraybackslash}p{0.092\linewidth}@{}}
+\toprule
+Model configuration & Closed-book quiz (\nolinkurl{classic10}) & Seed & Call cap & Success & Total calls & Progress & Ginkgo / Carp / Antler / Goal call index & Village sweep calls & Post-misplacement pivot calls \\
+\midrule\endfirsthead
+\toprule
+Model configuration & Closed-book quiz (\nolinkurl{classic10}) & Seed & Call cap & Success & Total calls & Progress & Ginkgo / Carp / Antler / Goal call index & Village sweep calls & Post-misplacement pivot calls \\
+\midrule\endhead
+\bottomrule\endfoot
+\nolinkurl{Gemini 4 Argon} & 80\% (\nolinkurl{4/5}) & 42 & 120 & 100\% & 90 & 1.00 & 11 / 42 / 82 / 90 & 13 calls (43--55) & 1-step test (5-call relocate) \\
+\nolinkurl{GPT-6.1-Sol} & 100\% (\nolinkurl{5/5}) & 43 & 120 & 100\% & 105 & 1.00 & 15 / 99 / 71 / 105 & -- (hunts deer first) & 8-call relocate \\
+\nolinkurl{GPT-6.1-Sol} & 100\% (\nolinkurl{5/5}) & 42 & 120 & 100\% & 117 & 1.00 & 15 / 112 / 80 / 117 & -- (hunts deer first) & First trap landed on \nolinkurl{(58,46)} \\
+\nolinkurl{Gemini 4 Argon} & 80\% (\nolinkurl{4/5}) & 43 & 120 & 100\% & 120 & 1.00 & 13 / 37 / 112 / 120 & \textbf{0 calls (exits immediately)} & 1-step test (pickup at call 53) \\
+\nolinkurl{Claude Opus 5.5} & \textbf{0\% (\nolinkurl{0/5})} & 43 & 240 (cont.) & 100\% & 143 & 1.00 & 15 / 38 / 137 / 143 & \textbf{39 calls (39--77 full sweep)} & 23-call persistence before pickup \\
+\nolinkurl{Claude Opus 5.5} & \textbf{0\% (\nolinkurl{0/5})} & 42 & 240 (cont.) & 100\% & 176 & 1.00 & 15 / 45 / 170 / 176 & \textbf{43 calls (46--88 full sweep)} & 48-call persistence before pickup \\
+\nolinkurl{Claude Opus 5.5} & \textbf{0\% (\nolinkurl{0/5})} & 42 / 43 & 120 & 0\% & 120 & 0.50 & 15 / 45 (or 38) / -- / -- & 39--43 calls & Truncated at 120-call cap \\
+7 open/cloud models & 0\%--60\% & 42 & 120\ensuremath{\rightarrow}240 & 0\% & 120--240 & 0.00--0.25 & Ginkgo only or 0 ingredients & -- & Failed rod borrowing or trapping \\
+\end{longtable}
+}
+
+The paired cross-seed and closed-book evidence establishes three findings:
+\begin{enumerate}
+\item \textbf{Pretraining walkthrough contamination versus true zero-shot discovery}: On the closed-book quiz, \nolinkurl{GPT-6.1-Sol} (\nolinkurl{5/5 = 100%}) and \nolinkurl{Gemini 4 Argon} (\nolinkurl{4/5 = 80%}) recall the exact Baihe Village walkthrough from pretraining; after catching the carp at call 37 on \nolinkurl{seed 43}, \nolinkurl{Argon} walks straight out the southern exit (\nolinkurl{exit 801}) at call 38 with zero village exploration. Conversely, \nolinkurl{Claude Opus 5.5} scores \textbf{\nolinkurl{0/5} (answering "unknown" to all five questions)} and replicates the exact same phase structure across both seeds: it secures the ginkgo and carp in 38--45 calls, then expends \textbf{39--43 calls} conducting an exhaustive breadth-first sweep of all six village houses (\nolinkurl{exits 804–809}), the northern pharmacy and market (\nolinkurl{Scene 50}), and the western bridge before exiting south at call 78 (\nolinkurl{seed 43}) and call 89 (\nolinkurl{seed 42}). Those \textasciitilde{}40 calls represent genuine zero-shot information gathering rather than planning inefficiency.
+\item \textbf{Fast-pivoting elasticity versus sunk-cost persistence}: Every frontier model misplaced its initial deer trap on both seeds. However, \nolinkurl{Gemini 4 Argon} and \nolinkurl{GPT-6.1-Sol} treated trap placement as a lightweight reversible experiment, picking up the trap via \nolinkurl{interact(798)} within \textbf{5--8 calls} after a single missed chase and relocating it to \nolinkurl{(58,46)}, whereas \nolinkurl{Claude Opus 5.5} exhibited strong plan anchoring, spending \textbf{23--48 calls} (including repeated \nolinkurl{wait(15000)} calls) attempting to herd the deer back into its initial trap before relocating. Fast pivoting dampens initial phase variance.
+\item \textbf{The single-cutoff truncation illusion}: Reporting only binary success at the \nolinkurl{120}-call cutoff conflates \nolinkurl{Claude Opus 5.5}'s systematic zero-shot village sweep (100\% success at 143 and 176 calls) with the 7 open/cloud models that remain stuck at \nolinkurl{0.00–0.25} progress even after doubling the budget to 240 calls.
+
+\end{enumerate}
+\subsection{High-pressure boss tactics: prior knowledge, in-context retry evolution, and counterfactual no-cheese ablation (\nolinkurl{baiyue-single-origin})}
+
+On the endgame boss benchmark \nolinkurl{baiyue-single-origin} (\nolinkurl{seed 42}, \nolinkurl{Tier B}, \nolinkurl{standard} hints; \nolinkurl{Li Xiaoyao Lv46 / Zhao Ling'er Lv42 / A'nu Lv45} with \nolinkurl{64,609} cash and 90 item stacks against \nolinkurl{Baiyue Cult Leader} at \textbf{\nolinkurl{32,760 HP}} plus summoned \nolinkurl{620 HP} water beasts and \nolinkurl{3,500 HP} / \nolinkurl{1,357 HP} iron-rod guards), we conducted a four-part study combining a \textbf{13-question closed-book quiz}, \textbf{one-shot evaluation}, \textbf{in-context auto-reload retry evaluation}, and a \textbf{counterfactual no-cheese ablation}.
+
+When automatic reload on party wipe (\nolinkurl{battle over: lost}) is enabled---restoring Round 1 state while retaining all prior combat logs and failure causes in context under a \nolinkurl{180}-call budget (\nolinkurl{240} for \nolinkurl{Kimi K3})---the pass rate across 10 models rises from \textbf{10\% (1/10)} in one-shot mode to \textbf{40\% (4/10)}:
+
+{\small\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.115\linewidth}>{\raggedright\arraybackslash}p{0.115\linewidth}>{\raggedright\arraybackslash}p{0.115\linewidth}>{\raggedright\arraybackslash}p{0.115\linewidth}>{\raggedright\arraybackslash}p{0.115\linewidth}>{\raggedright\arraybackslash}p{0.115\linewidth}>{\raggedright\arraybackslash}p{0.115\linewidth}>{\raggedright\arraybackslash}p{0.115\linewidth}@{}}
+\toprule
+Rank & Model & 13-question quiz (Baiyue 3Q) & One-shot outcome (Attempt 1) & Retry outcome & Winning \nolinkurl{battleRounds} & Winning attempt / calls & Minimum Baiyue HP trajectory across attempts (from \nolinkurl{32,760 HP}) \\
+\midrule\endfirsthead
+\toprule
+Rank & Model & 13-question quiz (Baiyue 3Q) & One-shot outcome (Attempt 1) & Retry outcome & Winning \nolinkurl{battleRounds} & Winning attempt / calls & Minimum Baiyue HP trajectory across attempts (from \nolinkurl{32,760 HP}) \\
+\midrule\endhead
+\bottomrule\endfoot
+1 & \nolinkurl{Gemini 4 Argon} & 62\% (\nolinkurl{8/13}, Baiyue \nolinkurl{3/3}) & Lost Round 7 (\nolinkurl{2,011 HP} left) & \textbf{100\% Pass} & \textbf{7.00} & Attempt 2 / 42 & \nolinkurl{2,011 → 0 HP} (patches dual \nolinkurl{Wuqi Chaoyuan} + \nolinkurl{Qian Kun Yi Zhi} AoE; 7-round 0-death record) \\
+2 & \nolinkurl{DeepSeek V4.1 Flash} & 31\% (\nolinkurl{4/13}, Baiyue \nolinkurl{2/3}) & Lost Round 14 (\nolinkurl{14,903 HP} left) & \textbf{100\% Pass} & \textbf{10.00} & Attempt 6 / 172 & \nolinkurl{14,903 → 1,759 → 5,520 → 11,636 → 6,707 → 0 HP} (\nolinkurl{1 HP} A'nu clutch + \nolinkurl{Huashi Shui}) \\
+3 & \nolinkurl{GPT-6.1-Sol} & 62\% (\nolinkurl{8/13}, Baiyue \nolinkurl{2/3}) & \textbf{Won Round 14 (1st try)} & \textbf{100\% Pass} & \textbf{14.00} & \textbf{Attempt 1 / 33} & \nolinkurl{0 HP} (3\ensuremath{\times} \nolinkurl{Yingu} for 9 stealth turns + 4\ensuremath{\times} \nolinkurl{Jiushen}; flawless one-shot win) \\
+4 & \nolinkurl{Claude Opus 5.5} & \textbf{8\% (\nolinkurl{1/13}, Baiyue \nolinkurl{1/3})} & Lost Round 13 (\nolinkurl{16,285 HP} left) & \textbf{100\% Pass} & \textbf{17.00} & Attempt 4 / 157 & \nolinkurl{16,285 → 1,396 → 5,453 → 0 HP} (\textbf{0 \nolinkurl{Qian Kun Yi Zhi} used}; self-discovered AoE clear) \\
+5 & \nolinkurl{Kimi K3} & 38\% (\nolinkurl{5/13}, Baiyue \nolinkurl{2/3}) & Turn 1 CoT abort & 0\% (240 calls) & -- & 10 attempts / 240 & Pre-6 \nolinkurl{7,312} \ensuremath{\rightarrow} \textbf{Attempt 7 \nolinkurl{0 HP} (Baiyue killed, 44 HP A'nu died to adds)} \ensuremath{\rightarrow} \nolinkurl{3,699 → 5,883 → 7,456} \\
+6--10 & \nolinkurl{GLM-5.3 Flash} / \nolinkurl{MiniMax M3} / \nolinkurl{Gemma 4 31B} / \nolinkurl{MiniMax M3.1} / \nolinkurl{GLM-5.3} & 0\%--38\% & Lost Rounds 4--13 or CoT abort & 0\% (timeout/budget) & -- & 2--9 attempts & Best residual HP \nolinkurl{22,502–25,989} (repeated low-damage skills or CoT timeouts) \\
+\end{longtable}
+}
+
+Comparing \nolinkurl{Claude Opus 5.5} (Rank 4) and \nolinkurl{Kimi K3} (Rank 5) separates two modes of in-context reinforcement learning:
+\begin{enumerate}
+\item \textbf{Monotonic cumulative refinement (\nolinkurl{Claude Opus 5.5})}: Unaware of \nolinkurl{Qian Kun Yi Zhi} (\nolinkurl{1/13} quiz score) and never invoking it across 157 calls, \nolinkurl{Opus 5.5} uses Attempt 1 to identify \nolinkurl{Yingu}, \nolinkurl{Jiushen}, and \nolinkurl{Wuying Poison} (\nolinkurl{16,285 HP}), Attempt 2 to map the MP-recovery item chain and heavy weapon throws (\nolinkurl{1,396 HP}, dying to two \nolinkurl{3,500 HP} summoned guards), and Attempt 4 to preserve its core damage engine while adding multi-target AoE (\nolinkurl{Bingcan Gu}\ensuremath{\times}2 + \nolinkurl{Huashi Shui} + \nolinkurl{Jianshen}\ensuremath{\times}3 + \nolinkurl{Fengxue Bingtian}\ensuremath{\times}3), winning in 17.00 rounds with zero cash spent.
+\item \textbf{Recency-biased overcorrection (\nolinkurl{Kimi K3})}: On Attempt 7 (call 177), \nolinkurl{Kimi K3} actually reduced Baiyue's main body to \textbf{\nolinkurl{0 HP}} via \nolinkurl{Qian Kun Yi Zhi} before its \nolinkurl{44 HP} A'nu was felled by the surviving guards. After Attempt 8 failed when a third \nolinkurl{Jiushen} cast exceeded its usage cap, \nolinkurl{Kimi K3} overcorrected on Attempts 9--10 by instructing all members to throw weapons during stealth while \textbf{forgetting its own core invariant from Attempts 7--8 (feeding \nolinkurl{Xuelianzi} to restore Li Xiaoyao's MP for a second \nolinkurl{Jiushen})}, leaving Li Xiaoyao stranded at \nolinkurl{0 MP} for 7 rounds and regressing to \nolinkurl{3,699 → 5,883 → 7,456 HP}.
+
+\end{enumerate}
+Finally, to test whether \nolinkurl{Gemini 4 Argon} and \nolinkurl{GPT-6.1-Sol} succeeded only by recalling the classic \nolinkurl{"Jiushen + Qian Kun Yi Zhi + Yingu"} speedrun meta (\textbf{prior masking effect}), we implemented a \textbf{counterfactual no-cheese ablation (\nolinkurl{BENCH_STRIP_CHEESE=1})} at engine start (\nolinkurl{bench/start.mjs}) that strips \nolinkurl{Jiushen} (\nolinkurl{magicId: 370}) and \nolinkurl{Qian Kun Yi Zhi} (\nolinkurl{magicId: 394}) from party spell lists and zeroes out \nolinkurl{Yingu} (\nolinkurl{itemId: 141}) on initial load and every retry reload:
+
+{\small\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13142857142857142\linewidth}>{\raggedright\arraybackslash}p{0.13142857142857142\linewidth}>{\raggedright\arraybackslash}p{0.13142857142857142\linewidth}>{\raggedright\arraybackslash}p{0.13142857142857142\linewidth}>{\raggedright\arraybackslash}p{0.13142857142857142\linewidth}>{\raggedright\arraybackslash}p{0.13142857142857142\linewidth}>{\raggedright\arraybackslash}p{0.13142857142857142\linewidth}@{}}
+\toprule
+Rank & Model & Standard retry result & \textbf{No-cheese ablation result} & \textbf{Winning \nolinkurl{battleRounds}} & Total calls / attempts & Core mechanism discovery and scientific induction trajectory \\
+\midrule\endfirsthead
+\toprule
+Rank & Model & Standard retry result & \textbf{No-cheese ablation result} & \textbf{Winning \nolinkurl{battleRounds}} & Total calls / attempts & Core mechanism discovery and scientific induction trajectory \\
+\midrule\endhead
+\bottomrule\endfoot
+1 & \nolinkurl{Claude Opus 5.5} & 17.00 rounds (Attempt 4) & \textbf{100\% Pass} & \textbf{36.00} (fastest overall) & 542 calls (Attempt 11) & Spends Attempts 1--8 (296 calls) experimentally falsifying coop/Mengshe/dual-poison KO/paralysis; discovers \nolinkurl{Zhenyuan Huti}/\nolinkurl{Jingang Zhou} 50\% mitigation and 8-round expiry on Attempts 9--10 (\nolinkurl{2,068 HP}); \textbf{on Attempt 11 (\nolinkurl{#537}) computes \nolinkurl{1,502 HP < 5% × 32,760 (1,638 HP)} to instant-kill Baiyue with \nolinkurl{Huashi Shui}} \\
+2 & \nolinkurl{GPT-6.1-Sol} & 14.00 rounds (Attempt 1) & \textbf{100\% Pass} & \textbf{37.00} & 176 calls (Attempt 2) & Domain mechanics priors skip futile poison/control trials; Attempt 2 builds a 37-round fortress rotation (\nolinkurl{Zhenyuan Huti} across targets \nolinkurl{0,1,2} + per-round \nolinkurl{Wuqi Chaoyuan} + weapon/poison throws) \\
+3 & \nolinkurl{Gemini 4 Argon} & 7.00 rounds (Attempt 2) & \textbf{100\% Pass} & \textbf{39.00} & \textbf{114 calls (Attempt 2)} & Attempt 2 stacks protective buffs + weapon throws, \textbf{uniquely invents \nolinkurl{{"action": "repeat"}} macro calls} to compress turns, and finishes the last \nolinkurl{1,671 HP} solo with Li Xiaoyao (\nolinkurl{Chixue Can} + \nolinkurl{Jianshen} + \nolinkurl{Huashi Shui}) \\
+4 & \nolinkurl{DeepSeek V4.1 Flash} & 10.00 rounds (Attempt 6) & 0\% (700-call cap) & -- & 700 calls (23 attempts, best \nolinkurl{21,022 HP}) & Independently discovers Round-1 triple shielding (\nolinkurl{Zhenyuan Huti} + \nolinkurl{Jingang Zhou} + \nolinkurl{Jingang Fu}) and 6-round renewal, but falls into the \textbf{batch-execution credit-assignment trap}, misjudging Li Xiaoyao and Zhao Ling'er's spells as 0 damage \\
+\end{longtable}
+}
+
+The counterfactual ablation uncovers two fundamental insights:
+\begin{enumerate}
+\item \textbf{Two-layer prior structure versus "Newtonian" scientific induction}: Stripping first-layer \textbf{walkthrough meta priors} (\nolinkurl{Jiushen}, \nolinkurl{Qian Kun Yi Zhi}, \nolinkurl{Yingu}) does not incapacitate \nolinkurl{GPT-6.1-Sol} or \nolinkurl{Gemini 4 Argon}, because their second-layer \textbf{domain mechanics priors} immediately prune futile instant-KO/paralysis tests and prioritize protective mitigation, achieving victory on \textbf{Attempt 2 (176 and 114 calls)} in 37.00 and 39.00 rounds. Conversely, zero-prior \nolinkurl{Claude Opus 5.5} pays an \textbf{8-attempt (296-call) experimental tuition} to falsify dual-poison instant-KO pairs (\nolinkurl{Sanshi Gu + Xue Haitang}, \nolinkurl{Kongque Dan + Heding Hong}) and \nolinkurl{Kunxian Sheng} paralysis, discovers damage halving on Attempt 9 and 8-round buff expiration on Attempt 10, and on \textbf{Attempt 11 (542 calls)} calculates the \nolinkurl{<5%} (\nolinkurl{1,638 HP}) execution threshold to instant-kill Baiyue at \nolinkurl{1,502 HP} with \nolinkurl{Huashi Shui}, taking first place in \textbf{36.00 rounds}. Priors confer sample efficiency (2 attempts); scientific induction confers asymptotic optimality under novel physical laws.
+\item \textbf{The batch-execution credit-assignment trap versus controlled-variable linear elimination (\nolinkurl{ΔHP_round = x1 + x2 + x3})}: Why did \nolinkurl{DeepSeek V4.1 Flash} stall at \nolinkurl{21,022 HP} across 700 calls (23 attempts) despite discovering the exact same triple-shield opening and 6-round renewal cycle as \nolinkurl{Opus 5.5}? In the 1995 DOS combat engine, each round separates command collection (\nolinkurl{SelectAction}) from batch execution (\nolinkurl{PerformAction}): when slot-1 Li Xiaoyao (step \nolinkurl{t}) and slot-2 Zhao Ling'er (step \nolinkurl{t+1}) submit commands, the round has not yet executed, so observed boss HP delta is identically \nolinkurl{0}; only after slot-3 A'nu (step \nolinkurl{t+2}) submits her command does the engine execute all three actions and return the coupled round total \nolinkurl{ΔHP_round = x1 + x2 + x3}. Treating delayed batch feedback as atomic step-by-step feedback, \nolinkurl{DeepSeek V4.1 Flash} observed \nolinkurl{ΔHP = 0} after slot 1 and slot 2 and concluded (\nolinkurl{Turns @696, @699}) that \textbf{Baiyue is 100\% immune to all attacks from Li Xiaoyao and Zhao Ling'er (\nolinkurl{Jianshen}, \nolinkurl{Tianjian}, \nolinkurl{Wushen}, \nolinkurl{Bingcan Gu} = 0 damage) and that only slot-3 A'nu deals damage}, abandoning two-thirds of its party's firepower and even expending three revive actions on the same downed ally within a single round (\nolinkurl{#477–#479}). In contrast, \nolinkurl{Claude Opus 5.5} (\nolinkurl{#58–#84}) explicitly designed \textbf{controlled-variable linear elimination experiments}---pairing one unknown skill per round with two fixed \nolinkurl{1,000}-damage \nolinkurl{Wuying Poison} throws (\nolinkurl{x_unknown + 1000 + 1000 = ΔHP}) or two zero-damage heals (\nolinkurl{x_attack + 0 + 0 = ΔHP})---to isolate the exact damage of \nolinkurl{Jianshen} (\nolinkurl{510}), \nolinkurl{Taishan Yading} (\nolinkurl{436}), \nolinkurl{Wanyi Shixiang} (\nolinkurl{472}), thrown \nolinkurl{Guiya Dao} (\nolinkurl{1,587}), and \nolinkurl{Bingcan Gu} (\nolinkurl{230–360}) within three rounds.
+
+\end{enumerate}
+\section{Discussion and Limitations}
+
+\textbf{Construct and information validity.} Correct tool syntax, available clues, retained clues, recalled game knowledge, tool self-coding, and successful planning are different observations. Missing visual semantics and premature goal detection were environment defects. Repairs improve the measurement contract; they do not warrant attributing every later failure to the model. A stronger study needs observation/context ablations and independent failure annotation. The targeted studies in Sections 5.8--5.10 further demonstrate that: (1) when an environment exhibits chiral symmetry ambiguity or unobservable state, reasoning models lacking a metacognitive stopping rule can fall into 100K-token deductive loops, whereas a 1-step epistemic probe or an exogenous per-turn token circuit breaker resolves the ambiguity immediately; (2) in canonical game benchmarks, pretraining priors operate at two layers (surface walkthrough memorization and deep RPG mechanics priors), requiring closed-book quizzes (\nolinkurl{bench quiz}) alongside counterfactual mechanism ablations (\nolinkurl{BENCH_STRIP_CHEESE=1}) to disentangle memorized speedruns from zero-shot scientific induction; and (3) under delayed batch execution (\nolinkurl{ΔHP_round = x1 + x2 + x3}), modeling the measurement instrument's temporal semantics and performing controlled-variable elimination is essential to avoid credit-assignment illusions. While \nolinkurl{--pure} mode removes white-box L1 pre-checks and static heuristic limits, it couples code synthesis and debugging skill with domain planning, requiring the paired E8 protocol for separation.
+
+\textbf{Sampling and adaptation.} Calibration uses one external agent and two seeds. The exploratory evaluation in Section 5.5 uses one sample per task/model on a seed already used in earlier development comparisons; the token correction further uses evaluation feedback. While the diagnostic studies in Sections 5.8--5.10 add cross-seed replication (\nolinkurl{seed 43}), multi-tier budget expansion (\nolinkurl{120 → 240 → 560/700}), and in-context retry loops, they focus on three representative tasks. Selected difficult tasks and correlated seeds cannot unbiasedly estimate overall RPG competence, and no cultural or regional effect is identified. Synthetic saves and modified classic-save levels/cash also limit natural-play interpretations.
+
+\textbf{Scaffolding and budgets.} CLI and built-in agents differ in context retention, token enforcement, and usage reporting. Equal call limits do not imply equal compute. Section 5.9 shows that a single hard call cap (\nolinkurl{120} calls) induces a truncation illusion that conflates thorough zero-shot village exploration (100\% completion in 143--176 calls) with genuine stagnation, while Section 5.8 shows that the per-turn output token ceiling (\nolinkurl{4,096} versus \nolinkurl{16,384}) directly alters reasoning-model trajectories. Under \nolinkurl{--pure} mode, a single \nolinkurl{run_code} invocation can dispatch dozens of underlying \nolinkurl{CMSG_*} commands inside the sandbox; comparisons against \nolinkurl{assist} mode must therefore report both top-level MCP tool calls and underlying L0 command counts (\nolinkurl{commandsSent}). Costs for cloud/local adapters are not consistently priced. Failed runs have no winning-round or success-efficiency statistic. Wall-time classification and eight current reference failures remain release blockers.
+
+\textbf{Reproduction and release.} A replay establishes action/outcome consistency in its recorded environment, not reproducibility of cloud generation or validity across engine updates. General tasks need explicit manifests beyond Git labels. The accompanying evidence index contains extracted numbers, provenance, and hashes; full traces and frozen runtimes currently reside in local ignored directories and have not been publicly archived. Proprietary assets and music are not proposed for redistribution; asset rights and release permissions need review. Public references increase contamination risk, and a hidden test set is not yet implemented.
+
+\section{Conclusion}
+
+Agent-PAL-Bench provides a working protocol and task collection for text-mediated decisions in a Chinese RPG, supporting both a built-in high-level semantic tool layer (\nolinkurl{assist} L1) and a low-level protocol plus dynamic self-coding layer (\nolinkurl{--pure} L0). The current evidence supports partial reference feasibility, a local end-to-end pilot, a documented two-task observation/goal audit, and a three-agent end-to-end \nolinkurl{--pure} completeness validation in which Argon, GPT-6.1-Sol, and Claude Opus 5.5 independently synthesized 731-line, 135-line, and 1,427-line runtime libraries to complete the entire game from new game to final credits (\nolinkurl{Slots 1–99}). Complementary multi-model behavioral and counterfactual ablation studies on the Dali Rain Altar (\nolinkurl{classic48-rain-orbs}), Baihe Village Medicine (\nolinkurl{classic10-baihe-medicine}), and Final Boss Baiyue (\nolinkurl{baiyue-single-origin}) demonstrate that effective agency depends not only on static reasoning depth, but on issuing 1-step epistemic probes when pure deduction hits symmetry limits, balancing exhaustive zero-shot exploration against fast-pivoting elasticity, accumulating invariants monotonically across retries rather than overcorrecting to recent failures, and applying controlled-variable elimination to untangle delayed batch-execution feedback. A frozen release, repaired references, controlled scaffolding, independent samples, and a held-out evaluation remain necessary before comparative capability, tool-layer, or cultural-knowledge conclusions.
+
+\section*{Required Before Submission}
+
+\begin{itemize}
+\item Repair and diagnose the eight current reference failures and timeout classification; freeze and recheck the full task set.
+\item Integrate/version the isolated observation repairs and add complete manifests for general-task runs; do not silently substitute runtimes.
+\item Compare capability-matched models under controlled context and enforceable budgets (including E1--E7 and paired \nolinkurl{assist} versus \nolinkurl{--pure} E8 trials); separate CLI results, report both top-level calls and underlying L0 command counts, and report task-family uncertainty.
+\item Expand natural resource chains across seeds; label synthetic variants and single-seed pilots.
+\item Implement independent samples, information/context/language controls and a genuinely held-out split; preregister analysis before test access.
+\item Archive allowed runtime/trace evidence, audit failure labels and save provenance, and prepare rights/license documentation.
+
+\end{itemize}
+\section*{References}
+
+\begin{enumerate}
+\item Liu et al. \href{https://arxiv.org/abs/2308.03688}{AgentBench: Evaluating LLMs as Agents}. ICLR 2024.
+\item Côté et al. \href{https://arxiv.org/abs/1806.11532}{TextWorld: A Learning Environment for Text-based Games}. 2018, revised 2019.
+\item Hausknecht et al. \href{https://arxiv.org/abs/1909.05398}{Interactive Fiction Games: A Colossal Adventure}. 2020. Introduces Jericho.
+\item Wang et al. \href{https://arxiv.org/abs/2203.07540}{ScienceWorld: Is your Agent Smarter than a 5th Grader?}. 2022.
+\item Shridhar et al. \href{https://arxiv.org/abs/2010.03768}{ALFWorld: Aligning Text and Embodied Environments for Interactive Learning}. ICLR 2021.
+\item Costarelli et al. \href{https://arxiv.org/abs/2406.06613}{GameBench: Evaluating Strategic Reasoning Abilities of LLM Agents}. 2024.
+\item Paglieri et al. \href{https://arxiv.org/abs/2411.13543}{BALROG: Benchmarking Agentic LLM and VLM Reasoning On Games}. ICLR 2025.
+\item Karten et al. \href{https://arxiv.org/abs/2603.15563}{The PokeAgent Challenge: Competitive and Long-Context Learning at Scale}. 2026 technical report; NeurIPS 2025 competition.
+\item Zhang et al. \href{https://arxiv.org/abs/2604.08340v2}{Mastering PokeGym: Graph-Guided Multimodal Evolution at Test Time}. 2026 technical report, revised August 2026.
+
+\end{enumerate}
+\textbf{Project materials:} \href{agent-pal-bench-experiment-log.en.md}{experiment log}, \href{agent-pal-bench-evidence.json}{evidence index}, \href{agent-pal-bench-review.md}{review findings}, \href{../specs/agent-pal-bench.md}{benchmark design}, \href{../specs/argon-pure-playthrough-report.md}{Argon \nolinkurl{--pure} playthrough report}, \href{../specs/gpt61-pure-playthrough-report.md}{GPT-6.1-Sol \nolinkurl{--pure} playthrough \& three-model report}, \href{../specs/opus-pure-playthrough-report.md}{Claude Opus 5.5 \nolinkurl{--pure} playthrough \& cross-model report}, \href{rain-altar-epistemic-trap.zh.md}{Rain Altar 45\ensuremath{^\circ} symmetry \& epistemic probe study}, \href{baihe-luck-vs-character.zh.md}{Baihe Village priors \& exploration character study}, \href{baiyue-prior-vs-reflection.zh.md}{Baiyue boss priors, retry RL \& no-cheese ablation study}, \href{../../apps/agent-pal/bench/README.md}{runner documentation}, and \href{agent-pal-bench-draft.md}{Chinese manuscript}. Local audit implementation and frozen experiment paths are recorded in the evidence index; these are not public artifact URLs.
+\end{document}

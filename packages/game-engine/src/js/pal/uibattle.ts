@@ -212,6 +212,8 @@ function normalizeBattleSnapshot(snapshot: BattleStateSnapshot | Record<string, 
 // var battleStateCache = null;
 
 function BATTLE() {
+  const live = battleService.getState && battleService.getState();
+  if (live) return live as unknown as BattleStateSnapshot;
   if (!uibattle.battleStateCache) {
     uibattle.battleStateCache = normalizeBattleSnapshot(getBattleStateSnapshot());
   }

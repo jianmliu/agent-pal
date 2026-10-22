@@ -369,11 +369,11 @@ export function applyClientResult(res, final, claudeModel) {
   const u = final?.usage || {};
   res.external = true;
   res.client = { name: 'claude-cli', model: claudeModel, numTurns: final?.num_turns ?? null, isError: final?.is_error ?? null, subtype: final?.subtype ?? null, durationMs: final?.duration_ms ?? null };
-  res.tokensIn = (u.input_tokens ?? 0) + (u.cache_read_input_tokens ?? 0) + (u.cache_creation_input_tokens ?? 0);
-  res.tokensOut = u.output_tokens ?? 0;
-  res.tokensCached = u.cache_read_input_tokens ?? 0;
-  res.tokensCacheWrite = u.cache_creation_input_tokens ?? 0;
-  res.cost = final?.total_cost_usd ?? null;
+  res.tokensIn = (res.tokensIn || 0) + (u.input_tokens ?? 0) + (u.cache_read_input_tokens ?? 0) + (u.cache_creation_input_tokens ?? 0);
+  res.tokensOut = (res.tokensOut || 0) + (u.output_tokens ?? 0);
+  res.tokensCached = (res.tokensCached || 0) + (u.cache_read_input_tokens ?? 0);
+  res.tokensCacheWrite = (res.tokensCacheWrite || 0) + (u.cache_creation_input_tokens ?? 0);
+  res.cost = final?.total_cost_usd != null ? (res.cost || 0) + final.total_cost_usd : (res.cost || null);
   if (!final) res.endReason = res.endReason || 'client-error';
   return res;
 }

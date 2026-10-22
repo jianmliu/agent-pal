@@ -44,8 +44,8 @@
     }
   ],
   "budget": {
-    "toolCalls": 120,
-    "tokens": 1440000,
+    "toolCalls": 240,
+    "tokens": 2880000,
     "virtualSeconds": 3600
   },
   "tiers": [

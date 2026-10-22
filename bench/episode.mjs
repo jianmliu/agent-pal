@@ -185,7 +185,15 @@ export async function createEpisode({ task, seed, tier = 'B', logFile = null, me
     await codeRunner.deliver(l0.hello('pure'));
   }
 
-  const budget = task.budget;
+  const budgetToolCalls = Number(process.env.BENCH_BUDGET_TOOL_CALLS) || meta.budgetToolCalls || task.budget.toolCalls;
+  if (budgetToolCalls !== task.budget.toolCalls) meta = { ...meta, budgetToolCalls };
+  const scale = budgetToolCalls / task.budget.toolCalls;
+  const budget = {
+    ...task.budget,
+    toolCalls: budgetToolCalls,
+    ...(task.budget.tokens ? { tokens: Math.round(task.budget.tokens * Math.max(scale, 500)) } : {}),
+    ...(task.budget.virtualSeconds ? { virtualSeconds: Math.round(task.budget.virtualSeconds * Math.max(scale, 20)) } : {})
+  };
   const res = {
     task: task.id, taskVersion: task.version, seed, tier, ...meta,
     success: false, successAt: null, failed: false, failAt: null, stuck: false, crashed: false,
@@ -219,8 +227,8 @@ export async function createEpisode({ task, seed, tier = 'B', logFile = null, me
     const sf = e.probes.surface;
     return sf && sf.byteBuffer && sf.palette ? { mimeType: 'image/png', data: framePng(sf.byteBuffer, sf.palette) } : null;
   };
-  const intro = pixel ? PIXEL_INTRO : (tier === 'P' ? renderPure(null, l0.observe(), 'full state') : a.observe());
-  const introImage = pixel ? frame() : null;
+  let intro = pixel ? PIXEL_INTRO : (tier === 'P' ? renderPure(null, l0.observe(), 'full state') : a.observe());
+  let introImage = pixel ? frame() : null;
   log({ type: 'start', task: task.id, taskVersion: task.version, seed, tier, scene: v0.scene, ...meta, ...(battleMetrics ? { fingerprint: taskFingerprint(task), initial: initial.view, setup: initial.setup } : {}) });
 
   const stopReason = () => {
@@ -320,6 +328,60 @@ export async function createEpisode({ task, seed, tier = 'B', logFile = null, me
   /** 模型侧的一轮(内置循环):文字与调用名进日志,方便事后看模型在想什么。 */
   function logTurn({ text = '', calls = [], usage = null } = {}) {
     log({ type: 'turn', atCall: res.toolCalls, text: text.slice(0, 2000), calls: calls.map((c) => c.name), usage });
+  }
+
+  if (process.env.BENCH_RESUME_FROM && fs.existsSync(process.env.BENCH_RESUME_FROM)) {
+    const resumeLines = fs.readFileSync(process.env.BENCH_RESUME_FROM, 'utf8').split('\n').filter(Boolean);
+    let lastCallRes = null, lastMapNote = '';
+    const prevLogLines = [], turnNotes = [];
+    const prevJson = process.env.BENCH_RESUME_FROM.replace(/\.jsonl$/, '.json');
+    const hasPrevJson = fs.existsSync(prevJson);
+    for (const line of resumeLines) {
+      const ev = JSON.parse(line);
+      if (ev.type === 'turn') {
+        log(ev);
+        if (ev.text?.trim()) turnNotes.push(`[Step #${ev.atCall}] ${ev.text.trim()}`);
+        if (!hasPrevJson && ev.usage) addUsage(ev.usage);
+      } else if (ev.type === 'call') {
+        lastCallRes = await call(ev.name, ev.args);
+        if (ev.name === 'map' && ev.note) lastMapNote = ev.note;
+        const combatTag = ev.combat ? ` [Enemies: ${(ev.combat.enemies || []).map(x => `HP${x.hp}`).join(',')}; Party: ${(ev.combat.party || []).map(p => `${p.name}:HP${p.hp}/MP${p.mp}`).join(', ')}]` : '';
+        prevLogLines.push(`#${ev.i} ${ev.name}(${JSON.stringify(ev.args)}) -> ${ev.note || ''}${combatTag}`);
+      }
+    }
+    if (hasPrevJson) {
+      const prev = JSON.parse(fs.readFileSync(prevJson, 'utf8'));
+      addUsage({
+        tokensIn: prev.tokensIn || 0,
+        tokensOut: prev.tokensOut || 0,
+        cacheRead: prev.tokensCached || 0,
+        cacheWrite: prev.tokensCacheWrite || 0,
+        cost: prev.cost || 0
+      });
+    }
+    if (!pixel && tier !== 'P') {
+      const prevClientJsonl = process.env.BENCH_RESUME_FROM.replace(/\.jsonl$/, '.client.jsonl');
+      let agentNotesBlock = '';
+      if (fs.existsSync(prevClientJsonl)) {
+        const notes = [];
+        for (const l of fs.readFileSync(prevClientJsonl, 'utf8').split('\n').filter(Boolean)) {
+          try {
+            const d = JSON.parse(l);
+            if (d.type === 'assistant') {
+              for (const b of d.message?.content || []) {
+                const t = (b.thinking || b.text || '').trim();
+                if (t) notes.push(t);
+              }
+            }
+          } catch {}
+        }
+        if (notes.length) agentNotesBlock = `\n\n[Your Own Notes & Lessons from Earlier Steps]\n${notes.slice(-12).join('\n---\n')}`;
+      } else if (turnNotes.length) {
+        agentNotesBlock = `\n\n[Your Own Notes & Lessons from Earlier Steps]\n${turnNotes.slice(-12).join('\n---\n')}`;
+      }
+      const historyBlock = prevLogLines.length ? `\n\n[Previous Attempt Action Log (steps 1..${res.toolCalls}) — review what worked and what failed before acting]\n${prevLogLines.slice(-90).join('\n')}` : '';
+      intro = `${lastCallRes ? lastCallRes.text : a.observe({ full: true })}\n\n[Resumed at step ${res.toolCalls}; inventory & map memory preserved]${agentNotesBlock}${historyBlock}\n${lastMapNote}`;
+    }
   }
 
   return { view: () => tracker.view(), get tools() { return codeRunner ? [...staticTools, ...codeRunner.tools()] : staticTools; }, intro, introImage, call, addUsage, logTurn, finish, get done() { return done; }, result: res, tier, task };
