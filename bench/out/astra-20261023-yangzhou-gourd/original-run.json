@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "astra-20261023-yangzhou-gourd",
+  "model": "codex-cli:gpt-6-astra",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic19-yangzhou-gourd",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 74
+      }
+    }
+  ],
+  "clientAccountingVersion": 1,
+  "promptVersion": 3,
+  "code": "ab9a7d5-dirty",
+  "startedAt": "2026-10-23T16:00:27.178Z"
+}

@@ -1,0 +1,303 @@
+{
+  "date": "2026-10-23",
+  "scope": "One fresh Astra seed-42 episode and selected historical comparator records; not a repeated matched model ranking",
+  "comparison": [
+    {
+      "model": "GPT-6 Astra",
+      "run": "astra-20261023-yangzhou-gourd",
+      "code": "ab9a7d5-dirty",
+      "success": true,
+      "calls": 146,
+      "callCap": 230,
+      "endReason": "success",
+      "progress": 1,
+      "milestones": {
+        "night-alarm": 27,
+        "recovered-bag": 55,
+        "accused-by-merchant": 67,
+        "met-widow": 108,
+        "entered-well": 141
+      },
+      "invalidCalls": 10,
+      "softStops": 9,
+      "client": {
+        "name": "codex-cli",
+        "model": "gpt-6-astra",
+        "effort": "medium",
+        "numTurns": 1,
+        "durationMs": 312042,
+        "exitCode": 0,
+        "signal": null
+      },
+      "cost": 6.047404,
+      "tokensIn": 4625255,
+      "tokensOut": 3979,
+      "tokensCached": 4489344,
+      "savedVerification": true,
+      "freshVerification": true
+    },
+    {
+      "model": "GPT-6.1 Sol",
+      "run": "codex-cli_gpt-6.1-sol-B-yangzhou-gourd",
+      "code": "66bf78d-dirty",
+      "success": true,
+      "calls": 218,
+      "callCap": 230,
+      "endReason": "success",
+      "progress": 1,
+      "milestones": {
+        "night-alarm": 18,
+        "recovered-bag": 46,
+        "accused-by-merchant": 60,
+        "met-widow": 104,
+        "entered-well": 207
+      },
+      "invalidCalls": 17,
+      "softStops": 8,
+      "client": {
+        "name": "codex-cli",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "numTurns": 1,
+        "durationMs": 630560
+      },
+      "cost": 1.3123676000000002,
+      "tokensIn": 8354450,
+      "tokensOut": 7877,
+      "tokensCached": 8144896,
+      "savedVerification": true,
+      "freshVerification": false
+    },
+    {
+      "model": "Claude Opus 5.5 (initial)",
+      "run": "claude-cli_claude-opus-5-5-B-yangzhou-gourd",
+      "code": "66bf78d-dirty",
+      "success": false,
+      "calls": 230,
+      "callCap": 230,
+      "endReason": "budget-toolCalls",
+      "progress": 0.6666666666666666,
+      "milestones": {
+        "night-alarm": 56,
+        "recovered-bag": 161,
+        "accused-by-merchant": 169,
+        "met-widow": 177,
+        "entered-well": null
+      },
+      "invalidCalls": 19,
+      "softStops": 8,
+      "client": {
+        "name": "claude-cli",
+        "model": "claude-opus-5-5",
+        "numTurns": 232,
+        "isError": false,
+        "subtype": "success",
+        "durationMs": 664705
+      },
+      "cost": 4.5014038,
+      "tokensIn": 12946773,
+      "tokensOut": 27301,
+      "tokensCached": 12771479,
+      "savedVerification": true,
+      "freshVerification": false
+    },
+    {
+      "model": "Claude Opus 5.5 (continued)",
+      "run": "claude-cli_claude-opus-5-5-B-yangzhou-gourd-320cap",
+      "code": "66bf78d-dirty",
+      "success": true,
+      "calls": 280,
+      "callCap": 320,
+      "endReason": "success",
+      "progress": 1,
+      "milestones": {
+        "night-alarm": 56,
+        "recovered-bag": 161,
+        "accused-by-merchant": 169,
+        "met-widow": 177,
+        "entered-well": 269
+      },
+      "invalidCalls": 22,
+      "softStops": 9,
+      "client": {
+        "name": "claude-cli",
+        "model": "claude-opus-5-5",
+        "numTurns": 51,
+        "isError": false,
+        "subtype": "success",
+        "durationMs": 104322
+      },
+      "cost": 0.6924049999999999,
+      "tokensIn": 1084024,
+      "tokensOut": 6269,
+      "tokensCached": 1039085,
+      "savedVerification": true,
+      "freshVerification": false
+    },
+    {
+      "model": "Gemini 4 Argon",
+      "run": "agy-cli_gemini-4-argon-B-yangzhou-gourd",
+      "code": "66bf78d-dirty",
+      "success": true,
+      "calls": 161,
+      "callCap": 230,
+      "endReason": "success",
+      "progress": 1,
+      "milestones": {
+        "night-alarm": 16,
+        "recovered-bag": 50,
+        "accused-by-merchant": 68,
+        "met-widow": 101,
+        "entered-well": 132
+      },
+      "invalidCalls": 8,
+      "softStops": 10,
+      "client": {
+        "name": "agy-cli",
+        "model": "gemini-4-argon",
+        "effort": "medium",
+        "durationMs": 890825
+      },
+      "cost": 0,
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "tokensCached": 0,
+      "savedVerification": true,
+      "freshVerification": false
+    }
+  ],
+  "sources": {
+    "bench/out/astra-20261023-yangzhou-gourd/episodes/classic19-yangzhou-gourd__s42.json": {
+      "sha256": "196803ac9621e8d318e183bcdd167926b6a59e7ed89a96ce852d828769db97c7",
+      "bytes": 1575
+    },
+    "bench/out/astra-20261023-yangzhou-gourd/episodes/classic19-yangzhou-gourd__s42.jsonl": {
+      "sha256": "402d9007eae2c722365e34f9f24c71cebbacdbdab85dd86155b5265a600b207e",
+      "bytes": 90807
+    },
+    "bench/out/astra-20261023-yangzhou-gourd/run.json": {
+      "sha256": "d5209218b30b07b00b57de47f5e300e066250d8618304decc514b9a95e49220e",
+      "bytes": 1097
+    },
+    "bench/out/astra-20261023-yangzhou-gourd/verify.json": {
+      "sha256": "4390a865ef5b860e443377cb3fc7a30d729e807d19b31953ce068945c923789f",
+      "bytes": 715
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-yangzhou-gourd/episodes/classic19-yangzhou-gourd__s42.json": {
+      "sha256": "f26df5fe6b526387c0639560f4efc4cf3de23bebab3108996a17102101ae53cd",
+      "bytes": 1016
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-yangzhou-gourd/episodes/classic19-yangzhou-gourd__s42.jsonl": {
+      "sha256": "fe7a155735aa66943cbf150de099101fea18e8c20a7091b69d3cf9395d42d446",
+      "bytes": 130690
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-yangzhou-gourd/run.json": {
+      "sha256": "7ba0ec5099ea8bbc18abe933fef43e19d813c47cc0185171a362237e89a427ca",
+      "bytes": 473
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-yangzhou-gourd/verify.json": {
+      "sha256": "65e098762809c4cfc78382daf4cd9208998b7f0384546c0b470ca5673e6ee072",
+      "bytes": 474
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-yangzhou-gourd/episodes/classic19-yangzhou-gourd__s42.json": {
+      "sha256": "93eb72aee70550efa4bf7bc0f11727814f3daec640c69619b4455929d7088c9e",
+      "bytes": 1092
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-yangzhou-gourd/episodes/classic19-yangzhou-gourd__s42.jsonl": {
+      "sha256": "1019b3fda7f7a699ce3f1abca0aa31faa06ab17008ecc177c772f5dd86ba218c",
+      "bytes": 118318
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-yangzhou-gourd/run.json": {
+      "sha256": "e1bc5880bba43efc65eaff759d9e2260e2c6d2ca4343a921e7611232072bbd66",
+      "bytes": 483
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-yangzhou-gourd/verify.json": {
+      "sha256": "527a8a215798ccef2b11f7d3eb9409ff83fa9ed8da0c7c12f97750164f12038d",
+      "bytes": 484
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-yangzhou-gourd-320cap/episodes/classic19-yangzhou-gourd__s42.json": {
+      "sha256": "b234278ec01f3a5f240c696757f08a9c5d9b1edfc92dcf7e607329785afdbe9b",
+      "bytes": 1101
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-yangzhou-gourd-320cap/episodes/classic19-yangzhou-gourd__s42.jsonl": {
+      "sha256": "cbec7f38f493c9344f949791e9e6b505274ba6e89e645912a786a85607f77ae8",
+      "bytes": 162042
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-yangzhou-gourd-320cap/run.json": {
+      "sha256": "b59d12c35845b6e06a7372c7c856b14ec384a867c1dd3dcef853f9c53216ec70",
+      "bytes": 490
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-yangzhou-gourd-320cap/verify.json": {
+      "sha256": "27a18aea647eb1fc29d31c226f5f36cbfccbe3a6ef80790a26041390a8d2806f",
+      "bytes": 474
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-yangzhou-gourd/episodes/classic19-yangzhou-gourd__s42.json": {
+      "sha256": "c6f77ff901b3e25a6989b482dfd43a4118c09f397c2c13b1a08a89c976b59f81",
+      "bytes": 1015
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-yangzhou-gourd/episodes/classic19-yangzhou-gourd__s42.jsonl": {
+      "sha256": "35469bdb33157d56ab28d972bbe5f59c814d69807d6eb97ae2fc9a71a06c7079",
+      "bytes": 99958
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-yangzhou-gourd/run.json": {
+      "sha256": "d1533072fa743b94f8bc760a2fa4b28a26f9a32d4d12f5fb03188717316b5057",
+      "bytes": 475
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-yangzhou-gourd/verify.json": {
+      "sha256": "9b95e6f8cf0b42df97913103f80a4561a5800936bda4a5c9772e792a1adee139",
+      "bytes": 474
+    },
+    "bench/out/astra-20261023-yangzhou-gourd/evaluation-protocol.json": {
+      "sha256": "c64ef012d8284c6765274c7d95282dfb740104eb11a96e03c25400f91ac9bf6e",
+      "bytes": 1086
+    },
+    "bench/out/astra-20261023-yangzhou-gourd/original-run.json": {
+      "sha256": "b63d8675ced741f5aa1c0143ed4ebc0a607fc82476e923306ee994cb3c41ac69",
+      "bytes": 452
+    },
+    "bench/out/astra-20261023-yangzhou-gourd/original-run-final.json": {
+      "sha256": "c5b338e309f954a23ad582b9d7167a13d649f46895117c7f83f0dfc972890e1f",
+      "bytes": 496
+    },
+    "bench/out/astra-20261023-yangzhou-gourd/reference-check.txt": {
+      "sha256": "5dc3aab38e7b4b5e4cdaaa6248dd98a9d9a87cab90c5caa73f3b2228bc3a8c6e",
+      "bytes": 510
+    },
+    "bench/out/astra-20261023-yangzhou-gourd/verification-output.txt": {
+      "sha256": "f2e72db8d2fd6b866494408c4076645ea131bed8f14a06ee5c292af477b877c8",
+      "bytes": 158
+    },
+    "bench/out/astra-20261023-yangzhou-gourd/episodes/classic19-yangzhou-gourd__s42.client.jsonl": {
+      "sha256": "2fb546227f574eeb207f32befd3b5f6cde8935cd68218cf3bf9383c41bba2547",
+      "bytes": 308175
+    }
+  },
+  "astraVerification": {
+    "verifiedAt": "2026-10-23T16:06:37.777Z",
+    "code": "ab9a7d5-dirty",
+    "replayRuntimeRoot": "/Volumes/T7-Data/pal/reviews/astra-yangzhou-20261023/frozen-runtime",
+    "runDigest": "1be4fcecd6c356863627cce57fc803d5a6f9e5d9426c59624feb9171f6a28ea0",
+    "episodes": [
+      {
+        "file": "classic19-yangzhou-gourd__s42.jsonl",
+        "task": "classic19-yangzhou-gourd",
+        "seed": 42,
+        "claimed": {
+          "success": true,
+          "endReason": "success"
+        },
+        "digest": "fc055036b066da3cb35b853719716fdbf98fd28b2d92ffdcb3c5b10c5a871e50",
+        "ok": true,
+        "verdict": "verified",
+        "diffs": [],
+        "warnings": [
+          "run recorded on dirty worktree (ab9a7d5-dirty)"
+        ]
+      }
+    ]
+  },
+  "startSaveSha256": "a203e4763705d15b55e70ae75f6b7d67591f91ce9754283c5785683d00391fd9",
+  "startingSaveMatchesFrozen": true,
+  "runtimeAttachment": "The generic runner omits runtime hashes. Pre-run protocol hashes were attached to run.json after collection, preserving the original final manifest in original-run-final.json; original-run.json also preserves the earlier manifest. No trajectory/client bytes were rewritten.",
+  "historicalVerification": "All four historical comparator verification files report success and their episode digests were checked against the current recorded files; no model reruns or freshly reconstructed historical execution builds."
+}

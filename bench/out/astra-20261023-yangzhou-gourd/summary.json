@@ -1,0 +1,58 @@
+{
+  "runId": "astra-20261023-yangzhou-gourd",
+  "model": "codex-cli:gpt-6-astra",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "ab9a7d5-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 6.047404,
+  "costTotal": 6.047404,
+  "tokensTotal": 4629234,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic19-yangzhou-gourd",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": 146,
+      "invalidRate": 0.0684931506849315,
+      "tokensMean": 4629234,
+      "costTotal": 6.047404,
+      "costMeanOnSuccess": 6.047404,
+      "efficiencyMean": 0.507,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 146,
+          "successAt": 146,
+          "invalidCalls": 10,
+          "tokensIn": 4625255,
+          "tokensOut": 3979,
+          "cost": 6.047404,
+          "virtualSeconds": 330.7,
+          "battleRounds": null,
+          "par": 74,
+          "efficiency": 0.507
+        }
+      ]
+    }
+  ]
+}

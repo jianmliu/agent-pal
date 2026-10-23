@@ -1,0 +1,50 @@
+{
+  "summary.json": {
+    "sha256": "da60e17410d3b7e6cbee49a6f0f352a9151bb31abaade1ade4fa5ff2f13e183c",
+    "bytes": 1364
+  },
+  "verification-output.txt": {
+    "sha256": "f2e72db8d2fd6b866494408c4076645ea131bed8f14a06ee5c292af477b877c8",
+    "bytes": 158
+  },
+  "verify.json": {
+    "sha256": "4390a865ef5b860e443377cb3fc7a30d729e807d19b31953ce068945c923789f",
+    "bytes": 715
+  },
+  "original-run.json": {
+    "sha256": "b63d8675ced741f5aa1c0143ed4ebc0a607fc82476e923306ee994cb3c41ac69",
+    "bytes": 452
+  },
+  "original-run-final.json": {
+    "sha256": "c5b338e309f954a23ad582b9d7167a13d649f46895117c7f83f0dfc972890e1f",
+    "bytes": 496
+  },
+  "reference-check.txt": {
+    "sha256": "5dc3aab38e7b4b5e4cdaaa6248dd98a9d9a87cab90c5caa73f3b2228bc3a8c6e",
+    "bytes": 510
+  },
+  "evaluation-protocol.json": {
+    "sha256": "c64ef012d8284c6765274c7d95282dfb740104eb11a96e03c25400f91ac9bf6e",
+    "bytes": 1086
+  },
+  "run.json": {
+    "sha256": "d5209218b30b07b00b57de47f5e300e066250d8618304decc514b9a95e49220e",
+    "bytes": 1097
+  },
+  "episodes/classic19-yangzhou-gourd__s42.jsonl": {
+    "sha256": "402d9007eae2c722365e34f9f24c71cebbacdbdab85dd86155b5265a600b207e",
+    "bytes": 90807
+  },
+  "episodes/classic19-yangzhou-gourd__s42.client.jsonl": {
+    "sha256": "2fb546227f574eeb207f32befd3b5f6cde8935cd68218cf3bf9383c41bba2547",
+    "bytes": 308175
+  },
+  "episodes/classic19-yangzhou-gourd__s42.json": {
+    "sha256": "196803ac9621e8d318e183bcdd167926b6a59e7ed89a96ce852d828769db97c7",
+    "bytes": 1575
+  },
+  "episodes/classic19-yangzhou-gourd__s42.stderr.log": {
+    "sha256": "8d2990da3f3ac0ab0c32b2516d01caa3eba6c542980e3978a2425ce04c256689",
+    "bytes": 1406
+  }
+}

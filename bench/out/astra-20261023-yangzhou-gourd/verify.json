@@ -1,0 +1,24 @@
+{
+  "verifiedAt": "2026-10-23T16:06:37.777Z",
+  "code": "ab9a7d5-dirty",
+  "replayRuntimeRoot": "/Volumes/T7-Data/pal/reviews/astra-yangzhou-20261023/frozen-runtime",
+  "runDigest": "1be4fcecd6c356863627cce57fc803d5a6f9e5d9426c59624feb9171f6a28ea0",
+  "episodes": [
+    {
+      "file": "classic19-yangzhou-gourd__s42.jsonl",
+      "task": "classic19-yangzhou-gourd",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "fc055036b066da3cb35b853719716fdbf98fd28b2d92ffdcb3c5b10c5a871e50",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (ab9a7d5-dirty)"
+      ]
+    }
+  ]
+}

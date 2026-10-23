@@ -1,0 +1,3 @@
+✓ classic19-yangzhou-gourd seed 42: goal at step 74/74 · milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 · vt 250.718s
+✓ classic19-yangzhou-gourd seed 43: goal at step 74/74 · milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 · vt 251.181s
+✓ classic19-yangzhou-gourd seed 44: goal at step 74/74 · milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 · vt 249.782s
