@@ -377,15 +377,15 @@ tbody tr:hover td,table tr:hover td{background-image:linear-gradient(rgba(var(--
 function statsOverviewSection() {
   return `<section>
 <h2>核心统计总览：华山论剑首期守擂榜（三剑客率先满贯，诚邀大家提交国产模型 PR 攻擂！）</h2>
-<p class="muted">评测基准涵盖 <strong>闭卷先验笔试（22 问）</strong>、<strong>四大专项实操擂台（祈雨祭坛 / 白河采药 / 扬州紫金葫芦 / 南诏王宫拜月决战 &amp; 禁招消融赛）</strong> 与 <strong>从零手写代码全游戏通关（<code>--pure</code> 模式 300 场景 11 章马拉松）</strong>。在首期登台的 13 款模型中，各自拥有独立个人订阅额度的<strong>“外来三剑客”（<code>Gemini 4 Argon</code>、<code>Claude Opus 5.5</code>、<code>GPT-6.1-Sol</code>）率先完成四大专项实操 100% 大满贯并打穿全游戏</strong>。</p>
+<p class="muted">评测基准涵盖 <strong>闭卷先验笔试（22 问）</strong>、<strong>四大专项实操擂台（祈雨祭坛 / 白河采药 / 扬州紫金葫芦 / 南诏王宫拜月决战 &amp; 禁招消融赛）</strong> 与 <strong>从零手写代码全游戏通关（<code>--pure</code> 模式 300 场景 11 章马拉松）</strong>。在登台的 15 款模型中（首期 13 款，之后补测 <code>GPT-6 Astra</code> 与 <code>Claude Fable 5.1</code>），各自拥有独立个人订阅额度的<strong>“外来三剑客”（<code>Gemini 4 Argon</code>、<code>Claude Opus 5.5</code>、<code>GPT-6.1-Sol</code>）率先完成四大专项实操 100% 大满贯并打穿全游戏</strong>。</p>
 <div class="card" style="margin:0 0 16px;border-left:4px solid var(--warn);background:color-mix(in oklab, var(--warn) 7%, var(--card))">
   <h3 style="margin:0 0 6px;color:var(--warn)">⚡ 江湖擂台声明：个人 Ollama 订阅额度有限，国产模型大量高阶席位虚位以待！</h3>
   <p style="margin:0">本次评测完全由个人自费订阅完成：“外来三剑客”分别跑在各自独立的个人订阅账号上，因此有充足额度跑满全科；而 <strong>8 款国产模型（<code>DeepSeek</code>、<code>GLM</code>、<code>Kimi</code>、<code>MiniMax</code>）全部共用同一个个人 Ollama Cloud 订阅账号分摊额度</strong>（例如 <code>DeepSeek V4.1 Flash</code> 在 <code>--pure</code> 模式一路连斩赤鬼王、石长老杀入第 5 章扬州城后直接把整月 Ollama 额度耗尽被迫中断；扬州 15 场景长链与 240/560 步扩容赛也因额度见底未能对其他国产模型全面展开；<code>Qwen</code>、<code>Doubao Seed</code>、<code>Step</code> 等国产主力更是尚未测试）。<strong>因此本榜单定位是一座开放攻擂的“江湖擂台”</strong>——非常欢迎有额度的朋友跑分并通过 <strong>GitHub PR（$0 API 成本自动重放核验）</strong>提交国产模型记录，争夺首座国产大满贯奖杯！</p>
 </div>
 
 <div class="kpis">
-  <div class="kpi"><div class="k-label">全游戏通关率 (--pure 11章)</div><div class="k-val good">3 / 13 (23%)</div><div class="k-sub">仅 Argon、Claude Opus 5.5、GPT-6.1-Sol 抵达全剧终</div></div>
-  <div class="kpi"><div class="k-label">四大专项实操大满贯</div><div class="k-val accent">3 / 13 (23%)</div><div class="k-sub">祈雨坛 + 白河采药 + 扬州断案 + 拜月决战全胜</div></div>
+  <div class="kpi"><div class="k-label">全游戏通关率 (--pure 11章)</div><div class="k-val good">3 / 15 (20%)</div><div class="k-sub">仅 Argon、Claude Opus 5.5、GPT-6.1-Sol 抵达全剧终</div></div>
+  <div class="kpi"><div class="k-label">四大专项实操大满贯</div><div class="k-val accent">4 / 15 (27%)</div><div class="k-sub">祈雨坛 + 白河采药 + 扬州断案 + 拜月决战全胜：三剑客 + GPT-6 Astra</div></div>
   <div class="kpi"><div class="k-label">零先验逆袭纪录</div><div class="k-val good">8% → 100%</div><div class="k-sub">Claude Opus 5.5 笔试倒数第一(1/13)，实操夺得双冠</div></div>
   <div class="kpi"><div class="k-label">防作弊重放核验成本</div><div class="k-val warn">$0 CPU</div><div class="k-sub">确定性引擎重放 + Token 物理下界 + 官方价格表审计</div></div>
 </div>
@@ -505,13 +505,13 @@ function statsOverviewSection() {
 
 <div class="grid2">
   <div class="card">
-    <h3>🔬 统计发现一：为什么其他 10 个模型未能通关？四大折戟漏斗</h3>
-    <div class="bar-row"><span class="bar-name">1. 祈雨坛 45° 旋转解谜</span><div class="bar-track"><div class="bar-fill good" style="width:69%"></div></div><span class="bar-val">9 / 13 通过</span></div>
-    <div class="bar-row"><span class="bar-name">2. 拜月教主常规决战</span><div class="bar-track"><div class="bar-fill warn" style="width:31%"></div></div><span class="bar-val">4 / 13 通过</span></div>
-    <div class="bar-row"><span class="bar-name">3. 白河村跨场景三味药</span><div class="bar-track"><div class="bar-fill bad" style="width:23%"></div></div><span class="bar-val">3 / 13 通过</span></div>
-    <div class="bar-row"><span class="bar-name">4. 扬州 15 场景侦探链</span><div class="bar-track"><div class="bar-fill bad" style="width:23%"></div></div><span class="bar-val">3 / 13 通过</span></div>
-    <div class="bar-row"><span class="bar-name">5. 拜月禁招赛 &amp; 全通</span><div class="bar-track"><div class="bar-fill bad" style="width:23%"></div></div><span class="bar-val">3 / 13 通过</span></div>
-    <p>单场景拼图（祈雨坛）有 69% 模型能过，但一旦进入<strong>跨 6–15 个场景的状态追踪与假设证伪</strong>（白河捕鹿、扬州追贼、禁招拜月），唯有三剑客存活。</p>
+    <h3>🔬 统计发现一：为什么其他 12 个模型未能全通？四大折戟漏斗</h3>
+    <div class="bar-row"><span class="bar-name">1. 祈雨坛 45° 旋转解谜</span><div class="bar-track"><div class="bar-fill good" style="width:73%"></div></div><span class="bar-val">11 / 15 通过</span></div>
+    <div class="bar-row"><span class="bar-name">2. 拜月教主常规决战</span><div class="bar-track"><div class="bar-fill warn" style="width:33%"></div></div><span class="bar-val">5 / 15 通过</span></div>
+    <div class="bar-row"><span class="bar-name">3. 白河村跨场景三味药</span><div class="bar-track"><div class="bar-fill bad" style="width:33%"></div></div><span class="bar-val">5 / 15 通过</span></div>
+    <div class="bar-row"><span class="bar-name">4. 扬州 15 场景侦探链</span><div class="bar-track"><div class="bar-fill bad" style="width:27%"></div></div><span class="bar-val">4 / 15 通过</span></div>
+    <div class="bar-row"><span class="bar-name">5. 拜月禁招赛 &amp; 全通</span><div class="bar-track"><div class="bar-fill bad" style="width:20%"></div></div><span class="bar-val">3 / 15 通过</span></div>
+    <p>单场景拼图（祈雨坛）有 73% 模型能过，但一旦进入<strong>跨 6–15 个场景的状态追踪与假设证伪</strong>（白河捕鹿、扬州追贼、禁招拜月），只剩三剑客和后来补测的 <code>GPT-6 Astra</code> 全部存活（<code>Claude Fable 5.1</code> 过了白河，扬州与拜月未测）。</p>
   </div>
   <div class="card">
     <h3>🧠 统计发现二：决定通关的四大底层 Agent 核心内功</h3>
@@ -556,7 +556,7 @@ function perTaskDeepDiveSection() {
   <tr><td class="num strong">🥈 2</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">100% (5/5)</td><td><span class="badge good">100% (105步)</span></td><td><span class="badge good">100% (105–117步)</span></td><td class="num strong">4 步 (直奔南门猎场)</td><td class="num strong">7–8 步 (迅速移夹至 44,110)</td></tr>
   <tr><td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td><span class="badge good">100% (107步)</span></td><td><span class="badge good">100% (107步)</span></td><td class="num">少量探路后进南门猎场</td><td class="num">107 步标准预算内一次通关</td></tr>
   <tr><td class="num">4</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">0% (0/5)</td><td><span class="badge warn">进度 0.50</span></td><td><span class="badge good">100% (143/176步)</span></td><td class="num">39–43 步 (搜遍全村6民居)</td><td class="num">23–48 步 (执着赶鹿后起夹重放)</td></tr>
-  <tr><td class="num">5</td><td class="model">claude-cli:claude-fable-5-1</td><td>Anthropic</td><td class="num">–</td><td><span class="badge warn">未完</span></td><td><span class="badge good">100% (203步)</span></td><td class="num">全村探索清图</td><td class="num">203 步完成三味药收集交回医仙</td></tr>
+  <tr><td class="num">5</td><td class="model">claude-cli:claude-fable-5-1</td><td>Anthropic</td><td class="num">–</td><td class="muted">– 未测</td><td><span class="badge good">100% (203步)</span></td><td class="num">全村探索清图</td><td class="num">203 步完成三味药收集交回医仙</td></tr>
   <tr><td class="num">6</td><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td>DeepSeek</td><td class="num">40% (2/5)</td><td><span class="badge bad">进度 0.75</span></td><td><span class="badge bad">进度 0.75</span></td><td class="num">18 步</td><td class="num">找到猎场与捕兽夹但未捕获梅花鹿</td></tr>
   <tr><td class="num">7–14</td><td class="model">Kimi K3 / GLM-5.3 / MiniMax / Laya</td><td>Moonshot / Zhipu / MiniMax / ConvAI</td><td class="num">0%–40%</td><td><span class="badge bad">进度 0.00–0.50</span></td><td><span class="badge bad">进度 0.00–0.50</span></td><td class="num">20–90 步</td><td class="num">卡在渔夫借竿对话链、村内迷路或猎场</td></tr>
 </table>
