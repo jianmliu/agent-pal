@@ -376,7 +376,7 @@ tbody tr:hover td,table tr:hover td{background-image:linear-gradient(rgba(var(--
 
 function statsOverviewSection() {
   return `<section>
-<h2>核心统计总览：华山论剑首期守擂榜（三剑客率先满贯，诚邀大家提交国产模型 PR 攻擂！）</h2>
+<h2>核心统计总览：华山论剑首期守擂榜（三剑客率先全通，欢迎任何模型提交 PR 攻擂）</h2>
 <p class="muted">评测基准涵盖 <strong>闭卷先验笔试（22 问）</strong>、<strong>四大专项实操擂台（祈雨祭坛 / 白河采药 / 扬州紫金葫芦 / 南诏王宫拜月决战 &amp; 禁招消融赛）</strong> 与 <strong>从零手写代码全游戏通关（<code>--pure</code> 模式 300 场景 11 章马拉松）</strong>。榜上 5 款模型（三剑客、<code>GPT-6 Astra</code> 与 <code>Claude Fable 5.1</code>）中，各自拥有独立个人订阅额度的<strong>“外来三剑客”（<code>Gemini 4 Argon</code>、<code>Claude Opus 5.5</code>、<code>GPT-6.1-Sol</code>）率先完成四大专项实操 100% 大满贯并打穿全游戏</strong>。</p>
 
 <div class="kpis">
