@@ -342,11 +342,11 @@ svg .front{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
 
 function statsOverviewSection() {
   return `<section>
-<h2>核心统计总览：华山论剑首期守擂榜（三剑客率先满贯，诚邀国产模型 PR 攻擂！）</h2>
-<p class="muted">评测基准涵盖 <strong>闭卷先验笔试（22 问）</strong>、<strong>四大专项实操擂台（祈雨祭坛 / 白河采药 / 扬州紫金葫芦 / 南诏王宫拜月决战 &amp; 禁招消融赛）</strong> 与 <strong>从零手写代码全游戏通关（<code>--pure</code> 模式 300 场景 11 章马拉松）</strong>。在首期登台的 13 款模型中，获得完整官方 API 预算支持的<strong>“外来三剑客”（<code>Gemini 4 Argon</code>、<code>Claude Opus 5.5</code>、<code>GPT-6.1-Sol</code>）率先完成四大专项实操 100% 大满贯并打穿全游戏</strong>。</p>
+<h2>核心统计总览：华山论剑首期守擂榜（三剑客率先满贯，诚邀大家提交国产模型 PR 攻擂！）</h2>
+<p class="muted">评测基准涵盖 <strong>闭卷先验笔试（22 问）</strong>、<strong>四大专项实操擂台（祈雨祭坛 / 白河采药 / 扬州紫金葫芦 / 南诏王宫拜月决战 &amp; 禁招消融赛）</strong> 与 <strong>从零手写代码全游戏通关（<code>--pure</code> 模式 300 场景 11 章马拉松）</strong>。在首期登台的 13 款模型中，各自拥有独立个人订阅额度的<strong>“外来三剑客”（<code>Gemini 4 Argon</code>、<code>Claude Opus 5.5</code>、<code>GPT-6.1-Sol</code>）率先完成四大专项实操 100% 大满贯并打穿全游戏</strong>。</p>
 <div class="card" style="margin:0 0 16px;border-left:4px solid var(--warn);background:color-mix(in oklab, var(--warn) 7%, var(--card))">
-  <h3 style="margin:0 0 6px;color:var(--warn)">⚡ 江湖擂台声明：受限于个人 Ollama 额度，国产模型大量高阶席位虚位以待！</h3>
-  <p style="margin:0">首期评测中，国产模型（<code>DeepSeek</code>、<code>GLM</code>、<code>Kimi</code>、<code>MiniMax</code>）均依赖维护者个人的单账号 <strong>Ollama Cloud</strong> 额度运行（例如 <code>DeepSeek V4.1 Flash</code> 在 <code>--pure</code> 模式一路连斩赤鬼王、石长老杀入第 5 章扬州城后直接耗尽月度额度中断；扬州 15 场景长链与 240/560 步扩容赛也因配额限制尚未对全部国产模型展开；<code>Qwen</code>、<code>Doubao Seed</code>、<code>Step</code> 等国产主力更是尚未登场）。<strong>因此本榜单并非国产模型的终局定论，而是一座开放攻擂的“江湖擂台”</strong>——欢迎广大开发者与各模型团队使用原生 API 跑分并通过 <strong>GitHub PR（$0 API 成本自动重放核验）</strong>提交战绩，争夺首座国产大满贯奖杯！</p>
+  <h3 style="margin:0 0 6px;color:var(--warn)">⚡ 江湖擂台声明：个人 Ollama 订阅额度有限，国产模型大量高阶席位虚位以待！</h3>
+  <p style="margin:0">本次评测完全由个人自费订阅完成：“外来三剑客”分别跑在各自独立的个人订阅账号上，因此有充足额度跑满全科；而 <strong>8 款国产模型（<code>DeepSeek</code>、<code>GLM</code>、<code>Kimi</code>、<code>MiniMax</code>）全部共用同一个个人 Ollama Cloud 订阅账号分摊额度</strong>（例如 <code>DeepSeek V4.1 Flash</code> 在 <code>--pure</code> 模式一路连斩赤鬼王、石长老杀入第 5 章扬州城后直接把整月 Ollama 额度耗尽被迫中断；扬州 15 场景长链与 240/560 步扩容赛也因额度见底未能对其他国产模型全面展开；<code>Qwen</code>、<code>Doubao Seed</code>、<code>Step</code> 等国产主力更是尚未测试）。<strong>因此本榜单定位是一座开放攻擂的“江湖擂台”</strong>——非常欢迎有额度的朋友跑分并通过 <strong>GitHub PR（$0 API 成本自动重放核验）</strong>提交国产模型记录，争夺首座国产大满贯奖杯！</p>
 </div>
 
 <div class="kpis">
