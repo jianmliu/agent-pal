@@ -247,6 +247,11 @@ console.log('  ✓ ⑨ claude 子进程环境');
   assert.match(compareLogs(log(), log(), { ...end(), seed: 8 })[0], /result file seed 8 disagrees/);           // 记到别的种子 / 题 / 终止原因上
   assert.match(compareLogs(log(), log(), { ...end(), task: 'other' })[0], /result file task "other" disagrees/);
   assert.match(compareLogs(log(), log(), { ...end(), endReason: 'success' })[0], /result file endReason "success" disagrees/);
+  assert.match(compareLogs(log(), log(), { ...end(), tokensIn: 10 })[0], /result file tokensIn 10 disagrees/);
+  assert.match(compareLogs(log({ end: end({ cost: 0.25 }) }), log(), { ...end(), cost: 0.01 })[0], /result file cost 0\.01 disagrees/);
+  assert.match(compareLogs(log({ turns: [{ type: 'turn', i: 1, usage: { tokensIn: 800, tokensOut: 50 } }], end: end({ tokensIn: 500, tokensOut: 50 }) }), log())[0], /end tokensIn 500 < sum of turn tokensIn 800/);
+  assert.match(compareLogs(log({ turns: [{ type: 'turn', i: 1, usage: { tokensIn: 60, tokensOut: 10 } }, { type: 'turn', i: 2, usage: { tokensIn: 60, tokensOut: 10 } }], end: end({ tokensIn: 120, tokensOut: 20 }) }), log())[0], /below physical prompt minimum/);
+  assert.match(compareLogs(log({ start: { ...log().start, model: 'openai:gpt-5.4' }, end: end({ model: 'openai:gpt-5.4', tokensIn: 10000, tokensOut: 1000, cost: 0.0001 }) }), log())[0], /disagrees with official price table/);
   assert.deepEqual(compareLogs(log({ end: null }), log({ end: null }), { success: false }), []);
   assert.match(compareLogs(log({ end: null }), log({ end: null }), { success: true })[0], /no end event/);
 

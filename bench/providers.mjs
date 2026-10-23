@@ -24,6 +24,7 @@ import { fileURLToPath } from 'node:url';
 // 退避用 node:timers/promises 而不是全局 setTimeout:种子局把全局计时器换成了虚拟时钟(src/clock.mjs),
 // provider 调用又不经 e.drive(),用全局 setTimeout 的话退避永远不触发,一局要挂到墙钟到点被杀。
 import { setTimeout as sleep } from 'node:timers/promises';
+import { layaProvider } from './laya-provider.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const PRICES = JSON.parse(fs.readFileSync(path.join(here, 'prices.json'), 'utf8'));
@@ -309,6 +310,10 @@ export function createProvider(spec, ctx = {}) {
     if (!process.env.GEMINI_API_KEY) throw new Error('gemini: set GEMINI_API_KEY');
     return gemini({ model, baseUrl: process.env.BENCH_GEMINI_BASE_URL || 'https://generativelanguage.googleapis.com', apiKey: process.env.GEMINI_API_KEY });
   }
+  if (kind === 'laya') {
+    const [name, query = ''] = model.split('?');
+    return layaProvider({ model: name, query });
+  }
   if (kind === 'replay') return replay(ctx);
-  throw new Error(`unknown provider "${kind}" (ollama / openai / anthropic / gemini / replay; claude-cli runs as an external agent)`);
+  throw new Error(`unknown provider "${kind}" (ollama / openai / anthropic / gemini / laya / replay; claude-cli runs as an external agent)`);
 }

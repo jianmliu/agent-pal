@@ -1,0 +1,58 @@
+{
+  "runId": "laya_laya-multilingual-B-baihe",
+  "model": "laya:laya-multilingual",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "code": "57e96f7-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 0,
+  "progress": 0.25,
+  "costMeanOnSuccess": null,
+  "costTotal": 0,
+  "tokensTotal": 253412,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0.25,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0.016666666666666666,
+      "tokensMean": 253412,
+      "costTotal": 0,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "budget-toolCalls": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "budget-toolCalls",
+          "progress": 0.25,
+          "toolCalls": 240,
+          "successAt": null,
+          "invalidCalls": 4,
+          "tokensIn": 253412,
+          "tokensOut": 0,
+          "cost": 0,
+          "virtualSeconds": 242.753,
+          "battleRounds": null,
+          "par": 40,
+          "efficiency": null
+        }
+      ]
+    }
+  ]
+}

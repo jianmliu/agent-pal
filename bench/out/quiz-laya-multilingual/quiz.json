@@ -1,0 +1,309 @@
+{
+  "model": "laya:laya-multilingual",
+  "quizPromptVersion": 2,
+  "code": "57e96f7-dirty",
+  "at": "2026-10-22T20:23:57.936Z",
+  "score": 0,
+  "taskMean": 0,
+  "errors": 0,
+  "cost": 0,
+  "tokens": 4228,
+  "perTask": {
+    "classic48-rain-orbs": {
+      "version": 1,
+      "n": 5,
+      "correct": 0,
+      "score": 0
+    },
+    "classic10-baihe-medicine": {
+      "version": 1,
+      "n": 5,
+      "correct": 0,
+      "score": 0
+    },
+    "baiyue-single-origin": {
+      "version": 1,
+      "n": 3,
+      "correct": 0,
+      "score": 0
+    },
+    "classic19-yangzhou-night": {
+      "version": 1,
+      "n": 4,
+      "correct": 0,
+      "score": 0
+    },
+    "classic19-yangzhou-gourd": {
+      "version": 1,
+      "n": 5,
+      "correct": 0,
+      "score": 0
+    }
+  },
+  "answers": [
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q1",
+      "q": "圣灵珠要放到祭坛旁的什么东西上?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.1902 | conf=0.8098]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.1902 | conf=0.8098]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 195,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q2",
+      "q": "按画面方位,五座平台正中间放哪颗灵珠?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.2737 | conf=0.7263]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.2737 | conf=0.7263]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 197,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q3",
+      "q": "按画面方位,左上方的平台放哪颗灵珠?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.4699 | conf=0.5301]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.4699 | conf=0.5301]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 196,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q4",
+      "q": "按画面方位,右上方的平台放哪颗灵珠?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.4448 | conf=0.5552]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.4448 | conf=0.5552]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 196,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic48-rain-orbs",
+      "id": "q5",
+      "q": "按画面方位,左下方的平台放哪颗灵珠?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.4799 | conf=0.5201]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.4799 | conf=0.5201]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 196,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q1",
+      "q": "药方里需要李逍遥自己去弄到的三味药材是什么?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.183 | conf=0.817]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.183 | conf=0.817]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 197,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q2",
+      "q": "银杏果要到哪里去摘?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.0302 | conf=0.9698]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.0302 | conf=0.9698]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 190,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q3",
+      "q": "钓鲤鱼用的钓竿可以向村里的什么人借?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.0103 | conf=0.9897]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.0103 | conf=0.9897]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 195,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q4",
+      "q": "借到钓竿后要站在什么地方钓鲤鱼?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.0743 | conf=0.9257]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.0743 | conf=0.9257]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 194,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic10-baihe-medicine",
+      "id": "q5",
+      "q": "鹿跑得快追不上,要靠什么东西才能拿到鹿茸?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.0488 | conf=0.9512]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.0488 | conf=0.9512]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 197,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "baiyue-single-origin",
+      "id": "q1",
+      "q": "乾坤一掷是哪位队员的技能？",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.0581 | conf=0.9419]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.0581 | conf=0.9419]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 184,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "baiyue-single-origin",
+      "id": "q2",
+      "q": "酒神是哪位队员的技能？",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.0155 | conf=0.9845]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.0155 | conf=0.9845]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 182,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "baiyue-single-origin",
+      "id": "q3",
+      "q": "赵灵儿用于全队恢复HP的法术叫什么？",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.1144 | conf=0.8856]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.1144 | conf=0.8856]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 186,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic19-yangzhou-night",
+      "id": "q1",
+      "q": "扬州城当时为什么只许进、不许出?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.6598 | conf=0.6598]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.6598 | conf=0.6598]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 186,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic19-yangzhou-night",
+      "id": "q2",
+      "q": "扬州城里一共有几家客栈可以投宿?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.1027 | conf=0.8973]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.1027 | conf=0.8973]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 187,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic19-yangzhou-night",
+      "id": "q3",
+      "q": "客栈掌柜给你们安排的是哪一间房?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.3712 | conf=0.6288]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.3712 | conf=0.6288]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 186,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic19-yangzhou-night",
+      "id": "q4",
+      "q": "住进房间以后,要做什么才能让剧情推进到半夜?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.2815 | conf=0.7185]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.2815 | conf=0.7185]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 188,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic19-yangzhou-gourd",
+      "id": "q1",
+      "q": "从女飞贼手里夺回的布包,应该还给客栈里的什么人?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.256 | conf=0.744]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.256 | conf=0.744]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 200,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic19-yangzhou-gourd",
+      "id": "q2",
+      "q": "在城里向谁打听,能得知有个新搬来的寡妇形迹可疑?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.1348 | conf=0.8652]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.1348 | conf=0.8652]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 201,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic19-yangzhou-gourd",
+      "id": "q3",
+      "q": "那个可疑的寡妇叫什么名字?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.1108 | conf=0.8892]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.1108 | conf=0.8892]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 190,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic19-yangzhou-gourd",
+      "id": "q4",
+      "q": "李逍遥是在什么地方亲眼看到寡妇偷偷丢掉东西的?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.0375 | conf=0.9625]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.0375 | conf=0.9625]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 196,
+      "tokensOut": 0,
+      "cost": 0
+    },
+    {
+      "task": "classic19-yangzhou-gourd",
+      "id": "q5",
+      "q": "紫金葫芦最后是在哪里找到的?",
+      "answer": "[Laya System-1 Non-Generative Encoder | noul=0.0075 | conf=0.9925]\n答案：不知道",
+      "final": "[Laya System-1 Non-Generative Encoder | noul=0.0075 | conf=0.9925]\n答案：不知道",
+      "correct": false,
+      "error": null,
+      "tokensIn": 189,
+      "tokensOut": 0,
+      "cost": 0
+    }
+  ]
+}

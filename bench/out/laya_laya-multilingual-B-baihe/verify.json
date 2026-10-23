@@ -1,0 +1,23 @@
+{
+  "verifiedAt": "2026-10-23T00:44:28.785Z",
+  "code": "57e96f7-dirty",
+  "episodes": [
+    {
+      "file": "classic10-baihe-medicine__s42.jsonl",
+      "task": "classic10-baihe-medicine",
+      "seed": 42,
+      "claimed": {
+        "success": false,
+        "endReason": "budget-toolCalls"
+      },
+      "digest": "9636927092b349305cb64b5c4d8778f8699c259044dec6b0871e99a93862e33c",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (57e96f7-dirty)",
+        "zero output tokens across tool calls (non-generative / custom decision adapter)"
+      ]
+    }
+  ]
+}

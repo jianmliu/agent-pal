@@ -27,6 +27,7 @@ import { fileURLToPath } from 'node:url';
 import { loadTask } from './task.mjs';
 import { taskFingerprint, runtimeFingerprint } from './start.mjs';
 import { codeRev, booksFingerprint } from './runner.mjs';
+import { costOf } from './providers.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const benchCli = path.join(here, 'bench.mjs');
@@ -37,15 +38,17 @@ const CALL_FIELDS = ['battleRounds','battleTelemetry','combat','name', 'ok', 'sc
 const END_FIELDS = ['task','taskVersion','seed','tier','model','runId','battleRounds','battles','success', 'successAt', 'failed', 'failAt', 'stuck', 'crashed', 'milestones', 'toolCalls', 'invalidCalls', 'virtualSeconds', 'progress'];
 // 登记成绩与日志 end 还要对上身份与终止原因:score 按 task 分组、按 seed 取 par、统计 endReason
 const CLAIM_FIELDS = ['task', 'taskVersion', 'seed', 'tier', 'endReason', ...END_FIELDS];
+const CLAIM_USAGE_FIELDS = ['tokensIn', 'tokensOut', 'tokensCached', 'tokensCacheWrite', 'cost'];
 
-/** 读逐步日志:{ start, calls, end }(end 缺失 = 那局没正常收尾)。 */
+/** 读逐步日志:{ start, calls, turns, end }(end 缺失 = 那局没正常收尾)。 */
 export function readLog(file) {
-  const out = { start: null, calls: [], end: null };
+  const out = { start: null, calls: [], turns: [], end: null };
   for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
     if (!line.trim()) continue;
     const ev = JSON.parse(line);
     if (ev.type === 'start') out.start = ev;
     else if (ev.type === 'call') out.calls.push(ev);
+    else if (ev.type === 'turn') out.turns.push(ev);
     else if (ev.type === 'end') out.end = ev;
   }
   if (!out.start) throw new Error(`${file}: no start event`);
@@ -77,6 +80,36 @@ export function compareLogs(orig, replay, claimed = orig.end) {
   for (const k of ['task','taskVersion','seed','tier','model','runId']) if(orig.start?.[k] != null && orig.end[k] != null && !same(orig.start[k], orig.end[k])) diffs.push(`end ${k} disagrees with start`);
   if (claimed && claimed !== orig.end) {
     for (const k of CLAIM_FIELDS) if (!same(claimed[k], orig.end[k])) diffs.push(`result file ${k} ${JSON.stringify(claimed[k])} disagrees with the log's ${JSON.stringify(orig.end[k])}`);
+    for (const k of CLAIM_USAGE_FIELDS) if (claimed[k] !== undefined && orig.end[k] !== undefined && !same(claimed[k], orig.end[k])) diffs.push(`result file ${k} ${JSON.stringify(claimed[k])} disagrees with the log's ${JSON.stringify(orig.end[k])}`);
+  }
+  if (Array.isArray(orig.turns) && orig.turns.length > 0) {
+    let sumIn = 0, sumOut = 0, sumCacheRead = 0, sumCacheWrite = 0, activeTurns = 0;
+    for (const t of orig.turns) {
+      const u = t.usage || {};
+      sumIn += u.tokensIn || 0;
+      sumOut += u.tokensOut || 0;
+      sumCacheRead += u.cacheRead || 0;
+      sumCacheWrite += u.cacheWrite || 0;
+      if ((u.tokensIn || 0) > 0) activeTurns++;
+    }
+    if ((orig.end.tokensIn ?? 0) < sumIn) diffs.push(`end tokensIn ${orig.end.tokensIn} < sum of turn tokensIn ${sumIn}`);
+    if ((orig.end.tokensOut ?? 0) < sumOut) diffs.push(`end tokensOut ${orig.end.tokensOut} < sum of turn tokensOut ${sumOut}`);
+    if ((orig.end.tokensCached ?? 0) < sumCacheRead) diffs.push(`end tokensCached ${orig.end.tokensCached} < sum of turn cacheRead ${sumCacheRead}`);
+    if ((orig.end.tokensCacheWrite ?? 0) < sumCacheWrite) diffs.push(`end tokensCacheWrite ${orig.end.tokensCacheWrite} < sum of turn cacheWrite ${sumCacheWrite}`);
+    if (activeTurns > 0 && (orig.end.tokensIn ?? 0) < activeTurns * 100) {
+      diffs.push(`end tokensIn ${orig.end.tokensIn} is below physical prompt minimum (${activeTurns} active turns × 100 tokens)`);
+    }
+  }
+  if (!orig.end.external && orig.end.model && orig.end.tokensIn !== undefined) {
+    const expectedCost = costOf(orig.end.model, {
+      tokensIn: orig.end.tokensIn || 0,
+      tokensOut: orig.end.tokensOut || 0,
+      cacheRead: orig.end.tokensCached || 0,
+      cacheWrite: orig.end.tokensCacheWrite || 0
+    });
+    if (expectedCost != null && (orig.end.cost == null || Math.abs(orig.end.cost - expectedCost) > 1e-5)) {
+      diffs.push(`end cost ${JSON.stringify(orig.end.cost)} disagrees with official price table (${expectedCost.toFixed(6)})`);
+    }
   }
   if (!replay.end) diffs.push('replay has no end event');
   if (replay.end) {
@@ -214,6 +247,12 @@ export function verifyEpisode(file, { runMeta = null, currentCode = undefined, c
   }
   if (runMeta?.code && currentCode !== undefined && runMeta.code !== currentCode) {
     r.warnings.push(`code ${currentCode ?? '?'} differs from the run's ${runMeta.code}`);
+  }
+  if (runMeta?.code?.endsWith('-dirty')) {
+    r.warnings.push(`run recorded on dirty worktree (${runMeta.code})`);
+  }
+  if (orig.turns?.length > 0 && orig.calls.length > 0 && (orig.end?.tokensOut || 0) === 0) {
+    r.warnings.push('zero output tokens across tool calls (non-generative / custom decision adapter)');
   }
   let replayed;
   try { replayed = replay(path.resolve(file)); } catch (err) { r.verdict = 'error'; r.diffs.push(String(err?.message || err)); return r; }
