@@ -194,7 +194,7 @@ const tok = (n) => { n = Number(n) || 0; const s = n >= 1e6 ? `${(n / 1e6).toFix
 /** 生成时刻:2026-10-23 16:33 UTC(ISO 串原样太长;不是 ISO 的原样输出) */
 const stamp = (t) => { const m = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})/.exec(String(t)); return m ? `${m[1]} ${m[2]} UTC` : String(t); };
 /** score 前面一小条进度条:不用读数字就看得出高低 */
-const scoreCell = (x) => `<td class="num strong"><span class="sbar" style="--p:${Math.round((x ?? 0) * 100)}%"></span>${pct(x)}</td>`;
+const scoreCell = (x, r = {}) => `<td class="num strong"><span class="sbar" style="--p:${Math.round((x ?? 0) * 100)}%"></span>${r.cleared != null ? `${r.cleared} / ${r.taskUniverse} 题` : pct(x)}</td>`;
 const VERIFY_LABEL = { verified: '已核验', mismatch: '核验不一致', stale: '核验已过期', none: '未核验' };
 
 function verifyCell(v) {
@@ -236,7 +236,7 @@ function boardTable(rows, { external = false, quizzes = [] } = {}) {
   const quizOf = (m) => quizzes.find((q) => q.model === m);
   const head = `<tr><th>#</th><th class="model">${external ? '客户端 / 模型' : '模型'}</th><th>score</th><th>progress</th><th>闭卷测验</th><th>成功局平均回合</th><th>成功局平均 cost</th><th>总 cost</th><th>tokens</th><th>题 / 局</th><th>核验</th><th>代码</th><th>运行</th></tr>`;
   const body = rows.map((r, i) => `<tr${r.complete ? '' : ' class="incomplete"'}>` +
-    `<td class="num muted">${i + 1}</td><td class="model">${esc(r.model)}</td>${scoreCell(r.score)}<td class="num">${r.progress == null ? '–' : r.progress.toFixed(2)}</td>` +
+    `<td class="num muted">${i + 1}</td><td class="model">${esc(r.model)}</td>${scoreCell(r.score, r)}<td class="num">${r.progress == null ? '–' : r.progress.toFixed(2)}</td>` +
     `<td class="num">${quizOf(r.model) ? pct(quizOf(r.model).score) : '<span class="muted">–</span>'}</td>` +
     `<td class="num">${r.battleRoundsMeanOnSuccess == null ? '–' : r.battleRoundsMeanOnSuccess.toFixed(2)}</td><td class="num">${r.score ? usd(r.costMeanOnSuccess) : '–'}</td><td class="num">${usd(r.costTotal)}</td><td class="num">${tok(r.tokensTotal)}</td>` +
     `<td class="num">${r.tasks.filter((t) => t.n).length} / ${r.episodes}${r.complete ? '' : ' <span class="warn">未跑完</span>'}</td>` +
@@ -377,15 +377,15 @@ tbody tr:hover td,table tr:hover td{background-image:linear-gradient(rgba(var(--
 function statsOverviewSection() {
   return `<section>
 <h2>核心统计总览：华山论剑首期守擂榜（三剑客率先满贯，诚邀大家提交国产模型 PR 攻擂！）</h2>
-<p class="muted">评测基准涵盖 <strong>闭卷先验笔试（22 问）</strong>、<strong>四大专项实操擂台（祈雨祭坛 / 白河采药 / 扬州紫金葫芦 / 南诏王宫拜月决战 &amp; 禁招消融赛）</strong> 与 <strong>从零手写代码全游戏通关（<code>--pure</code> 模式 300 场景 11 章马拉松）</strong>。在登台的 15 款模型中（首期 13 款，之后补测 <code>GPT-6 Astra</code> 与 <code>Claude Fable 5.1</code>），各自拥有独立个人订阅额度的<strong>“外来三剑客”（<code>Gemini 4 Argon</code>、<code>Claude Opus 5.5</code>、<code>GPT-6.1-Sol</code>）率先完成四大专项实操 100% 大满贯并打穿全游戏</strong>。</p>
+<p class="muted">评测基准涵盖 <strong>闭卷先验笔试（22 问）</strong>、<strong>四大专项实操擂台（祈雨祭坛 / 白河采药 / 扬州紫金葫芦 / 南诏王宫拜月决战 &amp; 禁招消融赛）</strong> 与 <strong>从零手写代码全游戏通关（<code>--pure</code> 模式 300 场景 11 章马拉松）</strong>。榜上 5 款模型（三剑客、<code>GPT-6 Astra</code> 与 <code>Claude Fable 5.1</code>）中，各自拥有独立个人订阅额度的<strong>“外来三剑客”（<code>Gemini 4 Argon</code>、<code>Claude Opus 5.5</code>、<code>GPT-6.1-Sol</code>）率先完成四大专项实操 100% 大满贯并打穿全游戏</strong>。</p>
 <div class="card" style="margin:0 0 16px;border-left:4px solid var(--warn);background:color-mix(in oklab, var(--warn) 7%, var(--card))">
-  <h3 style="margin:0 0 6px;color:var(--warn)">⚡ 江湖擂台声明：个人 Ollama 订阅额度有限，国产模型大量高阶席位虚位以待！</h3>
-  <p style="margin:0">本次评测完全由个人自费订阅完成：“外来三剑客”分别跑在各自独立的个人订阅账号上，因此有充足额度跑满全科；而 <strong>8 款国产模型（<code>DeepSeek</code>、<code>GLM</code>、<code>Kimi</code>、<code>MiniMax</code>）全部共用同一个个人 Ollama Cloud 订阅账号分摊额度</strong>（例如 <code>DeepSeek V4.1 Flash</code> 在 <code>--pure</code> 模式一路连斩赤鬼王、石长老杀入第 5 章扬州城后直接把整月 Ollama 额度耗尽被迫中断；扬州 15 场景长链与 240/560 步扩容赛也因额度见底未能对其他国产模型全面展开；<code>Qwen</code>、<code>Doubao Seed</code>、<code>Step</code> 等国产主力更是尚未测试）。<strong>因此本榜单定位是一座开放攻擂的“江湖擂台”</strong>——非常欢迎有额度的朋友跑分并通过 <strong>GitHub PR（$0 API 成本自动重放核验）</strong>提交国产模型记录，争夺首座国产大满贯奖杯！</p>
+  <h3 style="margin:0 0 6px;color:var(--warn)">⚡ 江湖擂台声明：额度受限、没跑全的模型暂不上榜，国产模型席位虚位以待！</h3>
+  <p style="margin:0">本次评测完全由个人自费订阅完成：“外来三剑客”分别跑在各自独立的个人订阅账号上，因此有充足额度跑满全科；而 <strong>8 款国产模型（<code>DeepSeek</code>、<code>GLM</code>、<code>Kimi</code>、<code>MiniMax</code>）和 <code>Gemma 4</code> 全部共用同一个个人 Ollama Cloud 订阅账号分摊额度</strong>（例如 <code>DeepSeek V4.1 Flash</code> 在 <code>--pure</code> 模式一路连斩赤鬼王、石长老杀入第 5 章扬州城后直接把整月 Ollama 额度耗尽被迫中断；扬州 15 场景长链与 240/560 步扩容赛也因额度见底未能对其他国产模型全面展开；<code>Qwen</code>、<code>Doubao Seed</code>、<code>Step</code> 等国产主力更是尚未测试）。<strong>为了不把「额度不够没跑全」当成「打不过」，这 9 款模型暂不列入排名；另外<strong>榜单只收通关的那一局</strong>，没打通的局不计，一局都没打通的模型（如 <code>Laya</code>）也不上榜。本榜单定位是一座开放攻擂的“江湖擂台”</strong>——非常欢迎有额度的朋友跑分并通过 <strong>GitHub PR（$0 API 成本自动重放核验）</strong>提交国产模型记录，争夺首座国产大满贯奖杯！</p>
 </div>
 
 <div class="kpis">
-  <div class="kpi"><div class="k-label">全游戏通关率 (--pure 11章)</div><div class="k-val good">3 / 15 (20%)</div><div class="k-sub">仅 Argon、Claude Opus 5.5、GPT-6.1-Sol 抵达全剧终</div></div>
-  <div class="kpi"><div class="k-label">四大专项实操大满贯</div><div class="k-val accent">4 / 15 (27%)</div><div class="k-sub">祈雨坛 + 白河采药 + 扬州断案 + 拜月决战全胜：三剑客 + GPT-6 Astra</div></div>
+  <div class="kpi"><div class="k-label">全游戏通关率 (--pure 11章)</div><div class="k-val good">3 / 5 (60%)</div><div class="k-sub">仅 Argon、Claude Opus 5.5、GPT-6.1-Sol 抵达全剧终</div></div>
+  <div class="kpi"><div class="k-label">四大专项实操大满贯</div><div class="k-val accent">4 / 5 (80%)</div><div class="k-sub">祈雨坛 + 白河采药 + 扬州断案 + 拜月决战全胜：三剑客 + GPT-6 Astra</div></div>
   <div class="kpi"><div class="k-label">零先验逆袭纪录</div><div class="k-val good">8% → 100%</div><div class="k-sub">Claude Opus 5.5 笔试倒数第一(1/13)，实操夺得双冠</div></div>
   <div class="kpi"><div class="k-label">防作弊重放核验成本</div><div class="k-val warn">$0 CPU</div><div class="k-sub">确定性引擎重放 + Token 物理下界 + 官方价格表审计</div></div>
 </div>
@@ -421,7 +421,7 @@ function statsOverviewSection() {
   </div>
 </div>
 
-<h3>📊 15 大参评模型跨维度总成绩单（闭卷笔试 × 四大专项实操 × 全游戏通关）</h3>
+<h3>📊 参评模型跨维度总成绩单（闭卷笔试 × 四大专项实操 × 全游戏通关）</h3>
 <div class="scroll">
 <table class="wrap">
   <tr>
@@ -459,43 +459,6 @@ function statsOverviewSection() {
     <td class="muted">⏳ 虚位待战</td><td>祈雨坛 10 步 + 白河村三味药通关</td>
   </tr>
   <tr>
-    <td class="num">6</td><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td>DeepSeek</td><td class="num">31% (4/13)</td>
-    <td><span class="badge good">✓ 28 步</span></td><td><span class="badge warn">✗ 进度 0.75 (120步未扩容)</span></td><td><span class="badge warn">✗ 困于客栈楼梯</span></td><td><span class="badge good">🥈 10 回合 (1HP绝杀)</span> / <span class="badge bad">✗ 0%</span></td>
-    <td><span class="badge warn">⚔️ 闯至第5章扬州 (额度耗尽中断)</span></td><td>斩赤鬼王 &amp; 1HP绝杀拜月</td>
-  </tr>
-  <tr>
-    <td class="num">7</td><td class="model">ollama:glm-5.3:cloud</td><td>Zhipu AI (智谱)</td><td class="num">38% (5/13)</td>
-    <td><span class="badge good">✓ 16–19 步 (4K熔断)</span></td><td><span class="badge bad">✗ 进度 0.50 (未扩容)</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td><span class="badge bad">✗ 0% (压至22,502 HP)</span></td><td class="muted">⏳ 虚位待战</td><td>加思考熔断器后祈雨坛 3/3 满贯</td>
-  </tr>
-  <tr>
-    <td class="num">8</td><td class="model">ollama:kimi-k3:cloud</td><td>Moonshot AI (月之暗面)</td><td class="num">38% (5/13)</td>
-    <td><span class="badge good">✓ 31 步</span></td><td><span class="badge bad">✗ 进度 0.50 (未扩容)</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td><span class="badge warn">✗ 0% (第7命打空拜月本体)</span></td><td class="muted">⏳ 虚位待战</td><td>第 7 命击穿 32,760 HP 本体死于护卫</td>
-  </tr>
-  <tr>
-    <td class="num">9</td><td class="model">ollama:minimax-m3:cloud</td><td>MiniMax</td><td class="num">31% (4/13)</td>
-    <td><span class="badge good">✓ 38–44 步</span></td><td><span class="badge bad">✗ 进度 0.50 (未扩容)</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>祈雨坛试错通关，长程待扩容补测</td>
-  </tr>
-  <tr>
-    <td class="num">10</td><td class="model">ollama:glm-5.3-flash:cloud</td><td>Zhipu AI (智谱)</td><td class="num">31% (4/13)</td>
-    <td><span class="badge good">✓ 34 步</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>背熟拜月招式但缺乏回蓝生存链</td>
-  </tr>
-  <tr>
-    <td class="num">11</td><td class="model">ollama:gemma4:31b-cloud</td><td>Google</td><td class="num">23% (3/13)</td>
-    <td><span class="badge good">✓ 36 步</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">⏳ 待攻擂</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>31B 开源权重通过单场景空间解谜</td>
-  </tr>
-  <tr>
-    <td class="num">12</td><td class="model">ollama:deepseek-v4-pro:0813-cloud</td><td>DeepSeek</td><td class="num">23% (3/13)</td>
-    <td><span class="badge bad">✗ 超时 (10.3万思考词)</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td class="muted">⏳ 待攻擂 (额度受限)</td><td class="muted">⏳ 待攻擂 (额度受限)</td><td class="muted">⏳ 虚位待战</td><td>祈雨坛未加熔断陷入几何证明死循环</td>
-  </tr>
-  <tr>
-    <td class="num">13</td><td class="model">ollama:minimax-m3.1-flash / m2.7</td><td>MiniMax</td><td class="num">15%–23%</td>
-    <td><span class="badge bad">✗ 0%</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">⏳ 待攻擂</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>状态追踪与工具参数易发散</td>
-  </tr>
-  <tr>
-    <td class="num">14</td><td class="model">laya:laya-multilingual</td><td>ConvAI Innovations</td><td class="num">0% (无生成能力)</td>
-    <td class="muted">–</td><td><span class="badge bad">✗ 0% (进度 0.00)</span></td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td>7ms 极速选工具，但无长程规划陷入死循环</td>
-  </tr>
-  <tr>
     <td class="num strong">🎯</td><td class="model">Qwen / Doubao / Step / DeepSeek 等原生 API</td><td><strong>Alibaba / ByteDance / StepFun 等</strong></td><td class="num"><span class="badge warn">欢迎 PR 提交</span></td>
     <td><span class="badge warn">欢迎 PR 挑战</span></td><td><span class="badge warn">欢迎 240步 挑战</span></td><td><span class="badge warn">欢迎 320步 挑战</span></td><td><span class="badge warn">欢迎挑战 36 回合</span></td>
     <td><span class="badge warn">🏆 悬赏首个国产全通!</span></td><td>提交 PR 自动运行 <code>bench verify</code> 合榜</td>
@@ -505,20 +468,20 @@ function statsOverviewSection() {
 
 <div class="grid2">
   <div class="card">
-    <h3>🔬 统计发现一：为什么其他 12 个模型未能全通？四大折戟漏斗</h3>
-    <div class="bar-row"><span class="bar-name">1. 祈雨坛 45° 旋转解谜</span><div class="bar-track"><div class="bar-fill good" style="width:73%"></div></div><span class="bar-val">11 / 15 通过</span></div>
-    <div class="bar-row"><span class="bar-name">2. 拜月教主常规决战</span><div class="bar-track"><div class="bar-fill warn" style="width:33%"></div></div><span class="bar-val">5 / 15 通过</span></div>
-    <div class="bar-row"><span class="bar-name">3. 白河村跨场景三味药</span><div class="bar-track"><div class="bar-fill bad" style="width:33%"></div></div><span class="bar-val">5 / 15 通过</span></div>
-    <div class="bar-row"><span class="bar-name">4. 扬州 15 场景侦探链</span><div class="bar-track"><div class="bar-fill bad" style="width:27%"></div></div><span class="bar-val">4 / 15 通过</span></div>
-    <div class="bar-row"><span class="bar-name">5. 拜月禁招赛 &amp; 全通</span><div class="bar-track"><div class="bar-fill bad" style="width:20%"></div></div><span class="bar-val">3 / 15 通过</span></div>
-    <p>单场景拼图（祈雨坛）有 73% 模型能过，但一旦进入<strong>跨 6–15 个场景的状态追踪与假设证伪</strong>（白河捕鹿、扬州追贼、禁招拜月），只剩三剑客和后来补测的 <code>GPT-6 Astra</code> 全部存活（<code>Claude Fable 5.1</code> 过了白河，扬州与拜月未测）。</p>
+    <h3>🔬 统计发现一：各擂台通关的模型数（上榜 5 个模型）</h3>
+    <div class="bar-row"><span class="bar-name">1. 祈雨坛 45° 旋转解谜</span><div class="bar-track"><div class="bar-fill good" style="width:100%"></div></div><span class="bar-val">5 / 5 通关</span></div>
+    <div class="bar-row"><span class="bar-name">2. 白河村跨场景三味药</span><div class="bar-track"><div class="bar-fill good" style="width:100%"></div></div><span class="bar-val">5 / 5 通关</span></div>
+    <div class="bar-row"><span class="bar-name">3. 拜月教主常规决战</span><div class="bar-track"><div class="bar-fill warn" style="width:80%"></div></div><span class="bar-val">4 / 5 通关</span></div>
+    <div class="bar-row"><span class="bar-name">4. 扬州 15 场景侦探链</span><div class="bar-track"><div class="bar-fill warn" style="width:80%"></div></div><span class="bar-val">4 / 5 通关</span></div>
+    <div class="bar-row"><span class="bar-name">5. 拜月禁招赛 &amp; 全通</span><div class="bar-track"><div class="bar-fill bad" style="width:60%"></div></div><span class="bar-val">3 / 5 通关</span></div>
+    <p>榜单只收通关的那一局，这里数的是每个擂台有几个上榜模型打通了：祈雨坛与白河采药全部打通；扬州追贼与拜月决战要<strong>跨 6–15 个场景追踪状态、证伪假设</strong>，打通的是三剑客和 <code>GPT-6 Astra</code>（<code>Claude Fable 5.1</code> 未测）；从零写代码打穿全游戏的目前是三剑客。</p>
   </div>
   <div class="card">
     <h3>🧠 统计发现二：决定通关的四大底层 Agent 核心内功</h3>
-    <p><strong>① 零成本认知探针（Epistemic Probe）：</strong>面对 45° 坐标歧义，<code>Claude Opus 5.5</code> 用 1 步 <code>use_item</code> 实测代替代数空想，10 步破局；而 <code>DeepSeek V4 Pro</code> 空想 103,616 tokens 零次出手。</p>
+    <p><strong>① 零成本认知探针（Epistemic Probe）：</strong>面对 45° 坐标歧义，<code>Claude Opus 5.5</code> 用 1 步 <code>use_item</code> 实测代替代数空想，10 步破局。</p>
     <p><strong>② 止损弹性（Pivot Elasticity）：</strong>白河猎场放偏第一枚捕兽夹后，<code>Argon</code>（5步）与 <code>GPT-6.1</code>（7步）秒收夹重放；揚州井口打不开时，<code>Argon</code> 22 步转登城墙，而 <code>GPT-6.1</code> 被错误记忆锚定 82 步。</p>
-    <p><strong>③ 控制变量消元法：</strong>面对回合制批量结算（<code>ΔHP = x1+x2+x3</code>），<code>Claude</code> 固定两人投 1000 伤毒药解出单招真实伤害；<code>DeepSeek</code> 误把 1、2 号位未结算当成“法术 0 伤害”自废武功。</p>
-    <p><strong>④ 自演化代码库（Self-Coding Library）：</strong><code>--pure</code> 模式下三剑客将开门、寻路、反编译沉淀为持久化 JS 库，而 <code>DeepSeek</code> 每轮手写一次性脚本最终在第 63 轮困于扬州客栈楼梯。</p>
+    <p><strong>③ 控制变量消元法：</strong>面对回合制批量结算（<code>ΔHP = x1+x2+x3</code>），<code>Claude</code> 固定两人投 1000 伤毒药解出单招真实伤害。</p>
+    <p><strong>④ 自演化代码库（Self-Coding Library）：</strong><code>--pure</code> 模式下三剑客将开门、寻路、反编译沉淀为持久化 JS 库，越往后越少被同一类障碍卡住。</p>
   </div>
 </div>
 </section>`;
@@ -538,12 +501,7 @@ function perTaskDeepDiveSection() {
   <tr><td class="num strong">🥇 1</td><td class="model">claude-cli:claude-fable-5-1</td><td>Anthropic</td><td class="num">–</td><td><span class="badge good">100%</span></td><td class="num strong">10 步</td><td class="num">1,259</td><td>1 步探针锁定方位，10 步并列全场最快</td></tr>
   <tr><td class="num strong">🥉 3</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num strong">13 步</td><td class="num">–</td><td>读碑后试放 1 次立即锁定 45° 顺时针映射</td></tr>
   <tr><td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td><span class="badge good">100%</span></td><td class="num strong">13 步</td><td class="num">726</td><td>1 步试放消解 45° 旋转歧义，13 步收官</td></tr>
-  <tr><td class="num">5</td><td class="model">ollama:glm-5.3:cloud (4K熔断)</td><td>Zhipu AI</td><td class="num">20% (1/5)</td><td><span class="badge good">100% (3/3)</span></td><td class="num">16–19 步</td><td class="num">~18,000</td><td>单轮 4,096 思考熔断器截断过度怀疑后迅速通关</td></tr>
-  <tr><td class="num">6</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num">22 步</td><td class="num">4,295</td><td>稳健巡视五座石柱坐标后逐一配对归位</td></tr>
-  <tr><td class="num">7</td><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td>DeepSeek</td><td class="num">0% (0/5)</td><td><span class="badge good">100%</span></td><td class="num">28 步</td><td class="num">~24,000</td><td>以快打慢，边走边试错完成五珠归位</td></tr>
-  <tr><td class="num">8</td><td class="model">ollama:kimi-k3 / minimax-m3 / gemma4</td><td>Moonshot / MiniMax / Google</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num">31–44 步</td><td class="num">~35,000</td><td>经过多轮方位枚举后成功放齐五灵珠</td></tr>
-  <tr><td class="num">❌</td><td class="model">ollama:glm-5.3:cloud (16K无熔断)</td><td>Zhipu AI</td><td class="num">20% (1/5)</td><td><span class="badge bad">0% (超时)</span></td><td class="num">未完成</td><td class="num">290,000+</td><td>前 500 词已算对，因一句 "Let's not assume" 陷入无限自我怀疑</td></tr>
-  <tr><td class="num">❌</td><td class="model">ollama:deepseek-v4-pro:0813-cloud</td><td>DeepSeek</td><td class="num">0% (0/5)</td><td><span class="badge bad">0% (超时)</span></td><td class="num">17 步 (0放珠)</td><td class="num">103,616</td><td>十万字坐标几何证明走火入魔，到死未调 1 次 <code>use_item</code></td></tr>
+  <tr><td class="num">5</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num">22 步</td><td class="num">4,295</td><td>稳健巡视五座石柱坐标后逐一配对归位</td></tr>
 </table>
 </div>
 
@@ -555,10 +513,8 @@ function perTaskDeepDiveSection() {
   <tr><td class="num strong">🥇 1</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">80% (4/5)</td><td><span class="badge good">100% (90步)</span></td><td><span class="badge good">100% (90/120步)</span></td><td class="num strong">0 步 (直奔南门猎场)</td><td class="num strong">5 步 (秒收夹改放 45,111)</td></tr>
   <tr><td class="num strong">🥈 2</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">100% (5/5)</td><td><span class="badge good">100% (105步)</span></td><td><span class="badge good">100% (105–117步)</span></td><td class="num strong">4 步 (直奔南门猎场)</td><td class="num strong">7–8 步 (迅速移夹至 44,110)</td></tr>
   <tr><td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td><span class="badge good">100% (107步)</span></td><td><span class="badge good">100% (107步)</span></td><td class="num">少量探路后进南门猎场</td><td class="num">107 步标准预算内一次通关</td></tr>
-  <tr><td class="num">4</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">0% (0/5)</td><td><span class="badge warn">进度 0.50</span></td><td><span class="badge good">100% (143/176步)</span></td><td class="num">39–43 步 (搜遍全村6民居)</td><td class="num">23–48 步 (执着赶鹿后起夹重放)</td></tr>
+  <tr><td class="num">4</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">0% (0/5)</td><td class="muted">– 未通关</td><td><span class="badge good">100% (143/176步)</span></td><td class="num">39–43 步 (搜遍全村6民居)</td><td class="num">23–48 步 (执着赶鹿后起夹重放)</td></tr>
   <tr><td class="num">5</td><td class="model">claude-cli:claude-fable-5-1</td><td>Anthropic</td><td class="num">–</td><td class="muted">– 未测</td><td><span class="badge good">100% (203步)</span></td><td class="num">全村探索清图</td><td class="num">203 步完成三味药收集交回医仙</td></tr>
-  <tr><td class="num">6</td><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td>DeepSeek</td><td class="num">40% (2/5)</td><td><span class="badge bad">进度 0.75</span></td><td><span class="badge bad">进度 0.75</span></td><td class="num">18 步</td><td class="num">找到猎场与捕兽夹但未捕获梅花鹿</td></tr>
-  <tr><td class="num">7–14</td><td class="model">Kimi K3 / GLM-5.3 / MiniMax / Laya</td><td>Moonshot / Zhipu / MiniMax / ConvAI</td><td class="num">0%–40%</td><td><span class="badge bad">进度 0.00–0.50</span></td><td><span class="badge bad">进度 0.00–0.50</span></td><td class="num">20–90 步</td><td class="num">卡在渔夫借竿对话链、村内迷路或猎场</td></tr>
 </table>
 </div>
 
@@ -580,11 +536,9 @@ function perTaskDeepDiveSection() {
 <table class="wrap">
   <tr><th class="model">模型</th><th>厂商</th><th>笔试拜月考</th><th>上半场：常规决战 (胜局回合)</th><th>常规赛战术拆解</th><th>下半场：禁招消融赛 (胜局回合)</th><th>禁招赛机制发现与成败归因</th></tr>
   <tr><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">100% (3/3)</td><td class="num strong">🥇 7.00 回合 (第2命/42步)</td><td>第 2 命补双 <code>五氣朝元</code> + <code>乾坤一擲</code> 创 7 回合 0 死纪录</td><td class="num strong">🥉 39.00 回合 (第2命/114步)</td><td>第 2 命叠防 + 投掷神兵，全场唯一发明 <code>{"action":"repeat"}</code> 循环宏</td></tr>
-  <tr><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td>DeepSeek</td><td class="num">67% (2/3)</td><td class="num strong">🥈 10.00 回合 (第6命/172步)</td><td><strong>第 6 命仅剩 1 HP 阿奴砸出 <code>乾坤一擲</code>+<code>化屍水</code> 绝杀</strong></td><td class="num">❌ 0% (23命/700步，剩21,022 HP)</td><td>悟出开局三盾，但栽在<strong>回合批量结算归因幻觉</strong>（误判逍遥灵儿法术 0 伤害）</td></tr>
   <tr><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td class="num strong">🥉 11.00 回合 (第1命/28步)</td><td><strong>初见第 1 命一次过：</strong>仅 28 步 / 95.3s 极速斩拜月</td><td class="num strong">✓ 54.00 回合 (第2命/220步)</td><td>第 2 命 <code>真元護體</code> + <code>天罡戰氣</code> + 投掷与剑神稳定磨穿 32,760 HP</td></tr>
   <tr><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">67% (2/3)</td><td class="num strong">✓ 14.00 回合 (第1命/33步)</td><td><strong>初见第 1 命一次过：</strong>3 颗隐蛊维持 9 回合隐身 + 4 发酒神</td><td class="num strong">🥈 37.00 回合 (第2命/176步)</td><td>第 2 命构建“轮流 <code>真元護體</code> + 每回合 <code>五氣朝元</code>”37 回合铁桶阵</td></tr>
   <tr><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">33% (1/3)</td><td class="num">17.00 回合 (第4命/157步)</td><td>全程未用 <code>乾坤一擲</code>，自研群攻清场流分文未花过关</td><td class="num strong">🥇 36.00 回合夺冠! (第11命/542步)</td><td><strong>控制变量线性消元法</strong>测准单招伤害，第 11 命心算 &lt;5% 血线用 <code>化屍水</code> 秒杀夺冠</td></tr>
-  <tr><td class="model">ollama:kimi-k3:cloud</td><td>Moonshot AI</td><td class="num">67% (2/3)</td><td class="num">❌ 0% (10命/240步)</td><td>第 7 命已打空拜月本体 (0 HP) 死于小怪；随后近因过拟合漏喂雪莲子</td><td class="muted">–</td><td class="muted">–</td></tr>
 </table>
 </div>
 </section>`;
@@ -597,13 +551,13 @@ function ironmanAndPrSection() {
 
 <div class="scroll">
 <table class="wrap">
-  <tr><th>维度</th><th><code>Gemini 4 Argon</code></th><th><code>GPT-6.1-Sol</code></th><th><code>Claude Opus 5.5</code></th><th><code>DeepSeek V4.1 Flash</code></th></tr>
-  <tr><td><strong>最终结局</strong></td><td><span class="badge good">🏆 全剧终通关 (Slot 99)</span></td><td><span class="badge good">🏆 全剧终通关 (Slot 99)</span></td><td><span class="badge good">🏆 全剧终通关 (Slot 99)</span></td><td><span class="badge warn">⚔️ 闯至第5章扬州城 (Slot 28)</span></td></tr>
-  <tr><td><strong>推进剧情跨度</strong></td><td>全 11 章 (余杭 → 拜月水魔兽)</td><td>全 11 章 (余杭 → 拜月水魔兽)</td><td>全 11 章 (余杭 → 拜月水魔兽)</td><td>前 5 章 (斩赤鬼王/石长老，困于扬州客栈)</td></tr>
-  <tr><td><strong>会话轮数</strong></td><td class="num">5 段接力</td><td class="num strong">单会话 1 轮到底!</td><td class="num">2 轮接力</td><td class="num">109 轮 (每轮 ~220K 上下文)</td></tr>
-  <tr><td><strong>总工具调用数</strong></td><td class="num">1,704 次 (主段 475 次)</td><td class="num strong">845 次 (全场最精简)</td><td class="num">1,453 次 (<code>run_code</code> 1,434 次)</td><td class="num">7,041 次 (后 46 轮客栈空转)</td></tr>
-  <tr><td><strong>自编写持久化引擎库</strong></td><td><code>argon-pure-lib.js</code> (<strong>731 行</strong>)</td><td><code>gpt61-pure-lib.js</code> (<strong>135 行</strong>)</td><td><code>opus-pure-lib.js</code> (<strong>1,427 行 / 43 函数</strong>)</td><td><code>deepseek-pure-lib.js</code> (一次性内联脚本)</td></tr>
-  <tr><td><strong>通关队伍终局等级</strong></td><td class="num">Lv36 / Lv33 / Lv31</td><td class="num">Lv35 / Lv32 / Lv30</td><td class="num strong">Lv45 / Lv43 / Lv42 (刷满傀儡虫)</td><td class="num">Lv13 / Lv12 / Lv12</td></tr>
+  <tr><th>维度</th><th><code>Gemini 4 Argon</code></th><th><code>GPT-6.1-Sol</code></th><th><code>Claude Opus 5.5</code></th></tr>
+  <tr><td><strong>最终结局</strong></td><td><span class="badge good">🏆 全剧终通关 (Slot 99)</span></td><td><span class="badge good">🏆 全剧终通关 (Slot 99)</span></td><td><span class="badge good">🏆 全剧终通关 (Slot 99)</span></td></tr>
+  <tr><td><strong>推进剧情跨度</strong></td><td>全 11 章 (余杭 → 拜月水魔兽)</td><td>全 11 章 (余杭 → 拜月水魔兽)</td><td>全 11 章 (余杭 → 拜月水魔兽)</td></tr>
+  <tr><td><strong>会话轮数</strong></td><td class="num">5 段接力</td><td class="num strong">单会话 1 轮到底!</td><td class="num">2 轮接力</td></tr>
+  <tr><td><strong>总工具调用数</strong></td><td class="num">1,704 次 (主段 475 次)</td><td class="num strong">845 次 (全场最精简)</td><td class="num">1,453 次 (<code>run_code</code> 1,434 次)</td></tr>
+  <tr><td><strong>自编写持久化引擎库</strong></td><td><code>argon-pure-lib.js</code> (<strong>731 行</strong>)</td><td><code>gpt61-pure-lib.js</code> (<strong>135 行</strong>)</td><td><code>opus-pure-lib.js</code> (<strong>1,427 行 / 43 函数</strong>)</td></tr>
+  <tr><td><strong>通关队伍终局等级</strong></td><td class="num">Lv36 / Lv33 / Lv31</td><td class="num">Lv35 / Lv32 / Lv30</td><td class="num strong">Lv45 / Lv43 / Lv42 (刷满傀儡虫)</td></tr>
 </table>
 </div>
 
@@ -681,7 +635,7 @@ export function renderBoard(rows, { generatedAt = new Date().toISOString(), quiz
     const pointer = ext.length && main.length
       ? `<p class="note">通过命令行客户端接入的模型(${ext.slice(0, 4).map((r) => `<code>${esc(r.model.replace(/^[^:]+:/, ''))}</code>`).join('、')}${ext.length > 4 ? ' 等' : ''})不在这张主表里,在下方 <a href="#${anchor}">外部 agent 表</a>。</p>` : '';
     return `<section><h2>档位 ${esc(tier)}</h2>${pointer}` +
-      (main.length ? boardTable(main, { quizzes }) : '<p class="muted">这一档还没有内置循环的成绩。</p>') +
+      (main.length ? boardTable(main, { quizzes }) : ext.length ? '' : '<p class="muted">这一档还没有内置循环的成绩。</p>') +
       (main.length ? `<h3>success × cost(虚线 = 帕累托前沿:没有别的成绩又便宜又不差)</h3>${scatter(pts)}` : '') +
       (ext.length ? `<h3 id="${anchor}">外部 agent(token / 成本由客户端自报、提示不统一 —— 单列,不进主榜)</h3>${boardTable(ext, { external: true, quizzes })}` : '') +
       `<h3>每题 success 率(括号内为局数)</h3>${taskMatrix([...main, ...ext])}</section>`;
@@ -725,7 +679,7 @@ ${banner(`《仙剑奇侠传》(1995 DOS) 智能体长程决策基准 · 生成�
 <div class="panes">
   <div class="tab-pane" id="pane-stats">${statsOverviewSection()}</div>
   <div class="tab-pane" id="pane-tiers">
-    <p class="muted">score = 各题 success 率均值(主排序),同分按本题集口径比较成功局平均 cost 或战斗回合；不同评分口径分开排。按档位分开排,外部 agent 单列。「核验」= bench verify 按日志重放的结果:只有全部局都重放一致才算已核验。题集不同的运行 score 不可直接比,见每题矩阵。</p>
+    <p class="muted">榜单只收通关的那一局:没打通的局不计,一局都没打通的运行不出现。score = 通关题数 / 这一档里有人通关过的题数(主排序),同分按本题集口径比较成功局平均 cost 或战斗回合；不同评分口径分开排。按档位分开排,外部 agent 单列。「核验」= bench verify 按日志重放的结果:只有全部局都重放一致才算已核验。共用一个 Ollama 订阅、额度不够没跑全的模型不上榜(运行记录仍在仓库里)。题集不同的运行 score 不可直接比,见每题矩阵。</p>
     ${rows.length ? sections : '<p>没有找到运行结果(bench run 的输出目录)。</p>'}
   </div>
   <div class="tab-pane" id="pane-tasks">${perTaskDeepDiveSection()}</div>
@@ -736,12 +690,56 @@ ${banner(`《仙剑奇侠传》(1995 DOS) 智能体长程决策基准 · 生成�
 `;
 }
 
+/**
+ * 额度受限、没跑全的模型不上榜:这一批共用一个个人 Ollama Cloud 订阅,多数题没跑全,
+ * 排进去会把「没跑」读成「打不过」(用户 2026-10-23 定)。运行记录仍在 bench/out/,只是不进任何视图。
+ */
+export const QUOTA_LIMITED = (model) => /^ollama:/.test(String(model || ''));
+
+/**
+ * 只收通关的那一局(用户 2026-10-23 定):没打通的局不进榜,一局都没打通的运行整行不出现。
+ * 各题只剩成功局,所以「success 率」不再有意义:score 改成「通关题数 / 同一档(同提示档位、同评分口径)里有人通关过的题数」,
+ * cost / 回合照旧只看成功局。PR 门禁也只收成功局(pr-check.mjs)。
+ */
+export function clearedOnly(rows) {
+  const out = [];
+  for (const r of rows) {
+    const tasks = (r.tasks || []).map((t) => {
+      const wins = (t.episodes || []).filter((e) => e.success);
+      if (!wins.length) return null;
+      return {
+        ...t, n: wins.length, successRate: 1, progressMean: 1, progressSd: 0,
+        invalidRate: sumOrNull(wins.map((e) => e.invalidCalls)) / Math.max(1, sumOrNull(wins.map((e) => e.toolCalls))),
+        tokensMean: mean(wins.map((e) => (e.tokensIn || 0) + (e.tokensOut || 0))),
+        costTotal: sumOrNull(wins.map((e) => e.cost)),
+        costMeanOnSuccess: sumOrNull(wins.map((e) => e.cost)) == null ? null : mean(wins.map((e) => e.cost)),
+        endReasons: { success: wins.length }, episodes: wins
+      };
+    }).filter(Boolean);
+    if (!tasks.length) continue;
+    const eps = tasks.flatMap((t) => t.episodes);
+    out.push({
+      ...r, tasks, cleared: tasks.length, complete: true, progress: null, episodes: eps.length,
+      costTotal: sumOrNull(eps.map((e) => e.cost)),
+      costMeanOnSuccess: sumOrNull(eps.map((e) => e.cost)) == null ? null : mean(eps.map((e) => e.cost)),
+      tokensTotal: eps.reduce((a, e) => a + (e.tokensIn || 0) + (e.tokensOut || 0), 0)
+    });
+  }
+  const key = (r) => JSON.stringify([r.tier, r.hints ?? 'standard', r.scoring ?? 'cost']);
+  const universe = new Map();
+  for (const r of out) { const u = universe.get(key(r)) || new Set(); for (const t of r.tasks) u.add(`${t.id}@${t.version}`); universe.set(key(r), u); }
+  for (const r of out) { r.taskUniverse = universe.get(key(r)).size; r.score = r.cleared / r.taskUniverse; }
+  return out;
+}
+
 /** bench board:返回写出的文件路径。mergeModels = 按模型跨运行归并;verifiedOnly = 只纳入已核验运行。 */
 export function board(dirs, { out = path.join(OUT_DIR, 'board.html'), mergeModels = false, verifiedOnly = false } = {}) {
-  let rows = collectRuns(dirs.length ? dirs : listRunDirs());
+  let rows = collectRuns(dirs.length ? dirs : listRunDirs()).filter((r) => !QUOTA_LIMITED(r.model));
   if (mergeModels) rows = mergeRunsByModel(rows, { verifiedOnly });
   else if (verifiedOnly) rows = rows.filter((r) => r.verify?.state === 'verified');
-  const quizzes = collectQuizzes(dirs.length ? dirs : listQuizDirs());
+  rows = clearedOnly(rows);
+  // 闭卷测验只给榜上有通关局的模型列(一局都没打通的模型不上榜,测验也不单独出现)
+  const quizzes = collectQuizzes(dirs.length ? dirs : listQuizDirs()).filter((q) => !QUOTA_LIMITED(q.model) && rows.some((r) => r.model === q.model));
   fs.mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
   fs.writeFileSync(out, renderBoard(rows, { quizzes }));
   return { out, runs: rows.length, quizzes: quizzes.length };
