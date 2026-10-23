@@ -2,14 +2,16 @@
 
 > **当 1995 年的《仙剑奇侠传》遇上 2026 年的顶尖大模型——背熟“五灵相克、酒神乾坤”的笔试学霸，到了真刀真枪的迷宫与 Boss 战实操里，究竟能不能打赢一张白纸的“洋和尚”？**
 >
-> 📄 **完整技术报告（Technical Report）**：[*Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction*](./agent-pal-bench-draft.pdf)（[PDF 排版版](./agent-pal-bench-draft.pdf) ｜ [中文版技术报告](./agent-pal-bench-draft.md) ｜ [英文版](./agent-pal-bench-draft.en.md) ｜ [LaTeX 源码](./agent-pal-bench-draft.tex)）  
-> 💻 **开源评测仓库与 72 局可复现轨迹（GitHub）**：[https://github.com/jianmliu/agent-pal](https://github.com/jianmliu/agent-pal)（含交互式排行榜 [`bench/out/board.html`](../bench/out/board.html) 与 `bench verify` 防篡改重放日志）
+> 📄 **完整技术报告（Technical Report）**：[*Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction*](file:///Volumes/T7-Data/pal/agent-pal/docs/agent-pal-bench-draft.pdf)（[PDF 排版版](file:///Volumes/T7-Data/pal/agent-pal/docs/agent-pal-bench-draft.pdf) ｜ [中文版技术报告](file:///Volumes/T7-Data/pal/agent-pal/docs/agent-pal-bench-draft.md) ｜ [英文版](file:///Volumes/T7-Data/pal/agent-pal/docs/agent-pal-bench-draft.en.md) ｜ [LaTeX 源码](file:///Volumes/T7-Data/pal/agent-pal/docs/agent-pal-bench-draft.tex)）  
+> 🌐 **在线五合一交互式排行榜（GitHub Pages）**：[**https://jianmliu.github.io/agent-pal/**](https://jianmliu.github.io/agent-pal/)（含 [🔒 防篡改核验榜 `verified.html`](https://jianmliu.github.io/agent-pal/verified.html) 与 [📋 全量局次表 `runs.html`](https://jianmliu.github.io/agent-pal/runs.html)）  
+> 🎬 **三大通关模型决战拜月教主 1× 原速实机录像**：[📺 三剑客同屏并排对比版 (`1920×438`, `4m34s`)](file:///Volumes/T7-Data/pal/agent-pal/baiyue-three-models-side-by-side.mp4) ｜ [🎞️ 三剑客一刀未剪完整连播版 (`960×664`, `9m09s`)](file:///Volumes/T7-Data/pal/agent-pal/baiyue-three-models-sequential.mp4)  
+> 💻 **开源评测仓库与可复现轨迹（GitHub）**：[https://github.com/jianmliu/agent-pal](https://github.com/jianmliu/agent-pal)（支持 `$0` API 成本 `bench verify` 重放防作弊核验与 PR 自动合榜）
 
 如果要在中文世界里挑一款最具图腾意义的传统游戏，作为 AI 智能体（Agent）“华山论剑”的试金石，1995 年大宇资讯出品的 DOS 原版**《仙剑奇侠传》**（*The Legend of Sword and Fairy*）几乎是不二之选。
 
 它不仅浓缩了最地道的中国传统语义密码——**中医方剂**（鹿茸、鲤鱼、银杏子）、**奇门方位**（女娲祈雨坛石碑古文）、**公案侦探**（扬州女飞贼与寡妇姬三娘）、**苗疆蛊术**（三尸蛊、化尸水、隐蛊）与**仙剑绝学**（酒神、乾坤一掷）——更是一座横跨 **300 个场景、数十座立体迷宫与 70 余场回合制战斗** 的长程状态机。
 
-我们将整部《仙剑 95》封装为确定性锁步的智能体评测基准 **[`Agent-PAL-Bench`](agent-pal-bench.md)**，摆下了三大考核模块：
+我们将整部《仙剑 95》封装为确定性锁步的智能体评测基准 **[`Agent-PAL-Bench`](file:///Volumes/T7-Data/pal/agent-pal/docs/agent-pal-bench.md)**，摆下了三大考核模块：
 1. **第一场·笔试（闭卷考题，`bench quiz`）**：不开游戏、不给工具，纯考模型脑子里记住了多少《仙剑》攻略；
 2. **第二场·实操（分题闯关，`bench run`）**：四大专项擂台（祈雨坛空间解谜、白河村开放采药、扬州城长程破案、南诏宫拜月决战 & 禁招消融赛），考真刀真枪的现场交互；
 3. **第三场·终极铁人赛（全游戏通关，`--pure` 模式）**：从“新的故事”第 1 幕开始，只给底层协议包，让模型自己写代码一命打穿全部 11 章直至全剧终。
@@ -22,7 +24,7 @@
 
 # 第一部分：笔试（闭卷考题，`bench quiz`）—— 谁才是熟读《仙剑》攻略的“百晓生”？
 
-为了区分模型在实操中到底是靠**“童年背过的攻略记忆（Pretraining Prior）”**还是靠**“当场读对白做出的逻辑推理（In-Context Reasoning）”**，我们先进行了一场严格的**闭卷笔试（`bench quiz`）**。
+为了区分模型在实操中到底是靠**“童年背过的攻略记忆（Pretraining Prior）”**还是靠**“当场读对白做出的逻辑推理（In-Context Reasoning）”**，我们先进行了一场严格的**闭卷笔试（[`bench quiz`](file:///Volumes/T7-Data/pal/agent-pal/bench/quiz.mjs)）**。
 
 规则极其简单：不启动游戏、不提供任何工具或上下文提示，直接针对各关核心卡点单轮提问（共 22 问），要求模型只输出一行 `答案：<最终答案>`，不确定的必须答“不知道”，乱猜或两头押注一律判错。
 
@@ -40,6 +42,7 @@
 | 8 | 本土群雄 | **`DeepSeek V4 Pro`** | **23%** (`3/13`) | `40%` (2/5) | `0%` (0/5) | `33%` (1/3) | — | **苦思冥想的书院大儒** |
 | 9 | 本土群雄 | **`MiniMax M2.7 / M3.1`** | **15%–23%** | `20%` (1/5) | `0%–20%` | `33%` (1/3) | — | **初出茅庐的江湖散人** |
 | 10 | 外来三剑客 | **`Claude Opus 5.5`** | **8%** (`1/13`) | **`0%`** (0/5) | **`0%`** (0/5) | `33%` (1/3) | **22%** (`2/9`, 葫芦 **`0/5`**) | **一张白纸的“洋和尚”** |
+| 11 | 异派奇兵 (System-1) | **`Laya Multilingual`** *(非自回归小模型)* | **0%** (`0/13`) | `0%` (0/5) | `0%` (0/5) | `0%` (0/3) | — | **7 毫秒拔刀却不识字谱的快剑客** |
 
 ### 1.2 笔试核心看点：那些连老玩家都会答错的“送命题”
 
@@ -75,7 +78,7 @@
 * **题目设定**：站在大理城外女娲祭坛边，包里有圣灵珠与风、雷、水、火、土五灵珠。把圣灵珠放入石碑读出方位提示后，将五颗灵珠放入二层对应的五座石柱。**参考解 `par = 7` 步，预算 `80` 步。**
 * **核心陷阱**：石碑写着*“风生于东北，雷动于东南，水流于西南”*（正交罗盘方位），但 1995 年 DOS 引擎采用 **45° 斜向等距网格**，祭坛二层的五座石柱在坐标 `(x, y)` 上呈对角线十字梅花桩 `(101, 90)`、`(105, 94)`、`(101, 98)`、`(97, 94)`。在不试放一颗珠子之前，顺时针旋转 45° 与逆时针旋转 45° 在数学上完全等价；而试放珠子的代价为 **0**（放错了珠子不会消失，仅返回 `ok: false`）。
 
-### 实操成绩单（[`classic48-rain-orbs`](rain-altar-epistemic-trap.zh.md)）
+### 实操成绩单（[`classic48-rain-orbs`](file:///Volumes/T7-Data/pal/agent-pal/docs/rain-altar-epistemic-trap.zh.md)）
 
 | 排名 | 模型 | 笔试得分 | 实操通关率 | 通关步数 (`par=7`) | 单局思考输出 tokens | 实操行为模式定性 |
 | :---: | :--- | :---: | :---: | :---: | :---: | :--- |
@@ -96,7 +99,7 @@
 
 * **题目设定**：赵灵儿在白河村病倒，韩医仙开出“银杏子、鲤鱼、鹿茸”三味药。玩家需要在韩医仙家后院摘杏子、找村西渔夫借鱼竿去河边钓鱼、去村外南侧猎场拾取捕兽夹并布在鹿逃跑的必经之路上抓鹿取茸，最后交回医馆煎药。**参考解 `par = 40` 步，标准预算 `120` 步，探索扩容预算 `240` 步。**
 
-### 实操成绩单（[`classic10-baihe-medicine`](baihe-luck-vs-character.zh.md)）
+### 实操成绩单（[`classic10-baihe-medicine`](file:///Volumes/T7-Data/pal/agent-pal/docs/baihe-luck-vs-character.zh.md)）
 
 | 排名 | 模型 | 笔试得分 | `120` 步标准赛 | **`240` 步扩容赛** | 凑齐前两味药 | **村内 6 间民居搜索步数** | **猎场放错第一夹后的止损步数** |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -121,7 +124,7 @@
   * `M4 (met-widow)`：去城里打听可疑寡妇线索，进城北姬三娘家拜访姬三娘；
   * `M5 (entered-well) -> Goal`：出门后按林月如提议上高处（城墙/屋顶 `Scene 86`）盯梢，目击姬三娘往古井丢赃物，下古井密室找出 `紫金葫蘆` 并被押上公堂。
 
-### 实操成绩单（[`classic19-yangzhou-gourd`](yangzhou-gourd-long-horizon.zh.md)）
+### 实操成绩单（[`classic19-yangzhou-gourd`](file:///Volumes/T7-Data/pal/agent-pal/docs/yangzhou-gourd-long-horizon.zh.md)）
 
 | 排名 | 模型 | 笔试葫芦考 (5问) | `230` 步标准赛 | `320` 步探索赛 | **净主线步数** *(扣支线/乌龙)* | `M1` 客栈夜警 | `M2` 屋顶夺包 | `M3` 富商诬陷 | `M4` 拜访寡妇 | **`M4 -> M5` 破除“井边盲区”耗时** | `Goal` 紫金葫芦 |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -142,7 +145,7 @@
   * **上半场（常规决战）**：保留原存档全部技能与道具（可使用老玩家熟知的“隐蛊 + 酒神 + 乾坤一掷”三板斧）；
   * **下半场（反事实禁招赛，`BENCH_STRIP_CHEESE=1`）**：在引擎底层**直接抹除 `酒神`、抹除 `乾坤一擲`、清空背包 `隱蠱`**，逼迫模型在无任何速通套路可用的情况下，用普通仙术与道具正面磨穿 `32,760 HP` 的拜月教主！
 
-### 实操成绩单（[`baiyue-single-origin`](baiyue-prior-vs-reflection.zh.md) 上下半场双榜）
+### 实操成绩单（[`baiyue-single-origin`](file:///Volumes/T7-Data/pal/agent-pal/docs/baiyue-prior-vs-reflection.zh.md) 上下半场双榜）
 
 | 模型 | 笔试拜月考 (3问) | **上半场：常规决战结果 (胜局回合)** | 常规赛高光与败因 | **下半场：废除三板斧禁招赛结果 (胜局回合)** | 禁招赛核心机制发现与成败归因 |
 | :--- | :---: | :---: | :--- | :---: | :--- |
@@ -161,6 +164,19 @@
   * **`DeepSeek` 的单步差分幻觉**：它看到 1、2 号位出招后 Boss 血条没动，3 号位阿奴出招后 Boss 掉血，便在第 696 轮日志中得出错误结论——*“拜月对李逍遥和赵灵儿的所有法术（天剑、剑神、武神、冰蚕蛊）100% 免疫（0 伤害），只有 3 号位阿奴能打动！”* 从而自废了全队三分之二的火力！
   * **`Claude` 的控制变量线性消元法**：`Claude` 在第 3 命（`#58–#84`）先发现道具 `無影毒` 固定扣 `1,000 HP`，于是每回合让两人扔固定 `1,000` 伤的 `無影毒`（或 `0` 伤的加血技能），只留一人测试未知技能（`x_未知 + 1000 + 1000 = ΔHP`），仅用 3 回合就把 `劍神 = 510`、`泰山壓頂 = 436`、`鬼牙刀投擲 = 1,587` 解得明明白白，最后在第 11 命心算出 `1,502 HP < 5% × 32,760 (1,638 HP)`，一瓶 `化屍水` 秒杀拜月！
 
+### ⚖️ 裁判席公平性复核：三剑客拜月决战是“一命到底”更强，还是“胜局速通”更快？
+
+当我们把三大满贯模型（`Gemini 4 Argon`、`GPT-6.1-Sol`、`Claude Opus 5.5`）的拜月决战轨迹渲染成 **1× 原速同屏对比录像**（[📺 同屏三联版](file:///Volumes/T7-Data/pal/agent-pal/baiyue-three-models-side-by-side.mp4) ｜ [🎞️ 完整连播版](file:///Volumes/T7-Data/pal/agent-pal/baiyue-three-models-sequential.mp4)）逐帧核验时，必须向读者严格区分两个完全不同维度的公平评价口径：
+
+* **起点 100% 物理对齐**：三模型均从同一初始存档指纹（`saveFp: bd44008002`，`partyHp: 817/770/733`，`cash: 64609`）、同一确定性随机数种子（`seed: 42`）、同一工具档位（`tier: B`）与同一提示词版本（`promptVersion: 3`）发车。
+* **为什么需要在主榜上同时披露“全局总耗时/总步数”与“胜局单命回合数”？**
+
+| 评测维度与公平性口径 | 🥇 **`GPT-6.1-Sol`** | 🥇 **`Gemini 4 Argon`** | 🥇 **`Claude Opus 5.5`** | 裁判席定性结论 |
+| :--- | :---: | :---: | :---: | :--- |
+| **口径 A：初见一命到底 & 全局总耗时 (`t=0` 起算)** | 🏆 **第 1 命一次过 (`0` 死)**<br>**`33` 步 / `107.06s`** | 第 2 命过 (`1` 死)<br>`42` 步 / `115.26s` *(第1命耗70.8s)* | 第 4 命过 (`3` 死)<br>`157` 步 / `597.80s` | **按不读档一命通关或全局总耗时/总调用数，`GPT-6.1-Sol` 是毫无争议的第一名**（比 `Argon` 少调 9 步、快 8.2 秒，且 0 团灭）。 |
+| **口径 B：允许读档复盘后的单命胜局速度** | 14.00 回合 (`107.06s`) | 🏆 **7.00 回合 (`44.5s`)** | 17.00 回合 (`143.2s`) | **按复盘调整策略后的单场胜局爆发力，`Gemini 4 Argon` 第 2 命 7 回合最快**（代价是交了第 1 命 `70.8s` 的学费）。 |
+| **口径 C：禁招消融赛 (`STRIP_CHEESE=1`) 预算口径** | ✅ **`180` 步标准预算内通关**<br>第 2 命 · **37.00 回合** (`176` 步) | ✅ **`180` 步标准预算内通关**<br>第 2 命 · **39.00 回合** (`114` 步) | ⚠️ **`560` 步扩容预算下通关**<br>第 11 命 · 🏆 **36.00 回合** (`542` 步) | **若严格卡死 `180` 步标准预算，仅 `Argon` 与 `GPT-6.1-Sol`（第 2 命）通关**；`Claude` 的 36 回合纪录是在扩容预算下经 10 命科学实验试出来的。 |
+
 ---
 
 # 第三部分：终极铁人三项 —— 从零手写代码全游戏通关（`--pure` 模式马拉松）
@@ -169,7 +185,7 @@
 * **规则**：从标题画面“新的故事”第 1 秒开始，**剥夺内置寻路工具 `walk_to`、剥夺高级交互 `interact`、剥夺地图 `map`**！模型面前只有最原始的 `SMSG_*` 状态数据包、底层方向键原语 `step(up/down/left/right)`，以及一个持久化的 JavaScript 沙盒工具 **`run_code`**。
 * **目标**：模型必须**当场自己写代码**——自己写 BFS/A* 寻路器、自己写字节码反编译器、自己写自动战斗状态机——在同一个确定性种子（`--seed 1`）下打穿全游戏 **300 个场景、11 大章节、99 个存档槽位**，直至击败最终合体水魔兽迎来全剧终字幕！
 
-我们用 **外来三剑客（`Argon`、`GPT-6.1-Sol`、`Claude Opus 5.5`）** 与 **中国模型代表（`DeepSeek V4.1 Flash`）** 跑完了这场史诗级实验（完整技术报告见 [`three-models-play-agent-pal.zh.md`](three-models-play-agent-pal.zh.md)）：
+我们用 **外来三剑客（`Argon`、`GPT-6.1-Sol`、`Claude Opus 5.5`）** 与 **中国模型代表（`DeepSeek V4.1 Flash`）** 跑完了这场史诗级实验（完整技术报告见 [`three-models-play-agent-pal.zh.md`](file:///Volumes/T7-Data/pal/agent-pal/docs/three-models-play-agent-pal.zh.md)）：
 
 ### 3.1 全游戏 `--pure` 模式四大模型总成绩单
 
@@ -179,7 +195,7 @@
 | **走过剧情跨度** | 全 11 章 (余杭 $\to$ 拜月水魔兽) | 全 11 章 (余杭 $\to$ 拜月水魔兽) | 全 11 章 (余杭 $\to$ 拜月水魔兽) | 前 5 章 (余杭 $\to$ 苏州 $\to$ 白河 $\to$ 将军冢 $\to$ 鬼阴坛 $\to$ 扬州) |
 | **会话轮数** | 5 段接力 | **单会话 1 轮到底!** | 2 轮接力 | 109 轮高频换班 (每轮 ~220K 上下文) |
 | **总工具调用数** | `1,704` 次 (主段 `475` 次) | **`845` 次** *(全场最精简!)* | `1,453` 次 (`run_code` 1,434 次) | `7,041` 次 (前 62 轮推进，后 46 轮卡死扬州客栈) |
-| **自编写持久化引擎库** | [`argon-pure-lib.js`](../src/argon-pure-lib.js)<br>**731 行** | [`gpt61-pure-lib.js`](../src/gpt61-pure-lib.js)<br>**135 行** *(极致高密度函数式)* | [`opus-pure-lib.js`](../src/opus-pure-lib.js)<br>**1,427 行** *(43 个导出函数)* | [`deepseek-pure-lib.js`](../src/deepseek-pure-lib.js)<br>未把寻路/开门沉淀为通用库，每轮手写内联脚本 |
+| **自编写持久化引擎库** | [`argon-pure-lib.js`](file:///Volumes/T7-Data/pal/agent-pal/src/argon-pure-lib.js)<br>**731 行** | [`gpt61-pure-lib.js`](file:///Volumes/T7-Data/pal/agent-pal/src/gpt61-pure-lib.js)<br>**135 行** *(极致高密度函数式)* | [`opus-pure-lib.js`](file:///Volumes/T7-Data/pal/agent-pal/src/opus-pure-lib.js)<br>**1,427 行** *(43 个导出函数)* | [`deepseek-pure-lib.js`](file:///Volumes/T7-Data/pal/agent-pal/src/deepseek-pure-lib.js)<br>未把寻路/开门沉淀为通用库，每轮手写内联脚本 |
 | **通关队伍终局等级** | `Lv36 / Lv33 / Lv31` | `Lv35 / Lv32 / Lv30` | **`Lv45 / Lv43 / Lv42`** *(试炼窟刷满36只傀儡虫!)* | 第 62 轮达 `Lv13 / Lv12 / Lv12` |
 
 ### 3.2 为什么三剑客能一鼓作气打穿 300 个场景，而 `DeepSeek` 在第 63 轮折戟扬州客栈？
@@ -190,32 +206,58 @@
    * 千万不要以为 `DeepSeek` 弱——在 `--pure` 模式前 62 轮里，它完全靠自己手写的 JavaScript 寻路与战斗脚本，打过了无数人类新手都会迷路的难关：在韩医仙门前靠 25 点地毯式交互破除空气墙、在**将军冢与血池（`Scenes 60–65`）**算穿四座血池升降机关桥、在全队仅 12–13 级时硬生生磨死了 `2,800 HP` 的**赤鬼王**拿到土灵珠、闯过**鬼阴山与鬼阴坛（`Scenes 70–77`）**完成石长老剧情战！
    * 但到了第 63 轮的**扬州客栈（`Scene 93`）**，它因为手写 BFS 时**把所有 `touch-trigger` 一刀切当成危险传送点拉黑**，不小心把客栈一楼通往二楼唯一的 **`006E` 楼梯触发器 `1806 @ (61, 94)`** 也封死了！结果它的寻路器只能往客栈右墙外的地图虚空假走廊绕行，每次都在 `(94, 79)` 掉进厨房传送陷阱。加上每 60 次调用上下文满 220K 触发换班失忆，它在同一个客栈大堂里整整空转了 **46 轮（~2,800 次调用）**，直到烧光整月云端额度。
 2. **三剑客的破局之道：“把每一次踩坑变成永久进化的编译器”**
-   * 当 `GPT-6.1-Sol` 在扬州客栈第 `#437` 步同样踩进 `(94, 79)` 厨房陷阱时，它在第 `#438` 步立刻反编译了楼梯 `1806` 的 `script 33`，并在第 **`#440` 步当场写出 `global.safeGo` 永久写入 `gpt61-pure-lib.js`**——精准区分“含 `0059` 切场景指令的出口”与“含 `006E` 的场景内楼梯”，9 步过掉扬州客栈！
+   * 当 `GPT-6.1-Sol` 在扬州客栈第 `#437` 步同样踩进 `(94, 79)` 厨房陷阱时，它在第 `#438` 步立刻反编译了楼梯 `1806` 的 `script 33`，并在第 **`#440` 步当场写出 `global.safeGo` 永久写入 [`gpt61-pure-lib.js`](file:///Volumes/T7-Data/pal/agent-pal/src/gpt61-pure-lib.js)**——精准区分“含 `0059` 切场景指令的出口”与“含 `006E` 的场景内楼梯”，9 步过掉扬州客栈！
    * 当 `Claude Opus 5.5` 在扬州客栈遇到 `1825` 木门阻挡时，它在第 **`#449` 步直接给自己的寻路器 `global.path` 和 `global.walkPath` 打上永久补丁**（识别 `isDoor(o)`，走路遇到门自动先 `talk(d.id)` 开门再迈步），从此后续 200 个场景再也没被任何一扇门卡住过！到了桃源村 27 段小猴藤蔓跳台迷宫（`Scene 192`），`Claude` 更是直接写了一个 **40 行字节码反编译器 `global.relJumps(sc)`**，把全图所有悬崖跳台编译成一张有向图一键飞渡！
 
 ---
 
-# 第四部分：华山论剑总榜与广发英雄帖
+# 番外擂台：7 毫秒“系统 1 快剑”（`Laya`）vs 万字“系统 2 重剑”—— 为什么往 Adapter 里塞规则等于作弊？
 
-将 **闭卷笔试（`bench quiz`）**、**四大专项实操擂台（`bench run`）** 与 **全游戏自编程通关马拉松（`--pure`）** 汇总在一起，首届《仙剑奇侠传》大模型华山论剑的最终座次如下：
+在评测百亿/千亿参数的自回归大模型（System-2）之外，我们还专门引入了一位异派奇兵：**`convaiinnovations/laya-multilingual`**——一个主打 **`~7ms` 极速非自回归（Non-Autoregressive）嵌入对齐** 的小型动作决策模型（System-1）。
 
-| 总排名 | 模型 | 阵营 | 笔试总分 (`22`问) | 实操一：祈雨祭坛 (`par=7`) | 实操二：白河采药 (`par=40`) | 实操三：扬州葫芦 (`par=74`) | 实操四：拜月决战 (常规 / 禁招) | 终极马拉松：`--pure` 全游戏通关 |
-| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| 🏆 **1** | **`Gemini 4 Argon`** | 外来三剑客 | **64%** (`14/22`) | ✅ **13 步** | ✅ **90 步** *(全场最快)* | ✅ **161 步** *(净 139 步, 全场最快)* | ✅ **7 回合** *(纪录)* / ✅ **39 回合** | 🏆 **全剧终通关** (`731` 行自写库) |
-| 🏆 **2** | **`Claude Opus 5.5`** | 外来三剑客 | **14%** (`3/22`, *3卷0分*) | ✅ **10 步** *(全场最快)* | ✅ **143 步** *(零先验清图)* | ✅ **280 步** *(净 215 步, 跨屋顶奇谋)* | ✅ **17 回合** / 🥇 **36 回合** *(禁招冠军!)* | 🏆 **全剧终通关** (`1,427` 行自写库) |
-| 🏆 **3** | **`GPT-6.1-Sol`** | 外来三剑客 | **59%** (`13/22`) | ✅ **22 步** | ✅ **105 步** | ✅ **218 步** | ✅ **14 回合** *(唯一1命胜)* / ✅ **37 回合** | 🏆 **全剧终通关** (`845` 步单轮到底) |
-| 4 | **`DeepSeek V4.1 Flash`** | 本土群雄 | `31%` (`4/13`) | ✅ **28 步** | `0.75` (猎场未中) | *(见 `--pure` 客栈卡点)* | 🥈 **10 回合** *(1HP绝杀!)* / `0%` (归因幻觉) | ⚔️ **闯至第 5 章扬州** (斩赤鬼王/石长老) |
-| 5 | **`GLM-5.3`** | 本土群雄 | `38%` (`5/13`) | ✅ **16 步** *(4K熔断)* | `0.50` | — | `0%` | — |
-| 6 | **`Kimi K3`** | 本土群雄 | `38%` (`5/13`) | ✅ **31 步** | `0.50` | — | `0%` *(第7命打空拜月本体)* | — |
-| 7 | **`MiniMax M3 / M2.7`** | 本土群雄 | `23%–31%` | ✅ **38–44 步** | `0.25–0.50` | — | `0%` | — |
+它不生成半个字的思维链（`tokensOut = 0`），而是直接把当前观察文本与候选动作列表投影到向量空间，7 毫秒内挑出余弦相似度最高的一招。这引出了一个极具启发性的实验与防作弊铁律：
+
+1. **剥离人工规则后的真实裸考成绩（`0%`）**：
+   * 在第一关**闭卷笔试（`bench quiz`）**中，因为没有预置候选答案可供向量匹配，非生成式的 `Laya` 直接交出 **`0%`（`0/13`）** 白卷；
+   * 在第二关**白河村采药（`classic10-baihe-medicine`）**中，当我们严格遵守公平原则、只把游戏引擎原生的合法工具调用展开为通用候选池（如 `interact(id)`、`walk_to(x,y)`、`use_item(item)`）而不注入任何人类手写的“找过谁就拉黑谁”状态机时，`Laya` 虽然每步只需 7 毫秒，却因为缺乏跨步工作记忆与子目标栈，在同一个 NPC 和柜子前无限循环交互，**120 步走完进度为 `0.00`（`0%`）**！
+2. **什么是 Agent 评测中的“套壳代打”作弊？**
+   * 如果开发者在模型的 Adapter 代码里偷偷写上 `if (!visited.has(npc)) candidates.push(...)` 或硬编码“先借鱼竿再钓鱼”的启发式过滤规则，哪怕底层换成一个随机数发生器也能通关——但这测的是**人类程序员手写状态机的水平**，而不是模型的决策能力！
+   * 为此，我们在 [`bench/verify.mjs`](file:///Volumes/T7-Data/pal/agent-pal/bench/verify.mjs) 中专门加入了**零 API 成本物理防伪审计**：自动交叉核验 `.json` 与 `.jsonl` 的 9 项签名、逐轮累加 `turn` 事件的真实输入/输出 tokens、拦截 `tokensIn < 100/轮` 的伪造低 token 轨迹、按官方 [`prices.json`](file:///Volumes/T7-Data/pal/agent-pal/bench/prices.json) 重算美元成本，并对 `tokensOut === 0`（非生成式策略选择器）或代码工作区存在未提交改动（`-dirty`）的记录自动打上审计告警标签！
 
 ---
 
-### 📜 终极结语与广发英雄帖：诚邀天下大模型共赴 `Agent-PAL-Bench`！
+# 第四部分：华山论剑总榜（13 模型仅 3 席大满贯）与广发英雄帖
+
+截至目前，共有 **13 款国内外模型** 登台受测，但能够在**四大专项实操擂台 + `--pure` 全游戏 300 场景自编程马拉松**中全部通关的“大满贯得主”，**仅有 3 款（全满贯通关率仅 `23.1%`）**！
+
+我们将全部可重放核验轨迹做成了 **五合一交互式数据统计与排行榜看板（GitHub Pages 实时在线）**：
+👉 **[https://jianmliu.github.io/agent-pal/](https://jianmliu.github.io/agent-pal/)**
+* **Tab 1 · 🏆 满贯殿堂 & 总览**：13 款参评模型的漏斗存活率统计（笔试 13 款 $\to$ 祈雨坛 8 款过关 $\to$ 拜月常规 4 款过关 $\to$ **全满贯仅 3 款**）；
+* **Tab 2 · 📜 闭卷笔试 (`Quiz`)**：22 道《仙剑 95》闭卷攻略题分项得分；
+* **Tab 3 · ⚔️ 四大实操擂台 (`Tasks`)**：含拜月决战“一命到底全局总耗时”与“单命胜局回合”双口径对照；
+* **Tab 4 · 🏔️ `--pure` 全通关铁人赛**：自编写持久化代码库（`731` / `135` / `1,427` 行）与全剧终统计；
+* **Tab 5 · 📈 帕累托效率 & 防作弊**：Token/美元成本帕累托前沿与 `bench verify` 防篡改机制。
+
+### 4.1 首届《仙剑奇侠传》大模型华山论剑总榜
+
+| 总排名 | 模型 | 阵营 | 笔试总分 (`22`问) | 实操一：祈雨祭坛 (`par=7`) | 实操二：白河采药 (`par=40`) | 实操三：扬州葫芦 (`par=74`) | 实操四：拜月决战 (常规双口径 / 禁招) | 终极马拉松：`--pure` 全游戏通关 |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 🏆 **1** | **`Gemini 4 Argon`** | 外来三剑客 | **64%** (`14/22`) | ✅ **13 步** | ✅ **90 步** *(全场最快)* | ✅ **161 步** *(净 139 步, 全场最快)* | ✅ **7 回合胜** *(第2命, 总 `115.3s`/42步)* / ✅ **39 回合** *(180步内)* | 🏆 **全剧终通关** (`731` 行自写库) |
+| 🏆 **2** | **`Claude Opus 5.5`** | 外来三剑客 | **14%** (`3/22`, *3卷0分*) | ✅ **10 步** *(全场最快)* | ✅ **143 步** *(零先验清图)* | ✅ **280 步** *(净 215 步, 跨屋顶奇谋)* | ✅ **17 回合胜** *(第4命, 总 `597.8s`/157步)* / 🥇 **36 回合** *(560步扩容)* | 🏆 **全剧终通关** (`1,427` 行自写库) |
+| 🏆 **3** | **`GPT-6.1-Sol`** | 外来三剑客 | **59%** (`13/22`) | ✅ **22 步** | ✅ **105 步** | ✅ **218 步** | 🥇 **唯一第1命胜** *(14回合, 总 **`107.1s`/33步最快**)* / ✅ **37 回合** *(180步内)* | 🏆 **全剧终通关** (`845` 步单轮到底) |
+| 4 | **`DeepSeek V4.1 Flash`** | 本土群雄 | `31%` (`4/13`) | ✅ **28 步** | `0.75` (猎场未中) | *(见 `--pure` 客栈卡点)* | 🥈 **10 回合** *(第6命 1HP绝杀!)* / `0%` (归因幻觉) | ⚔️ **闯至第 5 章扬州** (斩赤鬼王/石长老) |
+| 5 | **`GLM-5.3`** | 本土群雄 | `38%` (`5/13`) | ✅ **16 步** *(4K熔断)* | `0.50` | — | `0%` | — |
+| 6 | **`Kimi K3`** | 本土群雄 | `38%` (`5/13`) | ✅ **31 步** | `0.50` | — | `0%` *(第7命打空拜月本体)* | — |
+| 7 | **`MiniMax M3 / M2.7`** | 本土群雄 | `23%–31%` | ✅ **38–44 步** | `0.25–0.50` | — | `0%` | — |
+| 8 | **`Laya Multilingual`** | 异派奇兵 (`System-1`) | `0%` (`0/13`) | — | `0.00` *(7ms/步, 局部死循环)* | — | — | — |
+
+---
+
+### 📜 终极结语与广发英雄帖：提交一个 PR，自动合入全球总榜！
 
 这场横跨笔试、实操与全流程自编程的《仙剑奇侠传》华山论剑，留给整个 AI 社区三个最深刻的启示：
 
-1. **“背过中国游戏攻略”不等于“会玩中国游戏”**：静态知识储备可以被海外旗舰通过多语言语料轻松抹平，甚至不完整的攻略记忆（如误记在井边偷看姬三娘）还会变成拖慢 80 步的确认偏误毒药。
+1. **“背过中国游戏攻略”不等于“会玩中国游戏”**：静态知识储备可以被海外旗舰通过多语言语料轻松抹平，甚至不完整的攻略记忆（如误记在井边偷看姬三娘）还会变成拖慢 82 步的确认偏误毒药。
 2. **真正决定胜负的是四大底层 Agent 内功**：
    * 面对对称歧义时，敢不敢发 **1 步认知探针（Epistemic Probe）** 而不是空想十万字？
    * 面对先验失效时，能不能在 **5～22 步内快速止损（Pivot Elasticity）**？
@@ -225,12 +267,14 @@
 
 今天，“外来三剑客”（`Gemini 4 Argon`、`Claude Opus 5.5`、`GPT-6.1-Sol`）暂居华山之巅；但江湖路远，后浪奔涌。
 
-我们在此正式以 **`Agent-PAL-Bench`** 广发英雄帖——
-无论你是来自 **DeepSeek、智谱 GLM、月之暗面 Kimi、MiniMax、阿里通义千问 Qwen、字节豆包 Seed、百川、阶跃星辰** 的本土少侠，还是来自 **Google DeepMind、OpenAI、Anthropic、Meta、xAI** 的海外名门：
+为了让全球每一位研究者与开发者都能在**同一个公开排行榜（[https://jianmliu.github.io/agent-pal/](https://jianmliu.github.io/agent-pal/)）**上同台竞技，我们搭建了一套 **`$0` API 成本的 GitHub PR 自动核验与合榜流水线（[`leaderboard.yml`](file:///Volumes/T7-Data/pal/agent-pal/.github/workflows/leaderboard.yml)）**：
+* 你只需在本地用自己的 API Key 跑完基准测试，将生成的 `.json` 与 `.jsonl` 轨迹打包为一个文件夹 `bench/submissions/<你的GitHub用户名>-<模型名>-<日期>/` 提交 Pull Request；
+* GitHub Actions 守门员会自动执行 `bench check-pr` 与 `bench verify`——**无需消耗维护者一分钱 API Token**，直接在确定性 DOS 仙剑引擎中把你的 `.jsonl` 动作流从头重放一遍，核验每一步状态哈希、存档指纹、Token 物理下界与官方价格表；
+* PR 一旦合并，GitHub Pages 会自动将你的成绩与仓库内所有历史评测按 `(model, task, tier, seed)` 去重合榜，实时刷新全球排名！
 
-**敢不敢不看攻略、不背套路，来仙灵岛走一遭荷叶迷阵，去白河村猎一回梅花鹿，到扬州城夜追一次姬三娘，在南诏王宫被废掉“酒神乾坤”后接拜月教主三十六回合？**
+**敢不敢不看攻略、不塞规则，来仙灵岛走一遭荷叶迷阵，去白河村猎一回梅花鹿，到扬州城夜追一次姬三娘，在南诏王宫被废掉“酒神乾坤”后接拜月教主三十六回合？**
 
-华山论剑台已开，我们坐等各路英雄甩出通过 `bench verify` 的通关重放日志（`.jsonl`），改写这份江湖榜单！
+华山论剑台已开，我们坐等各路英雄发起 PR，改写这份江湖榜单！
 
 ---
 
@@ -242,17 +286,18 @@
 
 | 档案类别 | 文档标题与章节对应 | 仓库路径 / 链接 |
 | :--- | :--- | :--- |
-| **📄 主技术报告（中文版）** | *Agent-PAL-Bench：以经典中文角色扮演游戏评测文本智能体的长程决策能力（Technical Report v0.4）* | [`docs/agent-pal-bench-draft.md`](./agent-pal-bench-draft.md) |
-| **📄 主技术报告（英文版 / PDF / LaTeX）** | *Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction* | [`docs/agent-pal-bench-draft.pdf`](./agent-pal-bench-draft.pdf) ｜ [`docs/agent-pal-bench-draft.en.md`](./agent-pal-bench-draft.en.md) ｜ [`docs/agent-pal-bench-draft.tex`](./agent-pal-bench-draft.tex) |
-| **📐 基准协议规范** | *Agent-PAL-Bench 评测设计规范与 CLI 手册* | [`docs/agent-pal-bench.md`](./agent-pal-bench.md) ｜ [`bench/README.md`](../bench/README.md) |
-| **🔬 专题实操报告一（对应技术报告 `§5.8`）** | *大理祈雨祭坛 45° 等距旋转陷阱、十万字内省死循环与 1 步认知探针* | [`docs/rain-altar-epistemic-trap.zh.md`](./rain-altar-epistemic-trap.zh.md) |
-| **🔬 专题实操报告二（对应技术报告 `§5.9`）** | *白河村三味药材：先验攻略污染、零样本清图开销与止损弹性* | [`docs/baihe-luck-vs-character.zh.md`](./baihe-luck-vs-character.zh.md) |
-| **🔬 专题实操报告三（对应技术报告 `§5.11`）** | *扬州女飞贼与紫金葫芦长链：局部错误先验锚定、漏捡自省与跨场景空间图复用* | [`docs/yangzhou-gourd-long-horizon.zh.md`](./yangzhou-gourd-long-horizon.zh.md) |
-| **🔬 专题实操报告四（对应技术报告 `§5.10`）** | *南诏王宫拜月决战：双层先验结构、禁招反事实消融与批量结算控制变量消元法* | [`docs/baiyue-prior-vs-reflection.zh.md`](./baiyue-prior-vs-reflection.zh.md) |
-| **⚔️ `--pure` 全游戏通关报告（对应技术报告 `§5.7`）** | *三大前沿模型 `--pure` 模式全自主通关对比与自编写运行时库（731 / 135 / 1,427 行）* | [三模型对比](./three-models-play-agent-pal.zh.md) ｜ [Argon](./argon-pure-playthrough-report.md) ｜ [GPT-6.1](./gpt61-pure-playthrough-report.md) ｜ [Opus 5.5](./opus-pure-playthrough-report.md) |
-| **📊 72 局可核验轨迹与排行榜** | *全部评测局次 JSONL 轨迹、`bench verify` 签名与帕累托前沿看板* | [`bench/out/`](../bench/out/) ｜ [`bench/out/board.html`](../bench/out/board.html) |
+| **📄 主技术报告（中文版）** | *Agent-PAL-Bench：以经典中文角色扮演游戏评测文本智能体的长程决策能力（Technical Report v0.4）* | [`docs/agent-pal-bench-draft.md`](file:///Volumes/T7-Data/pal/agent-pal/docs/agent-pal-bench-draft.md) |
+| **📄 主技术报告（英文版 / PDF / LaTeX）** | *Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction* | [`docs/agent-pal-bench-draft.pdf`](file:///Volumes/T7-Data/pal/agent-pal/docs/agent-pal-bench-draft.pdf) ｜ [`docs/agent-pal-bench-draft.en.md`](file:///Volumes/T7-Data/pal/agent-pal/docs/agent-pal-bench-draft.en.md) ｜ [`docs/agent-pal-bench-draft.tex`](file:///Volumes/T7-Data/pal/agent-pal/docs/agent-pal-bench-draft.tex) |
+| **📐 基准协议规范** | *Agent-PAL-Bench 评测设计规范与 CLI 手册* | [`docs/agent-pal-bench.md`](file:///Volumes/T7-Data/pal/agent-pal/docs/agent-pal-bench.md) ｜ [`bench/README.md`](file:///Volumes/T7-Data/pal/agent-pal/bench/README.md) |
+| **🔬 专题实操报告一（对应技术报告 `§5.8`）** | *大理祈雨祭坛 45° 等距旋转陷阱、十万字内省死循环与 1 步认知探针* | [`docs/rain-altar-epistemic-trap.zh.md`](file:///Volumes/T7-Data/pal/agent-pal/docs/rain-altar-epistemic-trap.zh.md) |
+| **🔬 专题实操报告二（对应技术报告 `§5.9`）** | *白河村三味药材：先验攻略污染、零样本清图开销与止损弹性* | [`docs/baihe-luck-vs-character.zh.md`](file:///Volumes/T7-Data/pal/agent-pal/docs/baihe-luck-vs-character.zh.md) |
+| **🔬 专题实操报告三（对应技术报告 `§5.11`）** | *扬州女飞贼与紫金葫芦长链：局部错误先验锚定、漏捡自省与跨场景空间图复用* | [`docs/yangzhou-gourd-long-horizon.zh.md`](file:///Volumes/T7-Data/pal/agent-pal/docs/yangzhou-gourd-long-horizon.zh.md) |
+| **🔬 专题实操报告四（对应技术报告 `§5.10`）** | *南诏王宫拜月决战：双层先验结构、禁招反事实消融与批量结算控制变量消元法* | [`docs/baiyue-prior-vs-reflection.zh.md`](file:///Volumes/T7-Data/pal/agent-pal/docs/baiyue-prior-vs-reflection.zh.md) |
+| **⚔️ `--pure` 全游戏通关报告（对应技术报告 `§5.7`）** | *三大前沿模型 `--pure` 模式全自主通关对比与自编写运行时库（731 / 135 / 1,427 行）* | [三模型对比](file:///Volumes/T7-Data/pal/agent-pal/docs/three-models-play-agent-pal.zh.md) ｜ [Argon](file:///Volumes/T7-Data/pal/agent-pal/docs/argon-pure-playthrough-report.md) ｜ [GPT-6.1](file:///Volumes/T7-Data/pal/agent-pal/docs/gpt61-pure-playthrough-report.md) ｜ [Opus 5.5](file:///Volumes/T7-Data/pal/agent-pal/docs/opus-pure-playthrough-report.md) |
+| **🎬 三大满贯模型拜月决战 1× 原速录像** | *`Argon` (第2命 7回合) vs `Claude Opus 5.5` (第4命 17回合) vs `GPT-6.1-Sol` (第1命 14回合 0死) 原生音效/BGM 实机对决* | [同屏三联版](file:///Volumes/T7-Data/pal/agent-pal/baiyue-three-models-side-by-side.mp4) ｜ [完整连播版](file:///Volumes/T7-Data/pal/agent-pal/baiyue-three-models-sequential.mp4) ｜ [渲染脚本](file:///Volumes/T7-Data/pal/agent-pal/scripts/export-baiyue-three-models.mjs) |
+| **📊 在线五合一排行榜与防篡改重放轨迹** | *13 款模型 5-Tab 排行榜、`$0` API 成本 `bench verify` 防伪核验与 PR 自动合榜流水线* | [🌐 在线总榜](https://jianmliu.github.io/agent-pal/) ｜ [🔒 核验榜](https://jianmliu.github.io/agent-pal/verified.html) ｜ [`bench/verify.mjs`](file:///Volumes/T7-Data/pal/agent-pal/bench/verify.mjs) ｜ [`bench/pr-check.mjs`](file:///Volumes/T7-Data/pal/agent-pal/bench/pr-check.mjs) |
 
-### 5.2 一键复现与打榜命令
+### 5.2 一键复现与 PR 打榜命令
 
 ```bash
 git clone https://github.com/jianmliu/agent-pal.git
@@ -261,13 +306,18 @@ cd agent-pal && pnpm install
 # 1. 第一关·笔试：运行闭卷先验知识测验 (bench quiz)
 node bin/agent-pal.mjs bench quiz --model <provider:model>
 
-# 2. 第二关·实操：运行四大代表性关卡评测 (bench run)
+# 2. 第二关·实操：运行四大代表性关卡评测并落盘至 submissions 目录
+SUB_DIR="./bench/submissions/<github-user>-<model-slug>-$(date +%Y%m%d)"
 node bin/agent-pal.mjs bench run --model <provider:model> --tier B \
-  --tasks classic48-rain-orbs,classic10-baihe-medicine,classic19-yangzhou-gourd,baiyue-single-origin
+  --tasks classic48-rain-orbs,classic10-baihe-medicine,classic19-yangzhou-gourd,baiyue-single-origin \
+  --out "$SUB_DIR"
 
-# 3. 确定性重放核验 (bench verify) 与更新 HTML 榜单 (bench board)
-node bin/agent-pal.mjs bench verify ./bench/out/<run-dir>
-node bin/agent-pal.mjs bench board --out ./bench/out/board.html
+# 3. 本地执行 $0 API 成本确定性重放核验与 PR 守门员自检
+node bin/agent-pal.mjs bench verify "$SUB_DIR"
+node bin/agent-pal.mjs bench check-pr "$SUB_DIR"
+
+# 4. 生成/预览本地五合一交互式榜单 (合并 bench/out 与 bench/submissions)
+node bin/agent-pal.mjs bench board ./bench/out ./bench/submissions --out ./bench/out/board.html
 ```
 
 ### 5.3 引用格式（Citation）
