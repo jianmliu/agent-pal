@@ -382,9 +382,6 @@ console.log('  ✓ ⑪ 重放核验:逐次判分 / 终局 / 登记成绩对照,�
   assert.equal((sectionB.slice(0, sectionB.indexOf('</svg>')).match(/<circle/g) || []).length, 3);   // 未知价不上图
   assert.match(html, /核验不一致 1\/2/);
   assert.match(html, /核验已过期 1\/2/);
-  const sectionA = html.slice(html.indexOf('档位 A'), html.indexOf('档位 B'));
-  assert.ok(sectionA.includes(`${t.id}</code> <span class="muted">v${t.version - 1}`) && sectionA.includes(`v${t.version}</span>`));   // 改版前后分两行
-  assert.ok(sectionA.includes('p:cheap<br><code>g</code>'));                              // 矩阵列头带运行 id
   const { out, runs } = board(dirs, { out: path.join(root, 'site', 'board.html') });
   assert.equal(runs, 8);                                                                     // 只收通关局:一局都没打通的 f 不上榜
   const cleared = clearedOnly(rows);

@@ -235,30 +235,14 @@ export function scatter(points) {
 
 function boardTable(rows, { external = false, quizzes = [] } = {}) {
   const quizOf = (m) => quizzes.find((q) => q.model === m);
-  const head = `<tr><th>#</th><th class="model">${external ? '客户端 / 模型' : '模型'}</th><th>score</th><th>progress</th><th>闭卷测验</th><th>成功局平均回合</th><th>成功局平均 cost</th><th>总 cost</th><th>tokens</th><th>题 / 局</th><th>核验</th><th>代码</th><th>运行</th></tr>`;
+  const head = `<tr><th>#</th><th class="model">${external ? '客户端 / 模型' : '模型'}</th><th>通关</th><th>闭卷测验</th><th>成功局平均回合</th><th>成功局平均 cost</th><th>总 cost</th><th>tokens</th><th>题 / 局</th><th>核验</th><th>代码</th><th>运行</th></tr>`;
   const body = rows.map((r, i) => `<tr${r.complete ? '' : ' class="incomplete"'}>` +
-    `<td class="num muted">${i + 1}</td><td class="model">${esc(r.model)}</td>${scoreCell(r.score, r)}<td class="num">${r.progress == null ? '–' : r.progress.toFixed(2)}</td>` +
+    `<td class="num muted">${i + 1}</td><td class="model">${esc(r.model)}</td>${scoreCell(r.score, r)}` +
     `<td class="num">${quizOf(r.model) ? pct(quizOf(r.model).score) : '<span class="muted">–</span>'}</td>` +
     `<td class="num">${r.battleRoundsMeanOnSuccess == null ? '–' : r.battleRoundsMeanOnSuccess.toFixed(2)}</td><td class="num">${r.score ? usd(r.costMeanOnSuccess) : '–'}</td><td class="num">${usd(r.costTotal)}</td><td class="num">${tok(r.tokensTotal)}</td>` +
     `<td class="num">${r.tasks.filter((t) => t.n).length} / ${r.episodes}${r.complete ? '' : ' <span class="warn">未跑完</span>'}</td>` +
     `<td>${verifyCell(r.verify)}</td><td><code>${esc(r.code || '?')}</code> <span class="muted">提示 v${esc(r.promptVersion ?? '?')}</span>${r.books ? `<br><code title="${esc([...r.books.guide, `atlas ${r.books.atlas}`].join('\n'))}">资料 ${esc(r.books.id)}</code>` : ''}</td><td><code>${esc(r.runId)}</code></td></tr>`).join('');
   return `<div class="scroll"><table>${head}${body}</table></div>`;
-}
-
-function taskMatrix(rows) {
-  // 行按「题 + 版本」分:改版前后的题判据 / 预算可能不同,成功率不可直接比
-  const key = (t) => `${t.id}@${t.version}`;
-  const keys = [...new Map(rows.flatMap((r) => r.tasks.map((t) => [key(t), t]))).values()]
-    .sort((a, b) => a.id.localeCompare(b.id) || a.version - b.version);
-  // 列头带运行 id:同一模型跑了几次时分得清哪列是哪次
-  const head = `<tr><th>题</th>${rows.map((r) => `<th class="model">${esc(r.model)}<br><code>${esc(r.runId)}</code></th>`).join('')}</tr>`;
-  const body = keys.map((k) => `<tr><td><code>${esc(k.id)}</code> <span class="muted">v${esc(k.version)}</span></td>${rows.map((r) => {
-    const t = r.tasks.find((x) => key(x) === key(k));
-    if (!t || !t.n) return '<td class="num muted">–</td>';
-    const shade = Math.round((t.successRate ?? 0) * 100);
-    return `<td class="num cell" style="--s:${shade}%">${pct(t.successRate)} <span class="muted">(${t.n})</span></td>`;
-  }).join('')}</tr>`).join('');
-  return `<div class="scroll"><table class="matrix">${head}${body}</table></div>`;
 }
 
 function quizSection(quizzes) {
@@ -336,12 +320,10 @@ svg .front{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
 .tab-pane{display:none}
 #tab-stats:checked ~ .tab-bar label[for="tab-stats"],
 #tab-tiers:checked ~ .tab-bar label[for="tab-tiers"],
-#tab-tasks:checked ~ .tab-bar label[for="tab-tasks"],
 #tab-ironman:checked ~ .tab-bar label[for="tab-ironman"],
 #tab-quiz:checked ~ .tab-bar label[for="tab-quiz"]{color:var(--accent);background:var(--card);border-color:var(--line);border-bottom:2px solid var(--card)}
 #tab-stats:checked ~ .panes #pane-stats,
 #tab-tiers:checked ~ .panes #pane-tiers,
-#tab-tasks:checked ~ .panes #pane-tasks,
 #tab-ironman:checked ~ .panes #pane-ironman,
 #tab-quiz:checked ~ .panes #pane-quiz{display:block}
 @media print{.tab-pane{display:block!important}}
@@ -394,7 +376,7 @@ tbody tr:hover td,table tr:hover td{background-image:linear-gradient(rgba(var(--
 .tab-ctrl{display:block;position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
 .tab-bar{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.tab-bar::-webkit-scrollbar{display:none}
 .tab-lbl{white-space:nowrap;flex:none}
-#tab-stats:focus-visible ~ .tab-bar label[for="tab-stats"],#tab-tiers:focus-visible ~ .tab-bar label[for="tab-tiers"],#tab-tasks:focus-visible ~ .tab-bar label[for="tab-tasks"],#tab-ironman:focus-visible ~ .tab-bar label[for="tab-ironman"],#tab-quiz:focus-visible ~ .tab-bar label[for="tab-quiz"]{outline:2px solid var(--accent);outline-offset:-2px}
+#tab-stats:focus-visible ~ .tab-bar label[for="tab-stats"],#tab-tiers:focus-visible ~ .tab-bar label[for="tab-tiers"],#tab-ironman:focus-visible ~ .tab-bar label[for="tab-ironman"],#tab-quiz:focus-visible ~ .tab-bar label[for="tab-quiz"]{outline:2px solid var(--accent);outline-offset:-2px}
 @media (max-width:640px){h1{font-size:20px}main{padding:16px 16px 40px}.navlinks a{padding:3px 8px}.kpi .k-val{font-size:22px}.podium,.grid2{grid-template-columns:1fr}}
 `;
 
@@ -473,7 +455,7 @@ ${taskBoard}
 
 function perTaskDeepDiveSection() {
   return `<section>
-<h2>四大专项实操擂台：分题目精细化数据统计与行为诊断</h2>
+<h2>四大专项擂台深度拆解：步数、回合、转折点与行为诊断</h2>
 <p class="muted">本页汇总四大核心实操考题中各模型的步数、回合数、Token 消耗与关键转折点遥测数据。</p>
 <div class="grid2">
   <div class="card">
@@ -539,7 +521,7 @@ function perTaskDeepDiveSection() {
 
 function ironmanAndPrSection() {
   return `<section>
-<h2>终极铁人三项：从零手写代码全游戏通关（<code>--pure</code> 模式）与 PR 打榜指南</h2>
+<h2>肆 · 编程通关详情：从零写代码打穿全游戏（<code>--pure</code> 模式）</h2>
 <p class="muted">在 <code>--pure</code>（Tier P）模式下，系统剥夺 <code>walk_to</code>、<code>interact</code>、<code>map</code> 等一切高级工具，只提供底层方向键原语与 <code>run_code</code> JS 沙盒。模型必须自己手写寻路器、字节码反编译器与战斗状态机打穿全部 11 章 300 个场景。</p>
 
 <h3>🏆 三大全通满贯模型（Full-Clear Hall of Fame）深度画像对比</h3>
@@ -585,25 +567,6 @@ function ironmanAndPrSection() {
 </table>
 </div>
 
-<div class="grid2">
-  <div class="card">
-    <h3>🛡️ 零成本防作弊核验机制（<code>bench verify</code> &amp; <code>check-pr</code>）</h3>
-    <p>为什么开放外部 PR 提交不需要维护者花钱重调大模型 API？因为游戏引擎完全确定性（同种子 + 同工具序列 = 状态 100% 唯一）：</p>
-    <p><strong>1. 纯 CPU 引擎重放：</strong>子进程按 <code>.jsonl</code> 日志重打每一道工具调用，逐帧比对场景、坐标、背包、战斗回合与里程碑，伪造坐标或跳关瞬间报 <code>mismatch</code>。</p>
-    <p><strong>2. 账本与物理下界锁定：</strong>交叉核对 <code>.json</code> 与 <code>.jsonl</code> 的 Token 汇总、逐轮 <code>turn</code> 累加下界与系统提示词物理下界（<code>≥100 tokens/turn</code>）。</p>
-    <p><strong>3. 官方价格表独立重算：</strong>服务端按 <code>bench/prices.json</code> 官方单价重算美元成本，拒绝篡改低价刷帕累托前沿。</p>
-  </div>
-  <div class="card">
-    <h3>🚀 如何通过 GitHub PR 提交你的模型成绩？</h3>
-    <p><strong>Step 1：运行评测并生成核验签名</strong></p>
-    <p><code>node bin/agent-pal.mjs bench run --model &lt;provider:model&gt; --tier B --out bench/out/&lt;your-run&gt;</code><br>
-    <code>node bin/agent-pal.mjs bench verify bench/out/&lt;your-run&gt;</code></p>
-    <p><strong>Step 2：本地运行 PR 门禁自检</strong></p>
-    <p><code>node bench/bench.mjs check-pr</code>（确保仅新增 <code>bench/out/&lt;your-run&gt;/</code> 目录，不提交 <code>board.html</code>，零 Git 冲突）</p>
-    <p><strong>Step 3：提交 PR 自动合榜</strong></p>
-    <p>GitHub Actions 免费 CPU 容器自动执行防作弊重放并在 PR 输出成绩单；合入 <code>main</code> 后自动重生成本 GitHub Pages 排行榜。</p>
-  </div>
-</div>
 </section>`;
 }
 
@@ -648,7 +611,7 @@ function banner(meta) {
 /** 渲染整页。rows = collectRuns 的输出。 */
 export function renderBoard(rows, { generatedAt = new Date().toISOString(), quizzes = [] } = {}) {
   // 提示档位 full(开关效果 / 道具用法直接告诉 AI)的成绩单独成档,不和 standard 混排
-  const tierOf = (r) => (r.hints === 'full' ? `${r.tier} · full hints` : r.tier) + ((r.scoring ?? 'cost') === 'cost' ? '' : r.scoring === 'battleRounds' ? ' · 成功率→战斗回合' : ' · 混合题集（只按成功率排序）');
+  const tierOf = (r) => (r.hints === 'full' ? `${r.tier} · full hints` : r.tier) + ((r.scoring ?? 'cost') === 'cost' ? '' : r.scoring === 'battleRounds' ? ' · 按战斗回合排' : ' · 混合题集（只按成功率排序）');
   const tiers = [...new Set(rows.map(tierOf))].sort();
   const sections = tiers.map((tier) => {
     const inTier = rows.filter((r) => tierOf(r) === tier);
@@ -661,8 +624,8 @@ export function renderBoard(rows, { generatedAt = new Date().toISOString(), quiz
     return `<section><h2>档位 ${esc(tier)}</h2>${pointer}` +
       (main.length ? boardTable(main, { quizzes }) : ext.length ? '' : '<p class="muted">这一档还没有内置循环的成绩。</p>') +
       (main.length ? `<h3>success × cost(虚线 = 帕累托前沿:没有别的成绩又便宜又不差)</h3>${scatter(pts)}` : '') +
-      (ext.length ? `<h3 id="${anchor}">外部 agent(token / 成本由客户端自报、提示不统一 —— 单列,不进主榜)</h3>${boardTable(ext, { external: true, quizzes })}` : '') +
-      `<h3>每题 success 率(括号内为局数)</h3>${taskMatrix([...main, ...ext])}</section>`;
+      (ext.length ? `<h3 id="${anchor}">外部 agent(通过命令行客户端接入;token / 成本由客户端自报)</h3>${boardTable(ext, { external: true, quizzes })}` : '') +
+      `</section>`;
   }).join('');
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>agent-pal-bench · 仙剑智能体基准</title>
@@ -673,7 +636,7 @@ export function renderBoard(rows, { generatedAt = new Date().toISOString(), quiz
 // 标签页可以用地址直达(…/index.html#quiz),切换时地址跟着变,刷新 / 分享不丢当前页
 addEventListener('DOMContentLoaded', () => {
   const show = (r) => document.querySelector('label[for="' + r.id + '"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });   // 窄屏:标签条横滑,把当前这一页的标签滑进视野
-  const pick = () => { const el = document.getElementById('tab-' + location.hash.slice(1)); if (el && el.classList.contains('tab-ctrl')) { el.checked = true; show(el); } };
+  const pick = () => { const el = document.getElementById('tab-' + ({ tasks: 'tiers' }[location.hash.slice(1)] || location.hash.slice(1))); if (el && el.classList.contains('tab-ctrl')) { el.checked = true; show(el); } };
   pick(); addEventListener('hashchange', pick);
   for (const r of document.querySelectorAll('.tab-ctrl')) r.addEventListener('change', () => { history.replaceState(null, '', '#' + r.id.slice(4)); show(r); });
 });
@@ -687,28 +650,36 @@ ${banner(`《仙剑奇侠传》(1995 DOS) 智能体长程决策基准 · 生成�
 </nav>
 
 <input class="tab-ctrl" type="radio" name="pal-tab" id="tab-stats" checked>
-<input class="tab-ctrl" type="radio" name="pal-tab" id="tab-tiers">
-<input class="tab-ctrl" type="radio" name="pal-tab" id="tab-tasks">
-<input class="tab-ctrl" type="radio" name="pal-tab" id="tab-ironman">
 <input class="tab-ctrl" type="radio" name="pal-tab" id="tab-quiz">
+<input class="tab-ctrl" type="radio" name="pal-tab" id="tab-tiers">
+<input class="tab-ctrl" type="radio" name="pal-tab" id="tab-ironman">
 
 <div class="tab-bar" role="tablist">
   <label class="tab-lbl" for="tab-stats">🏠 基准介绍与排行</label>
-  <label class="tab-lbl" for="tab-tiers">⚔️ 实操分档与帕累托榜 (${rows.length})</label>
-  <label class="tab-lbl" for="tab-tasks">🎯 四大实操擂台拆解</label>
-  <label class="tab-lbl" for="tab-ironman">💻 全游戏通关 (--pure) &amp; PR 指南</label>
-  <label class="tab-lbl" for="tab-quiz">📝 闭卷笔试 vs 实操 (${quizzes.length})</label>
+  <label class="tab-lbl" for="tab-quiz">壹 闭卷笔试</label>
+  <label class="tab-lbl" for="tab-tiers">贰 分章节关卡</label>
+  <label class="tab-lbl" for="tab-ironman">肆 编程通关</label>
 </div>
 
 <div class="panes">
   <div class="tab-pane" id="pane-stats">${landingSection(rows, quizzes)}</div>
   <div class="tab-pane" id="pane-tiers">
+<h2>贰 · 分章节关卡详情</h2>
     <p class="muted">榜单只收通关的那一局:没打通的局不计,一局都没打通的运行不出现。score = 通关题数 / 这一档里有人通关过的题数(主排序),同分按本题集口径比较成功局平均 cost 或战斗回合；不同评分口径分开排。按档位分开排,外部 agent 单列。「核验」= bench verify 按日志重放的结果:只有全部局都重放一致才算已核验。共用一个 Ollama 订阅、额度不够没跑全的模型不上榜(运行记录仍在仓库里)。题集不同的运行 score 不可直接比,见每题矩阵。</p>
     ${rows.length ? sections : '<p>没有找到运行结果(bench run 的输出目录)。</p>'}
+    ${perTaskDeepDiveSection()}
+    <section><h2>成绩怎么核验</h2><div class="grid2">
+  <div class="card">
+    <h3>🛡️ 零成本防作弊核验机制（<code>bench verify</code> &amp; <code>check-pr</code>）</h3>
+    <p>为什么开放外部 PR 提交不需要维护者花钱重调大模型 API？因为游戏引擎完全确定性（同种子 + 同工具序列 = 状态 100% 唯一）：</p>
+    <p><strong>1. 纯 CPU 引擎重放：</strong>子进程按 <code>.jsonl</code> 日志重打每一道工具调用，逐帧比对场景、坐标、背包、战斗回合与里程碑，伪造坐标或跳关瞬间报 <code>mismatch</code>。</p>
+    <p><strong>2. 账本与物理下界锁定：</strong>交叉核对 <code>.json</code> 与 <code>.jsonl</code> 的 Token 汇总、逐轮 <code>turn</code> 累加下界与系统提示词物理下界（<code>≥100 tokens/turn</code>）。</p>
+    <p><strong>3. 官方价格表独立重算：</strong>服务端按 <code>bench/prices.json</code> 官方单价重算美元成本，拒绝篡改低价刷帕累托前沿。</p>
   </div>
-  <div class="tab-pane" id="pane-tasks">${perTaskDeepDiveSection()}</div>
+</div></section>
+  </div>
   <div class="tab-pane" id="pane-ironman">${ironmanAndPrSection()}</div>
-  <div class="tab-pane" id="pane-quiz">${quizSection(quizzes) || '<p class="muted">暂无闭卷测验记录。</p>'}</div>
+  <div class="tab-pane" id="pane-quiz"><h2>壹 · 闭卷笔试详情</h2>${quizSection(quizzes) || '<p class="muted">暂无闭卷测验记录。</p>'}</div>
 </div>
 </main></body></html>
 `;
