@@ -29,22 +29,28 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'pnpm'
 
       - name: Install dependencies & build engine
         run: |
-          npm install
-          npm run build --workspaces --if-present
+          pnpm install --frozen-lockfile
+          pnpm run build:engine
 
       - name: Run bench unit tests & task validation
         run: |
           node bench/bench.mjs validate
           node bench/test/bench.test.mjs
 
-      - name: Verify submitted runs (CPU replay + token/price audit)
+      - name: Verify submitted runs (Digest + Token Ledger + Official Price Audit)
         if: github.event_name == 'pull_request'
         run: |
           node bench/bench.mjs check-pr --base origin/${{ github.base_ref || 'main' }}
@@ -66,11 +72,11 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Build Merged Verified Leaderboard & Raw Runs View
+      - name: Build Merged Leaderboard & Views
         run: |
           mkdir -p _site
-          node bench/bench.mjs board --merge --verified-only --out _site/index.html
-          node bench/bench.mjs board --merge --out _site/all-models.html
+          node bench/bench.mjs board --merge --out _site/index.html
+          node bench/bench.mjs board --merge --verified-only --out _site/verified.html
           node bench/bench.mjs board --out _site/runs.html
 
       - name: Upload Pages artifact

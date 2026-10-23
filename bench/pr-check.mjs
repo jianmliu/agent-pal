@@ -12,11 +12,33 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { verify } from './verify.mjs';
+import { verify, verifyEpisode, episodeLogs, readLog } from './verify.mjs';
 import { score } from './score.mjs';
 import { verifyStatus } from './board.mjs';
+import { engineOptions } from './start.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
+
+function hasLocalGameAssets() {
+  try {
+    const opts = engineOptions();
+    return Boolean(opts?.assetsDir && fs.existsSync(path.join(opts.assetsDir, 'FBP.MKF')));
+  } catch {
+    return false;
+  }
+}
+
+function defaultVerifyDir(dirPath) {
+  if (hasLocalGameAssets()) return verify(dirPath);
+  const runFile = path.join(dirPath, 'run.json');
+  const runMeta = fs.existsSync(runFile) ? JSON.parse(fs.readFileSync(runFile, 'utf8')) : null;
+  return episodeLogs(dirPath).map((f) => verifyEpisode(f, {
+    runMeta,
+    currentRuntime: runMeta?.runtime ?? null,
+    currentTaskFingerprint: () => (fs.existsSync(f) ? readLog(f).start?.fingerprint ?? null : null),
+    replay: readLog
+  }));
+}
 
 /** 分类 PR 改动的文件列表,检查是否违反零冲突或防篡改沙箱协议。纯函数。 */
 export function classifySubmissionDiff(changedFiles) {
@@ -66,7 +88,7 @@ export function gitChangedFiles(baseRef = 'origin/main', repoRoot = path.resolve
 }
 
 /** 对 PR 中涉及的 bench/out/<dir> 目录做增量重放核验与成绩单生成。 */
-export function checkPrSubmission({ changedFiles = null, baseRef = 'origin/main', repoRoot = path.resolve(here, '..'), verifyFn = verify } = {}) {
+export function checkPrSubmission({ changedFiles = null, baseRef = 'origin/main', repoRoot = path.resolve(here, '..'), verifyFn = defaultVerifyDir } = {}) {
   const files = changedFiles ?? gitChangedFiles(baseRef, repoRoot);
   const diff = classifySubmissionDiff(files);
   const errors = [...diff.errors];
