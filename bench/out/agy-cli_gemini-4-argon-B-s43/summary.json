@@ -12,9 +12,9 @@
   "complete": true,
   "score": 1,
   "progress": 1,
-  "costMeanOnSuccess": 0,
-  "costTotal": 0,
-  "tokensTotal": 0,
+  "costMeanOnSuccess": null,
+  "costTotal": null,
+  "tokensTotal": null,
   "episodes": 1,
   "tasks": [
     {
@@ -28,9 +28,9 @@
       "battleRoundsMeanOnSuccess": null,
       "toolCallsMedianOnSuccess": 120,
       "invalidRate": 0.041666666666666664,
-      "tokensMean": 0,
-      "costTotal": 0,
-      "costMeanOnSuccess": 0,
+      "tokensMean": null,
+      "costTotal": null,
+      "costMeanOnSuccess": null,
       "efficiencyMean": 0.333,
       "endReasons": {
         "success": 1
@@ -44,9 +44,9 @@
           "toolCalls": 120,
           "successAt": 120,
           "invalidCalls": 5,
-          "tokensIn": 0,
-          "tokensOut": 0,
-          "cost": 0,
+          "tokensIn": null,
+          "tokensOut": null,
+          "cost": null,
           "virtualSeconds": 168.832,
           "battleRounds": null,
           "par": 40,

@@ -30,6 +30,23 @@ export function parseClientUsage(text, name, model, { timedOut = false } = {}) {
   if(!u || !count(u.input_tokens) || !count(u.output_tokens) || !count(u.cache_read_input_tokens??0) || !count(u.cache_creation_input_tokens??0)) return unknown('incomplete');
   return {tokensIn:u.input_tokens+(u.cache_read_input_tokens??0)+(u.cache_creation_input_tokens??0),tokensOut:u.output_tokens,tokensCached:u.cache_read_input_tokens??0,tokensCacheWrite:u.cache_creation_input_tokens??0,cost:typeof r.total_cost_usd==='number'&&Number.isFinite(r.total_cost_usd)&&r.total_cost_usd>=0?r.total_cost_usd:null,accountingStatus:'complete'};
  }
+ if(name==='agy-cli'){
+  const results=events.filter(e=>e.event==='result' && e.result);
+  if(results.length>1) return unknown('incomplete');
+  const stepUsages=events.filter(e=>e.event==='step_update' && e.step_update?.state==='DONE' && e.step_update?.step_type==='agent_response' && e.step_update?.usage).map(e=>e.step_update.usage);
+  const u=results.length===1 ? results[0].result.usage : stepUsages.length ? stepUsages.reduce((acc,s)=>({
+   input_tokens:(acc.input_tokens??0)+(s.input_tokens??0),
+   output_tokens:(acc.output_tokens??0)+(s.output_tokens??0),
+   thinking_tokens:(acc.thinking_tokens??0)+(s.thinking_tokens??0),
+   cache_read_tokens:(acc.cache_read_tokens??0)+(s.cache_read_tokens??0)
+  }),{input_tokens:0,output_tokens:0,thinking_tokens:0,cache_read_tokens:0}) : null;
+  if(!u || !count(u.input_tokens) || !count(u.output_tokens) || !count(u.thinking_tokens??0) || !count(u.cache_read_tokens??0)) return unknown(events.length?'incomplete':'unknown');
+  const tokensCached=u.cache_read_tokens??0;
+  const tokensIn=u.input_tokens+tokensCached;
+  const tokensOut=u.output_tokens+(u.thinking_tokens??0);
+  const baseModel=String(model).replace(/-(low|medium|high|xhigh|max)$/,'');
+  return {tokensIn,tokensOut,tokensCached,tokensCacheWrite:0,cost:costOf(`gemini:${baseModel}`,{tokensIn,tokensOut,cacheRead:tokensCached,cacheWrite:0}),accountingStatus:results.length===1?'complete':'partial'};
+ }
  return unknown('unknown');
 }
 function splitLog(logFile){

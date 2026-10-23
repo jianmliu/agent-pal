@@ -43,12 +43,17 @@ export function score(runDir) {
     for (const r of rs) endReasons[r.endReason] = (endReasons[r.endReason] || 0) + 1;
     const episodes = rs.map((r) => {
       const par = parOf(t, r.seed);
+      const unmeasuredExternal = meta.external && !r.tokensIn && !r.tokensOut && r.accountingStatus !== 'complete' && r.accountingStatus !== 'partial';
+      const cost = unmeasuredExternal ? null : r.cost;
+      const tokensIn = unmeasuredExternal ? null : r.tokensIn;
+      const tokensOut = unmeasuredExternal ? null : r.tokensOut;
       return {
         seed: r.seed, success: r.success, endReason: r.endReason, progress: r.progress, toolCalls: r.toolCalls,
-        successAt: r.successAt, invalidCalls: r.invalidCalls, tokensIn: r.tokensIn, tokensOut: r.tokensOut, cost: r.cost,
+        successAt: r.successAt, invalidCalls: r.invalidCalls, tokensIn, tokensOut, cost,
         virtualSeconds: r.virtualSeconds, battleRounds: r.battleRounds ?? null, par, efficiency: r.success && par ? +(par / r.successAt).toFixed(3) : null
       };
     });
+    const epTokens = episodes.map((e) => (e.tokensIn == null || e.tokensOut == null ? null : e.tokensIn + e.tokensOut));
     tasks.push({
       id: t.id, version: t.version, seedsPlanned: t.seeds.length, n: rs.length,
       successRate: rs.length ? wins.length / rs.length : null,
@@ -56,15 +61,17 @@ export function score(runDir) {
       battleRoundsMeanOnSuccess: roundsMean,
       toolCallsMedianOnSuccess: median(wins.map((r) => r.successAt)),
       invalidRate: rs.length ? sumOrNull(rs.map((r) => r.invalidCalls)) / Math.max(1, sumOrNull(rs.map((r) => r.toolCalls))) : null,
-      tokensMean: mean(rs.map((r) => r.tokensIn + r.tokensOut)),
-      costTotal: sumOrNull(rs.map((r) => r.cost)),
-      costMeanOnSuccess: wins.length ? (sumOrNull(wins.map((r) => r.cost)) == null ? null : mean(wins.map((r) => r.cost))) : null,
+      tokensMean: sumOrNull(epTokens) == null ? null : mean(epTokens),
+      costTotal: sumOrNull(episodes.map((e) => e.cost)),
+      costMeanOnSuccess: wins.length ? (sumOrNull(episodes.filter((e) => e.success).map((e) => e.cost)) == null ? null : mean(episodes.filter((e) => e.success).map((e) => e.cost))) : null,
       efficiencyMean: mean(episodes.filter((e) => e.efficiency != null).map((e) => e.efficiency)),
       endReasons, episodes
     });
   }
   const scored = tasks.filter((t) => t.n);
-  const allWins = results.filter((r) => r.success);
+  const allEps = tasks.flatMap((t) => t.episodes);
+  const allWins = allEps.filter((e) => e.success);
+  const allToks = allEps.map((e) => (e.tokensIn == null || e.tokensOut == null ? null : e.tokensIn + e.tokensOut));
   const summary = {
     runId: meta.runId, model: meta.model, tier: meta.tier, hints: meta.hints ?? 'standard', external: !!meta.external, code: meta.code, promptVersion: meta.promptVersion, books: meta.books ?? null,
     scoring: meta.scoring ?? 'cost',
@@ -73,8 +80,8 @@ export function score(runDir) {
     score: mean(scored.map((t) => t.successRate)),
     progress: mean(scored.map((t) => t.progressMean)),
     costMeanOnSuccess: allWins.length && sumOrNull(allWins.map((r) => r.cost)) != null ? mean(allWins.map((r) => r.cost)) : null,
-    costTotal: sumOrNull(results.map((r) => r.cost)),
-    tokensTotal: results.reduce((a, r) => a + r.tokensIn + r.tokensOut, 0),
+    costTotal: sumOrNull(allEps.map((r) => r.cost)),
+    tokensTotal: sumOrNull(allToks),
     episodes: results.length,
     tasks
   };

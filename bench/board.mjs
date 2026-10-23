@@ -108,6 +108,7 @@ export function mergeRunsByModel(rows, { verifiedOnly = false } = {}) {
       const roundsMean = wins.length && roundValues.every((x) => Number.isInteger(x) && x > 0) ? mean(roundValues) : null;
       const endReasons = {};
       for (const e of episodes) endReasons[e.endReason] = (endReasons[e.endReason] || 0) + 1;
+      const epTokens = episodes.map((e) => (e.tokensIn == null || e.tokensOut == null ? null : e.tokensIn + e.tokensOut));
       tasks.push({
         id: entry.id, version: entry.version, seedsPlanned: entry.seedsPlanned, n: episodes.length,
         successRate: episodes.length ? wins.length / episodes.length : null,
@@ -115,7 +116,7 @@ export function mergeRunsByModel(rows, { verifiedOnly = false } = {}) {
         battleRoundsMeanOnSuccess: roundsMean,
         toolCallsMedianOnSuccess: median(wins.map((e) => e.successAt)),
         invalidRate: episodes.length ? sumOrNull(episodes.map((e) => e.invalidCalls)) / Math.max(1, sumOrNull(episodes.map((e) => e.toolCalls))) : null,
-        tokensMean: mean(episodes.map((e) => e.tokensIn + e.tokensOut)),
+        tokensMean: sumOrNull(epTokens) == null ? null : mean(epTokens),
         costTotal: sumOrNull(episodes.map((e) => e.cost)),
         costMeanOnSuccess: wins.length ? (sumOrNull(wins.map((e) => e.cost)) == null ? null : mean(wins.map((e) => e.cost))) : null,
         efficiencyMean: mean(episodes.filter((e) => e.efficiency != null).map((e) => e.efficiency)),
@@ -124,6 +125,7 @@ export function mergeRunsByModel(rows, { verifiedOnly = false } = {}) {
     }
     const scored = tasks.filter((t) => t.n);
     const allWins = allEps.filter((e) => e.success);
+    const allToks = allEps.map((e) => (e.tokensIn == null || e.tokensOut == null ? null : e.tokensIn + e.tokensOut));
     const vStates = group.map((g) => g.verify?.state || 'none');
     const vState = vStates.includes('mismatch') ? 'mismatch' : vStates.every((s) => s === 'verified') ? 'verified' : vStates.every((s) => s === 'none') ? 'none' : 'stale';
     const vOk = group.reduce((a, g) => a + (g.verify?.ok || 0), 0);
@@ -137,7 +139,7 @@ export function mergeRunsByModel(rows, { verifiedOnly = false } = {}) {
       battleRoundsMeanOnSuccess: allWins.length && allWins.every((e) => Number.isInteger(e.battleRounds) && e.battleRounds > 0) ? mean(allWins.map((e) => e.battleRounds)) : null,
       costMeanOnSuccess: allWins.length && sumOrNull(allWins.map((e) => e.cost)) != null ? mean(allWins.map((e) => e.cost)) : null,
       costTotal: sumOrNull(allEps.map((e) => e.cost)),
-      tokensTotal: allEps.reduce((a, e) => a + (e.tokensIn || 0) + (e.tokensOut || 0), 0),
+      tokensTotal: sumOrNull(allToks),
       episodes: allEps.length,
       tasks,
       verify: { state: vState, ok: vOk, total: vTotal, at: last.verify?.at || null }
@@ -190,8 +192,8 @@ export function paretoFront(points) {
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
 const pct = (x) => (x == null ? '–' : `${Math.round(x * 100)}%`);
 const usd = (x) => (x == null ? '?' : `$${x < 0.01 && x > 0 ? x.toFixed(4) : x.toFixed(2)}`);
-/** token 数写成 2.78M / 640K(表格里一眼能比),完整数字放悬停 */
-const tok = (n) => { n = Number(n) || 0; const s = n >= 1e6 ? `${(n / 1e6).toFixed(n >= 1e7 ? 1 : 2)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}K` : String(n); return `<span title="${n.toLocaleString('en-US')}">${s}</span>`; };
+/** token 数写成 2.78M / 640K(表格里一眼能比),完整数字放悬停;未采集记 ? */
+const tok = (n) => { if (n == null) return '?'; n = Number(n) || 0; const s = n >= 1e6 ? `${(n / 1e6).toFixed(n >= 1e7 ? 1 : 2)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}K` : String(n); return `<span title="${n.toLocaleString('en-US')}">${s}</span>`; };
 /** 生成时刻:2026-10-23 16:33 UTC(ISO 串原样太长;不是 ISO 的原样输出) */
 const stamp = (t) => { const m = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})/.exec(String(t)); return m ? `${m[1]} ${m[2]} UTC` : String(t); };
 /** score 前面一小条进度条:不用读数字就看得出高低 */

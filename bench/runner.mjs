@@ -322,16 +322,37 @@ else console.log((j.result?.content || []).map(c => c.text || '').join('\\n'));
   const task = loadTask(job.taskId);
   const prompt = `${systemPrompt(job.tier)}\n\n### Tool Execution Interface\nCall game tools by executing \`node ${helperFile} <tool_name> '<json_args>'\` via \`run_command\`. Do NOT access any other files or directories outside \`${tmp}\`.\nAvailable tools:\n${toolsDoc}\n\n${firstMessage(task, ready.intro)}`;
   const agyLog = path.join(tmp, 'agy.log');
+  const effort = process.env.BENCH_EFFORT || 'medium';
+  const modelFlag = /-(low|medium|high|xhigh|max)$/.test(agyModel) ? agyModel : `${agyModel}-${effort}`;
+  const args = [
+    '-p', prompt,
+    '--output-format', 'stream-json',
+    '--disable-slash-commands',
+    '--dangerously-skip-permissions',
+    '--print-timeout', `${job.wallSeconds}s`,
+    '--model', modelFlag,
+    '--log-file', agyLog
+  ];
   const t0 = Date.now();
-  const agy = spawn(AGY_BIN, ['-p', prompt, '--dangerously-skip-permissions', '--print-timeout', `${job.wallSeconds}s`, '--log-file', agyLog], {
+  const agy = spawn(AGY_BIN, args, {
     cwd: tmp, stdio: ['ignore', 'pipe', err]
   });
   const clientLog = fs.createWriteStream(job.clientLogFile);
-  agy.stdout.on('data', (d) => clientLog.write(d));
+  let final = null;
+  let steps = 0;
+  const rl = readline.createInterface({ input: agy.stdout });
+  rl.on('line', (l) => {
+    clientLog.write(l + '\n');
+    try {
+      const ev = JSON.parse(l);
+      if (ev.event === 'step_update' && ev.step_update?.state === 'DONE' && ev.step_update?.step_type === 'agent_response') steps++;
+      if (ev.event === 'result' && ev.result) final = ev.result;
+    } catch {}
+  });
   let timedOut = false;
   const wall = setTimeout(() => { timedOut = true; agy.kill('SIGTERM'); }, (job.wallSeconds + 90) * 1000);
   const poll = setInterval(() => {
-    if (fs.existsSync(serverResult)) { clearInterval(poll); setTimeout(() => agy.kill('SIGTERM'), 10_000).unref(); }
+    if (fs.existsSync(serverResult)) { clearInterval(poll); setTimeout(() => agy.kill('SIGTERM'), 15_000).unref(); }
   }, 1000);
   const clientExitCode = await exited(agy);
   clearTimeout(wall); clearInterval(poll);
@@ -341,7 +362,7 @@ else console.log((j.result?.content || []).map(c => c.text || '').join('\\n'));
   server.kill(timedOut ? 'SIGTERM' : 'SIGINT');
   await exited(server);
   fs.closeSync(err);
-  finalizeClient({ ...job, client: { name: 'agy-cli', model: agyModel, effort: 'medium', durationMs: Date.now() - t0, exitCode: clientExitCode, signal: agy.signalCode }, timedOut });
+  finalizeClient({ ...job, client: { name: 'agy-cli', model: agyModel, effort, numTurns: final?.num_turns ?? steps, durationMs: final?.duration_seconds != null ? Math.round(final.duration_seconds * 1000) : Date.now() - t0, exitCode: clientExitCode, signal: agy.signalCode }, timedOut });
   fs.rmSync(serverResult, { force: true });
 }
 
