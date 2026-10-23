@@ -281,9 +281,10 @@ function quizSection(quizzes) {
 }
 
 const CSS = `
-:root{--bg:#fbfbfa;--fg:#1d1d1b;--muted:#6b6a66;--line:#e3e2de;--card:#fff;--accent:#2f6fb3;--good:#2e7d4f;--bad:#b3412f;--warn:#9a6a00;--cell:47,111,179;--soft:#f3f2ee}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161615;--fg:#ecebe8;--muted:#9c9a94;--line:#33322f;--card:#1f1f1d;--accent:#7fb0e6;--good:#6cc08f;--bad:#e58a77;--warn:#e0b24f;--cell:127,176,230;--soft:#262623;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#161615;--fg:#ecebe8;--muted:#9c9a94;--line:#33322f;--card:#1f1f1d;--accent:#7fb0e6;--good:#6cc08f;--bad:#e58a77;--warn:#e0b24f;--cell:127,176,230;--soft:#262623;color-scheme:dark}
+/* 横幅配色:宣纸 / 墨 / 月 / 朱砂印;夜间换成月下青山 */
+:root{--sky1:#f6f1e4;--sky2:#ebe2cd;--ink:#2a2925;--moon:#fffaf0;--cloud:#cfc4ab;--seal:#b5372a;--bg:#fbfbfa;--fg:#1d1d1b;--muted:#6b6a66;--line:#e3e2de;--card:#fff;--accent:#2f6fb3;--good:#2e7d4f;--bad:#b3412f;--warn:#9a6a00;--cell:47,111,179;--soft:#f3f2ee}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sky1:#0f141d;--sky2:#1b2230;--ink:#8ea2b9;--moon:#f1e7c6;--cloud:#3a465a;--seal:#d4594a;--bg:#161615;--fg:#ecebe8;--muted:#9c9a94;--line:#33322f;--card:#1f1f1d;--accent:#7fb0e6;--good:#6cc08f;--bad:#e58a77;--warn:#e0b24f;--cell:127,176,230;--soft:#262623;color-scheme:dark}}
+:root[data-theme="dark"]{--sky1:#0f141d;--sky2:#1b2230;--ink:#8ea2b9;--moon:#f1e7c6;--cloud:#3a465a;--seal:#d4594a;--bg:#161615;--fg:#ecebe8;--muted:#9c9a94;--line:#33322f;--card:#1f1f1d;--accent:#7fb0e6;--good:#6cc08f;--bad:#e58a77;--warn:#e0b24f;--cell:127,176,230;--soft:#262623;color-scheme:dark}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
 main{max-width:1280px;margin:0 auto;padding:24px 16px 56px}h1{font-size:24px;margin:0 0 6px}h2{font-size:18px;margin:28px 0 8px}h3{font-size:15px;margin:20px 0 8px;color:var(--muted)}
 .muted{color:var(--muted)}.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
@@ -343,6 +344,17 @@ svg .front{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
 #tab-ironman:checked ~ .panes #pane-ironman,
 #tab-quiz:checked ~ .panes #pane-quiz{display:block}
 @media print{.tab-pane{display:block!important}}
+.banner{position:relative;overflow:hidden;border-radius:14px;min-height:230px;margin:0 0 14px;background:linear-gradient(180deg,var(--sky1),var(--sky2));border:1px solid var(--line)}
+.banner .scape{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;background:none}
+.banner-text{position:relative;padding:26px 28px 0;max-width:720px}
+.eyebrow{display:flex;align-items:center;gap:14px}
+.brush{font-family:"Ma Shan Zheng","STKaiti","KaiTi","Kaiti SC",serif;font-size:52px;line-height:1.1;color:var(--ink);letter-spacing:.06em}
+.seal{display:inline-grid;grid-auto-rows:1fr;place-items:center;width:40px;height:52px;padding:3px 0;border:2px solid var(--seal);border-radius:4px;color:var(--seal);font-family:"Ma Shan Zheng","STKaiti","KaiTi",serif;font-size:19px;line-height:1;transform:rotate(-4deg)}.seal i{font-style:normal}
+.banner h1{margin:10px 0 4px;font-size:20px;color:var(--fg)}
+.banner .meta{display:inline-block;margin:0;padding:3px 10px;font-size:13px;color:var(--muted);background:color-mix(in srgb,var(--sky1) 82%,transparent);border-radius:6px}
+.navlinks{margin:0 0 4px}
+section>h2{border-left:3px solid var(--seal);padding-left:10px}
+@media (max-width:640px){.banner{min-height:200px}.banner-text{padding:18px 16px 0}.brush{font-size:38px}.seal{width:34px;height:44px;font-size:15px}.banner h1{font-size:17px}}
 /* 宽表:模型列钉在左边,横向滚动时不丢「这一行是谁」;叙述性的最后一列换行,不把表撑到两千像素 */
 .scroll td.model,.scroll th.model{position:sticky;left:0;z-index:1;background:var(--card)}
 .scroll th.model{background:var(--soft)}
@@ -617,6 +629,44 @@ function ironmanAndPrSection() {
 </section>`;
 }
 
+/**
+ * 页首横幅:原创的水墨山水(远山 / 中山 / 近山三层、山间雾带、一轮月、几缕云)。
+ * 全部是这里算出来的 SVG 路径 —— 不用游戏里的任何图片或音乐(版权素材不进仓库、不上公开页)。
+ * 山脊用固定种子的伪随机数生成,每次生成的页面一模一样。
+ */
+function ridge(seed, { base, amp, step, w = 1200, h = 260 }) {
+  let x = seed >>> 0;
+  const rnd = () => ((x = (x * 1664525 + 1013904223) >>> 0) / 4294967296);
+  const pts = [];
+  for (let px = -step; px <= w + step; px += step) pts.push([px, base - amp * (0.35 + 0.65 * rnd()) * (0.6 + 0.4 * Math.sin(px / 170 + seed))]);
+  let d = `M${pts[0][0]},${h} L${pts[0][0]},${pts[0][1].toFixed(1)}`;
+  for (let i = 1; i < pts.length; i++) {
+    const [x0, y0] = pts[i - 1], [x1, y1] = pts[i];
+    d += ` Q${((x0 + x1) / 2).toFixed(1)},${(Math.min(y0, y1) - amp * 0.18).toFixed(1)} ${x1},${y1.toFixed(1)}`;
+  }
+  return `${d} L${pts.at(-1)[0]},${h} Z`;
+}
+function banner(meta) {
+  const scape = `<svg class="scape" viewBox="0 0 1200 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+<defs><radialGradient id="glow"><stop offset="0" stop-color="var(--moon)" stop-opacity=".55"/><stop offset="1" stop-color="var(--moon)" stop-opacity="0"/></radialGradient>
+<linearGradient id="mist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sky2)" stop-opacity="0"/><stop offset=".55" stop-color="var(--sky2)" stop-opacity=".85"/><stop offset="1" stop-color="var(--sky2)" stop-opacity="0"/></linearGradient></defs>
+<circle cx="948" cy="66" r="78" fill="url(#glow)"/><circle cx="948" cy="66" r="30" fill="var(--moon)"/>
+<g fill="none" stroke="var(--cloud)" stroke-width="2" stroke-linecap="round" opacity=".7"><path d="M760 92 q36 -14 70 -2 q26 -12 54 2"/><path d="M1010 118 q30 -10 58 0 q20 -8 42 2"/><path d="M180 70 q40 -16 82 -2 q30 -12 60 4"/></g>
+<path d="${ridge(7, { base: 168, amp: 92, step: 90 })}" fill="var(--ink)" opacity=".16"/>
+<rect x="0" y="128" width="1200" height="70" fill="url(#mist)"/>
+<path d="${ridge(23, { base: 206, amp: 78, step: 70 })}" fill="var(--ink)" opacity=".3"/>
+<rect x="0" y="178" width="1200" height="48" fill="url(#mist)" opacity=".8"/>
+<path d="${ridge(41, { base: 246, amp: 58, step: 55 })}" fill="var(--ink)" opacity=".62"/>
+</svg>`;
+  return `<header class="banner">${scape}
+<div class="banner-text">
+  <div class="eyebrow"><span class="brush" lang="zh-CN">仙剑奇侠传</span><span class="seal" aria-hidden="true"><i>论</i><i>剑</i></span></div>
+  <h1>agent-pal-bench 排行与实测数据统计看板</h1>
+  <p class="meta">${meta}</p>
+</div>
+</header>`;
+}
+
 /** 渲染整页。rows = collectRuns 的输出。 */
 export function renderBoard(rows, { generatedAt = new Date().toISOString(), quizzes = [] } = {}) {
   // 提示档位 full(开关效果 / 道具用法直接告诉 AI)的成绩单独成档,不和 standard 混排
@@ -637,7 +687,10 @@ export function renderBoard(rows, { generatedAt = new Date().toISOString(), quiz
       `<h3>每题 success 率(括号内为局数)</h3>${taskMatrix([...main, ...ext])}</section>`;
   }).join('');
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>agent-pal-bench 排行与统计看板</title><style>${CSS}</style>
+<title>agent-pal-bench 排行与统计看板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&amp;text=%E4%BB%99%E5%89%91%E5%A5%87%E4%BE%A0%E4%BC%A0%E8%AE%BA&amp;display=swap">
+<style>${CSS}</style>
 <script>
 // 标签页可以用地址直达(…/index.html#quiz),切换时地址跟着变,刷新 / 分享不丢当前页
 addEventListener('DOMContentLoaded', () => {
@@ -647,18 +700,13 @@ addEventListener('DOMContentLoaded', () => {
   for (const r of document.querySelectorAll('.tab-ctrl')) r.addEventListener('change', () => { history.replaceState(null, '', '#' + r.id.slice(4)); show(r); });
 });
 </script></head><body><main>
-<div class="topbar">
-  <div>
-    <h1>agent-pal-bench 排行与实测数据统计看板</h1>
-    <p class="muted" style="margin:2px 0 0">《仙剑奇侠传》(1995 DOS) 智能体长程决策基准 · 生成于 ${esc(stamp(generatedAt))} · 共 ${rows.length} 条运行记录${quizzes.length ? `、${quizzes.length} 份闭卷测验` : ''}</p>
-  </div>
-  <nav class="navlinks" aria-label="视图切换">
-    <a href="index.html">📊 模型归并主榜</a>
-    <a href="verified.html">✅ 严格已核验榜</a>
-    <a href="runs.html">🗂️ 原始运行批次</a>
-    <a href="https://github.com/jianmliu/agent-pal" target="_blank" rel="noopener">💻 GitHub 仓库 &amp; PR 打榜</a>
-  </nav>
-</div>
+${banner(`《仙剑奇侠传》(1995 DOS) 智能体长程决策基准 · 生成于 ${esc(stamp(generatedAt))} · 共 ${rows.length} 条运行记录${quizzes.length ? `、${quizzes.length} 份闭卷测验` : ''}`)}
+<nav class="navlinks" aria-label="视图切换">
+  <a href="index.html">📊 模型归并主榜</a>
+  <a href="verified.html">✅ 严格已核验榜</a>
+  <a href="runs.html">🗂️ 原始运行批次</a>
+  <a href="https://github.com/jianmliu/agent-pal" target="_blank" rel="noopener">💻 GitHub 仓库 &amp; PR 打榜</a>
+</nav>
 
 <input class="tab-ctrl" type="radio" name="pal-tab" id="tab-stats" checked>
 <input class="tab-ctrl" type="radio" name="pal-tab" id="tab-tiers">
