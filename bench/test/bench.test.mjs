@@ -1024,4 +1024,18 @@ console.log('  ✓ ㉒ Tier P (Pure 编程档):L0 原语 + run_code 工具面与
 }
 console.log('  ✓ ㉓ 公共 Leaderboard PR 门禁(零冲突 / 防篡改 / 增量核验)与同模型跨运行归并');
 
+// 外部 CLI 的可执行文件:环境变量 > ~/.local/bin(当前用户) > 应用内置 > PATH 裸名字;不写死某个人的家目录
+{
+  const { resolveCliBin } = await import('../cli-bins.mjs');
+  const none = () => false;
+  assert.equal(resolveCliBin('claude', { env: { BENCH_CLAUDE_BIN: '/opt/claude' }, home: '/h', exists: none }), '/opt/claude');
+  assert.equal(resolveCliBin('claude', { env: {}, home: '/h', exists: (p) => p === '/h/.local/bin/claude' }), '/h/.local/bin/claude');
+  assert.equal(resolveCliBin('agy', { env: {}, home: '/h', exists: none }), 'agy');
+  const bundled = '/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex';
+  assert.equal(resolveCliBin('codex', { env: {}, home: '/h', exists: (p) => p === bundled }), bundled);
+  assert.equal(resolveCliBin('codex', { env: {}, home: '/h', exists: (p) => p === bundled || p === '/h/.local/bin/codex' }), '/h/.local/bin/codex');
+  for (const f of ['runner.mjs', 'quiz.mjs']) assert.doesNotMatch(fs.readFileSync(new URL(`../${f}`, import.meta.url), 'utf8'), /\/Users\//, `${f} hard-codes a /Users/ path`);
+}
+console.log('  ✓ 外部 CLI 路径按环境变量 / 当前用户解析,不写死家目录');
+
 console.log('\nBENCH TESTS PASSED ✅');
