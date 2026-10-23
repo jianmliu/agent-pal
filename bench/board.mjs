@@ -189,6 +189,12 @@ export function paretoFront(points) {
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
 const pct = (x) => (x == null ? '–' : `${Math.round(x * 100)}%`);
 const usd = (x) => (x == null ? '?' : `$${x < 0.01 && x > 0 ? x.toFixed(4) : x.toFixed(2)}`);
+/** token 数写成 2.78M / 640K(表格里一眼能比),完整数字放悬停 */
+const tok = (n) => { n = Number(n) || 0; const s = n >= 1e6 ? `${(n / 1e6).toFixed(n >= 1e7 ? 1 : 2)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}K` : String(n); return `<span title="${n.toLocaleString('en-US')}">${s}</span>`; };
+/** 生成时刻:2026-10-23 16:33 UTC(ISO 串原样太长;不是 ISO 的原样输出) */
+const stamp = (t) => { const m = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})/.exec(String(t)); return m ? `${m[1]} ${m[2]} UTC` : String(t); };
+/** score 前面一小条进度条:不用读数字就看得出高低 */
+const scoreCell = (x) => `<td class="num strong"><span class="sbar" style="--p:${Math.round((x ?? 0) * 100)}%"></span>${pct(x)}</td>`;
 const VERIFY_LABEL = { verified: '已核验', mismatch: '核验不一致', stale: '核验已过期', none: '未核验' };
 
 function verifyCell(v) {
@@ -228,11 +234,11 @@ export function scatter(points) {
 
 function boardTable(rows, { external = false, quizzes = [] } = {}) {
   const quizOf = (m) => quizzes.find((q) => q.model === m);
-  const head = `<tr><th>#</th><th>${external ? '客户端 / 模型' : '模型'}</th><th>score</th><th>progress</th><th>闭卷测验</th><th>成功局平均回合</th><th>成功局平均 cost</th><th>总 cost</th><th>tokens</th><th>题 / 局</th><th>核验</th><th>代码</th><th>运行</th></tr>`;
+  const head = `<tr><th>#</th><th class="model">${external ? '客户端 / 模型' : '模型'}</th><th>score</th><th>progress</th><th>闭卷测验</th><th>成功局平均回合</th><th>成功局平均 cost</th><th>总 cost</th><th>tokens</th><th>题 / 局</th><th>核验</th><th>代码</th><th>运行</th></tr>`;
   const body = rows.map((r, i) => `<tr${r.complete ? '' : ' class="incomplete"'}>` +
-    `<td>${i + 1}</td><td class="model">${esc(r.model)}</td><td class="num strong">${pct(r.score)}</td><td class="num">${r.progress == null ? '–' : r.progress.toFixed(2)}</td>` +
+    `<td class="num muted">${i + 1}</td><td class="model">${esc(r.model)}</td>${scoreCell(r.score)}<td class="num">${r.progress == null ? '–' : r.progress.toFixed(2)}</td>` +
     `<td class="num">${quizOf(r.model) ? pct(quizOf(r.model).score) : '<span class="muted">–</span>'}</td>` +
-    `<td class="num">${r.battleRoundsMeanOnSuccess == null ? '–' : r.battleRoundsMeanOnSuccess.toFixed(2)}</td><td class="num">${r.score ? usd(r.costMeanOnSuccess) : '–'}</td><td class="num">${usd(r.costTotal)}</td><td class="num">${r.tokensTotal.toLocaleString('en-US')}</td>` +
+    `<td class="num">${r.battleRoundsMeanOnSuccess == null ? '–' : r.battleRoundsMeanOnSuccess.toFixed(2)}</td><td class="num">${r.score ? usd(r.costMeanOnSuccess) : '–'}</td><td class="num">${usd(r.costTotal)}</td><td class="num">${tok(r.tokensTotal)}</td>` +
     `<td class="num">${r.tasks.filter((t) => t.n).length} / ${r.episodes}${r.complete ? '' : ' <span class="warn">未跑完</span>'}</td>` +
     `<td>${verifyCell(r.verify)}</td><td><code>${esc(r.code || '?')}</code> <span class="muted">提示 v${esc(r.promptVersion ?? '?')}</span>${r.books ? `<br><code title="${esc([...r.books.guide, `atlas ${r.books.atlas}`].join('\n'))}">资料 ${esc(r.books.id)}</code>` : ''}</td><td><code>${esc(r.runId)}</code></td></tr>`).join('');
   return `<div class="scroll"><table>${head}${body}</table></div>`;
@@ -279,7 +285,7 @@ const CSS = `
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161615;--fg:#ecebe8;--muted:#9c9a94;--line:#33322f;--card:#1f1f1d;--accent:#7fb0e6;--good:#6cc08f;--bad:#e58a77;--warn:#e0b24f;--cell:127,176,230;--soft:#262623;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#161615;--fg:#ecebe8;--muted:#9c9a94;--line:#33322f;--card:#1f1f1d;--accent:#7fb0e6;--good:#6cc08f;--bad:#e58a77;--warn:#e0b24f;--cell:127,176,230;--soft:#262623;color-scheme:dark}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
-main{max-width:1180px;margin:0 auto;padding:24px 16px 56px}h1{font-size:24px;margin:0 0 6px}h2{font-size:18px;margin:28px 0 8px}h3{font-size:15px;margin:20px 0 8px;color:var(--muted)}
+main{max-width:1280px;margin:0 auto;padding:24px 16px 56px}h1{font-size:24px;margin:0 0 6px}h2{font-size:18px;margin:28px 0 8px}h3{font-size:15px;margin:20px 0 8px;color:var(--muted)}
 .muted{color:var(--muted)}.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
 table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
 th{font-weight:600;color:var(--muted);background:var(--soft)}tr:last-child td{border-bottom:0}.num{text-align:right;font-variant-numeric:tabular-nums}.strong{font-weight:700}
@@ -322,7 +328,6 @@ svg .front{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
 .bar-fill{height:100%;background:var(--accent);border-radius:99px}
 .bar-fill.good{background:var(--good)}.bar-fill.warn{background:var(--warn)}.bar-fill.bad{background:var(--bad)}
 .bar-val{width:76px;text-align:right;font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted)}
-.tab-ctrl{display:none}
 .tab-bar{display:flex;flex-wrap:wrap;gap:6px;border-bottom:2px solid var(--line);margin:20px 0 18px;padding-bottom:0}
 .tab-lbl{padding:9px 15px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border:1px solid transparent;border-bottom:0;border-radius:8px 8px 0 0;margin-bottom:-2px;user-select:none;transition:all .15s}
 .tab-lbl:hover{color:var(--fg);background:var(--soft)}
@@ -338,6 +343,23 @@ svg .front{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
 #tab-ironman:checked ~ .panes #pane-ironman,
 #tab-quiz:checked ~ .panes #pane-quiz{display:block}
 @media print{.tab-pane{display:block!important}}
+/* 宽表:模型列钉在左边,横向滚动时不丢「这一行是谁」;叙述性的最后一列换行,不把表撑到两千像素 */
+.scroll td.model,.scroll th.model{position:sticky;left:0;z-index:1;background:var(--card)}
+.scroll th.model{background:var(--soft)}
+.scroll .matrix tr>:first-child{position:sticky;left:0;z-index:1;background:var(--card)}
+.scroll .matrix th:first-child{background:var(--soft)}
+table.wrap td:last-child{white-space:normal;min-width:240px;max-width:420px}
+table.wrap td{vertical-align:top}
+tbody tr:hover td,table tr:hover td{background-image:linear-gradient(rgba(var(--cell),.06),rgba(var(--cell),.06))}
+.sbar{display:inline-block;width:44px;height:6px;margin-right:8px;vertical-align:middle;border-radius:99px;background:linear-gradient(90deg,var(--accent) var(--p),var(--soft) var(--p))}
+.note{font-size:13.5px;color:var(--muted);background:var(--soft);border-radius:8px;padding:8px 12px;margin:0 0 12px}
+.note a{color:var(--accent)}
+/* 标签:单选框藏起来但留在键盘焦点链里(左右键切换);窄屏一行横滑,不竖排占满一屏 */
+.tab-ctrl{display:block;position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.tab-bar{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.tab-bar::-webkit-scrollbar{display:none}
+.tab-lbl{white-space:nowrap;flex:none}
+#tab-stats:focus-visible ~ .tab-bar label[for="tab-stats"],#tab-tiers:focus-visible ~ .tab-bar label[for="tab-tiers"],#tab-tasks:focus-visible ~ .tab-bar label[for="tab-tasks"],#tab-ironman:focus-visible ~ .tab-bar label[for="tab-ironman"],#tab-quiz:focus-visible ~ .tab-bar label[for="tab-quiz"]{outline:2px solid var(--accent);outline-offset:-2px}
+@media (max-width:640px){h1{font-size:20px}main{padding:16px 16px 40px}.navlinks a{padding:3px 8px}.kpi .k-val{font-size:22px}.podium,.grid2{grid-template-columns:1fr}}
 `;
 
 function statsOverviewSection() {
@@ -368,7 +390,7 @@ function statsOverviewSection() {
     <p class="champ-desc"><strong>核心特质：先验储备与在线纠错双修。</strong>白河采药钓完鱼 0 步废话直奔南门猎场；扬州井口受阻仅花 <strong>22 步</strong> 即破除“井边盲区”错误先验登上城墙；全游戏 <code>--pure</code> 模式自写 <strong>731 行</strong> 引擎库打穿 11 章。</p>
   </div>
   <div class="champ silver">
-    <div class="champ-head"><span class="champ-title">🥇 Claude Opus 5.5</span><span class="badge good">全通 #2 · 零先验推理之王</span></div>
+    <div class="champ-head"><span class="champ-title">🥈 Claude Opus 5.5</span><span class="badge good">全通 #2 · 零先验推理之王</span></div>
     <div class="champ-metrics">
       <div><div class="m-v">14% (3卷0分)</div><div class="m-k">闭卷笔试(一张白纸)</div></div>
       <div><div class="m-v">10 步 (par=7)</div><div class="m-k">祈雨祭坛(全场第1)</div></div>
@@ -377,7 +399,7 @@ function statsOverviewSection() {
     <p class="champ-desc"><strong>核心特质：科学实验探针与控制变量消元。</strong>笔试对攻略一无所知，却靠 1 步零成本探针 10 步秒过祈雨坛；扬州横跨 4 重屋顶飞檐走壁奇袭；拜月禁招赛用<strong>控制变量线性消元法</strong>测准单招伤害并用 <code>化屍水</code> 斩杀满血 32,760 HP 拜月；自写 <strong>1,427 行</strong> 引擎库全通。</p>
   </div>
   <div class="champ bronze">
-    <div class="champ-head"><span class="champ-title">🥇 GPT-6.1-Sol</span><span class="badge good">全通 #3 · 一命稳健宗师</span></div>
+    <div class="champ-head"><span class="champ-title">🥉 GPT-6.1-Sol</span><span class="badge good">全通 #3 · 一命稳健宗师</span></div>
     <div class="champ-metrics">
       <div><div class="m-v">59% (13/22)</div><div class="m-k">闭卷笔试(白河满分)</div></div>
       <div><div class="m-v">第1命 14回合</div><div class="m-k">拜月全场唯一初见胜</div></div>
@@ -389,9 +411,9 @@ function statsOverviewSection() {
 
 <h3>📊 15 大参评模型跨维度总成绩单（闭卷笔试 × 四大专项实操 × 全游戏通关）</h3>
 <div class="scroll">
-<table>
+<table class="wrap">
   <tr>
-    <th>总座次</th><th>模型</th><th>厂商 / 机构</th><th>闭卷笔试 (22问)</th>
+    <th>总座次</th><th class="model">模型</th><th>厂商 / 机构</th><th>闭卷笔试 (22问)</th>
     <th>实操① 祈雨祭坛<br><span class="muted">par=7 / 预算80</span></th>
     <th>实操② 白河采药<br><span class="muted">par=40 / 预算120–240</span></th>
     <th>实操③ 扬州紫金葫芦<br><span class="muted">par=74 / 15场景长链</span></th>
@@ -400,22 +422,22 @@ function statsOverviewSection() {
     <th>综合定性</th>
   </tr>
   <tr>
-    <td class="num strong">🏆 1</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num strong">64% (14/22)</td>
+    <td class="num strong">🥇 1</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num strong">64% (14/22)</td>
     <td><span class="badge good">✓ 13 步</span></td><td><span class="badge good">✓ 90 步 (最快)</span></td><td><span class="badge good">✓ 161 步 (净139)</span></td><td><span class="badge good">✓ 7 回合</span> / <span class="badge good">✓ 39 回合</span></td>
     <td><span class="badge good">🏆 全剧终 (731行库)</span></td><td>四大实操 + 全游戏满贯</td>
   </tr>
   <tr>
-    <td class="num strong">🏆 2</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">14% (3/22)</td>
+    <td class="num strong">🥈 2</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">14% (3/22)</td>
     <td><span class="badge good">✓ 10 步 (最快)</span></td><td><span class="badge good">✓ 143 步 (零先验)</span></td><td><span class="badge good">✓ 280 步 (跨屋顶)</span></td><td><span class="badge good">✓ 17 回合</span> / <span class="badge good">🥇 36 回合</span></td>
     <td><span class="badge good">🏆 全剧终 (1427行库)</span></td><td>零先验逆袭 + 禁招冠军</td>
   </tr>
   <tr>
-    <td class="num strong">🏆 3</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num strong">59% (13/22)</td>
+    <td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num strong">59% (13/22)</td>
     <td><span class="badge good">✓ 22 步</span></td><td><span class="badge good">✓ 105 步</span></td><td><span class="badge good">✓ 218 步</span></td><td><span class="badge good">✓ 14 回合 (1命)</span> / <span class="badge good">✓ 37 回合</span></td>
     <td><span class="badge good">🏆 全剧终 (845步单轮)</span></td><td>初见1命斩拜月 + 单轮全通</td>
   </tr>
   <tr>
-    <td class="num strong">🏅 4</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="muted">–</td>
+    <td class="num strong">4</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="muted">–</td>
     <td><span class="badge good">✓ 13 步</span></td><td><span class="badge good">✓ 107 步</span></td><td><span class="badge good">✓ 146 步 (最快)</span></td><td><span class="badge good">✓ 11 回合 (1命/28步)</span> / <span class="badge good">✓ 54 回合</span></td>
     <td class="muted">⏳ 虚位待战</td><td>四大专项实操 (含禁招) 全胜满贯</td>
   </tr>
@@ -498,8 +520,8 @@ function perTaskDeepDiveSection() {
 <h3>擂台一：大理祈雨祭坛（<code>classic48-rain-orbs</code>，<code>par = 7</code>，预算 80 步）</h3>
 <p class="muted">考察点：石碑正交方位（东北/东南/西南/西北）向 45° 斜向梅花桩坐标的映射，以及“先内省证明 vs 先发 1 步探针”。</p>
 <div class="scroll">
-<table>
-  <tr><th>排名</th><th>模型</th><th>厂商</th><th>笔试该题分</th><th>实操通关</th><th>通关步数</th><th>思考输出 Tokens</th><th>策略画像与死因分析</th></tr>
+<table class="wrap">
+  <tr><th>排名</th><th class="model">模型</th><th>厂商</th><th>笔试该题分</th><th>实操通关</th><th>通关步数</th><th>思考输出 Tokens</th><th>策略画像与死因分析</th></tr>
   <tr><td class="num strong">🥇 1</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">0% (0/5)</td><td><span class="badge good">100%</span></td><td class="num strong">10 步</td><td class="num">2,158</td><td>1 步 <code>use_item</code> 探针试出旋转方向，下一轮 4 珠连放收官</td></tr>
   <tr><td class="num strong">🥇 1</td><td class="model">claude-cli:claude-fable-5-1</td><td>Anthropic</td><td class="num">–</td><td><span class="badge good">100%</span></td><td class="num strong">10 步</td><td class="num">1,259</td><td>1 步探针锁定方位，10 步并列全场最快</td></tr>
   <tr><td class="num strong">🥉 3</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num strong">13 步</td><td class="num">–</td><td>读碑后试放 1 次立即锁定 45° 顺时针映射</td></tr>
@@ -516,8 +538,8 @@ function perTaskDeepDiveSection() {
 <h3>擂台二：白河村三味药材（<code>classic10-baihe-medicine</code>，<code>par = 40</code>，标准 120 步 / 扩容 240 步）</h3>
 <p class="muted">考察点：银杏子 + 借竿钓鱼 + 猎场布夹赶鹿三线并进。对比“背过攻略直奔南门”与“零先验挨家搜全村”的步数拆解。</p>
 <div class="scroll">
-<table>
-  <tr><th>排名</th><th>模型</th><th>厂商</th><th>笔试得分</th><th>120步标准赛</th><th>240步扩容赛</th><th>村内6民居地毯搜索开销</th><th>猎场第一夹放偏后的止损步数</th></tr>
+<table class="wrap">
+  <tr><th>排名</th><th class="model">模型</th><th>厂商</th><th>笔试得分</th><th>120步标准赛</th><th>240步扩容赛</th><th>村内6民居地毯搜索开销</th><th>猎场第一夹放偏后的止损步数</th></tr>
   <tr><td class="num strong">🥇 1</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">80% (4/5)</td><td><span class="badge good">100% (90步)</span></td><td><span class="badge good">100% (90/120步)</span></td><td class="num strong">0 步 (直奔南门猎场)</td><td class="num strong">5 步 (秒收夹改放 45,111)</td></tr>
   <tr><td class="num strong">🥈 2</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">100% (5/5)</td><td><span class="badge good">100% (105步)</span></td><td><span class="badge good">100% (105–117步)</span></td><td class="num strong">4 步 (直奔南门猎场)</td><td class="num strong">7–8 步 (迅速移夹至 44,110)</td></tr>
   <tr><td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td><span class="badge good">100% (107步)</span></td><td><span class="badge good">100% (107步)</span></td><td class="num">少量探路后进南门猎场</td><td class="num">107 步标准预算内一次通关</td></tr>
@@ -531,8 +553,8 @@ function perTaskDeepDiveSection() {
 <h3>擂台三：扬州夜雨与紫金葫芦长链（<code>classic19-yangzhou-gourd</code>，<code>par = 74</code>，跨 15 场景 5 大里程碑）</h3>
 <p class="muted">考察点：客栈投宿 → 屋顶追女飞贼夺布包 → 富商诬陷 → 拜访寡妇姬三娘 → 登高处目击投井 → 古井底搜出紫金葫芦。</p>
 <div class="scroll">
-<table>
-  <tr><th>排名</th><th>模型</th><th>厂商</th><th>笔试葫芦考</th><th>总通关步数</th><th>净主线步数</th><th>M1 客栈夜警</th><th>M2 屋顶夺包</th><th>M3 富商诬陷</th><th>M4 拜访寡妇</th><th>M4→M5 破除“井边盲区”耗时与路径</th></tr>
+<table class="wrap">
+  <tr><th>排名</th><th class="model">模型</th><th>厂商</th><th>笔试葫芦考</th><th>总通关步数</th><th>净主线步数</th><th>M1 客栈夜警</th><th>M2 屋顶夺包</th><th>M3 富商诬陷</th><th>M4 拜访寡妇</th><th>M4→M5 破除“井边盲区”耗时与路径</th></tr>
   <tr><td class="num strong">🥇 1</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td class="num strong">146 步</td><td class="num strong">146 步</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td><strong>146 步全场最低总步数</strong>标准预算内直通古井底拿到紫金葫芦</td></tr>
   <tr><td class="num strong">🥈 2</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">60% (3/5)</td><td class="num strong">161 步</td><td class="num strong">139 步</td><td class="num">16</td><td class="num">50</td><td class="num">68</td><td class="num">101</td><td><strong>仅 22 步</strong>（井口受阻后调 map 登东北台阶上城墙；井底顺手开完11宝箱）</td></tr>
   <tr><td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">40% (2/5)</td><td class="num">218 步</td><td class="num">218 步</td><td class="num">18</td><td class="num">46</td><td class="num">60</td><td class="num">104</td><td><strong>被困 82 步</strong>（受错误先验锚定 5 次进出寡妇家搜家具，第186步才上城墙）</td></tr>
@@ -543,8 +565,8 @@ function perTaskDeepDiveSection() {
 <h3>擂台四：南诏王宫决战拜月教主（<code>baiyue-single-origin</code> 常规赛 vs 废除三板斧反事实禁招赛）</h3>
 <p class="muted">考察点：面对 32,760 HP 终局 Boss 的同上下文团灭复盘学习（In-Context RL），以及禁用“酒神 + 乾坤一掷 + 隐蛊”后的纯机制推导。</p>
 <div class="scroll">
-<table>
-  <tr><th>模型</th><th>厂商</th><th>笔试拜月考</th><th>上半场：常规决战 (胜局回合)</th><th>常规赛战术拆解</th><th>下半场：禁招消融赛 (胜局回合)</th><th>禁招赛机制发现与成败归因</th></tr>
+<table class="wrap">
+  <tr><th class="model">模型</th><th>厂商</th><th>笔试拜月考</th><th>上半场：常规决战 (胜局回合)</th><th>常规赛战术拆解</th><th>下半场：禁招消融赛 (胜局回合)</th><th>禁招赛机制发现与成败归因</th></tr>
   <tr><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">100% (3/3)</td><td class="num strong">🥇 7.00 回合 (第2命/42步)</td><td>第 2 命补双 <code>五氣朝元</code> + <code>乾坤一擲</code> 创 7 回合 0 死纪录</td><td class="num strong">🥉 39.00 回合 (第2命/114步)</td><td>第 2 命叠防 + 投掷神兵，全场唯一发明 <code>{"action":"repeat"}</code> 循环宏</td></tr>
   <tr><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td>DeepSeek</td><td class="num">67% (2/3)</td><td class="num strong">🥈 10.00 回合 (第6命/172步)</td><td><strong>第 6 命仅剩 1 HP 阿奴砸出 <code>乾坤一擲</code>+<code>化屍水</code> 绝杀</strong></td><td class="num">❌ 0% (23命/700步，剩21,022 HP)</td><td>悟出开局三盾，但栽在<strong>回合批量结算归因幻觉</strong>（误判逍遥灵儿法术 0 伤害）</td></tr>
   <tr><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td class="num strong">🥉 11.00 回合 (第1命/28步)</td><td><strong>初见第 1 命一次过：</strong>仅 28 步 / 95.3s 极速斩拜月</td><td class="num strong">✓ 54.00 回合 (第2命/220步)</td><td>第 2 命 <code>真元護體</code> + <code>天罡戰氣</code> + 投掷与剑神稳定磨穿 32,760 HP</td></tr>
@@ -562,7 +584,7 @@ function ironmanAndPrSection() {
 <p class="muted">在 <code>--pure</code>（Tier P）模式下，系统剥夺 <code>walk_to</code>、<code>interact</code>、<code>map</code> 等一切高级工具，只提供底层方向键原语与 <code>run_code</code> JS 沙盒。模型必须自己手写寻路器、字节码反编译器与战斗状态机打穿全部 11 章 300 个场景。</p>
 
 <div class="scroll">
-<table>
+<table class="wrap">
   <tr><th>维度</th><th><code>Gemini 4 Argon</code></th><th><code>GPT-6.1-Sol</code></th><th><code>Claude Opus 5.5</code></th><th><code>DeepSeek V4.1 Flash</code></th></tr>
   <tr><td><strong>最终结局</strong></td><td><span class="badge good">🏆 全剧终通关 (Slot 99)</span></td><td><span class="badge good">🏆 全剧终通关 (Slot 99)</span></td><td><span class="badge good">🏆 全剧终通关 (Slot 99)</span></td><td><span class="badge warn">⚔️ 闯至第5章扬州城 (Slot 28)</span></td></tr>
   <tr><td><strong>推进剧情跨度</strong></td><td>全 11 章 (余杭 → 拜月水魔兽)</td><td>全 11 章 (余杭 → 拜月水魔兽)</td><td>全 11 章 (余杭 → 拜月水魔兽)</td><td>前 5 章 (斩赤鬼王/石长老，困于扬州客栈)</td></tr>
@@ -605,18 +627,30 @@ export function renderBoard(rows, { generatedAt = new Date().toISOString(), quiz
     const main = rank(inTier.filter((r) => !r.external));
     const ext = rank(inTier.filter((r) => r.external));
     const pts = main.filter((r) => r.score > 0 && r.costMeanOnSuccess != null).map((r) => ({ label: r.model, cost: r.costMeanOnSuccess, score: r.score }));
-    return `<section><h2>档位 ${esc(tier)}</h2>` +
+    const anchor = `ext-${esc(tier).replace(/[^\w-]+/g, '-')}`;
+    const pointer = ext.length && main.length
+      ? `<p class="note">通过命令行客户端接入的模型(${ext.slice(0, 4).map((r) => `<code>${esc(r.model.replace(/^[^:]+:/, ''))}</code>`).join('、')}${ext.length > 4 ? ' 等' : ''})不在这张主表里,在下方 <a href="#${anchor}">外部 agent 表</a>。</p>` : '';
+    return `<section><h2>档位 ${esc(tier)}</h2>${pointer}` +
       (main.length ? boardTable(main, { quizzes }) : '<p class="muted">这一档还没有内置循环的成绩。</p>') +
       (main.length ? `<h3>success × cost(虚线 = 帕累托前沿:没有别的成绩又便宜又不差)</h3>${scatter(pts)}` : '') +
-      (ext.length ? `<h3>外部 agent(token / 成本由客户端自报、提示不统一 —— 单列,不进主榜)</h3>${boardTable(ext, { external: true, quizzes })}` : '') +
+      (ext.length ? `<h3 id="${anchor}">外部 agent(token / 成本由客户端自报、提示不统一 —— 单列,不进主榜)</h3>${boardTable(ext, { external: true, quizzes })}` : '') +
       `<h3>每题 success 率(括号内为局数)</h3>${taskMatrix([...main, ...ext])}</section>`;
   }).join('');
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>agent-pal-bench 排行与统计看板</title><style>${CSS}</style></head><body><main>
+<title>agent-pal-bench 排行与统计看板</title><style>${CSS}</style>
+<script>
+// 标签页可以用地址直达(…/index.html#quiz),切换时地址跟着变,刷新 / 分享不丢当前页
+addEventListener('DOMContentLoaded', () => {
+  const show = (r) => document.querySelector('label[for="' + r.id + '"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });   // 窄屏:标签条横滑,把当前这一页的标签滑进视野
+  const pick = () => { const el = document.getElementById('tab-' + location.hash.slice(1)); if (el && el.classList.contains('tab-ctrl')) { el.checked = true; show(el); } };
+  pick(); addEventListener('hashchange', pick);
+  for (const r of document.querySelectorAll('.tab-ctrl')) r.addEventListener('change', () => { history.replaceState(null, '', '#' + r.id.slice(4)); show(r); });
+});
+</script></head><body><main>
 <div class="topbar">
   <div>
     <h1>agent-pal-bench 排行与实测数据统计看板</h1>
-    <p class="muted" style="margin:2px 0 0">《仙剑奇侠传》(1995 DOS) 智能体长程决策基准 · 生成于 ${esc(generatedAt)} · 共 ${rows.length} 条运行记录${quizzes.length ? `、${quizzes.length} 份闭卷测验` : ''}</p>
+    <p class="muted" style="margin:2px 0 0">《仙剑奇侠传》(1995 DOS) 智能体长程决策基准 · 生成于 ${esc(stamp(generatedAt))} · 共 ${rows.length} 条运行记录${quizzes.length ? `、${quizzes.length} 份闭卷测验` : ''}</p>
   </div>
   <nav class="navlinks" aria-label="视图切换">
     <a href="index.html">📊 模型归并主榜</a>
