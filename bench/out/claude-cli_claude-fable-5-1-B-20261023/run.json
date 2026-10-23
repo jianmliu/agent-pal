@@ -1,0 +1,35 @@
+{
+  "scoring": "cost",
+  "runId": "fable-board",
+  "model": "claude-cli:claude-fable-5-1",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 7
+      }
+    },
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 40
+      }
+    }
+  ],
+  "clientAccountingVersion": 1,
+  "promptVersion": 3,
+  "code": "ab9a7d5",
+  "startedAt": "2026-10-23T15:55:49.985Z",
+  "finishedAt": "2026-10-23T16:04:51.116Z"
+}

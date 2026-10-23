@@ -1,0 +1,60 @@
+{
+  "task": "classic10-baihe-medicine",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "claude-cli:claude-fable-5-1",
+  "runId": "fable-board",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "success": true,
+  "successAt": 203,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "success",
+  "milestones": {
+    "got-ginkgo": 16,
+    "got-carp": 75,
+    "got-antler": 197
+  },
+  "toolCalls": 203,
+  "invalidCalls": 10,
+  "softStops": 2,
+  "tokensIn": 6164638,
+  "tokensOut": 31875,
+  "tokensCached": 6020479,
+  "tokensCacheWrite": 140413,
+  "cost": 5.944589749999999,
+  "virtualSeconds": 340.069,
+  "battles": [],
+  "progress": 1,
+  "final": {
+    "scene": 52,
+    "pos": {
+      "gx": 82,
+      "gy": 94
+    },
+    "mode": "control",
+    "visitedScenes": [
+      52,
+      53,
+      49,
+      51,
+      50,
+      48
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "claude-cli",
+    "model": "claude-fable-5-1",
+    "effort": "medium",
+    "numTurns": 204,
+    "durationMs": 538927,
+    "exitCode": 0,
+    "signal": null
+  },
+  "accountingStatus": "complete"
+}
