@@ -352,6 +352,16 @@ table.mini{font-size:13px;width:100%}table.mini th,table.mini td{padding:4px 6px
 .cta ol{padding-left:20px;margin:6px 0 12px}.cta code{word-break:break-all}
 .btn{display:inline-block;padding:8px 16px;border-radius:8px;background:var(--seal);color:#fff;text-decoration:none;font-weight:600}
 .btn:hover{filter:brightness(1.08)}
+.cite{margin:30px 0 8px}
+.cite h2{margin:0 0 8px}
+.cite p{font-size:14px;color:var(--muted);margin:6px 0}
+.doc-links{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:8px 0 14px}
+.doc-links a{display:inline-block;padding:5px 12px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--accent);text-decoration:none;font-size:13.5px}
+.doc-links a:hover{border-color:var(--accent)}
+.bib{position:relative;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.bib pre{margin:0;padding:14px 16px;overflow-x:auto;font:12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fg)}
+.bib .copy{position:absolute;top:8px;right:8px;font:12px system-ui,sans-serif;padding:3px 10px;border:1px solid var(--line);border-radius:6px;background:var(--soft);color:var(--fg);cursor:pointer}
+.bib .copy:hover{border-color:var(--accent)}
 .banner{position:relative;overflow:hidden;border-radius:14px;min-height:230px;margin:0 0 14px;background:linear-gradient(180deg,var(--sky1),var(--sky2));border:1px solid var(--line)}
 .banner .scape{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;background:none}
 .banner-text{position:relative;padding:26px 28px 0;max-width:720px}
@@ -383,6 +393,18 @@ tbody tr:hover td,table tr:hover td{background-image:linear-gradient(rgba(var(--
 #tab-stats:focus-visible ~ .tab-bar label[for="tab-stats"],#tab-tiers:focus-visible ~ .tab-bar label[for="tab-tiers"],#tab-ironman:focus-visible ~ .tab-bar label[for="tab-ironman"],#tab-quiz:focus-visible ~ .tab-bar label[for="tab-quiz"]{outline:2px solid var(--accent);outline-offset:-2px}
 @media (max-width:640px){h1{font-size:20px}main{padding:16px 16px 40px}.navlinks a{padding:3px 8px}.kpi .k-val{font-size:22px}.podium,.grid2{grid-template-columns:1fr}}
 `;
+
+const REPO = 'https://github.com/jianmliu/agent-pal';
+/** 技术报告的引用条目(和 docs/agent-pal-bench-draft.en.md 末尾的一致;报告升版时一起改) */
+export const BIBTEX = `@techreport{liu2026agentpalbench,
+  title       = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction},
+  author      = {Liu, Jianming},
+  year        = {2026},
+  month       = oct,
+  number      = {Agent-PAL-Bench Technical Report v0.7},
+  institution = {Agent-PAL Project},
+  url         = {https://github.com/jianmliu/agent-pal}
+}`;
 
 /** 任务显示顺序:按剧情先后(开场 → 第一章 → 经典存档按章 → 终局 → 拜月) */
 const TASK_ORDER = (id) => (/^opening/.test(id) ? 0 : /^wine/.test(id) ? 1 : /^pal-ch1/.test(id) ? 2 : /^classic(\d+)/.test(id) ? 10 + Number(id.match(/^classic(\d+)/)[1]) : /^pal-final/.test(id) ? 90 : /^baiyue/.test(id) ? 95 : 99);
@@ -453,6 +475,19 @@ ${taskBoard}
     <li>本地自检后提 PR：<code>node bench/bench.mjs check-pr</code>，合并后榜单自动更新</li>
   </ol>
   <p><a class="btn" href="https://github.com/jianmliu/agent-pal" target="_blank" rel="noopener">去 GitHub 提交 PR →</a></p>
+</div>
+
+<div class="cite">
+  <h2>技术报告与引用</h2>
+  <p>基准的设计、四个栏目的判分口径、各模型的成绩与行为分析，都写在技术报告里：</p>
+  <ul class="doc-links">
+    <li><a href="${REPO}/blob/main/docs/agent-pal-bench-draft.pdf" target="_blank" rel="noopener">PDF 排版稿</a></li>
+    <li><a href="${REPO}/blob/main/docs/agent-pal-bench-draft.en.md" target="_blank" rel="noopener">English</a></li>
+    <li><a href="${REPO}/blob/main/docs/agent-pal-bench-draft.md" target="_blank" rel="noopener">中文版</a></li>
+    <li><a href="${REPO}/blob/main/docs/agent-pal-bench-draft.tex" target="_blank" rel="noopener">LaTeX 源码</a></li>
+  </ul>
+  <p>在论文、文章里引用这份报告，或使用本仓库的题目、代码与评测轨迹时，请引用：</p>
+  <div class="bib"><button type="button" class="copy" data-copy="bibtex">复制</button><pre id="bibtex">${esc(BIBTEX)}</pre></div>
 </div>
 </section>`;
 }
@@ -643,6 +678,14 @@ addEventListener('DOMContentLoaded', () => {
   const show = (r) => document.querySelector('label[for="' + r.id + '"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });   // 窄屏:标签条横滑,把当前这一页的标签滑进视野
   const pick = () => { const el = document.getElementById('tab-' + ({ tasks: 'tiers' }[location.hash.slice(1)] || location.hash.slice(1))); if (el && el.classList.contains('tab-ctrl')) { el.checked = true; show(el); } };
   pick(); addEventListener('hashchange', pick);
+  // 复制引用:剪贴板不让写时,退回选中文字让人自己复制
+  document.addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-copy]'); if (!b) return;
+    const pre = document.getElementById(b.dataset.copy); if (!pre) return;
+    try { await navigator.clipboard.writeText(pre.textContent); b.textContent = '已复制'; }
+    catch { const sel = getSelection(), rg = document.createRange(); rg.selectNodeContents(pre); sel.removeAllRanges(); sel.addRange(rg); b.textContent = '已选中,按 ⌘C / Ctrl+C'; }
+    setTimeout(() => { b.textContent = '复制'; }, 2000);
+  });
   for (const r of document.querySelectorAll('.tab-ctrl')) r.addEventListener('change', () => { history.replaceState(null, '', '#' + r.id.slice(4)); show(r); });
 });
 </script></head><body><main>
