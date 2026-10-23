@@ -24,7 +24,7 @@ import { pixelResult, toolContent, TIER_TOOLS, BOOK_TOOLS, bookTool, NON_ADVANCI
 import { runTool } from '../../src/tools.mjs';
 import { systemPrompt, PROMPT_VERSION } from '../prompt.mjs';
 import { compareLogs, readLog, verifyEpisode, verify, episodeDigest, booksMismatch } from '../verify.mjs';
-import { collectRuns, mergeRunsByModel, rank, paretoFront, renderBoard, board, verifyStatus, collectQuizzes } from '../board.mjs';
+import { collectRuns, mergeRunsByModel, rank, paretoFront, renderBoard, board, verifyStatus, collectQuizzes, clearedOnly } from '../board.mjs';
 import { classifySubmissionDiff, checkPrSubmission } from '../pr-check.mjs';
 
 const base = {
@@ -386,7 +386,13 @@ console.log('  ✓ ⑪ 重放核验:逐次判分 / 终局 / 登记成绩对照,�
   assert.ok(sectionA.includes(`${t.id}</code> <span class="muted">v${t.version - 1}`) && sectionA.includes(`v${t.version}</span>`));   // 改版前后分两行
   assert.ok(sectionA.includes('p:cheap<br><code>g</code>'));                              // 矩阵列头带运行 id
   const { out, runs } = board(dirs, { out: path.join(root, 'site', 'board.html') });
-  assert.equal(runs, 9);
+  assert.equal(runs, 8);                                                                     // 只收通关局:一局都没打通的 f 不上榜
+  const cleared = clearedOnly(rows);
+  assert.ok(!cleared.some((r) => r.runId === 'f'));
+  assert.ok(cleared.every((r) => r.tasks.every((t) => t.episodes.every((e) => e.success))));   // 没打通的局全被拿掉
+  const cheapB = cleared.find((r) => r.model === 'p:cheap' && r.tier === 'B');
+  assert.deepEqual([cheapB.episodes, cheapB.cleared, cheapB.score], [1, 1, 1]);              // 2 局里通关 1 局 → 只剩那 1 局
+  assert.match(renderBoard(cleared, { generatedAt: 'T' }), /1 \/ 1 题/);
   assert.ok(fs.readFileSync(out, 'utf8').startsWith('<!doctype html>'));
   // 闭卷测验:同一模型取最新一份,分数并进成绩表一列,另有测验分节
   const qz = (name, model, sc, at) => {
@@ -410,7 +416,7 @@ console.log('  ✓ ⑪ 重放核验:逐次判分 / 终局 / 登记成绩对照,�
   const ehtml = renderBoard(rows, { generatedAt: 'T', quizzes: collectQuizzes([evil]) });
   assert.ok(!/<script>|<img |<svg |onerror=|onload=|<b>evil/.test(ehtml.slice(ehtml.indexOf('闭卷测验(训练数据污染检测)'))), 'quiz fields must be escaped / coerced');
   const both = board([...dirs, ...qd], { out: path.join(root, 'site', 'board2.html') });
-  assert.equal(both.quizzes, 2);
+  assert.equal(both.quizzes, 1);                                                          // p:none 没有通关局,测验也不上榜
   fs.rmSync(root, { recursive: true, force: true });
 }
 console.log('  ✓ ⑫ 排行页:分档、外部单列、排序、帕累托前沿、按局 + 指纹核验、题目版本分行、转义、闭卷测验列与分节');
@@ -1020,6 +1026,11 @@ console.log('  ✓ ㉒ Tier P (Pure 编程档):L0 原语 + run_code 工具面与
   assert.equal(passPr.ok, true);
   assert.match(passPr.markdown, /✅ Agent-PAL-Bench PR Submission Check/);
   assert.match(passPr.markdown, /`sub1`/);
+  // 只收通关的那一局:目录里有没打通的局 → 拒收,并点名是哪一局
+  fs.writeFileSync(path.join(rDir, 'episodes', `${t.id}__s42.json`), JSON.stringify({ ...epJson, success: false, successAt: null, endReason: 'budget-toolCalls', progress: 0.5 }));
+  const lostPr = checkPrSubmission({ changedFiles: ['bench/out/sub1/run.json'], repoRoot: tmpRepo, verifyFn: () => [{ task: t.id, seed: 42, ok: true, verdict: 'verified', diffs: [], warnings: [] }] });
+  assert.equal(lostPr.ok, false);
+  assert.ok(lostPr.errors.some((e) => /only cleared episodes are accepted/.test(e) && e.includes(`${t.id} s42 (budget-toolCalls)`)));
   fs.rmSync(tmpRepo, { recursive: true, force: true });
 }
 console.log('  ✓ ㉓ 公共 Leaderboard PR 门禁(零冲突 / 防篡改 / 增量核验)与同模型跨运行归并');

@@ -6,6 +6,7 @@
  * 规则:
  *  1. 零冲突协议:PR 严禁直接提交 bench/out/board.html(由合入 main 后的 CI 自动构建发布)。
  *  2. 沙箱防篡改:凡是向 bench/out/<dir>/ 提交评测数据的 PR,严禁同时修改引擎、题库、参考解或 verify.mjs 等代码文件(仅允许附带修改带官方来源的 bench/prices.json)。
+ *  4. 只收通关的那一局:提交的运行目录里每一局都必须到达目标(success);没打通的局删掉再交(排行榜也只计通关局,见 board.mjs clearedOnly)。
  *  3. 强制核验准入:每个新增或修改的运行目录必须已附带指纹匹配的 verify.json,并在 CI 容器上现场通过 bench verify 确定性重放与 Token/价格账本核验。
  */
 import { execFileSync } from 'node:child_process';
@@ -104,6 +105,14 @@ export function checkPrSubmission({ changedFiles = null, baseRef = 'origin/main'
       const pre = verifyStatus(dirPath);
       if (pre.state !== 'verified') {
         errors.push(`${name}: committed verify.json is ${pre.state} (${pre.ok}/${pre.total}); run "node bench/bench.mjs verify bench/out/${name}" before submitting`);
+      }
+      const epDir = path.join(dirPath, 'episodes');
+      const failed = fs.existsSync(epDir) ? fs.readdirSync(epDir).filter((f) => /__s-?\d+\.json$/.test(f))
+        .map((f) => { try { return JSON.parse(fs.readFileSync(path.join(epDir, f), 'utf8')); } catch { return { task: f, seed: '?', success: false, endReason: 'unreadable' }; } })
+        .filter((r) => r.success !== true) : [];
+      if (failed.length) {
+        errors.push(`${name}: only cleared episodes are accepted — remove the ${failed.length} episode(s) that did not reach the goal (and their .jsonl / .client.jsonl), then re-run verify: ` +
+          failed.map((r) => `${r.task} s${r.seed} (${r.endReason})`).join(', '));
       }
       const results = verifyFn(dirPath);
       const bad = results.filter((r) => !r.ok || r.verdict !== 'verified');
