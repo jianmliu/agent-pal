@@ -395,15 +395,13 @@ tbody tr:hover td,table tr:hover td{background-image:linear-gradient(rgba(var(--
 `;
 
 const REPO = 'https://github.com/jianmliu/agent-pal';
-/** 技术报告的引用条目(和 docs/agent-pal-bench-draft.en.md 末尾的一致;报告升版时一起改) */
-export const BIBTEX = `@techreport{liu2026agentpalbench,
-  title       = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction},
-  author      = {Liu, Jianming},
-  year        = {2026},
-  month       = oct,
-  number      = {Agent-PAL-Bench Technical Report v0.7},
-  institution = {Agent-PAL Project},
-  url         = {https://github.com/jianmliu/agent-pal}
+/** 技术报告的引用条目:不写版本号,只指向 GitHub 仓库(报告随仓库更新) */
+export const BIBTEX = `@misc{liu2026agentpalbench,
+  title        = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction},
+  author       = {Liu, Jianming},
+  year         = {2026},
+  howpublished = {\\url{https://github.com/jianmliu/agent-pal}},
+  note         = {Technical report and open-source benchmark}
 }`;
 
 /** 任务显示顺序:按剧情先后(开场 → 第一章 → 经典存档按章 → 终局 → 拜月) */
