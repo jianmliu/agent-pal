@@ -1,0 +1,102 @@
+{
+  "preservation-and-final-verification.json": {
+    "sha256": "eb9a6073342e4fcb83c508c5aadad2ab8faf5e2971f7a0d11868fa57d3e14f85",
+    "bytes": 929
+  },
+  "rain-first-verification.txt": {
+    "sha256": "164c4df054ded0299f0b64c7ce6d6d2beda1347364725605d0d5fefb5763d1be",
+    "bytes": 389
+  },
+  "baiyue-first-verification.txt": {
+    "sha256": "a31c43b01043f4305061965b634ce7b2bb61d9a9ce85977d9614ffbf36677abc",
+    "bytes": 391
+  },
+  "protocol.json": {
+    "sha256": "24ffd6c0f31cd78b78d6721fd90f98240dd40a279cd3f094acc0372ac8cd0386",
+    "bytes": 1413
+  },
+  "original-evaluation-index.json": {
+    "sha256": "5c0a67e0359abfc51207ef7e7f55c4551586271cad62f5f50dda2ef4c7e161fd",
+    "bytes": 22617
+  },
+  "reference-check.txt": {
+    "sha256": "19549def8aba67ebeb03bf8bab5be872260b4b77e2ad280005187337f7512869",
+    "bytes": 1029
+  },
+  "baihe-first-verification.txt": {
+    "sha256": "b0448439571e061014e0d700d5bc2bbc8770f0cc9f0674ff39ff731c56ca5ce5",
+    "bytes": 397
+  },
+  "originals/astra-20261023-baihe/summary.json": {
+    "sha256": "de78c0ed9e271d46ad89b6a28797631bb1988bc38051a891b93ef4ff6230f1f3",
+    "bytes": 1357
+  },
+  "originals/astra-20261023-baihe/verify.json": {
+    "sha256": "9b2d02bb8458bbd852938e212cca09f7b5bec05e3ef56826d87ea158025d7958",
+    "bytes": 812
+  },
+  "originals/astra-20261023-baihe/run.json": {
+    "sha256": "5ddf649e3732bf976800d35a442189a4890f2f00930e3f451ae9900dbe217713",
+    "bytes": 455
+  },
+  "originals/astra-20261023-baihe/episodes/classic10-baihe-medicine__s42.json": {
+    "sha256": "aebca9d6bcb50ff44a02b77f0db42b5114bd1f557eff106104dd52e9c45189f5",
+    "bytes": 735
+  },
+  "originals/astra-20261023-baihe/episodes/classic10-baihe-medicine__s42.jsonl": {
+    "sha256": "bf4d47484fb4013c229a04167c48f982828b63b5ea9cce8c734af644af1b7ae2",
+    "bytes": 40393
+  },
+  "originals/astra-20261023-baihe/episodes/classic10-baihe-medicine__s42.client.jsonl": {
+    "sha256": "7d3c2c680697d0663806a5d9533a03b61d882895572c8e0c1e502d4b40c5d007",
+    "bytes": 192600
+  },
+  "originals/astra-20261023-rain/summary.json": {
+    "sha256": "91ff6105dc262982ee006d310be5f13449359a6ccd7fd836e365ee165bf6567c",
+    "bytes": 1324
+  },
+  "originals/astra-20261023-rain/verify.json": {
+    "sha256": "41d2f712b0c92b9e6681d7ce2fda6cbce6f66508d2445c07e84adb5e354b99d5",
+    "bytes": 799
+  },
+  "originals/astra-20261023-rain/run.json": {
+    "sha256": "a2f430c6d290db8b34c50f1ecbcc72e368544debed169780ffb38cdfa2f29ae2",
+    "bytes": 448
+  },
+  "originals/astra-20261023-rain/episodes/classic48-rain-orbs__s42.jsonl": {
+    "sha256": "38f0075ae757f903f66ecd8682d9b7396cc8b9587606ea629726ac87bf3c2d55",
+    "bytes": 4540
+  },
+  "originals/astra-20261023-rain/episodes/classic48-rain-orbs__s42.json": {
+    "sha256": "03dadaba240765d62aa1362f6c4bc7f6be82643e030affa8bec321dca98da9a5",
+    "bytes": 709
+  },
+  "originals/astra-20261023-rain/episodes/classic48-rain-orbs__s42.client.jsonl": {
+    "sha256": "f42e31d82c8524fcf6aeac4bc55e3ec73b31d2e873c416743e583ae7da527c6e",
+    "bytes": 24621
+  },
+  "originals/astra-20261023-baiyue/summary.json": {
+    "sha256": "9909dc43b992e944de8f5789d54a597bad29f2e60b6245ede85ae6b9a00b1fd7",
+    "bytes": 1328
+  },
+  "originals/astra-20261023-baiyue/verify.json": {
+    "sha256": "ccec65053703e30515e26805ae447c01e66b5ddb8c3ef845622f6e9000db7686",
+    "bytes": 885
+  },
+  "originals/astra-20261023-baiyue/run.json": {
+    "sha256": "497f5e3255780d08ac3cd0dcf69daa270acd124daf5a0b41d39f41fc9105f72a",
+    "bytes": 1027
+  },
+  "originals/astra-20261023-baiyue/episodes/baiyue-single-origin__s42.jsonl": {
+    "sha256": "9a457c85f094a1af10b25bdce58350f4976958c5cf4645bf392410c08cba16b7",
+    "bytes": 150655
+  },
+  "originals/astra-20261023-baiyue/episodes/baiyue-single-origin__s42.client.jsonl": {
+    "sha256": "67356c002b7af52ede8269e7653cc98375f528f91c71fb9f323e353e081ce9ae",
+    "bytes": 432035
+  },
+  "originals/astra-20261023-baiyue/episodes/baiyue-single-origin__s42.json": {
+    "sha256": "023e3929cf230e5ff511a2709bff615dc03762b2b1312c3589b30bfcd0f590d7",
+    "bytes": 799
+  }
+}

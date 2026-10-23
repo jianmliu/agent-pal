@@ -1,0 +1,61 @@
+{
+  "task": "baiyue-single-origin",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "codex-cli:gpt-6-astra",
+  "runId": "astra-20261023-baiyue",
+  "hints": "standard",
+  "success": true,
+  "successAt": 28,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "success",
+  "milestones": {},
+  "toolCalls": 28,
+  "invalidCalls": 0,
+  "softStops": 0,
+  "tokensIn": 507847,
+  "tokensOut": 1515,
+  "tokensCached": 470912,
+  "tokensCacheWrite": 0,
+  "cost": 0.916012,
+  "virtualSeconds": 95.32,
+  "battleRounds": 11,
+  "battles": [
+    {
+      "enemyTeam": 313,
+      "enemyObjects": [
+        546,
+        511
+      ],
+      "completedRounds": 10,
+      "startedRounds": 11,
+      "rounds": 11,
+      "outcome": "won"
+    }
+  ],
+  "progress": 1,
+  "final": {
+    "scene": 281,
+    "pos": {
+      "gx": 120,
+      "gy": 115
+    },
+    "mode": "dialog",
+    "visitedScenes": [
+      281
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "codex-cli",
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "numTurns": 1,
+    "durationMs": 82536
+  },
+  "accountingStatus": "complete"
+}

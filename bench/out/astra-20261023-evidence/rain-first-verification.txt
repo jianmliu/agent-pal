@@ -1,0 +1,8 @@
+✗ classic48-rain-orbs seed 42: mismatch · claimed success (success)
+    result file tokensIn 202706 disagrees with the log's 0
+    result file tokensOut 566 disagrees with the log's 0
+    result file tokensCached 178048 disagrees with the log's 0
+    result file cost 0.452928 disagrees with the log's 0
+    note: run recorded on dirty worktree (896e955-dirty)
+
+0/1 episode(s) verified

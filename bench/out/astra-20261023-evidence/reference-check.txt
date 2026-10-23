@@ -1,0 +1,9 @@
+✓ classic48-rain-orbs seed 42: goal at step 7/7 · milestones tablet-activated@1 first-orb-placed@3 · vt 39.564s
+✓ classic48-rain-orbs seed 43: goal at step 7/7 · milestones tablet-activated@1 first-orb-placed@3 · vt 39.564s
+✓ classic48-rain-orbs seed 44: goal at step 7/7 · milestones tablet-activated@1 first-orb-placed@3 · vt 39.564s
+✓ classic10-baihe-medicine seed 42: goal at step 40/40 · milestones got-ginkgo@8 got-carp@16 got-antler@34 · vt 123.092s
+✓ classic10-baihe-medicine seed 43: goal at step 40/40 · milestones got-ginkgo@8 got-carp@16 got-antler@34 · vt 124.009s
+✓ classic10-baihe-medicine seed 44: goal at step 40/40 · milestones got-ginkgo@8 got-carp@16 got-antler@34 · vt 123.764s
+✓ baiyue-single-origin seed 42: goal at step 35/35 · rounds 12 · milestones (none) · vt 141.558s
+✓ baiyue-single-origin seed 43: goal at step 36/36 · rounds 12 · milestones (none) · vt 142.588s
+✓ baiyue-single-origin seed 44: goal at step 36/36 · rounds 14 · milestones (none) · vt 158.398s

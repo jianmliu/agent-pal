@@ -1,0 +1,24 @@
+{
+  "scoring": "cost",
+  "runId": "astra-20261023-rain",
+  "model": "codex-cli:gpt-6-astra",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 7
+      }
+    }
+  ],
+  "promptVersion": 3,
+  "code": "896e955-dirty",
+  "startedAt": "2026-10-23T13:20:09.663Z",
+  "finishedAt": "2026-10-23T13:21:04.524Z"
+}

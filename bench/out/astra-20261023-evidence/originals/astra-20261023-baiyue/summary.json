@@ -1,0 +1,58 @@
+{
+  "runId": "astra-20261023-baiyue",
+  "model": "codex-cli:gpt-6-astra",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "896e955-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "battleRounds",
+  "battleRoundsMeanOnSuccess": 11,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 0.916012,
+  "costTotal": 0.916012,
+  "tokensTotal": 509362,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "baiyue-single-origin",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": 11,
+      "toolCallsMedianOnSuccess": 28,
+      "invalidRate": 0,
+      "tokensMean": 509362,
+      "costTotal": 0.916012,
+      "costMeanOnSuccess": 0.916012,
+      "efficiencyMean": 1.25,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 28,
+          "successAt": 28,
+          "invalidCalls": 0,
+          "tokensIn": 507847,
+          "tokensOut": 1515,
+          "cost": 0.916012,
+          "virtualSeconds": 95.32,
+          "battleRounds": 11,
+          "par": 35,
+          "efficiency": 1.25
+        }
+      ]
+    }
+  ]
+}

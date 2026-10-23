@@ -1,0 +1,692 @@
+{
+  "date": "2026-10-23",
+  "scope": "Three single-seed Astra episodes with historical comparator records; not an estimated population success rate or matched model ranking",
+  "protocol": {
+    "date": "2026-10-23",
+    "model": "codex-cli:gpt-6-astra",
+    "effort": "medium",
+    "tier": "B",
+    "hints": "standard",
+    "seed": 42,
+    "wallSecondsPerEpisode": 1800,
+    "stripCheese": false,
+    "budgets": {
+      "classic48-rain-orbs": 80,
+      "classic10-baihe-medicine": 240,
+      "baiyue-single-origin": 180
+    },
+    "runtime": {
+      "node": "v25.2.1",
+      "agent": "198e8d70d0e85a1decec2fa7642f05d44cd8f40aa1fcf342b852e51b5c760eef",
+      "engine": "3fd4841b40424a0b9dbe4c409cca5134b8eea168f36ea3913acf0c72187e343c",
+      "bench": "5c3ad5b134955127bd115357d94db550a222a74d01c7c6978e98cccb635b851d",
+      "assets": "f1b6ed6c9884a73672c83fea1ff0671be5af9825c5a3174e363710c4dcd4c643"
+    },
+    "taskHashes": {
+      "classic48-rain-orbs": "49df8d8a2e8d0dfe8dda084660fb6b5910efe1d2485902c7a9050b503d97b4cd",
+      "classic10-baihe-medicine": "9871cc4088af38eaab6545220e41e9b189e35282be3b6f9a89ad20084a636a27",
+      "baiyue-single-origin": "130f135db2ec2daef4d3d71d0110a4e05929b4f4b9fd762bfc79176cb1b288f7"
+    },
+    "comparison": "Historical records, not contemporaneous matched reruns; CLI and runtime differences must be disclosed",
+    "effectiveBudgetPolicy": "episode.mjs multiplies task token cap by at least 500 and virtual-seconds cap by at least 20; external CLI usage arrives at episode end",
+    "stopping": "Stop each episode at existing goal/failure/call cap or 1800s wall; no unplanned continuation or tactical coaching"
+  },
+  "records": [
+    {
+      "scenario": "rain",
+      "label": "Astra",
+      "model": "codex-cli:gpt-6-astra",
+      "run": "astra-20261023-rain",
+      "code": "896e955-dirty",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "success": true,
+      "calls": 13,
+      "invalidCalls": 0,
+      "battleRounds": null,
+      "progress": 1,
+      "milestones": {
+        "tablet-activated": 3,
+        "first-orb-placed": 9
+      },
+      "endReason": "success",
+      "tokensIn": 202706,
+      "tokensOut": 566,
+      "tokensCached": 178048,
+      "reportedEstimatedCost": 0.452928,
+      "durationMs": 54201,
+      "client": {
+        "name": "codex-cli",
+        "model": "gpt-6-astra",
+        "effort": "medium",
+        "numTurns": 1,
+        "durationMs": 54201
+      },
+      "recordedBudget": null,
+      "autoReloadNotes": 0,
+      "loggedBattles": [],
+      "source": "bench/out/astra-20261023-rain/episodes/classic48-rain-orbs__s42.json"
+    },
+    {
+      "scenario": "rain",
+      "label": "Opus 5.5",
+      "model": "claude-cli:claude-opus-5-5",
+      "run": "claude-cli_claude-opus-5-5-B-20261021T023347",
+      "code": "3ccdd34",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "success": true,
+      "calls": 10,
+      "invalidCalls": 0,
+      "battleRounds": null,
+      "progress": 1,
+      "milestones": {
+        "tablet-activated": 4,
+        "first-orb-placed": 6
+      },
+      "endReason": "success",
+      "tokensIn": 86214,
+      "tokensOut": 1603,
+      "tokensCached": 70351,
+      "reportedEstimatedCost": 0.17296219999999998,
+      "durationMs": 35109,
+      "client": {
+        "name": "claude-cli",
+        "model": "claude-opus-5-5",
+        "numTurns": 11,
+        "isError": false,
+        "subtype": "success",
+        "durationMs": 35109
+      },
+      "recordedBudget": null,
+      "autoReloadNotes": 0,
+      "loggedBattles": [],
+      "source": "bench/out/claude-cli_claude-opus-5-5-B-20261021T023347/episodes/classic48-rain-orbs__s42.json"
+    },
+    {
+      "scenario": "rain",
+      "label": "GPT-6.1 Sol",
+      "model": "codex-cli:gpt-6.1-sol",
+      "run": "codex-cli_gpt-6.1-sol-B-20261021T023347",
+      "code": "3ccdd34",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "success": true,
+      "calls": 13,
+      "invalidCalls": 0,
+      "battleRounds": null,
+      "progress": 1,
+      "milestones": {
+        "tablet-activated": 3,
+        "first-orb-placed": 9
+      },
+      "endReason": "success",
+      "tokensIn": 159861,
+      "tokensOut": 531,
+      "tokensCached": 142208,
+      "reportedEstimatedCost": 0.054836800000000005,
+      "durationMs": 31559,
+      "client": {
+        "name": "codex-cli",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "numTurns": 1,
+        "durationMs": 31559
+      },
+      "recordedBudget": null,
+      "autoReloadNotes": 0,
+      "loggedBattles": [],
+      "source": "bench/out/codex-cli_gpt-6.1-sol-B-20261021T023347/episodes/classic48-rain-orbs__s42.json"
+    },
+    {
+      "scenario": "rain",
+      "label": "Gemini 4 Argon",
+      "model": "agy-cli:gemini-4-argon",
+      "run": "agy-cli_gemini-4-argon-B-20261021T023347",
+      "code": "3ccdd34",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "success": true,
+      "calls": 11,
+      "invalidCalls": 0,
+      "battleRounds": null,
+      "progress": 1,
+      "milestones": {
+        "tablet-activated": 3,
+        "first-orb-placed": 7
+      },
+      "endReason": "success",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "tokensCached": 0,
+      "reportedEstimatedCost": 0,
+      "durationMs": 240180,
+      "client": {
+        "name": "agy-cli",
+        "model": "gemini-4-argon",
+        "effort": "medium",
+        "durationMs": 240180
+      },
+      "recordedBudget": null,
+      "autoReloadNotes": 0,
+      "loggedBattles": [],
+      "source": "bench/out/agy-cli_gemini-4-argon-B-20261021T023347/episodes/classic48-rain-orbs__s42.json"
+    },
+    {
+      "scenario": "baihe",
+      "label": "Astra",
+      "model": "codex-cli:gpt-6-astra",
+      "run": "astra-20261023-baihe",
+      "code": "896e955-dirty",
+      "task": "classic10-baihe-medicine",
+      "seed": 42,
+      "success": true,
+      "calls": 107,
+      "invalidCalls": 4,
+      "battleRounds": null,
+      "progress": 1,
+      "milestones": {
+        "got-ginkgo": 17,
+        "got-carp": 50,
+        "got-antler": 101
+      },
+      "endReason": "success",
+      "tokensIn": 2043753,
+      "tokensOut": 2592,
+      "tokensCached": 1973888,
+      "reportedEstimatedCost": 2.802138,
+      "durationMs": 208499,
+      "client": {
+        "name": "codex-cli",
+        "model": "gpt-6-astra",
+        "effort": "medium",
+        "numTurns": 1,
+        "durationMs": 208499
+      },
+      "recordedBudget": null,
+      "autoReloadNotes": 0,
+      "loggedBattles": [],
+      "source": "bench/out/astra-20261023-baihe/episodes/classic10-baihe-medicine__s42.json"
+    },
+    {
+      "scenario": "baihe",
+      "label": "Opus 5.5",
+      "model": "claude-cli:claude-opus-5-5",
+      "run": "claude-cli_claude-opus-5-5-B-240cap",
+      "code": "0884035-dirty",
+      "task": "classic10-baihe-medicine",
+      "seed": 42,
+      "success": true,
+      "calls": 176,
+      "invalidCalls": 17,
+      "battleRounds": null,
+      "progress": 1,
+      "milestones": {
+        "got-ginkgo": 15,
+        "got-carp": 45,
+        "got-antler": 170
+      },
+      "endReason": "success",
+      "tokensIn": 4940963,
+      "tokensOut": 21826,
+      "tokensCached": 4822997,
+      "reportedEstimatedCost": 2.3437514000000004,
+      "durationMs": 231280,
+      "client": {
+        "name": "claude-cli",
+        "model": "claude-opus-5-5",
+        "numTurns": 57,
+        "isError": false,
+        "subtype": "success",
+        "durationMs": 231280
+      },
+      "recordedBudget": 240,
+      "autoReloadNotes": 0,
+      "loggedBattles": [],
+      "source": "bench/out/claude-cli_claude-opus-5-5-B-240cap/episodes/classic10-baihe-medicine__s42.json"
+    },
+    {
+      "scenario": "baihe",
+      "label": "GPT-6.1 Sol",
+      "model": "codex-cli:gpt-6.1-sol",
+      "run": "codex-cli_gpt-6.1-sol-B-20261021T040223",
+      "code": "0884035",
+      "task": "classic10-baihe-medicine",
+      "seed": 42,
+      "success": true,
+      "calls": 117,
+      "invalidCalls": 8,
+      "battleRounds": null,
+      "progress": 1,
+      "milestones": {
+        "got-ginkgo": 15,
+        "got-carp": 112,
+        "got-antler": 80
+      },
+      "endReason": "success",
+      "tokensIn": 2291857,
+      "tokensOut": 2852,
+      "tokensCached": 2224000,
+      "reportedEstimatedCost": 0.386634,
+      "durationMs": 116505,
+      "client": {
+        "name": "codex-cli",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "numTurns": 1,
+        "durationMs": 116505
+      },
+      "recordedBudget": null,
+      "autoReloadNotes": 0,
+      "loggedBattles": [],
+      "source": "bench/out/codex-cli_gpt-6.1-sol-B-20261021T040223/episodes/classic10-baihe-medicine__s42.json"
+    },
+    {
+      "scenario": "baihe",
+      "label": "Gemini 4 Argon",
+      "model": "agy-cli:gemini-4-argon",
+      "run": "agy-cli_gemini-4-argon-B-20261021T040226",
+      "code": "0884035",
+      "task": "classic10-baihe-medicine",
+      "seed": 42,
+      "success": true,
+      "calls": 90,
+      "invalidCalls": 2,
+      "battleRounds": null,
+      "progress": 1,
+      "milestones": {
+        "got-ginkgo": 11,
+        "got-carp": 42,
+        "got-antler": 82
+      },
+      "endReason": "success",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "tokensCached": 0,
+      "reportedEstimatedCost": 0,
+      "durationMs": 1005661,
+      "client": {
+        "name": "agy-cli",
+        "model": "gemini-4-argon",
+        "effort": "medium",
+        "durationMs": 1005661
+      },
+      "recordedBudget": null,
+      "autoReloadNotes": 0,
+      "loggedBattles": [],
+      "source": "bench/out/agy-cli_gemini-4-argon-B-20261021T040226/episodes/classic10-baihe-medicine__s42.json"
+    },
+    {
+      "scenario": "baiyue",
+      "label": "Astra",
+      "model": "codex-cli:gpt-6-astra",
+      "run": "astra-20261023-baiyue",
+      "code": "896e955-dirty",
+      "task": "baiyue-single-origin",
+      "seed": 42,
+      "success": true,
+      "calls": 28,
+      "invalidCalls": 0,
+      "battleRounds": 11,
+      "progress": 1,
+      "milestones": {},
+      "endReason": "success",
+      "tokensIn": 507847,
+      "tokensOut": 1515,
+      "tokensCached": 470912,
+      "reportedEstimatedCost": 0.916012,
+      "durationMs": 82536,
+      "client": {
+        "name": "codex-cli",
+        "model": "gpt-6-astra",
+        "effort": "medium",
+        "numTurns": 1,
+        "durationMs": 82536
+      },
+      "recordedBudget": null,
+      "autoReloadNotes": 0,
+      "loggedBattles": [
+        {
+          "enemyTeam": 313,
+          "enemyObjects": [
+            546,
+            511
+          ],
+          "completedRounds": 10,
+          "startedRounds": 11,
+          "rounds": 11,
+          "outcome": "won"
+        }
+      ],
+      "source": "bench/out/astra-20261023-baiyue/episodes/baiyue-single-origin__s42.json"
+    },
+    {
+      "scenario": "baiyue",
+      "label": "Opus 5.5",
+      "model": "claude-cli:claude-opus-5-5",
+      "run": "claude-cli_claude-opus-5-5-B-baiyue-retry",
+      "code": "0884035-dirty",
+      "task": "baiyue-single-origin",
+      "seed": 42,
+      "success": true,
+      "calls": 157,
+      "invalidCalls": 0,
+      "battleRounds": 17,
+      "progress": 1,
+      "milestones": {},
+      "endReason": "success",
+      "tokensIn": 26915052,
+      "tokensOut": 44589,
+      "tokensCached": 25870599,
+      "reportedEstimatedCost": 14.420851800000003,
+      "durationMs": 693016,
+      "client": {
+        "name": "claude-cli",
+        "model": "claude-opus-5-5",
+        "numTurns": 133,
+        "isError": false,
+        "subtype": "success",
+        "durationMs": 693016
+      },
+      "recordedBudget": null,
+      "autoReloadNotes": 3,
+      "loggedBattles": [
+        {
+          "enemyTeam": 313,
+          "enemyObjects": [
+            546,
+            511,
+            503
+          ],
+          "completedRounds": 12,
+          "startedRounds": 13,
+          "rounds": 13,
+          "outcome": "lost"
+        },
+        {
+          "enemyTeam": 313,
+          "enemyObjects": [
+            546,
+            493,
+            511
+          ],
+          "completedRounds": 24,
+          "startedRounds": 25,
+          "rounds": 25,
+          "outcome": "lost"
+        },
+        {
+          "enemyTeam": 313,
+          "enemyObjects": [
+            546
+          ],
+          "completedRounds": 10,
+          "startedRounds": 11,
+          "rounds": 11,
+          "outcome": "lost"
+        },
+        {
+          "enemyTeam": 313,
+          "enemyObjects": [
+            546,
+            503,
+            511
+          ],
+          "completedRounds": 16,
+          "startedRounds": 17,
+          "rounds": 17,
+          "outcome": "won"
+        }
+      ],
+      "source": "bench/out/claude-cli_claude-opus-5-5-B-baiyue-retry/episodes/baiyue-single-origin__s42.json"
+    },
+    {
+      "scenario": "baiyue",
+      "label": "GPT-6.1 Sol",
+      "model": "codex-cli:gpt-6.1-sol",
+      "run": "codex-cli_gpt-6.1-sol-B-baiyue",
+      "code": "0884035-dirty",
+      "task": "baiyue-single-origin",
+      "seed": 42,
+      "success": true,
+      "calls": 33,
+      "invalidCalls": 0,
+      "battleRounds": 14,
+      "progress": 1,
+      "milestones": {},
+      "endReason": "success",
+      "tokensIn": 673753,
+      "tokensOut": 4175,
+      "tokensCached": 592640,
+      "reportedEstimatedCost": 0.26324,
+      "durationMs": 139573,
+      "client": {
+        "name": "codex-cli",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "numTurns": 1,
+        "durationMs": 139573
+      },
+      "recordedBudget": null,
+      "autoReloadNotes": 0,
+      "loggedBattles": [
+        {
+          "enemyTeam": 313,
+          "enemyObjects": [
+            546
+          ],
+          "completedRounds": 13,
+          "startedRounds": 14,
+          "rounds": 14,
+          "outcome": "won"
+        }
+      ],
+      "source": "bench/out/codex-cli_gpt-6.1-sol-B-baiyue/episodes/baiyue-single-origin__s42.json"
+    },
+    {
+      "scenario": "baiyue",
+      "label": "Gemini 4 Argon",
+      "model": "agy-cli:gemini-4-argon",
+      "run": "agy-cli_gemini-4-argon-B-baiyue-retry",
+      "code": "0884035-dirty",
+      "task": "baiyue-single-origin",
+      "seed": 42,
+      "success": true,
+      "calls": 42,
+      "invalidCalls": 0,
+      "battleRounds": 7,
+      "progress": 1,
+      "milestones": {},
+      "endReason": "success",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "tokensCached": 0,
+      "reportedEstimatedCost": 0,
+      "durationMs": 348696,
+      "client": {
+        "name": "agy-cli",
+        "model": "gemini-4-argon",
+        "effort": "medium",
+        "durationMs": 348696
+      },
+      "recordedBudget": null,
+      "autoReloadNotes": 1,
+      "loggedBattles": [
+        {
+          "enemyTeam": 313,
+          "enemyObjects": [
+            546
+          ],
+          "completedRounds": 7,
+          "startedRounds": 8,
+          "rounds": 8,
+          "outcome": "lost"
+        },
+        {
+          "enemyTeam": 313,
+          "enemyObjects": [
+            546,
+            503
+          ],
+          "completedRounds": 6,
+          "startedRounds": 7,
+          "rounds": 7,
+          "outcome": "won"
+        }
+      ],
+      "source": "bench/out/agy-cli_gemini-4-argon-B-baiyue-retry/episodes/baiyue-single-origin__s42.json"
+    }
+  ],
+  "sources": {
+    "bench/out/astra-20261023-rain/episodes/classic48-rain-orbs__s42.json": {
+      "sha256": "03dadaba240765d62aa1362f6c4bc7f6be82643e030affa8bec321dca98da9a5",
+      "bytes": 709
+    },
+    "bench/out/astra-20261023-rain/episodes/classic48-rain-orbs__s42.jsonl": {
+      "sha256": "38f0075ae757f903f66ecd8682d9b7396cc8b9587606ea629726ac87bf3c2d55",
+      "bytes": 4540
+    },
+    "bench/out/astra-20261023-rain/run.json": {
+      "sha256": "a2f430c6d290db8b34c50f1ecbcc72e368544debed169780ffb38cdfa2f29ae2",
+      "bytes": 448
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-20261021T023347/episodes/classic48-rain-orbs__s42.json": {
+      "sha256": "4edab429a11fd20596a7c7208dc407b556d9a3fceb074acbeea799bac27872bf",
+      "bytes": 777
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-20261021T023347/episodes/classic48-rain-orbs__s42.jsonl": {
+      "sha256": "610b2fa328aa4b325d9dccb0ee2ab3d48425349e5c499b3c546315af1d79c308",
+      "bytes": 6000
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-20261021T023347/run.json": {
+      "sha256": "acd27276a084baf048916160ce4067092dcb52aba4826b0c197c3629032e9174",
+      "bytes": 472
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-20261021T023347/episodes/classic48-rain-orbs__s42.json": {
+      "sha256": "b30333f7c88807ef3fd30aed0af3cdfddbd62f14634e07b7967abbb94c560ee8",
+      "bytes": 741
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-20261021T023347/episodes/classic48-rain-orbs__s42.jsonl": {
+      "sha256": "21214071eb970faebe497fc95318a1cdf42af19d815da15844ed40a2128e7245",
+      "bytes": 4581
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-20261021T023347/run.json": {
+      "sha256": "e66268902e914d85a924d86d8ef9342cfe63afef82f9e6f7363cd027428258f6",
+      "bytes": 462
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-20261021T023347/episodes/classic48-rain-orbs__s42.json": {
+      "sha256": "de96f712c34321cae0715f1d20c5d5ae2ddbdd4d7cd67842c51b68b4d92b0e9c",
+      "bytes": 701
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-20261021T023347/episodes/classic48-rain-orbs__s42.jsonl": {
+      "sha256": "df6dfc3d4c47c6898eefda63b3c70b651d0fb30bc6aa1a58e2de3748e119d8e4",
+      "bytes": 5258
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-20261021T023347/run.json": {
+      "sha256": "524779c44ec0eb1322b875ccbf26762f79ccbaf67d9204367d3b123765176bfe",
+      "bytes": 464
+    },
+    "bench/out/astra-20261023-baihe/episodes/classic10-baihe-medicine__s42.json": {
+      "sha256": "aebca9d6bcb50ff44a02b77f0db42b5114bd1f557eff106104dd52e9c45189f5",
+      "bytes": 735
+    },
+    "bench/out/astra-20261023-baihe/episodes/classic10-baihe-medicine__s42.jsonl": {
+      "sha256": "bf4d47484fb4013c229a04167c48f982828b63b5ea9cce8c734af644af1b7ae2",
+      "bytes": 40393
+    },
+    "bench/out/astra-20261023-baihe/run.json": {
+      "sha256": "5ddf649e3732bf976800d35a442189a4890f2f00930e3f451ae9900dbe217713",
+      "bytes": 455
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-240cap/episodes/classic10-baihe-medicine__s42.json": {
+      "sha256": "49cee9c7a8ca5f63929b8f064109b4578a4e12004ae5c4df4135192cadc1ad83",
+      "bytes": 822
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-240cap/episodes/classic10-baihe-medicine__s42.jsonl": {
+      "sha256": "b88809a86330c4f1eb8ba6bbc2e5170eab94a3e428247624cd8f961f68943cf7",
+      "bytes": 87660
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-240cap/run.json": {
+      "sha256": "77d77764b6cac7c149a85005bf61c074a8ed65e6c18374d5c31ec39b74db9eaf",
+      "bytes": 475
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-20261021T040223/episodes/classic10-baihe-medicine__s42.json": {
+      "sha256": "c8899754c164383489a8d7e1514d6a116f17b9481ac4f7331f6a98860475e327",
+      "bytes": 758
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-20261021T040223/episodes/classic10-baihe-medicine__s42.jsonl": {
+      "sha256": "12dc659c506d309e521bd9185807824faec3d0a01d15563fb83fe7bf27682e21",
+      "bytes": 44931
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-20261021T040223/run.json": {
+      "sha256": "e5cf7ee57017c975e685c1f8c816f28fb9486c9746a9698f4f02ba49d1a17869",
+      "bytes": 468
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-20261021T040226/episodes/classic10-baihe-medicine__s42.json": {
+      "sha256": "16e08c877ebdc45d1299a769aefbac36da3ddb08f8d31ad8006b7c8cbdd223da",
+      "bytes": 721
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-20261021T040226/episodes/classic10-baihe-medicine__s42.jsonl": {
+      "sha256": "b3c0f9d6e4012f8153201b37eadf5460d5df1c1db75a3ac6844c1fd7e091e587",
+      "bytes": 38549
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-20261021T040226/run.json": {
+      "sha256": "4864db3306bc2eecf447e25ccd1d50fa642570357223abe91eecc1af1fa5c2b4",
+      "bytes": 470
+    },
+    "bench/out/astra-20261023-baiyue/episodes/baiyue-single-origin__s42.json": {
+      "sha256": "023e3929cf230e5ff511a2709bff615dc03762b2b1312c3589b30bfcd0f590d7",
+      "bytes": 799
+    },
+    "bench/out/astra-20261023-baiyue/episodes/baiyue-single-origin__s42.jsonl": {
+      "sha256": "9a457c85f094a1af10b25bdce58350f4976958c5cf4645bf392410c08cba16b7",
+      "bytes": 150655
+    },
+    "bench/out/astra-20261023-baiyue/run.json": {
+      "sha256": "497f5e3255780d08ac3cd0dcf69daa270acd124daf5a0b41d39f41fc9105f72a",
+      "bytes": 1027
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-baiyue-retry/episodes/baiyue-single-origin__s42.json": {
+      "sha256": "b3017a7f114cbbd5f0b4d762f31d80ffffeab77182e8d5cc1b1121db68feaa79",
+      "bytes": 1217
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-baiyue-retry/episodes/baiyue-single-origin__s42.jsonl": {
+      "sha256": "20d2468f3b7e938449dbbf5697b8c9a9d5fb607ceb0a6b7825ad4f814eda7d04",
+      "bytes": 834387
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-baiyue-retry/run.json": {
+      "sha256": "08d80cb2fb9617b5d6c5662a65a57e8b630e6e7168d32465c1d306031a46c5d3",
+      "bytes": 1052
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-baiyue/episodes/baiyue-single-origin__s42.json": {
+      "sha256": "35a1e389d51ecd84a0af1a8cdc99dfbfefaeede739616ddd2eb41c8f44f9de7b",
+      "bytes": 805
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-baiyue/episodes/baiyue-single-origin__s42.jsonl": {
+      "sha256": "a9725b7679607754a5be21e5cedce26fa5830025f8651b50d6dade7339580afe",
+      "bytes": 175398
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-baiyue/run.json": {
+      "sha256": "bc362e1aeba4c8d858ee58bd8ffadd8e4a6943dc8aed3cd8d553c9145bc0918e",
+      "bytes": 1036
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-baiyue-retry/episodes/baiyue-single-origin__s42.json": {
+      "sha256": "d8689d1bde204aafe1aa22032213e0a383797089d675d1cc6668c8bda940641f",
+      "bytes": 888
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-baiyue-retry/episodes/baiyue-single-origin__s42.jsonl": {
+      "sha256": "61987510b21c00ca9c2e95ee98c0ef2ecbc6dc8341e0ee53926c5ba7edf8c09f",
+      "bytes": 224248
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-baiyue-retry/run.json": {
+      "sha256": "ecd3d966a47e374d110e7d4be23ef133bc34044d349de8995c7603c8ffa3e8c1",
+      "bytes": 1044
+    }
+  },
+  "gameplayReplayDiffs": {
+    "rain": [],
+    "baihe": [],
+    "baiyue": []
+  },
+  "fullVerify": "All three Astra episodes fail full verify solely on result-vs-server-end token/cost fields; raw logs are unchanged. Gameplay replay comparison is reported separately."
+}

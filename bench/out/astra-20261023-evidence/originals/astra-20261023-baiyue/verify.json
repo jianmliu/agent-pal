@@ -1,0 +1,28 @@
+{
+  "verifiedAt": "2026-10-23T13:22:31.211Z",
+  "code": "896e955-dirty",
+  "runDigest": "653793dfe9471ead6cd0ae4e6eb37775ae1c09d177ad669cfca38b76991b66b8",
+  "episodes": [
+    {
+      "file": "baiyue-single-origin__s42.jsonl",
+      "task": "baiyue-single-origin",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "35c052aa4e3fbc0139136db2b63493b13556f62ae531ba0414c5c8604463e341",
+      "ok": false,
+      "verdict": "mismatch",
+      "diffs": [
+        "result file tokensIn 507847 disagrees with the log's 0",
+        "result file tokensOut 1515 disagrees with the log's 0",
+        "result file tokensCached 470912 disagrees with the log's 0",
+        "result file cost 0.916012 disagrees with the log's 0"
+      ],
+      "warnings": [
+        "run recorded on dirty worktree (896e955-dirty)"
+      ]
+    }
+  ]
+}

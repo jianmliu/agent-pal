@@ -1,0 +1,56 @@
+{
+  "task": "classic10-baihe-medicine",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "codex-cli:gpt-6-astra",
+  "runId": "astra-20261023-baihe",
+  "hints": "standard",
+  "success": true,
+  "successAt": 107,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "success",
+  "milestones": {
+    "got-ginkgo": 17,
+    "got-carp": 50,
+    "got-antler": 101
+  },
+  "toolCalls": 107,
+  "invalidCalls": 4,
+  "softStops": 2,
+  "tokensIn": 2043753,
+  "tokensOut": 2592,
+  "tokensCached": 1973888,
+  "tokensCacheWrite": 0,
+  "cost": 2.802138,
+  "virtualSeconds": 237.54,
+  "battles": [],
+  "progress": 1,
+  "final": {
+    "scene": 52,
+    "pos": {
+      "gx": 82,
+      "gy": 94
+    },
+    "mode": "control",
+    "visitedScenes": [
+      52,
+      53,
+      49,
+      51,
+      48
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "codex-cli",
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "numTurns": 1,
+    "durationMs": 208499
+  },
+  "accountingStatus": "complete"
+}

@@ -257,3 +257,27 @@ node apps/agent-pal/bench/test/baiyue-e2e.mjs
 ```
 
 最后一条需要本地游戏资产，不调用付费模型。它执行 validate、四题check、12局run、score、verify和board，并检查非法动作、预算起点、回合篡改与元数据删改。产物目录写在结束输出中，`acceptance.json` 表示完整验收成功。旧题的成本评分与外部agent分区保留。
+
+## 外部 CLI 收尾与历史记账补全
+
+Claude、Codex 和 Argon CLI 现在使用同一收尾流程：等待客户端 stdout 排空并关闭原始客户端日志，保留游戏服务的原始 `end`，追加一个 `client_finalized` 事件，再原子生成结果 JSON。事件记录客户端状态、用量，以及原游戏日志前缀和原始 CLI 日志的 SHA-256。重复收尾不会重复累计；若追加后结果文件写入中断，再次收尾可以恢复结果。
+
+缺少有效 usage、格式异常或墙钟超时，记账状态为 `unknown` / `incomplete`，相关值为 `null`，不把缺失用量当作零。Argon 的现有文本输出没有可验证的结构化 usage，因此保持未知。成本仍是客户端报告或 runner 估算，不等于经过账单对账。
+
+`verify` 同时核对游戏重放、原始 CLI 用量提取、记账事件和结果 JSON。新运行通过 `clientAccountingVersion: 1` 要求记账事件；旧运行保持原核验规则。排行榜核验指纹包含已绑定的 CLI 原始证据，原始证据被更改后缓存核验失效。
+
+已有外部 CLI 运行可以直接补全记账，不调用模型：
+
+```bash
+node bench/backfill-client.mjs bench/out/<run>/episodes/<task>__s42.jsonl --backup-dir /absolute/path/to/archive
+```
+
+工具先逐字节备份原游戏日志、客户端日志、结果、run.json 和已有 verify.json，并写入哈希清单，再追加记账事件。原始 `end` 不修改；使用已有备份时内容不同会拒绝覆盖。补全后重新运行 `bench verify`。
+
+如果核验工具已经修订，而旧运行冻结了完整运行时指纹，应使用保留的原执行版本重放：
+
+```bash
+node bench/bench.mjs verify bench/out/<run> --runtime-root /absolute/path/to/frozen-runtime
+```
+
+该目录必须包含原 `bench`、`src`、已构建引擎和可访问的资源。新核验器实际计算该目录的运行时指纹，并用其中的执行入口重放；不会跳过原有运行时/资源指纹检查。报告记录所用目录。没有原执行产物时应保留不可核验结论，不能用新版本冒充原版本。

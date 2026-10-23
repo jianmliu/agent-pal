@@ -151,7 +151,7 @@ if (cmd === 'validate') {
   printSummary(score(argv[1]));
 } else if (cmd === 'verify') {
   if (!argv[1]) { process.stderr.write('usage: bench.mjs verify <runDir | runDir/episodes/<task>__s<seed>.jsonl>\n'); process.exit(2); }
-  process.exit(verify(argv[1]).every((r) => r.ok) ? 0 : 1);
+  process.exit(verify(argv[1], {runtimeRoot: flag('--runtime-root', null)}).every((r) => r.ok) ? 0 : 1);
 } else if (cmd === 'board') {
   const dirs = argv.slice(1).filter((x, i, a) => !x.startsWith('--') && a[i - 1] !== '--out');
   const { out, runs, quizzes } = board(dirs, {

@@ -1,0 +1,58 @@
+{
+  "runId": "astra-20261023-baihe",
+  "model": "codex-cli:gpt-6-astra",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "896e955-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 2.802138,
+  "costTotal": 2.802138,
+  "tokensTotal": 2046345,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": 107,
+      "invalidRate": 0.037383177570093455,
+      "tokensMean": 2046345,
+      "costTotal": 2.802138,
+      "costMeanOnSuccess": 2.802138,
+      "efficiencyMean": 0.374,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 107,
+          "successAt": 107,
+          "invalidCalls": 4,
+          "tokensIn": 2043753,
+          "tokensOut": 2592,
+          "cost": 2.802138,
+          "virtualSeconds": 237.54,
+          "battleRounds": null,
+          "par": 40,
+          "efficiency": 0.374
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "verifiedAt": "2026-10-23T13:37:33.742Z",
+  "code": "896e955-dirty",
+  "replayRuntimeRoot": "/Volumes/T7-Data/pal/reviews/astra-20261023/frozen-runtime",
+  "episodes": [
+    {
+      "file": "classic10-baihe-medicine__s42.jsonl",
+      "task": "classic10-baihe-medicine",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "c414394f8cbff35f1ba29439fbdcda97080073637bc3591f1e96976492545a50",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (896e955-dirty)"
+      ]
+    }
+  ]
+}

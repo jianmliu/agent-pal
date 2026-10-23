@@ -28,6 +28,7 @@ import { loadTask } from './task.mjs';
 import { taskFingerprint, runtimeFingerprint } from './start.mjs';
 import { codeRev, booksFingerprint } from './runner.mjs';
 import { costOf } from './providers.mjs';
+import { readClientFinalization, ACCOUNTING_FIELDS } from './client-finalization.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const benchCli = path.join(here, 'bench.mjs');
@@ -52,6 +53,11 @@ export function readLog(file) {
     else if (ev.type === 'end') out.end = ev;
   }
   if (!out.start) throw new Error(`${file}: no start event`);
+  out.accountingErrors = [];
+  if (out.end) {
+    try { out.clientFinalized = readClientFinalization(file); }
+    catch (err) { out.accountingErrors.push(err.message); }
+  }
   return out;
 }
 
@@ -62,7 +68,9 @@ const same = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
  * claimed = 这局登记的成绩(episodes/<x>.json,score 读的就是它);缺省用日志里的 end 事件。
  */
 export function compareLogs(orig, replay, claimed = orig.end) {
-  const diffs = [];
+  const diffs = [...(orig.accountingErrors || [])];
+  const accountedEnd = orig.clientFinalized?.result || orig.end;
+  if (orig.start?.clientAccountingVersion === 1 && !orig.clientFinalized) diffs.push('missing required client_finalized event');
   for(const k of ['fingerprint','initial','setup'])if(!same(orig.start?.[k],replay.start?.[k]))diffs.push(`start ${k} mismatch`);
   const n = Math.max(orig.calls.length, replay.calls.length);
   for (let i = 0; i < n; i++) {
@@ -80,7 +88,8 @@ export function compareLogs(orig, replay, claimed = orig.end) {
   for (const k of ['task','taskVersion','seed','tier','model','runId']) if(orig.start?.[k] != null && orig.end[k] != null && !same(orig.start[k], orig.end[k])) diffs.push(`end ${k} disagrees with start`);
   if (claimed && claimed !== orig.end) {
     for (const k of CLAIM_FIELDS) if (!same(claimed[k], orig.end[k])) diffs.push(`result file ${k} ${JSON.stringify(claimed[k])} disagrees with the log's ${JSON.stringify(orig.end[k])}`);
-    for (const k of CLAIM_USAGE_FIELDS) if (claimed[k] !== undefined && orig.end[k] !== undefined && !same(claimed[k], orig.end[k])) diffs.push(`result file ${k} ${JSON.stringify(claimed[k])} disagrees with the log's ${JSON.stringify(orig.end[k])}`);
+    for (const k of orig.clientFinalized ? ACCOUNTING_FIELDS : CLAIM_USAGE_FIELDS) if ((orig.clientFinalized || (claimed[k] !== undefined && orig.end[k] !== undefined)) && !same(claimed[k], accountedEnd[k])) diffs.push(`result file ${k} ${JSON.stringify(claimed[k])} disagrees with the log's ${JSON.stringify(accountedEnd[k])}`);
+    if (orig.clientFinalized && !same(claimed.client, accountedEnd.client)) diffs.push('result client metadata disagrees with client_finalized');
   }
   if (Array.isArray(orig.turns) && orig.turns.length > 0) {
     let sumIn = 0, sumOut = 0, sumCacheRead = 0, sumCacheWrite = 0, activeTurns = 0;
@@ -139,7 +148,7 @@ export async function verifyChild(job) {
 
 /** Semantic metadata that determines ranking and comparability. */
 export function runDigest(meta) {
-  const keys=['runId','model','tier','hints','external','code','promptVersion','scoring','tasks','runtime','books'];
+  const keys=['runId','model','tier','hints','external','code','promptVersion','scoring','tasks','runtime','books','clientAccountingVersion'];
   return crypto.createHash('sha256').update(JSON.stringify(Object.fromEntries(keys.map(k=>[k,meta[k]??null])))).digest('hex');
 }
 
@@ -153,15 +162,27 @@ export function episodeDigest(jsonlPath) {
     h.update(f.endsWith('.jsonl') ? '\0log\0' : '\0result\0');
     if (fs.existsSync(f)) h.update(fs.readFileSync(f));
   }
+  // A cached verdict must expire when its bound raw client evidence changes.
+  if (fs.existsSync(jsonlPath)) {
+    try {
+      const rows = fs.readFileSync(jsonlPath,'utf8').split('\n').filter(Boolean).map(JSON.parse);
+      for (const ev of rows.filter(e=>e.type==='client_finalized')) {
+        h.update('\0client-source\0');
+        if (typeof ev.source?.file !== 'string' || path.basename(ev.source.file)!==ev.source.file) {h.update('invalid-source');continue;}
+        const source=path.join(path.dirname(jsonlPath),ev.source.file);
+        h.update(fs.existsSync(source) ? fs.readFileSync(source) : 'missing-source');
+      }
+    } catch {h.update('invalid-client-log');}
+  }
   return h.digest('hex');
 }
 
 /** 新子进程按日志重放一局(引擎是全局状态,一个进程只跑一局),返回重放日志。 */
-export function replayInChild(source) {
+export function replayInChild(source, { runtimeRoot = null } = {}) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-pal-verify-'));
   const logFile = path.join(tmp, 'replay.jsonl');
   try {
-    const p = spawnSync(process.execPath, [benchCli, '--verify-episode', JSON.stringify({ source, logFile })], {
+    const p = spawnSync(process.execPath, [runtimeRoot ? path.join(runtimeRoot, 'bench/bench.mjs') : benchCli, '--verify-episode', JSON.stringify({ source, logFile })], {
       stdio: ['ignore', 'ignore', 'pipe'], encoding: 'utf8',
       env: { ...process.env, AGENT_PAL_SAVES: path.join(tmp, 'saves.json'), AGENT_PAL_MEMORY: '' }
     });
@@ -257,6 +278,7 @@ export function verifyEpisode(file, { runMeta = null, currentCode = undefined, c
   let replayed;
   try { replayed = replay(path.resolve(file)); } catch (err) { r.verdict = 'error'; r.diffs.push(String(err?.message || err)); return r; }
   r.diffs = compareLogs(orig, replayed, claimed);
+  if (orig.clientFinalized && orig.clientFinalized.result.accountingStatus !== 'complete') r.warnings.push(`client accounting ${orig.clientFinalized.result.accountingStatus}: usage/cost unknown, not zero`);
   r.ok = r.diffs.length === 0;
   r.verdict = r.ok ? 'verified' : 'mismatch';
   return r;
@@ -273,14 +295,25 @@ export const episodeLogs = (runDir) => {
 };
 
 /** bench verify:目录 = 整次运行(写 verify.json),文件 = 单局。返回各局结果。 */
-export function verify(target, { replay = replayInChild } = {}) {
+export function verify(target, { replay = replayInChild, runtimeRoot = null } = {}) {
+  if (runtimeRoot) {
+    runtimeRoot = path.resolve(runtimeRoot);
+    if (replay === replayInChild) replay = source => replayInChild(source, {runtimeRoot});
+  }
   const isDir = fs.statSync(target).isDirectory();
   const runDir = isDir ? target : path.dirname(path.dirname(path.resolve(target)));
   const runFile = path.join(runDir, 'run.json');
   const runMeta = fs.existsSync(runFile) ? JSON.parse(fs.readFileSync(runFile, 'utf8')) : null;
   const currentCode = codeRev(runDir);
   let runtime;
-  const currentRuntime = () => (runtime ??= runtimeFingerprint());
+  const currentRuntime = () => {
+    if (runtime) return runtime;
+    if (!runtimeRoot) return (runtime = runtimeFingerprint());
+    const script = `import {pathToFileURL} from 'node:url'; const m=await import(pathToFileURL(process.argv[1])); process.stdout.write(JSON.stringify(m.runtimeFingerprint()));`;
+    const result = spawnSync(process.execPath, ['--input-type=module', '-e', script, path.join(runtimeRoot, 'bench/start.mjs')], {encoding:'utf8'});
+    if (result.status !== 0) throw Error('frozen runtime fingerprint failed: '+result.stderr);
+    return (runtime = JSON.parse(result.stdout));
+  };
   let books;                                                   // 本机资料指纹:遇到 C 档才算,算一次
   const currentBooks = () => (books === undefined ? (books = booksFingerprint()) : books);
   const files = isDir ? episodeLogs(target) : [target];
@@ -294,7 +327,7 @@ export function verify(target, { replay = replayInChild } = {}) {
     for (const w of r.warnings) console.log(`    note: ${w}`);
   }
   if (isDir) {
-    fs.writeFileSync(path.join(runDir, 'verify.json'), JSON.stringify({ verifiedAt: new Date().toISOString(), code: currentCode, ...(runMeta?.runtime ? {runDigest:runDigest(runMeta)} : {}), episodes: results }, null, 2));
+    fs.writeFileSync(path.join(runDir, 'verify.json'), JSON.stringify({ verifiedAt: new Date().toISOString(), code: currentCode, ...(runtimeRoot ? {replayRuntimeRoot:runtimeRoot} : {}), ...(runMeta?.runtime ? {runDigest:runDigest(runMeta)} : {}), episodes: results }, null, 2));
   }
   const bad = results.filter((r) => !r.ok).length;
   console.log(`\n${results.length - bad}/${results.length} episode(s) verified`);

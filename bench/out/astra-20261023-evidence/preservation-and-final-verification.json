@@ -1,0 +1,32 @@
+{
+  "rain": {
+    "verified": true,
+    "originalPrefixBytes": 4540,
+    "originalPrefixSha256": "38f0075ae757f903f66ecd8682d9b7396cc8b9587606ea629726ac87bf3c2d55",
+    "clientLogUnchanged": true,
+    "calls": 13,
+    "rounds": null,
+    "accountingStatus": "complete",
+    "firstFailurePreserved": true
+  },
+  "baihe": {
+    "verified": true,
+    "originalPrefixBytes": 40393,
+    "originalPrefixSha256": "bf4d47484fb4013c229a04167c48f982828b63b5ea9cce8c734af644af1b7ae2",
+    "clientLogUnchanged": true,
+    "calls": 107,
+    "rounds": null,
+    "accountingStatus": "complete",
+    "firstFailurePreserved": true
+  },
+  "baiyue": {
+    "verified": true,
+    "originalPrefixBytes": 150655,
+    "originalPrefixSha256": "9a457c85f094a1af10b25bdce58350f4976958c5cf4645bf392410c08cba16b7",
+    "clientLogUnchanged": true,
+    "calls": 28,
+    "rounds": 11,
+    "accountingStatus": "complete",
+    "firstFailurePreserved": true
+  }
+}

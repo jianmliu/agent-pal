@@ -1,0 +1,52 @@
+{
+  "task": "classic48-rain-orbs",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "codex-cli:gpt-6-astra",
+  "runId": "astra-20261023-rain",
+  "hints": "standard",
+  "success": true,
+  "successAt": 13,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "success",
+  "milestones": {
+    "tablet-activated": 3,
+    "first-orb-placed": 9
+  },
+  "toolCalls": 13,
+  "invalidCalls": 0,
+  "softStops": 0,
+  "tokensIn": 202706,
+  "tokensOut": 566,
+  "tokensCached": 178048,
+  "tokensCacheWrite": 0,
+  "cost": 0.452928,
+  "virtualSeconds": 41.945,
+  "battles": [],
+  "progress": 1,
+  "final": {
+    "scene": 261,
+    "pos": {
+      "gx": 70,
+      "gy": 38
+    },
+    "mode": "busy",
+    "visitedScenes": [
+      272,
+      261
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "codex-cli",
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "numTurns": 1,
+    "durationMs": 54201
+  },
+  "accountingStatus": "complete"
+}

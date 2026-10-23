@@ -1,0 +1,24 @@
+{
+  "verifiedAt": "2026-10-23T13:37:38.285Z",
+  "code": "896e955-dirty",
+  "replayRuntimeRoot": "/Volumes/T7-Data/pal/reviews/astra-20261023/frozen-runtime",
+  "runDigest": "176f30ce37392aa959a64291d9ce7db1ae556c3e511c36e0ba94f74253e85811",
+  "episodes": [
+    {
+      "file": "baiyue-single-origin__s42.jsonl",
+      "task": "baiyue-single-origin",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "37db7fa59324c077a28ec81ed2b0874b0eec73265fd97534f2e5adde5f745310",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (896e955-dirty)"
+      ]
+    }
+  ]
+}

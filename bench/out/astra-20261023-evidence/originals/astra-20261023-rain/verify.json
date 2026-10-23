@@ -1,0 +1,27 @@
+{
+  "verifiedAt": "2026-10-23T13:21:27.254Z",
+  "code": "896e955-dirty",
+  "episodes": [
+    {
+      "file": "classic48-rain-orbs__s42.jsonl",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "f51a46b497119a12564d45e0af8681abd06ca32445afb12618c079af9e55816b",
+      "ok": false,
+      "verdict": "mismatch",
+      "diffs": [
+        "result file tokensIn 202706 disagrees with the log's 0",
+        "result file tokensOut 566 disagrees with the log's 0",
+        "result file tokensCached 178048 disagrees with the log's 0",
+        "result file cost 0.452928 disagrees with the log's 0"
+      ],
+      "warnings": [
+        "run recorded on dirty worktree (896e955-dirty)"
+      ]
+    }
+  ]
+}

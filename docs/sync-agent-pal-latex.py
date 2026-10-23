@@ -24,17 +24,31 @@ def escape(text):
     return ''.join(chars.get(c, c) for c in text)
 
 
+def code_inline(text):
+    parts = re.split(r'([/_:.,=\-]|\s+)', text)
+    chunks = []
+    for part in parts:
+        if not part:
+            continue
+        if len(part) > 10:
+            chunks.append(r'\allowbreak{}'.join(escape(part[i:i+8]) for i in range(0, len(part), 8)))
+        else:
+            chunks.append(escape(part))
+    return r'\texttt{' + r'\allowbreak{}'.join(chunks) + '}'
+
+
 def inline(text):
     pieces, at = [], 0
     pattern = r'`([^`]+)`|\*\*(.+?)\*\*|\[([^\]]+)\]\(([^)]+)\)|\*([^*]+)\*'
     for m in re.finditer(pattern, text):
         pieces.append(escape(text[at:m.start()]))
         if m.group(1) is not None:
-            pieces.append(r'\nolinkurl{' + m.group(1) + '}')
+            pieces.append(code_inline(m.group(1)))
         elif m.group(2) is not None:
             pieces.append(r'\textbf{' + inline(m.group(2)) + '}')
         elif m.group(3) is not None:
-            pieces.append(r'\href{' + m.group(4).replace('%', r'\%') + '}{' + inline(m.group(3)) + '}')
+            label = r'\nolinkurl{' + m.group(3) + '}' if m.group(3).startswith(('https://', 'http://')) else inline(m.group(3))
+            pieces.append(r'\href{' + m.group(4).replace('%', r'\%') + '}{' + label + '}')
         else:
             pieces.append(r'\emph{' + inline(m.group(5)) + '}')
         at = m.end()
@@ -53,13 +67,28 @@ def table(lines):
         widths = [.16, .24, .26, .26] if header[0] == 'Dimension' else [.32, .16, .22, .22]
     else:
         widths = [.92/n] * n
-    spec = '@{}' + ''.join(r'>{\raggedright\arraybackslash}p{' + str(w) + r'\linewidth}' for w in widths) + '@{}'
-    head = ' & '.join(inline(c) for c in header) + r' \\'
-    return '\n'.join([r'{\small\setlength{\tabcolsep}{3pt}',
+    spec = '@{}' + ''.join(r'>{\RaggedRight\arraybackslash}p{' + str(w) + r'\linewidth}' for w in widths) + '@{}'
+    if n >= 7:
+        weights = [1.0] * n
+        if header[-1] == 'Behavioral signature':
+            weights = [.04,.13,.12,.06,.08,.07,.06,.07,.08,.29]
+        elif header[-1].startswith('Core mechanism'):
+            weights = [.04,.12,.09,.10,.08,.12,.45]
+        elif header[-1].startswith('Minimum Baiyue'):
+            weights = [.04,.12,.10,.12,.09,.09,.12,.32]
+        elif header[-1] == 'Post-misplacement pivot calls':
+            weights = [.13,.10,.05,.09,.07,.07,.07,.20,.10,.12]
+        elif n == 13:
+            weights = [.12,.12,.06,.10,.06,.14,.06] + [.07]*6
+        total = sum(weights)
+        spec = '@{}' + ''.join(r'>{\RaggedRight\arraybackslash}p{\dimexpr' + str(.96*w/total) + r'\linewidth-' + str(6*(n-1)/n) + r'pt\relax}' for w in weights) + '@{}'
+    head = ' & '.join(inline(c).replace('Closed-book', r'Closed-\allowbreak{}book') for c in header) + r' \\'
+    rendered = '\n'.join([r'{\footnotesize\setlength{\tabcolsep}{3pt}' if n >= 12 else r'{\small\setlength{\tabcolsep}{3pt}',
         r'\begin{longtable}{' + spec + '}', r'\toprule', head, r'\midrule\endfirsthead',
         r'\toprule', head, r'\midrule\endhead', r'\bottomrule\endfoot',
         *[' & '.join(inline(c) for c in row) + r' \\' for row in body],
         r'\end{longtable}', '}'])
+    return r'\begin{landscape}' + '\n' + rendered + '\n' + r'\end{landscape}' if n >= 7 else rendered
 
 
 def generate():
@@ -75,6 +104,10 @@ def generate():
 \usepackage{booktabs,longtable,array}
 \usepackage{enumitem}
 \usepackage{xurl}
+\usepackage{pdflscape}
+\usepackage{fvextra}
+\usepackage{ragged2e}
+\DefineVerbatimEnvironment{CodeBlock}{Verbatim}{breaklines=true,fontsize=\small}
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
 \setlength{\parskip}{0.45em}
@@ -83,7 +116,7 @@ def generate():
 \setlist{nosep,leftmargin=*}
 '''
     out = [preamble, r'\title{' + inline(title) + '}',
-           r'\author{Working draft for anonymous review}', r'\date{20 October 2026}',
+           r'\author{Working draft for anonymous review}', r'\date{23 October 2026}',
            r'\begin{document}', r'\maketitle']
     i, abstract, listing = 1, False, None
     def end_list():
@@ -95,6 +128,12 @@ def generate():
         line = lines[i]
         if not line.strip():
             out.append(''); i += 1; continue
+        if line.startswith('```'):
+            end_list(); out.append(r'\begin{CodeBlock}'); i += 1
+            while i < len(lines) and not lines[i].startswith('```'):
+                out.append(lines[i]); i += 1
+            assert i < len(lines), 'Unterminated fenced code block'
+            out.append(r'\end{CodeBlock}'); i += 1; continue
         if line.startswith('> '):
             end_list(); out.append(r'{\footnotesize ' + inline(line[2:]) + r'\par}'); i += 1; continue
         if line.startswith('## Abstract'):
@@ -107,7 +146,7 @@ def generate():
             assert m, line
             level = 'section' if len(m[1]) == 2 else 'subsection'
             unnumbered = '*' if m[2] in ('Required Before Submission', 'References') else ''
-            out.append('\\' + level + unnumbered + '{' + inline(m[2]) + '}'); i += 1; continue
+            out.append('\\' + level + unnumbered + '{' + r'\texorpdfstring{' + inline(m[2]) + '}{' + escape(m[2].replace('`', '')) + '}}'); i += 1; continue
         if line.startswith('|'):
             end_list(); block = []
             while i < len(lines) and lines[i].startswith('|'):

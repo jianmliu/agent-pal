@@ -19,11 +19,13 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import readline from 'node:readline';
+import { finished } from 'node:stream/promises';
 import { fileURLToPath } from 'node:url';
 import { loadTask, listTasks, loadReference } from './task.mjs';
 import { taskFingerprint, runtimeFingerprint } from './start.mjs';
 import { systemPrompt, firstMessage, PROMPT_VERSION } from './prompt.mjs';
 import { costOf } from './providers.mjs';
+import { finalizeClient } from './client-finalization.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const benchCli = path.join(here, 'bench.mjs');
@@ -92,6 +94,7 @@ export function resumeMismatch(meta, want) {
     diffs.push(`books (guide / atlas): ${JSON.stringify(meta.books ?? null)} → ${JSON.stringify(want.books ?? null)}`);
   }
   if ((meta.scoring ?? 'cost') !== (want.scoring ?? 'cost')) diffs.push('scoring differs');
+  if ((meta.clientAccountingVersion ?? null) !== (want.clientAccountingVersion ?? null)) diffs.push('client accounting version differs');
   const plan = (ts) => JSON.stringify((ts || []).map((t) => [t.id, t.version, t.seeds, t.fingerprint ?? null]));
   if (plan(meta.tasks) !== plan(want.tasks)) diffs.push(`tasks / versions / seeds: ${plan(meta.tasks)} → ${plan(want.tasks)}`);
   return diffs;
@@ -207,17 +210,17 @@ async function runClaudeCli(job, tmp) {
   const poll = setInterval(() => {
     if (fs.existsSync(serverResult)) { clearInterval(poll); setTimeout(() => claude.kill('SIGTERM'), 60_000).unref(); }
   }, 1000);
-  await exited(claude);
+  const clientExitCode = await exited(claude);
   clearTimeout(wall); clearInterval(poll);
+  await finished(claude.stdout);
   await new Promise((res) => clientLog.end(res));
 
   // 3) 收尾:服务若还没判完,按「客户端自己停了」或「墙钟超时」结算
   server.kill(timedOut ? 'SIGTERM' : 'SIGINT');
   await exited(server);
   fs.closeSync(err);
-  const res = fs.existsSync(serverResult) ? JSON.parse(fs.readFileSync(serverResult, 'utf8')) : harnessFailure(job, 'harness-crash (no result)');
+  finalizeClient({ ...job, client: { name: 'claude-cli', model: claudeModel, effort, numTurns: final?.num_turns ?? null, durationMs: final?.duration_ms ?? null, exitCode: clientExitCode, signal: claude.signalCode }, timedOut });
   fs.rmSync(serverResult, { force: true });
-  fs.writeFileSync(job.resultFile, JSON.stringify(applyClientResult(res, final, claudeModel)));
 }
 
 async function runCodexCli(job, tmp) {
@@ -258,7 +261,6 @@ async function runCodexCli(job, tmp) {
   const codex = spawn(CODEX_BIN, args, { cwd: tmp, stdio: ['pipe', 'pipe', err] });
   codex.stdin.write(prompt);
   codex.stdin.end();
-  let usage = { input_tokens: 0, cached_input_tokens: 0, output_tokens: 0, reasoning_output_tokens: 0 };
   let turns = 0;
   const rl = readline.createInterface({ input: codex.stdout });
   rl.on('line', (l) => {
@@ -267,10 +269,6 @@ async function runCodexCli(job, tmp) {
       const ev = JSON.parse(l);
       if (ev.type === 'turn.completed' && ev.usage) {
         turns++;
-        usage.input_tokens += ev.usage.input_tokens || 0;
-        usage.cached_input_tokens += ev.usage.cached_input_tokens || 0;
-        usage.output_tokens += ev.usage.output_tokens || 0;
-        usage.reasoning_output_tokens += ev.usage.reasoning_output_tokens || 0;
       }
     } catch {}
   });
@@ -279,24 +277,16 @@ async function runCodexCli(job, tmp) {
   const poll = setInterval(() => {
     if (fs.existsSync(serverResult)) { clearInterval(poll); setTimeout(() => codex.kill('SIGTERM'), 15_000).unref(); }
   }, 1000);
-  await exited(codex);
+  const clientExitCode = await exited(codex);
   clearTimeout(wall); clearInterval(poll);
+  await finished(codex.stdout);
   await new Promise((res) => clientLog.end(res));
 
   server.kill(timedOut ? 'SIGTERM' : 'SIGINT');
   await exited(server);
   fs.closeSync(err);
-  const res = fs.existsSync(serverResult) ? JSON.parse(fs.readFileSync(serverResult, 'utf8')) : harnessFailure(job, 'harness-crash (no result)');
+  finalizeClient({ ...job, client: { name: 'codex-cli', model: codexModel, effort, numTurns: turns, durationMs: Date.now() - t0, exitCode: clientExitCode, signal: codex.signalCode }, timedOut });
   fs.rmSync(serverResult, { force: true });
-  res.external = true;
-  res.client = { name: 'codex-cli', model: codexModel, effort, numTurns: turns, durationMs: Date.now() - t0 };
-  res.tokensIn = usage.input_tokens;
-  res.tokensOut = usage.output_tokens;
-  res.tokensCached = usage.cached_input_tokens;
-  res.tokensCacheWrite = 0;
-  res.cost = costOf(`openai:${codexModel}`, { tokensIn: res.tokensIn, tokensOut: res.tokensOut, cacheRead: res.tokensCached });
-  if (!turns && !res.toolCalls) res.endReason = res.endReason || 'client-error';
-  fs.writeFileSync(job.resultFile, JSON.stringify(res));
 }
 
 async function runAgyCli(job, tmp) {
@@ -347,18 +337,16 @@ else console.log((j.result?.content || []).map(c => c.text || '').join('\\n'));
   const poll = setInterval(() => {
     if (fs.existsSync(serverResult)) { clearInterval(poll); setTimeout(() => agy.kill('SIGTERM'), 10_000).unref(); }
   }, 1000);
-  await exited(agy);
+  const clientExitCode = await exited(agy);
   clearTimeout(wall); clearInterval(poll);
+  await finished(agy.stdout);
   await new Promise((res) => clientLog.end(res));
 
   server.kill(timedOut ? 'SIGTERM' : 'SIGINT');
   await exited(server);
   fs.closeSync(err);
-  const res = fs.existsSync(serverResult) ? JSON.parse(fs.readFileSync(serverResult, 'utf8')) : harnessFailure(job, 'harness-crash (no result)');
+  finalizeClient({ ...job, client: { name: 'agy-cli', model: agyModel, effort: 'medium', durationMs: Date.now() - t0, exitCode: clientExitCode, signal: agy.signalCode }, timedOut });
   fs.rmSync(serverResult, { force: true });
-  res.external = true;
-  res.client = { name: 'agy-cli', model: agyModel, effort: 'medium', durationMs: Date.now() - t0 };
-  fs.writeFileSync(job.resultFile, JSON.stringify(res));
 }
 
 /**
@@ -401,6 +389,7 @@ export async function runBench({ model, tier = 'B', hints = 'standard', tasks, s
     runId: path.basename(runDir), model, tier, hints, external: /^(claude|codex|agy)-cli:/.test(model),
     // par 冻进 run.json:参考解以后重录(引擎修了战斗数值等)不改写这次运行的效率分
     tasks: plan.map((p) => ({ id: p.task.id, version: p.task.version, seeds: p.seeds, par: parFor(p.task.id, p.seeds), ...(p.task.scoring ? { fingerprint: taskFingerprint(p.task) } : {}) })),
+    clientAccountingVersion: /^(claude|codex|agy)-cli:/.test(model) ? 1 : null,
     promptVersion: PROMPT_VERSION, code: codeRev(runDir), startedAt: new Date().toISOString()
   };
   if (plan.some(p=>p.task.scoring)) fresh.runtime = runtimeFingerprint();
@@ -422,7 +411,7 @@ export async function runBench({ model, tier = 'B', hints = 'standard', tasks, s
       queue.push({
         taskId: task.id, seed, tier, model, wallSeconds,
         resultFile: base + '.json', logFile: base + '.jsonl', stderrFile: base + '.stderr.log', clientLogFile: base + '.client.jsonl',
-        meta: { model, runId: meta.runId, hints }
+        meta: { model, runId: meta.runId, hints, ...(/^(claude|codex|agy)-cli:/.test(model) ? {clientAccountingVersion: 1} : {}) }
       });
     }
   }

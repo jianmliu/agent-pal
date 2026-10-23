@@ -1,0 +1,8 @@
+✗ classic10-baihe-medicine seed 42: mismatch · claimed success (success)
+    result file tokensIn 2043753 disagrees with the log's 0
+    result file tokensOut 2592 disagrees with the log's 0
+    result file tokensCached 1973888 disagrees with the log's 0
+    result file cost 2.802138 disagrees with the log's 0
+    note: run recorded on dirty worktree (896e955-dirty)
+
+0/1 episode(s) verified

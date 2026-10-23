@@ -1,0 +1,23 @@
+{
+  "verifiedAt": "2026-10-23T13:37:26.047Z",
+  "code": "896e955-dirty",
+  "replayRuntimeRoot": "/Volumes/T7-Data/pal/reviews/astra-20261023/frozen-runtime",
+  "episodes": [
+    {
+      "file": "classic48-rain-orbs__s42.jsonl",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "b92a40354d632117fdf63814d4c527a9287aaea596fe52fbb06abbd1381013e4",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (896e955-dirty)"
+      ]
+    }
+  ]
+}
