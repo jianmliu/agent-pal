@@ -58,6 +58,93 @@ export function collectRuns(dirs) {
   return rows;
 }
 
+const mean = (xs) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null);
+const sd = (xs) => {
+  if (xs.length < 2) return 0;
+  const m = mean(xs);
+  return Math.sqrt(xs.reduce((a, x) => a + (x - m) ** 2, 0) / (xs.length - 1));
+};
+const median = (xs) => {
+  if (!xs.length) return null;
+  const s = [...xs].sort((a, b) => a - b);
+  return s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2;
+};
+const sumOrNull = (xs) => (xs.some((x) => x == null) ? null : xs.reduce((a, b) => a + b, 0));
+
+/**
+ * 将多次分批 / 多 PR 提交的运行按 (model, tier, hints, external, scoring, books) 合并为同一模型行。
+ * verifiedOnly = true 时只纳入 verify.state === 'verified' 的运行(公共 Leaderboard 门禁)。
+ */
+export function mergeRunsByModel(rows, { verifiedOnly = false } = {}) {
+  const filtered = verifiedOnly ? rows.filter((r) => r.verify?.state === 'verified') : rows;
+  const groups = new Map();
+  for (const r of filtered) {
+    const key = JSON.stringify([r.model, r.tier, r.hints ?? 'standard', !!r.external, r.scoring ?? 'cost', r.books?.id ?? null]);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(r);
+  }
+  const merged = [];
+  for (const group of groups.values()) {
+    if (group.length === 1) { merged.push(group[0]); continue; }
+    const last = group.at(-1);
+    const taskMap = new Map();
+    for (const r of group) {
+      for (const t of r.tasks || []) {
+        const tk = `${t.id}@${t.version}`;
+        if (!taskMap.has(tk)) taskMap.set(tk, { id: t.id, version: t.version, seedsPlanned: t.seedsPlanned, bySeed: new Map() });
+        const entry = taskMap.get(tk);
+        entry.seedsPlanned = Math.max(entry.seedsPlanned || 0, t.seedsPlanned || 0);
+        for (const ep of t.episodes || []) entry.bySeed.set(ep.seed, ep);
+      }
+    }
+    const tasks = [];
+    const allEps = [];
+    for (const entry of taskMap.values()) {
+      const episodes = [...entry.bySeed.values()].sort((a, b) => a.seed - b.seed);
+      allEps.push(...episodes);
+      const wins = episodes.filter((e) => e.success);
+      const roundValues = wins.map((e) => e.battleRounds);
+      const roundsMean = wins.length && roundValues.every((x) => Number.isInteger(x) && x > 0) ? mean(roundValues) : null;
+      const endReasons = {};
+      for (const e of episodes) endReasons[e.endReason] = (endReasons[e.endReason] || 0) + 1;
+      tasks.push({
+        id: entry.id, version: entry.version, seedsPlanned: entry.seedsPlanned, n: episodes.length,
+        successRate: episodes.length ? wins.length / episodes.length : null,
+        progressMean: mean(episodes.map((e) => e.progress)), progressSd: sd(episodes.map((e) => e.progress)),
+        battleRoundsMeanOnSuccess: roundsMean,
+        toolCallsMedianOnSuccess: median(wins.map((e) => e.successAt)),
+        invalidRate: episodes.length ? sumOrNull(episodes.map((e) => e.invalidCalls)) / Math.max(1, sumOrNull(episodes.map((e) => e.toolCalls))) : null,
+        tokensMean: mean(episodes.map((e) => e.tokensIn + e.tokensOut)),
+        costTotal: sumOrNull(episodes.map((e) => e.cost)),
+        costMeanOnSuccess: wins.length ? (sumOrNull(wins.map((e) => e.cost)) == null ? null : mean(wins.map((e) => e.cost))) : null,
+        efficiencyMean: mean(episodes.filter((e) => e.efficiency != null).map((e) => e.efficiency)),
+        endReasons, episodes
+      });
+    }
+    const scored = tasks.filter((t) => t.n);
+    const allWins = allEps.filter((e) => e.success);
+    const vStates = group.map((g) => g.verify?.state || 'none');
+    const vState = vStates.includes('mismatch') ? 'mismatch' : vStates.every((s) => s === 'verified') ? 'verified' : vStates.every((s) => s === 'none') ? 'none' : 'stale';
+    const vOk = group.reduce((a, g) => a + (g.verify?.ok || 0), 0);
+    const vTotal = group.reduce((a, g) => a + (g.verify?.total || 0), 0);
+    merged.push({
+      ...last,
+      runId: `${group.length} runs (${group[0].runId}…${last.runId})`,
+      complete: tasks.every((t) => t.n >= t.seedsPlanned),
+      score: mean(scored.map((t) => t.successRate)),
+      progress: mean(scored.map((t) => t.progressMean)),
+      battleRoundsMeanOnSuccess: allWins.length && allWins.every((e) => Number.isInteger(e.battleRounds) && e.battleRounds > 0) ? mean(allWins.map((e) => e.battleRounds)) : null,
+      costMeanOnSuccess: allWins.length && sumOrNull(allWins.map((e) => e.cost)) != null ? mean(allWins.map((e) => e.cost)) : null,
+      costTotal: sumOrNull(allEps.map((e) => e.cost)),
+      tokensTotal: allEps.reduce((a, e) => a + (e.tokensIn || 0) + (e.tokensOut || 0), 0),
+      episodes: allEps.length,
+      tasks,
+      verify: { state: vState, ok: vOk, total: vTotal, at: last.verify?.at || null }
+    });
+  }
+  return merged;
+}
+
 /** 读入若干测验目录(有 quiz.json 的);同一模型有多次测验时取最新一次。 */
 export function collectQuizzes(dirs) {
   const byModel = new Map();
@@ -234,9 +321,11 @@ ${quizSection(quizzes)}
 `;
 }
 
-/** bench board:返回写出的文件路径。 */
-export function board(dirs, { out = path.join(OUT_DIR, 'board.html') } = {}) {
-  const rows = collectRuns(dirs.length ? dirs : listRunDirs());
+/** bench board:返回写出的文件路径。mergeModels = 按模型跨运行归并;verifiedOnly = 只纳入已核验运行。 */
+export function board(dirs, { out = path.join(OUT_DIR, 'board.html'), mergeModels = false, verifiedOnly = false } = {}) {
+  let rows = collectRuns(dirs.length ? dirs : listRunDirs());
+  if (mergeModels) rows = mergeRunsByModel(rows, { verifiedOnly });
+  else if (verifiedOnly) rows = rows.filter((r) => r.verify?.state === 'verified');
   const quizzes = collectQuizzes(dirs.length ? dirs : listQuizDirs());
   fs.mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
   fs.writeFileSync(out, renderBoard(rows, { quizzes }));

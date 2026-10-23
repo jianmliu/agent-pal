@@ -6,6 +6,8 @@ runs/
 saves/
 bench/out/**/*.client.jsonl
 bench/out/**/*.log
+bench/out/board.html
+_site/
 npx-dist/
 *.tgz
 *.palrec

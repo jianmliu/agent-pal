@@ -1,0 +1,83 @@
+name: Leaderboard Verification & Pages
+
+on:
+  pull_request:
+    paths:
+      - 'bench/**'
+      - 'packages/**'
+      - 'src/**'
+  push:
+    branches: [main]
+    paths:
+      - 'bench/out/**'
+      - 'bench/*.mjs'
+      - '.github/workflows/leaderboard.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  verify-pr:
+    name: Zero-Cost PR Anti-Cheat Verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies & build engine
+        run: |
+          npm install
+          npm run build --workspaces --if-present
+
+      - name: Run bench unit tests & task validation
+        run: |
+          node bench/bench.mjs validate
+          node bench/test/bench.test.mjs
+
+      - name: Verify submitted runs (CPU replay + token/price audit)
+        if: github.event_name == 'pull_request'
+        run: |
+          node bench/bench.mjs check-pr --base origin/${{ github.base_ref || 'main' }}
+
+  deploy-board:
+    name: Build & Publish Shared Leaderboard
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: verify-pr
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build Merged Verified Leaderboard & Raw Runs View
+        run: |
+          mkdir -p _site
+          node bench/bench.mjs board --merge --verified-only --out _site/index.html
+          node bench/bench.mjs board --merge --out _site/all-models.html
+          node bench/bench.mjs board --out _site/runs.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

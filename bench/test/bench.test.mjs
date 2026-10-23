@@ -24,7 +24,8 @@ import { pixelResult, toolContent, TIER_TOOLS, BOOK_TOOLS, bookTool, NON_ADVANCI
 import { runTool } from '../../src/tools.mjs';
 import { systemPrompt, PROMPT_VERSION } from '../prompt.mjs';
 import { compareLogs, readLog, verifyEpisode, verify, episodeDigest, booksMismatch } from '../verify.mjs';
-import { collectRuns, rank, paretoFront, renderBoard, board, verifyStatus, collectQuizzes } from '../board.mjs';
+import { collectRuns, mergeRunsByModel, rank, paretoFront, renderBoard, board, verifyStatus, collectQuizzes } from '../board.mjs';
+import { classifySubmissionDiff, checkPrSubmission } from '../pr-check.mjs';
 
 const base = {
   scene: 4, pos: { gx: 95, gy: 88 }, visitedScenes: [1, 3, 4],
@@ -964,5 +965,63 @@ console.log('  ✓ ㉑ 存档起点:文件名受限、存档在库、槽位有�
   assert.ok(!toolNames(hc, 'P').includes('save') && toolNames(hc, 'P').includes('run_code'));
 }
 console.log('  ✓ ㉒ Tier P (Pure 编程档):L0 原语 + run_code 工具面与系统提示');
+
+// ㉓ 公共 Leaderboard PR 门禁与同模型跨运行合并
+{
+  // 1) PR diff 分类:禁止直接提交 board.html,禁止在提交 bench/out/ 时顺手改裁判/引擎代码
+  assert.deepEqual(classifySubmissionDiff(['bench/out/run1/run.json', 'bench/out/run1/verify.json', 'bench/prices.json']), {
+    subDirs: ['run1'], pricesTouched: true, otherFiles: [], errors: []
+  });
+  assert.match(classifySubmissionDiff(['bench/out/board.html', 'bench/out/run1/run.json']).errors[0], /board\.html must not be committed/);
+  assert.match(classifySubmissionDiff(['bench/out/run1/run.json', 'bench/verify.mjs']).errors[0], /cannot simultaneously modify code/);
+
+  // 2) 同模型分批运行合并 + verifiedOnly 门禁
+  const rows = [
+    {
+      runId: 'r1', model: 'p:m1', tier: 'B', hints: 'standard', external: false, scoring: 'cost', books: null,
+      verify: { state: 'verified', ok: 1, total: 1 },
+      tasks: [{ id: 'tA', version: 1, seedsPlanned: 1, n: 1, episodes: [{ seed: 42, success: true, successAt: 10, endReason: 'success', progress: 1, toolCalls: 10, invalidCalls: 0, tokensIn: 1000, tokensOut: 100, cost: 0.02, efficiency: 0.8 }] }]
+    },
+    {
+      runId: 'r2', model: 'p:m1', tier: 'B', hints: 'standard', external: false, scoring: 'cost', books: null,
+      verify: { state: 'verified', ok: 1, total: 1 },
+      tasks: [{ id: 'tB', version: 1, seedsPlanned: 1, n: 1, episodes: [{ seed: 42, success: false, successAt: null, endReason: 'stuck', progress: 0.4, toolCalls: 20, invalidCalls: 2, tokensIn: 2000, tokensOut: 200, cost: 0.04, efficiency: null }] }]
+    },
+    {
+      runId: 'r3-unverified', model: 'p:m1', tier: 'B', hints: 'standard', external: false, scoring: 'cost', books: null,
+      verify: { state: 'none', ok: 0, total: 1 },
+      tasks: [{ id: 'tB', version: 1, seedsPlanned: 1, n: 1, episodes: [{ seed: 42, success: true, successAt: 5, endReason: 'success', progress: 1, toolCalls: 5, invalidCalls: 0, tokensIn: 500, tokensOut: 50, cost: 0.01, efficiency: 1 }] }]
+    }
+  ];
+  const mergedVerified = mergeRunsByModel(rows, { verifiedOnly: true });
+  assert.equal(mergedVerified.length, 1);
+  assert.equal(mergedVerified[0].episodes, 2);
+  assert.equal(mergedVerified[0].score, 0.5);           // r3-unverified 被挡在门外,tA 100% + tB 0% = 50%
+  assert.equal(mergedVerified[0].verify.state, 'verified');
+  assert.equal(mergedVerified[0].verify.ok, 2);
+
+  // 3) checkPrSubmission 端到端:核验通过 vs 缺 verify.json
+  const tmpRepo = fs.mkdtempSync(path.join(os.tmpdir(), 'bench-pr-'));
+  const t = loadTask('classic08-leave-area');
+  const rDir = path.join(tmpRepo, 'bench', 'out', 'sub1');
+  fs.mkdirSync(path.join(rDir, 'episodes'), { recursive: true });
+  fs.writeFileSync(path.join(rDir, 'run.json'), JSON.stringify({ runId: 'sub1', model: 'p:x', tier: 'B', code: 'abc1234', tasks: [{ id: t.id, version: t.version, seeds: [42] }] }));
+  const epJson = { task: t.id, seed: 42, success: true, successAt: 5, endReason: 'success', progress: 1, toolCalls: 5, invalidCalls: 0, tokensIn: 1000, tokensOut: 100, cost: 0.01, virtualSeconds: 5 };
+  const epLog = path.join(rDir, 'episodes', `${t.id}__s42.jsonl`);
+  fs.writeFileSync(path.join(rDir, 'episodes', `${t.id}__s42.json`), JSON.stringify(epJson));
+  fs.writeFileSync(epLog, JSON.stringify({ type: 'start', task: t.id, taskVersion: t.version, seed: 42, tier: 'B' }) + '\n');
+  // 没写 verify.json → 门禁拒绝
+  const failPr = checkPrSubmission({ changedFiles: ['bench/out/sub1/run.json'], repoRoot: tmpRepo, verifyFn: () => [{ task: t.id, seed: 42, ok: true, verdict: 'verified', diffs: [], warnings: [] }] });
+  assert.equal(failPr.ok, false);
+  assert.match(failPr.errors[0], /committed verify\.json is none/);
+  // 补齐匹配指纹的 verify.json → 门禁放行并生成 Markdown 报表
+  fs.writeFileSync(path.join(rDir, 'verify.json'), JSON.stringify({ episodes: [{ file: `${t.id}__s42.jsonl`, ok: true, digest: episodeDigest(epLog) }] }));
+  const passPr = checkPrSubmission({ changedFiles: ['bench/out/sub1/run.json'], repoRoot: tmpRepo, verifyFn: () => [{ task: t.id, seed: 42, ok: true, verdict: 'verified', diffs: [], warnings: [] }] });
+  assert.equal(passPr.ok, true);
+  assert.match(passPr.markdown, /✅ Agent-PAL-Bench PR Submission Check/);
+  assert.match(passPr.markdown, /`sub1`/);
+  fs.rmSync(tmpRepo, { recursive: true, force: true });
+}
+console.log('  ✓ ㉓ 公共 Leaderboard PR 门禁(零冲突 / 防篡改 / 增量核验)与同模型跨运行归并');
 
 console.log('\nBENCH TESTS PASSED ✅');

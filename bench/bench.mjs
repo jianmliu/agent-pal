@@ -36,6 +36,7 @@ import { runBench, episodeChild } from './runner.mjs';
 import { score, printSummary } from './score.mjs';
 import { verify, verifyChild } from './verify.mjs';
 import { board } from './board.mjs';
+import { checkPrSubmission } from './pr-check.mjs';
 import { runQuiz, printQuiz, listQuizzes, validateQuiz, QUIZ_DIR } from './quiz.mjs';
 import { referenceToolErrors, replayReferenceStep } from './episode.mjs';
 import { initializeTask, engineOptions, executeTaskTool } from './start.mjs';
@@ -153,10 +154,20 @@ if (cmd === 'validate') {
   process.exit(verify(argv[1]).every((r) => r.ok) ? 0 : 1);
 } else if (cmd === 'board') {
   const dirs = argv.slice(1).filter((x, i, a) => !x.startsWith('--') && a[i - 1] !== '--out');
-  const { out, runs, quizzes } = board(dirs, flag('--out') ? { out: flag('--out') } : {});
+  const { out, runs, quizzes } = board(dirs, {
+    ...(flag('--out') ? { out: flag('--out') } : {}),
+    mergeModels: argv.includes('--merge'),
+    verifiedOnly: argv.includes('--verified-only')
+  });
   console.log(`${out}: ${runs} run(s), ${quizzes} quiz(zes)`);
+} else if (cmd === 'check-pr') {
+  const res = checkPrSubmission({ baseRef: flag('--base', 'origin/main') });
+  console.log('\n' + res.markdown);
+  const summaryFile = flag('--summary-out', process.env.GITHUB_STEP_SUMMARY || '');
+  if (summaryFile) fs.appendFileSync(summaryFile, res.markdown + '\n');
+  process.exit(res.ok ? 0 : 1);
 } else {
-  process.stderr.write('usage: bench.mjs run --model <spec> [...] | score <runDir> | verify <runDir|log.jsonl> | board [runDir...] [--out f.html] | quiz --model <spec> [...] | check [id...] | state --task <id> [...] | validate\n');
+  process.stderr.write('usage: bench.mjs run --model <spec> [...] | score <runDir> | verify <runDir|log.jsonl> | board [runDir...] [--out f.html] [--merge] [--verified-only] | check-pr [--base origin/main] | quiz --model <spec> [...] | check [id...] | state --task <id> [...] | validate\n');
   process.exit(2);
 }
 
