@@ -342,8 +342,12 @@ svg .front{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
 
 function statsOverviewSection() {
   return `<section>
-<h2>核心统计总览：13 大模型华山论剑，唯有“外来三剑客”实现全通</h2>
-<p class="muted">评测基准涵盖 <strong>闭卷先验笔试（22 问）</strong>、<strong>四大专项实操擂台（祈雨祭坛 / 白河采药 / 扬州紫金葫芦 / 南诏王宫拜月决战 &amp; 禁招消融赛）</strong> 与 <strong>从零手写代码全游戏通关（<code>--pure</code> 模式 300 场景 11 章马拉松）</strong>。在 13 个受测模型中，<strong>仅有 3 个前沿模型（<code>Gemini 4 Argon</code>、<code>Claude Opus 5.5</code>、<code>GPT-6.1-Sol</code>）完成四大专项实操 100% 大满贯并打穿全游戏</strong>。</p>
+<h2>核心统计总览：华山论剑首期守擂榜（三剑客率先满贯，诚邀国产模型 PR 攻擂！）</h2>
+<p class="muted">评测基准涵盖 <strong>闭卷先验笔试（22 问）</strong>、<strong>四大专项实操擂台（祈雨祭坛 / 白河采药 / 扬州紫金葫芦 / 南诏王宫拜月决战 &amp; 禁招消融赛）</strong> 与 <strong>从零手写代码全游戏通关（<code>--pure</code> 模式 300 场景 11 章马拉松）</strong>。在首期登台的 13 款模型中，获得完整官方 API 预算支持的<strong>“外来三剑客”（<code>Gemini 4 Argon</code>、<code>Claude Opus 5.5</code>、<code>GPT-6.1-Sol</code>）率先完成四大专项实操 100% 大满贯并打穿全游戏</strong>。</p>
+<div class="card" style="margin:0 0 16px;border-left:4px solid var(--warn);background:color-mix(in oklab, var(--warn) 7%, var(--card))">
+  <h3 style="margin:0 0 6px;color:var(--warn)">⚡ 江湖擂台声明：受限于个人 Ollama 额度，国产模型大量高阶席位虚位以待！</h3>
+  <p style="margin:0">首期评测中，国产模型（<code>DeepSeek</code>、<code>GLM</code>、<code>Kimi</code>、<code>MiniMax</code>）均依赖维护者个人的单账号 <strong>Ollama Cloud</strong> 额度运行（例如 <code>DeepSeek V4.1 Flash</code> 在 <code>--pure</code> 模式一路连斩赤鬼王、石长老杀入第 5 章扬州城后直接耗尽月度额度中断；扬州 15 场景长链与 240/560 步扩容赛也因配额限制尚未对全部国产模型展开；<code>Qwen</code>、<code>Doubao Seed</code>、<code>Step</code> 等国产主力更是尚未登场）。<strong>因此本榜单并非国产模型的终局定论，而是一座开放攻擂的“江湖擂台”</strong>——欢迎广大开发者与各模型团队使用原生 API 跑分并通过 <strong>GitHub PR（$0 API 成本自动重放核验）</strong>提交战绩，争夺首座国产大满贯奖杯！</p>
+</div>
 
 <div class="kpis">
   <div class="kpi"><div class="k-label">全游戏通关率 (--pure 11章)</div><div class="k-val good">3 / 13 (23%)</div><div class="k-sub">仅 Argon、Claude Opus 5.5、GPT-6.1-Sol 抵达全剧终</div></div>
@@ -412,40 +416,45 @@ function statsOverviewSection() {
   </tr>
   <tr>
     <td class="num">4</td><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td>中国本土</td><td class="num">31% (4/13)</td>
-    <td><span class="badge good">✓ 28 步</span></td><td><span class="badge warn">✗ 进度 0.75 (猎场)</span></td><td><span class="badge warn">✗ 困于客栈楼梯</span></td><td><span class="badge good">🥈 10 回合 (1HP绝杀)</span> / <span class="badge bad">✗ 0%</span></td>
-    <td><span class="badge warn">⚔️ 闯至第5章扬州 (Slot 28)</span></td><td>本土最佳：斩赤鬼王 &amp; 1HP绝杀拜月</td>
+    <td><span class="badge good">✓ 28 步</span></td><td><span class="badge warn">✗ 进度 0.75 (120步未扩容)</span></td><td><span class="badge warn">✗ 困于客栈楼梯</span></td><td><span class="badge good">🥈 10 回合 (1HP绝杀)</span> / <span class="badge bad">✗ 0%</span></td>
+    <td><span class="badge warn">⚔️ 闯至第5章扬州 (额度耗尽中断)</span></td><td>本土先锋：斩赤鬼王 &amp; 1HP绝杀拜月</td>
   </tr>
   <tr>
     <td class="num">5</td><td class="model">ollama:glm-5.3:cloud</td><td>中国本土</td><td class="num">38% (5/13)</td>
-    <td><span class="badge good">✓ 16–19 步 (4K熔断)</span></td><td><span class="badge bad">✗ 进度 0.50</span></td><td class="muted">–</td><td><span class="badge bad">✗ 0% (压至22,502 HP)</span></td><td class="muted">–</td><td>加思考熔断器后祈雨坛 3/3 满贯</td>
+    <td><span class="badge good">✓ 16–19 步 (4K熔断)</span></td><td><span class="badge bad">✗ 进度 0.50 (未扩容)</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td><span class="badge bad">✗ 0% (压至22,502 HP)</span></td><td class="muted">⏳ 虚位待战</td><td>加思考熔断器后祈雨坛 3/3 满贯</td>
   </tr>
   <tr>
     <td class="num">6</td><td class="model">ollama:kimi-k3:cloud</td><td>中国本土</td><td class="num">38% (5/13)</td>
-    <td><span class="badge good">✓ 31 步</span></td><td><span class="badge bad">✗ 进度 0.50</span></td><td class="muted">–</td><td><span class="badge warn">✗ 0% (第7命打空拜月本体)</span></td><td class="muted">–</td><td>第 7 命击穿 32,760 HP 本体死于护卫</td>
+    <td><span class="badge good">✓ 31 步</span></td><td><span class="badge bad">✗ 进度 0.50 (未扩容)</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td><span class="badge warn">✗ 0% (第7命打空拜月本体)</span></td><td class="muted">⏳ 虚位待战</td><td>第 7 命击穿 32,760 HP 本体死于护卫</td>
   </tr>
   <tr>
     <td class="num">7</td><td class="model">ollama:minimax-m3:cloud</td><td>中国本土</td><td class="num">31% (4/13)</td>
-    <td><span class="badge good">✓ 38–44 步</span></td><td><span class="badge bad">✗ 进度 0.50</span></td><td class="muted">–</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">–</td><td>祈雨坛试错通关，长程迷路</td>
+    <td><span class="badge good">✓ 38–44 步</span></td><td><span class="badge bad">✗ 进度 0.50 (未扩容)</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>祈雨坛试错通关，长程待扩容补测</td>
   </tr>
   <tr>
     <td class="num">8</td><td class="model">ollama:glm-5.3-flash:cloud</td><td>中国本土</td><td class="num">31% (4/13)</td>
-    <td><span class="badge good">✓ 34 步</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">–</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">–</td><td>背熟拜月招式但缺乏回蓝生存链</td>
+    <td><span class="badge good">✓ 34 步</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>背熟拜月招式但缺乏回蓝生存链</td>
   </tr>
   <tr>
     <td class="num">9</td><td class="model">ollama:gemma4:31b-cloud</td><td>开源权重 (31B)</td><td class="num">23% (3/13)</td>
-    <td><span class="badge good">✓ 36 步</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">–</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">–</td><td>中等参数量通过单场景空间解谜</td>
+    <td><span class="badge good">✓ 36 步</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">⏳ 待攻擂</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>中等参数量通过单场景空间解谜</td>
   </tr>
   <tr>
     <td class="num">10</td><td class="model">ollama:deepseek-v4-pro:0813-cloud</td><td>中国本土</td><td class="num">23% (3/13)</td>
-    <td><span class="badge bad">✗ 超时 (10.3万思考词)</span></td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td>陷入十万字几何证明死循环 0 次放珠</td>
+    <td><span class="badge bad">✗ 超时 (10.3万思考词)</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td class="muted">⏳ 待攻擂 (额度受限)</td><td class="muted">⏳ 待攻擂 (额度受限)</td><td class="muted">⏳ 虚位待战</td><td>祈雨坛未加熔断陷入几何证明死循环</td>
   </tr>
   <tr>
     <td class="num">11</td><td class="model">ollama:minimax-m3.1-flash / m2.7</td><td>中国本土</td><td class="num">15%–23%</td>
-    <td><span class="badge bad">✗ 0%</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">–</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">–</td><td>状态追踪与工具参数易发散</td>
+    <td><span class="badge bad">✗ 0%</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">⏳ 待攻擂</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>状态追踪与工具参数易发散</td>
   </tr>
   <tr>
     <td class="num">12</td><td class="model">laya:laya-multilingual</td><td>System-1 非自回归</td><td class="num">0% (无生成能力)</td>
     <td class="muted">–</td><td><span class="badge bad">✗ 0% (进度 0.00)</span></td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td>7ms 极速选工具，但无长程规划陷入死循环</td>
+  </tr>
+  <tr>
+    <td class="num strong">🎯</td><td class="model">Qwen / Doubao / Step / DeepSeek 等原生 API</td><td><strong>悬赏攻擂席</strong></td><td class="num"><span class="badge warn">欢迎 PR 提交</span></td>
+    <td><span class="badge warn">欢迎 PR 挑战</span></td><td><span class="badge warn">欢迎 240步 挑战</span></td><td><span class="badge warn">欢迎 320步 挑战</span></td><td><span class="badge warn">欢迎挑战 36 回合</span></td>
+    <td><span class="badge warn">🏆 悬赏首个国产全通!</span></td><td>提交 PR 自动运行 <code>bench verify</code> 合榜</td>
   </tr>
 </table>
 </div>
