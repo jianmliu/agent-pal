@@ -502,7 +502,8 @@ function perTaskDeepDiveSection() {
   <tr><td class="num strong">🥇 1</td><td class="model">claude-cli:claude-fable-5-1</td><td>Anthropic</td><td class="num">–</td><td><span class="badge good">100%</span></td><td class="num strong">10 步</td><td class="num">1,259</td><td>1 步探针锁定方位，10 步并列全场最快</td></tr>
   <tr><td class="num strong">🥉 3</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num strong">13 步</td><td class="num">–</td><td>读碑后试放 1 次立即锁定 45° 顺时针映射</td></tr>
   <tr><td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td><span class="badge good">100%</span></td><td class="num strong">13 步</td><td class="num">726</td><td>1 步试放消解 45° 旋转歧义，13 步收官</td></tr>
-  <tr><td class="num">5</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num">22 步</td><td class="num">4,295</td><td>稳健巡视五座石柱坐标后逐一配对归位</td></tr>
+  <tr><td class="num">5</td><td class="model">agy-cli:gemini-3.8-flash</td><td>Google</td><td class="num">–</td><td><span class="badge good">100%</span></td><td class="num">17 步</td><td class="num">11,310</td><td>第 5 步激活石碑，第 13 步首珠入槽，17 步（$0.18）稳健通关</td></tr>
+  <tr><td class="num">6</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num">22 步</td><td class="num">4,295</td><td>稳健巡视五座石柱坐标后逐一配对归位</td></tr>
 </table>
 </div>
 
@@ -514,8 +515,9 @@ function perTaskDeepDiveSection() {
   <tr><td class="num strong">🥇 1</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">80% (4/5)</td><td><span class="badge good">100% (90步)</span></td><td><span class="badge good">100% (90/120步)</span></td><td class="num strong">0 步 (直奔南门猎场)</td><td class="num strong">5 步 (秒收夹改放 45,111)</td></tr>
   <tr><td class="num strong">🥈 2</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">100% (5/5)</td><td><span class="badge good">100% (105步)</span></td><td><span class="badge good">100% (105–117步)</span></td><td class="num strong">4 步 (直奔南门猎场)</td><td class="num strong">7–8 步 (迅速移夹至 44,110)</td></tr>
   <tr><td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td><span class="badge good">100% (107步)</span></td><td><span class="badge good">100% (107步)</span></td><td class="num">少量探路后进南门猎场</td><td class="num">107 步标准预算内一次通关</td></tr>
-  <tr><td class="num">4</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">0% (0/5)</td><td class="muted">– 未通关</td><td><span class="badge good">100% (143/176步)</span></td><td class="num">39–43 步 (搜遍全村6民居)</td><td class="num">23–48 步 (执着赶鹿后起夹重放)</td></tr>
-  <tr><td class="num">5</td><td class="model">claude-cli:claude-fable-5-1</td><td>Anthropic</td><td class="num">–</td><td class="muted">– 未跑</td><td><span class="badge good">100% (203步)</span></td><td class="num">全村探索清图</td><td class="num">203 步完成三味药收集交回医仙</td></tr>
+  <tr><td class="num">4</td><td class="model">agy-cli:gemini-3.8-flash</td><td>Google</td><td class="num">–</td><td class="muted">– 未跑</td><td><span class="badge good">100% (138步)</span></td><td class="num">第 51 步摘银杏、第 82 步钓鲤鱼</td><td class="num">第 132 步获鹿茸、138 步交药（$1.46）</td></tr>
+  <tr><td class="num">5</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">0% (0/5)</td><td class="muted">– 未通关</td><td><span class="badge good">100% (143/176步)</span></td><td class="num">39–43 步 (搜遍全村6民居)</td><td class="num">23–48 步 (执着赶鹿后起夹重放)</td></tr>
+  <tr><td class="num">6</td><td class="model">claude-cli:claude-fable-5-1</td><td>Anthropic</td><td class="num">–</td><td class="muted">– 未跑</td><td><span class="badge good">100% (203步)</span></td><td class="num">全村探索清图</td><td class="num">203 步完成三味药收集交回医仙</td></tr>
 </table>
 </div>
 
@@ -528,6 +530,7 @@ function perTaskDeepDiveSection() {
   <tr><td class="num strong">🥈 2</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">60% (3/5)</td><td class="num strong">161 步</td><td class="num strong">139 步</td><td class="num">16</td><td class="num">50</td><td class="num">68</td><td class="num">101</td><td><strong>仅 22 步</strong>（井口受阻后调 map 登东北台阶上城墙；井底顺手开完11宝箱）</td></tr>
   <tr><td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">40% (2/5)</td><td class="num">218 步</td><td class="num">218 步</td><td class="num">18</td><td class="num">46</td><td class="num">60</td><td class="num">104</td><td><strong>被困 82 步</strong>（受错误先验锚定 5 次进出寡妇家搜家具，第186步才上城墙）</td></tr>
   <tr><td class="num">4</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">0% (0/5)</td><td class="num">280 步</td><td class="num strong">215 步</td><td class="num">56</td><td class="num">161 (首胜@94漏捡)</td><td class="num">169</td><td class="num">177</td><td><strong>跨 4 重屋顶奇袭</strong>（回客栈二楼翻窗 <code>85→98→87→98→85→98→86</code> 复用屋顶图）</td></tr>
+  <tr><td class="num">–</td><td class="model">agy-cli:gemini-3.8-flash</td><td>Google</td><td class="num">–</td><td class="num"><span class="badge warn">进度 67%</span></td><td class="num">stuck@216</td><td class="num">62</td><td class="num">101</td><td class="num">114</td><td class="num">130</td><td><strong>卡在井边盲区：</strong>拜访寡妇后未登城墙触发投井，在场景 89 隔墙死磕交互被判定 stuck（$2.45）</td></tr>
 </table>
 </div>
 
@@ -537,6 +540,7 @@ function perTaskDeepDiveSection() {
 <table class="wrap">
   <tr><th class="model">模型</th><th>厂商</th><th>笔试拜月考</th><th>上半场：常规决战 (胜局回合)</th><th>常规赛战术拆解</th><th>下半场：禁招消融赛 (胜局回合)</th><th>禁招赛机制发现与成败归因</th></tr>
   <tr><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">100% (3/3)</td><td class="num strong">🥇 7.00 回合 (第2命/42步)</td><td>第 2 命补双 <code>五氣朝元</code> + <code>乾坤一擲</code> 创 7 回合 0 死纪录</td><td class="num strong">🥉 39.00 回合 (第2命/114步)</td><td>第 2 命叠防 + 投掷神兵，全场唯一发明 <code>{"action":"repeat"}</code> 循环宏</td></tr>
+  <tr><td class="model">agy-cli:gemini-3.8-flash</td><td>Google</td><td class="num">–</td><td class="num strong">🥈 9.00 回合 (第1命/25步)</td><td><strong>初见第 1 命 0 团灭最快纪录：</strong>仅 25 步 / 56.1s / $0.37 极速斩拜月</td><td class="muted">– 未跑</td><td>常规赛 1 命速通效率超越全尺寸旗舰</td></tr>
   <tr><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td class="num strong">🥉 11.00 回合 (第1命/28步)</td><td><strong>初见第 1 命一次过：</strong>仅 28 步 / 95.3s 极速斩拜月</td><td class="num strong">✓ 54.00 回合 (第2命/220步)</td><td>第 2 命 <code>真元護體</code> + <code>天罡戰氣</code> + 投掷与剑神稳定磨穿 32,760 HP</td></tr>
   <tr><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">67% (2/3)</td><td class="num strong">✓ 14.00 回合 (第1命/33步)</td><td><strong>初见第 1 命一次过：</strong>3 颗隐蛊维持 9 回合隐身 + 4 发酒神</td><td class="num strong">🥈 37.00 回合 (第2命/176步)</td><td>第 2 命构建“轮流 <code>真元護體</code> + 每回合 <code>五氣朝元</code>”37 回合铁桶阵</td></tr>
   <tr><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">33% (1/3)</td><td class="num">17.00 回合 (第4命/157步)</td><td>全程未用 <code>乾坤一擲</code>，自研群攻清场流分文未花过关</td><td class="num strong">🥇 36.00 回合夺冠! (第11命/542步)</td><td><strong>控制变量线性消元法</strong>测准单招伤害，第 11 命心算 &lt;5% 血线用 <code>化屍水</code> 秒杀夺冠</td></tr>

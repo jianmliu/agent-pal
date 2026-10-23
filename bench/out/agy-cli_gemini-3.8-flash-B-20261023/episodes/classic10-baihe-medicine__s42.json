@@ -1,0 +1,59 @@
+{
+  "task": "classic10-baihe-medicine",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "agy-cli:gemini-3.8-flash",
+  "runId": "agy-cli_gemini-3.8-flash-B-20261023",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "success": true,
+  "successAt": 138,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "success",
+  "milestones": {
+    "got-ginkgo": 51,
+    "got-carp": 82,
+    "got-antler": 132
+  },
+  "toolCalls": 138,
+  "invalidCalls": 9,
+  "softStops": 2,
+  "tokensIn": 9678623,
+  "tokensOut": 75429,
+  "tokensCached": 9004991,
+  "tokensCacheWrite": 0,
+  "cost": 1.463457075,
+  "virtualSeconds": 256.964,
+  "battles": [],
+  "progress": 1,
+  "final": {
+    "scene": 52,
+    "pos": {
+      "gx": 82,
+      "gy": 92
+    },
+    "mode": "control",
+    "visitedScenes": [
+      52,
+      53,
+      49,
+      51,
+      48
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "agy-cli",
+    "model": "gemini-3.8-flash",
+    "effort": "medium",
+    "numTurns": 1,
+    "durationMs": 396547,
+    "exitCode": 0,
+    "signal": null
+  },
+  "accountingStatus": "complete"
+}

@@ -1,0 +1,64 @@
+{
+  "task": "baiyue-single-origin",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "agy-cli:gemini-3.8-flash",
+  "runId": "agy-cli_gemini-3.8-flash-B-20261023",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "success": true,
+  "successAt": 25,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "success",
+  "milestones": {},
+  "toolCalls": 25,
+  "invalidCalls": 1,
+  "softStops": 0,
+  "tokensIn": 1711513,
+  "tokensOut": 33623,
+  "tokensCached": 1539072,
+  "tokensCacheWrite": 0,
+  "cost": 0.37084740000000005,
+  "virtualSeconds": 56.07,
+  "battleRounds": 9,
+  "battles": [
+    {
+      "enemyTeam": 313,
+      "enemyObjects": [
+        546,
+        493
+      ],
+      "completedRounds": 8,
+      "startedRounds": 9,
+      "rounds": 9,
+      "outcome": "won"
+    }
+  ],
+  "progress": 1,
+  "final": {
+    "scene": 281,
+    "pos": {
+      "gx": 120,
+      "gy": 115
+    },
+    "mode": "dialog",
+    "visitedScenes": [
+      281
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "agy-cli",
+    "model": "gemini-3.8-flash",
+    "effort": "medium",
+    "numTurns": 1,
+    "durationMs": 98557,
+    "exitCode": 0,
+    "signal": null
+  },
+  "accountingStatus": "complete"
+}

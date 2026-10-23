@@ -1,0 +1,55 @@
+{
+  "task": "classic48-rain-orbs",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "agy-cli:gemini-3.8-flash",
+  "runId": "agy-cli_gemini-3.8-flash-B-20261023",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "success": true,
+  "successAt": 17,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "success",
+  "milestones": {
+    "tablet-activated": 5,
+    "first-orb-placed": 13
+  },
+  "toolCalls": 17,
+  "invalidCalls": 1,
+  "softStops": 0,
+  "tokensIn": 369837,
+  "tokensOut": 11310,
+  "tokensCached": 207039,
+  "tokensCacheWrite": 0,
+  "cost": 0.180038925,
+  "virtualSeconds": 42.466,
+  "battles": [],
+  "progress": 1,
+  "final": {
+    "scene": 261,
+    "pos": {
+      "gx": 70,
+      "gy": 38
+    },
+    "mode": "busy",
+    "visitedScenes": [
+      272,
+      261
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "agy-cli",
+    "model": "gemini-3.8-flash",
+    "effort": "medium",
+    "numTurns": 1,
+    "durationMs": 57097,
+    "exitCode": 0,
+    "signal": null
+  },
+  "accountingStatus": "complete"
+}

@@ -1,0 +1,72 @@
+{
+  "verifiedAt": "2026-10-23T18:51:10.526Z",
+  "code": "d3cb0eb",
+  "replayRuntimeRoot": "/tmp/pal-1e41aa6",
+  "runDigest": "8061d93ed38768f670e10ab6ee71ff0aed878c46007f370ea3aaa47703a4f0e7",
+  "episodes": [
+    {
+      "file": "baiyue-single-origin__s42.jsonl",
+      "task": "baiyue-single-origin",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "f5a5e5348e36967448d56c69603243cb78ea5c0d7e96855dab1e2f12e16c3f17",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "code d3cb0eb differs from the run's 1e41aa6"
+      ]
+    },
+    {
+      "file": "classic10-baihe-medicine__s42.jsonl",
+      "task": "classic10-baihe-medicine",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "998eedaa8a50e82337c809db9b8d4f8cf87cbfd519d98347dc5c9d6d339324e4",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "code d3cb0eb differs from the run's 1e41aa6"
+      ]
+    },
+    {
+      "file": "classic19-yangzhou-gourd__s42.jsonl",
+      "task": "classic19-yangzhou-gourd",
+      "seed": 42,
+      "claimed": {
+        "success": false,
+        "endReason": "stuck"
+      },
+      "digest": "9a18f1f7195748824291977901fea8ef51cd99df54014667da0815d8e811b127",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "code d3cb0eb differs from the run's 1e41aa6"
+      ]
+    },
+    {
+      "file": "classic48-rain-orbs__s42.jsonl",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "66d6f0a52f24aa87efc9719013ff40d2f8859b8753a56e36e52e45aeea588618",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "code d3cb0eb differs from the run's 1e41aa6"
+      ]
+    }
+  ]
+}

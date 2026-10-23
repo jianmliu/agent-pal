@@ -1,0 +1,91 @@
+{
+  "task": "classic19-yangzhou-gourd",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "agy-cli:gemini-3.8-flash",
+  "runId": "agy-cli_gemini-3.8-flash-B-20261023",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "success": false,
+  "successAt": null,
+  "failed": false,
+  "failAt": null,
+  "stuck": true,
+  "crashed": false,
+  "endReason": "stuck",
+  "milestones": {
+    "night-alarm": 62,
+    "recovered-bag": 101,
+    "accused-by-merchant": 114,
+    "met-widow": 130,
+    "entered-well": null
+  },
+  "toolCalls": 216,
+  "invalidCalls": 49,
+  "softStops": 9,
+  "tokensIn": 19809815,
+  "tokensOut": 98205,
+  "tokensCached": 18921867,
+  "tokensCacheWrite": 0,
+  "cost": 2.453369775,
+  "virtualSeconds": 320.325,
+  "battles": [
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    }
+  ],
+  "progress": 0.6666666666666666,
+  "final": {
+    "scene": 89,
+    "pos": {
+      "gx": 101,
+      "gy": 100
+    },
+    "mode": "control",
+    "visitedScenes": [
+      79,
+      82,
+      96,
+      84,
+      89,
+      86,
+      99,
+      95,
+      93,
+      97,
+      85,
+      98,
+      87,
+      94
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "agy-cli",
+    "model": "gemini-3.8-flash",
+    "effort": "medium",
+    "numTurns": 1,
+    "durationMs": 568555,
+    "exitCode": 1,
+    "signal": null
+  },
+  "accountingStatus": "complete"
+}
