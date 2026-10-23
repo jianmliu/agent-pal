@@ -336,18 +336,15 @@ node bin/agent-pal.mjs bench board ./bench/out ./bench/submissions --out ./bench
 如果您在论文、技术报告、评测基准或博客文章中引用 **Agent-PAL-Bench 技术报告** 或使用本开源仓库的评测工具与实验数据，请按以下格式引用：
 
 **文本引用格式（APA / GB/T 7714）：**
-> Liu, J. (2026). *Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction* (Agent-PAL-Bench Technical Report v0.4). GitHub Repository: https://github.com/jianmliu/agent-pal
+> Liu, J. (2026). *Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction* [Technical report and open-source benchmark]. GitHub: https://github.com/jianmliu/agent-pal
 
 **BibTeX 引用格式：**
 ```bibtex
-@techreport{liu2026agentpalbench,
-  title       = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction},
-  author      = {Liu, Jianming},
-  year        = {2026},
-  month       = oct,
-  number      = {Agent-PAL-Bench Technical Report v0.4},
-  institution = {Agent-PAL Project},
-  url         = {https://github.com/jianmliu/agent-pal},
-  note        = {Technical Report and Open-Source Benchmark Repository: \url{https://github.com/jianmliu/agent-pal}}
+@misc{liu2026agentpalbench,
+  title        = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction},
+  author       = {Liu, Jianming},
+  year         = {2026},
+  howpublished = {\url{https://github.com/jianmliu/agent-pal}},
+  note         = {Technical report and open-source benchmark}
 }
 ```

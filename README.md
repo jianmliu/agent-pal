@@ -195,14 +195,11 @@ pnpm run demo:compiler
 如果您在学术论文、技术报告或评测文章中引用 **Agent-PAL-Bench 技术报告** 或使用本仓库代码与评测轨迹，请使用以下 BibTeX 条目：
 
 ```bibtex
-@techreport{liu2026agentpalbench,
-  title       = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction},
-  author      = {Liu, Jianming},
-  year        = {2026},
-  month       = oct,
-  number      = {Agent-PAL-Bench Technical Report v0.4},
-  institution = {Agent-PAL Project},
-  url         = {https://github.com/jianmliu/agent-pal},
-  note        = {Technical Report and Open-Source Benchmark Repository: \url{https://github.com/jianmliu/agent-pal}}
+@misc{liu2026agentpalbench,
+  title        = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction},
+  author       = {Liu, Jianming},
+  year         = {2026},
+  howpublished = {\url{https://github.com/jianmliu/agent-pal}},
+  note         = {Technical report and open-source benchmark}
 }
 ```

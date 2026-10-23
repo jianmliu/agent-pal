@@ -407,14 +407,11 @@ Agent-PAL-Bench provides a working protocol and task collection for text-mediate
 If you cite the **Agent-PAL-Bench Technical Report** or use this repository, benchmark tasks, or verifiable trajectories in your research or engineering articles, please use the following BibTeX entry:
 
 ```bibtex
-@techreport{liu2026agentpalbench,
-  title       = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction},
-  author      = {Liu, Jianming},
-  year        = {2026},
-  month       = oct,
-  number      = {Agent-PAL-Bench Technical Report v0.7},
-  institution = {Agent-PAL Project},
-  url         = {https://github.com/jianmliu/agent-pal},
-  note        = {Technical Report and Open-Source Benchmark Repository: \url{https://github.com/jianmliu/agent-pal}}
+@misc{liu2026agentpalbench,
+  title        = {Agent-PAL-Bench: Evaluating Long-Horizon Decision-Making in a Chinese Role-Playing Game Through Text-Based Interaction},
+  author       = {Liu, Jianming},
+  year         = {2026},
+  howpublished = {\url{https://github.com/jianmliu/agent-pal}},
+  note         = {Technical report and open-source benchmark}
 }
 ```
