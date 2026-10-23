@@ -1,0 +1,55 @@
+{
+  "task": "classic48-rain-orbs",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "claude-cli:claude-fable-5-1",
+  "runId": "fable-board",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "success": true,
+  "successAt": 10,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "success",
+  "milestones": {
+    "tablet-activated": 4,
+    "first-orb-placed": 6
+  },
+  "toolCalls": 10,
+  "invalidCalls": 0,
+  "softStops": 0,
+  "tokensIn": 74366,
+  "tokensOut": 1463,
+  "tokensCached": 63985,
+  "tokensCacheWrite": 10155,
+  "cost": 0.29450624999999997,
+  "virtualSeconds": 40.591,
+  "battles": [],
+  "progress": 1,
+  "final": {
+    "scene": 261,
+    "pos": {
+      "gx": 70,
+      "gy": 38
+    },
+    "mode": "busy",
+    "visitedScenes": [
+      272,
+      261
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "claude-cli",
+    "model": "claude-fable-5-1",
+    "effort": "medium",
+    "numTurns": 11,
+    "durationMs": 23957,
+    "exitCode": 0,
+    "signal": null
+  },
+  "accountingStatus": "complete"
+}
