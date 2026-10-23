@@ -15,6 +15,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { score } from './score.mjs';
+import { loadTask } from './task.mjs';
 import { episodeDigest, episodeLogs, runDigest } from './verify.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -344,6 +345,29 @@ svg .front{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
 #tab-ironman:checked ~ .panes #pane-ironman,
 #tab-quiz:checked ~ .panes #pane-quiz{display:block}
 @media print{.tab-pane{display:block!important}}
+.landing .lead{font-size:16px;line-height:1.75;max-width:880px;margin:4px 0 18px}
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:0 0 26px}
+.pillar{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 18px 14px;display:flex;flex-direction:column}
+.pillar .p-no{position:absolute;top:12px;right:14px;font-family:"Ma Shan Zheng","STKaiti","KaiTi",serif;font-size:30px;line-height:1;color:var(--seal);opacity:.8}
+.pillar h3{margin:0 0 8px;font-size:17px;color:var(--fg)}
+.pillar p{margin:0 0 12px;font-size:13.5px;color:var(--muted);line-height:1.65;flex:1}
+.pillar .p-meta{font-size:12px;color:var(--accent);border-top:1px dashed var(--line);padding-top:8px}
+.landing>h2{margin-top:30px}
+.task-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr));gap:12px}
+.task-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.task-card h4{margin:0 0 8px;font-size:14px;line-height:1.45}
+.task-card .tid{display:block;font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);font-weight:400}
+table.mini{font-size:13px;width:100%}table.mini th,table.mini td{padding:4px 6px;white-space:nowrap}
+.task-card{overflow-x:auto}
+.empty-lb{color:var(--muted);font-size:14px}
+.empty-lb.big{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:18px 20px}
+.empty-lb.big strong{color:var(--seal);font-size:16px;margin-right:6px}
+.cta{margin:34px 0 8px;padding:20px 22px;border-radius:14px;border:1px solid var(--line);background:linear-gradient(180deg,var(--sky1),var(--card))}
+.cta h2{margin:0 0 8px;border:0;padding:0}
+.cta p,.cta li{font-size:14px;color:var(--muted);line-height:1.7}
+.cta ol{padding-left:20px;margin:6px 0 12px}.cta code{word-break:break-all}
+.btn{display:inline-block;padding:8px 16px;border-radius:8px;background:var(--seal);color:#fff;text-decoration:none;font-weight:600}
+.btn:hover{filter:brightness(1.08)}
 .banner{position:relative;overflow:hidden;border-radius:14px;min-height:230px;margin:0 0 14px;background:linear-gradient(180deg,var(--sky1),var(--sky2));border:1px solid var(--line)}
 .banner .scape{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;background:none}
 .banner-text{position:relative;padding:26px 28px 0;max-width:720px}
@@ -374,112 +398,75 @@ tbody tr:hover td,table tr:hover td{background-image:linear-gradient(rgba(var(--
 @media (max-width:640px){h1{font-size:20px}main{padding:16px 16px 40px}.navlinks a{padding:3px 8px}.kpi .k-val{font-size:22px}.podium,.grid2{grid-template-columns:1fr}}
 `;
 
-function statsOverviewSection() {
-  return `<section>
-<h2>核心统计总览：华山论剑首期守擂榜（三剑客率先满贯，诚邀大家提交国产模型 PR 攻擂！）</h2>
-<p class="muted">评测基准涵盖 <strong>闭卷先验笔试（22 问）</strong>、<strong>四大专项实操擂台（祈雨祭坛 / 白河采药 / 扬州紫金葫芦 / 南诏王宫拜月决战 &amp; 禁招消融赛）</strong> 与 <strong>从零手写代码全游戏通关（<code>--pure</code> 模式 300 场景 11 章马拉松）</strong>。榜上 5 款模型（三剑客、<code>GPT-6 Astra</code> 与 <code>Claude Fable 5.1</code>）中，各自拥有独立个人订阅额度的<strong>“外来三剑客”（<code>Gemini 4 Argon</code>、<code>Claude Opus 5.5</code>、<code>GPT-6.1-Sol</code>）率先完成四大专项实操 100% 大满贯并打穿全游戏</strong>。</p>
+/** 任务显示顺序:按剧情先后(开场 → 第一章 → 经典存档按章 → 终局 → 拜月) */
+const TASK_ORDER = (id) => (/^opening/.test(id) ? 0 : /^wine/.test(id) ? 1 : /^pal-ch1/.test(id) ? 2 : /^classic(\d+)/.test(id) ? 10 + Number(id.match(/^classic(\d+)/)[1]) : /^pal-final/.test(id) ? 90 : /^baiyue/.test(id) ? 95 : 99);
+const shortModel = (m) => String(m || '').replace(/^[^:]+:/, '');
+const taskTitle = (id) => { try { return loadTask(id)?.title || id; } catch { return id; } };
 
-<div class="kpis">
-  <div class="kpi"><div class="k-label">全游戏通关 (--pure 11章)</div><div class="k-val good">3 / 3</div><div class="k-sub">跑过的 3 个（Argon、Claude Opus 5.5、GPT-6.1-Sol）都打到全剧终；GPT-6 Astra、Claude Fable 5.1 还没跑</div></div>
-  <div class="kpi"><div class="k-label">四大专项实操大满贯</div><div class="k-val accent">4 / 4</div><div class="k-sub">四项都跑了的 4 个（三剑客 + GPT-6 Astra）全部全胜；Claude Fable 5.1 只跑了祈雨坛和白河</div></div>
-  <div class="kpi"><div class="k-label">零先验逆袭纪录</div><div class="k-val good">8% → 100%</div><div class="k-sub">Claude Opus 5.5 笔试倒数第一(1/13)，实操夺得双冠</div></div>
-  <div class="kpi"><div class="k-label">防作弊重放核验成本</div><div class="k-val warn">$0 CPU</div><div class="k-sub">确定性引擎重放 + Token 物理下界 + 官方价格表审计</div></div>
+/** 分章节关卡:每题 × 每个模型取最好的一局通关(拜月按战斗回合,其余按步数),只看成功局 */
+export function clearedByTask(rows) {
+  const tasks = new Map();
+  for (const r of rows) for (const t of r.tasks || []) for (const e of t.episodes || []) {
+    if (!e.success) continue;
+    const byModel = tasks.get(t.id) || new Map(); tasks.set(t.id, byModel);
+    const cur = byModel.get(r.model);
+    const better = (x, y) => (x.battleRounds ?? Infinity) - (y.battleRounds ?? Infinity) || (x.successAt ?? Infinity) - (y.successAt ?? Infinity) || (x.cost ?? Infinity) - (y.cost ?? Infinity);
+    const cand = { ...e, model: r.model, verified: r.verify?.state === 'verified' };
+    if (!cur || better(cand, cur) < 0) byModel.set(r.model, cand);
+  }
+  return [...tasks.entries()].map(([id, m]) => ({ id, title: taskTitle(id), wins: [...m.values()].sort((x, y) => (x.battleRounds ?? Infinity) - (y.battleRounds ?? Infinity) || (x.successAt ?? Infinity) - (y.successAt ?? Infinity) || (x.cost ?? Infinity) - (y.cost ?? Infinity)) }))
+    .sort((a, b) => TASK_ORDER(a.id) - TASK_ORDER(b.id) || a.id.localeCompare(b.id));
+}
+
+function landingSection(rows, quizzes) {
+  const medal = (i) => ['🥇', '🥈', '🥉'][i] || String(i + 1);
+  const quizBoard = quizzes.length
+    ? `<div class="scroll"><table><tr><th>#</th><th class="model">模型</th><th>得分</th><th>答对 / 题数</th></tr>${[...quizzes].sort((a, b) => b.score - a.score).map((q, i) => `<tr><td class="num">${medal(i)}</td><td class="model">${esc(shortModel(q.model))}</td>${scoreCell(q.score)}<td class="num">${Math.round(q.score * q.n)} / ${q.n}</td></tr>`).join('')}</table></div>`
+    : '<p class="empty-lb">还没有闭卷成绩。</p>';
+  const byTask = clearedByTask(rows);
+  const taskBoard = byTask.length ? `<div class="task-grid">${byTask.map((t) => {
+    const battle = t.wins.some((w) => w.battleRounds != null);
+    return `<article class="task-card"><h4><span class="tid">${esc(t.id)}</span>${esc(t.title)}</h4><table class="mini"><tr><th></th><th>模型</th><th class="num">${battle ? '回合' : '步数'}</th><th class="num">par</th><th class="num">花费</th></tr>${t.wins.map((w, i) =>
+      `<tr><td>${medal(i)}</td><td class="model">${esc(shortModel(w.model))}${w.verified ? ' <span class="v v-verified" title="bench verify 重放一致">✓</span>' : ''}</td><td class="num">${battle ? (w.battleRounds ?? '–') : (w.successAt ?? '–')}</td><td class="num muted">${w.par ?? '–'}</td><td class="num muted">${usd(w.cost)}</td></tr>`).join('')}</table></article>`;
+  }).join('')}</div>` : '<p class="empty-lb">还没有通关成绩。</p>';
+  return `<section class="landing">
+<p class="lead"><strong>agent-pal-bench</strong> 用 1995 年 DOS 原版《仙剑奇侠传》考 AI 智能体的<strong>长程决策</strong>：读对白找线索、跨场景记住状态、在迷宫和 Boss 战里提出并证伪假设。引擎是确定性的 —— 同一种子、同一串操作，结果唯一，所以每份成绩都能<strong>不花一分 API 费用重放核验</strong>。四个栏目从「知道」到「做到」逐级加码：</p>
+<div class="pillars">
+  <article class="pillar"><div class="p-no">壹</div><h3>闭卷笔试</h3><p>不开游戏、不给工具，按关卡配对提问，只答一行；拿不准必须答「不知道」，乱猜判错。关键词判分，不用模型当裁判。用来分清<strong>背过攻略</strong>和<strong>现场推理</strong>。</p><div class="p-meta">22 问 · 关键词判分</div></article>
+  <article class="pillar"><div class="p-no">贰</div><h3>分章节关卡</h3><p>从各章节切出的迷宫、剧情锁与 Boss 战，各从固定存档出发：谜题、跨场景寻物、长链侦探、终局决战。目标与里程碑由谓词判定，参考解给出 par，调用与 token 都有预算。</p><div class="p-meta">23 题 · par + 预算 · 重放核验</div></article>
+  <article class="pillar"><div class="p-no">叁</div><h3>基本工具通关</h3><p>从「新的故事」开始，只用标准工具 —— 看周围、寻路、对话、战斗、用物品 —— 一路打到全剧终。考的是跨十一章的规划、记忆与资源管理。</p><div class="p-meta">新游戏 → 全剧终 · 标准工具</div></article>
+  <article class="pillar"><div class="p-no">肆</div><h3>编程通关</h3><p>拿掉寻路、互动、地图这些高级工具，只给底层协议包、方向键和一个 JavaScript 沙箱。模型要现场写寻路器、脚本反编译器和战斗状态机，打穿全游戏。</p><div class="p-meta"><code>--pure</code> · Tier P</div></article>
 </div>
 
-<h3>🏆 三大全通满贯模型（Full-Clear Hall of Fame）深度画像对比</h3>
-<div class="podium">
-  <div class="champ gold">
-    <div class="champ-head"><span class="champ-title">🥇 Gemini 4 Argon</span><span class="badge good">全通 #1 · 竞速之王</span></div>
-    <div class="champ-metrics">
-      <div><div class="m-v">64% (14/22)</div><div class="m-k">闭卷笔试(并列第1)</div></div>
-      <div><div class="m-v">90步 / 161步</div><div class="m-k">白河 / 扬州(全场最快)</div></div>
-      <div><div class="m-v">7 回合 / 39 回合</div><div class="m-k">拜月常规(纪录) / 禁招</div></div>
-    </div>
-    <p class="champ-desc"><strong>核心特质：先验储备与在线纠错双修。</strong>白河采药钓完鱼 0 步废话直奔南门猎场；扬州井口受阻仅花 <strong>22 步</strong> 即破除“井边盲区”错误先验登上城墙；全游戏 <code>--pure</code> 模式自写 <strong>731 行</strong> 引擎库打穿 11 章。</p>
-  </div>
-  <div class="champ silver">
-    <div class="champ-head"><span class="champ-title">🥈 Claude Opus 5.5</span><span class="badge good">全通 #2 · 零先验推理之王</span></div>
-    <div class="champ-metrics">
-      <div><div class="m-v">14% (3卷0分)</div><div class="m-k">闭卷笔试(一张白纸)</div></div>
-      <div><div class="m-v">10 步 (par=7)</div><div class="m-k">祈雨祭坛(全场第1)</div></div>
-      <div><div class="m-v">36 回合夺冠!</div><div class="m-k">拜月禁招反事实赛</div></div>
-    </div>
-    <p class="champ-desc"><strong>核心特质：科学实验探针与控制变量消元。</strong>笔试对攻略一无所知，却靠 1 步零成本探针 10 步秒过祈雨坛；扬州横跨 4 重屋顶飞檐走壁奇袭；拜月禁招赛用<strong>控制变量线性消元法</strong>测准单招伤害并用 <code>化屍水</code> 斩杀满血 32,760 HP 拜月；自写 <strong>1,427 行</strong> 引擎库全通。</p>
-  </div>
-  <div class="champ bronze">
-    <div class="champ-head"><span class="champ-title">🥉 GPT-6.1-Sol</span><span class="badge good">全通 #3 · 一命稳健宗师</span></div>
-    <div class="champ-metrics">
-      <div><div class="m-v">59% (13/22)</div><div class="m-k">闭卷笔试(白河满分)</div></div>
-      <div><div class="m-v">第1命 14回合</div><div class="m-k">拜月全场唯一初见胜</div></div>
-      <div><div class="m-v">845 次调用</div><div class="m-k">--pure 单轮一气呵成</div></div>
-    </div>
-    <p class="champ-desc"><strong>核心特质：极致工程密度与零失误执行。</strong>拜月常规赛全场唯一<strong>初见第 1 命 0 团灭</strong>通关（3 颗隐蛊 + 4 发酒神）；禁招赛第 2 命构建 37 回合铁桶阵；<code>--pure</code> 全游戏仅用 <strong>135 行</strong> 高密度函数式代码库、<strong>单会话 845 步</strong>直通全剧终。</p>
-  </div>
-</div>
+<h2>排行 · 壹 闭卷笔试</h2>
+<p class="muted">参评模型的闭卷得分（只列榜上有通关成绩的模型）。笔试高不代表打得过 —— 对照下面几栏看「知道」与「做到」的差距。</p>
+${quizBoard}
 
-<h3>📊 参评模型跨维度总成绩单（闭卷笔试 × 四大专项实操 × 全游戏通关）</h3>
-<div class="scroll">
-<table class="wrap">
-  <tr>
-    <th>总座次</th><th class="model">模型</th><th>厂商 / 机构</th><th>闭卷笔试 (22问)</th>
-    <th>实操① 祈雨祭坛<br><span class="muted">par=7 / 预算80</span></th>
-    <th>实操② 白河采药<br><span class="muted">par=40 / 预算120–240</span></th>
-    <th>实操③ 扬州紫金葫芦<br><span class="muted">par=74 / 15场景长链</span></th>
-    <th>实操④ 拜月教主决战<br><span class="muted">常规赛 / 禁招消融赛</span></th>
-    <th>终极铁人赛 (--pure)<br><span class="muted">300场景手写代码全通</span></th>
-    <th>综合定性</th>
-  </tr>
-  <tr>
-    <td class="num strong">🥇 1</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num strong">64% (14/22)</td>
-    <td><span class="badge good">✓ 13 步</span></td><td><span class="badge good">✓ 90 步 (最快)</span></td><td><span class="badge good">✓ 161 步 (净139)</span></td><td><span class="badge good">✓ 7 回合</span> / <span class="badge good">✓ 39 回合</span></td>
-    <td><span class="badge good">🏆 全剧终 (731行库)</span></td><td>四大实操 + 全游戏满贯</td>
-  </tr>
-  <tr>
-    <td class="num strong">🥈 2</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">14% (3/22)</td>
-    <td><span class="badge good">✓ 10 步 (最快)</span></td><td><span class="badge good">✓ 143 步 (零先验)</span></td><td><span class="badge good">✓ 280 步 (跨屋顶)</span></td><td><span class="badge good">✓ 17 回合</span> / <span class="badge good">🥇 36 回合</span></td>
-    <td><span class="badge good">🏆 全剧终 (1427行库)</span></td><td>零先验逆袭 + 禁招冠军</td>
-  </tr>
-  <tr>
-    <td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num strong">59% (13/22)</td>
-    <td><span class="badge good">✓ 22 步</span></td><td><span class="badge good">✓ 105 步</span></td><td><span class="badge good">✓ 218 步</span></td><td><span class="badge good">✓ 14 回合 (1命)</span> / <span class="badge good">✓ 37 回合</span></td>
-    <td><span class="badge good">🏆 全剧终 (845步单轮)</span></td><td>初见1命斩拜月 + 单轮全通</td>
-  </tr>
-  <tr>
-    <td class="num strong">4</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="muted">–</td>
-    <td><span class="badge good">✓ 13 步</span></td><td><span class="badge good">✓ 107 步</span></td><td><span class="badge good">✓ 146 步 (最快)</span></td><td><span class="badge good">✓ 11 回合 (1命/28步)</span> / <span class="badge good">✓ 54 回合</span></td>
-    <td class="muted">⏳ 未跑</td><td>四大专项实操 (含禁招) 全胜满贯</td>
-  </tr>
-  <tr>
-    <td class="num">5</td><td class="model">claude-cli:claude-fable-5-1</td><td>Anthropic</td><td class="muted">–</td>
-    <td><span class="badge good">✓ 10 步 (并列最快)</span></td><td><span class="badge good">✓ 203 步 (240扩容)</span></td><td class="muted">⏳ 未跑</td><td class="muted">⏳ 未跑</td>
-    <td class="muted">⏳ 未跑</td><td>祈雨坛 10 步 + 白河村三味药通关（其余未跑）</td>
-  </tr>
-  <tr>
-    <td class="num strong">🎯</td><td class="model">Qwen / Doubao / Step / DeepSeek 等原生 API</td><td><strong>Alibaba / ByteDance / StepFun 等</strong></td><td class="num"><span class="badge warn">欢迎 PR 提交</span></td>
-    <td><span class="badge warn">欢迎 PR 挑战</span></td><td><span class="badge warn">欢迎 240步 挑战</span></td><td><span class="badge warn">欢迎 320步 挑战</span></td><td><span class="badge warn">欢迎挑战 36 回合</span></td>
-    <td><span class="badge warn">🏆 悬赏首个国产全通!</span></td><td>提交 PR 自动运行 <code>bench verify</code> 合榜</td>
-  </tr>
-</table>
-</div>
+<h2>排行 · 贰 分章节关卡</h2>
+<p class="muted">每道题列出打通过它的模型，各取最好的一局：普通关卡按步数排，拜月决战按战斗回合排；par 是参考解的步数。<span class="v v-verified">✓</span> = 这份成绩已按日志重放核验。</p>
+${taskBoard}
 
-<div class="grid2">
-  <div class="card">
-    <h3>🔬 统计发现一：各擂台上榜模型的通关与未跑（共 5 个模型）</h3>
-    <div class="bar-row"><span class="bar-name">1. 祈雨坛 45° 旋转解谜</span><div class="bar-track"><div class="bar-fill good" style="width:100%"></div></div><span class="bar-val">5 通关</span></div>
-    <div class="bar-row"><span class="bar-name">2. 白河村跨场景三味药</span><div class="bar-track"><div class="bar-fill good" style="width:100%"></div></div><span class="bar-val">5 通关</span></div>
-    <div class="bar-row"><span class="bar-name">3. 拜月教主常规决战</span><div class="bar-track"><div class="bar-fill good" style="width:80%"></div></div><span class="bar-val">4 通关 · 1 未跑</span></div>
-    <div class="bar-row"><span class="bar-name">4. 扬州 15 场景侦探链</span><div class="bar-track"><div class="bar-fill good" style="width:80%"></div></div><span class="bar-val">4 通关 · 1 未跑</span></div>
-    <div class="bar-row"><span class="bar-name">5. 拜月禁招消融赛</span><div class="bar-track"><div class="bar-fill good" style="width:80%"></div></div><span class="bar-val">4 通关 · 1 未跑</span></div>
-    <div class="bar-row"><span class="bar-name">6. --pure 全游戏通关</span><div class="bar-track"><div class="bar-fill good" style="width:60%"></div></div><span class="bar-val">3 通关 · 2 未跑</span></div>
-    <p>榜单只收通关的那一局，上榜模型跑过的擂台全部打通；条子没满的部分是<strong>还没跑</strong>，不是打不过：<code>Claude Fable 5.1</code> 还没跑扬州与拜月，<code>GPT-6 Astra</code> 和 <code>Claude Fable 5.1</code> 都还没跑 <code>--pure</code> 全游戏。</p>
-  </div>
-  <div class="card">
-    <h3>🧠 统计发现二：决定通关的四大底层 Agent 核心内功</h3>
-    <p><strong>① 零成本认知探针（Epistemic Probe）：</strong>面对 45° 坐标歧义，<code>Claude Opus 5.5</code> 用 1 步 <code>use_item</code> 实测代替代数空想，10 步破局。</p>
-    <p><strong>② 止损弹性（Pivot Elasticity）：</strong>白河猎场放偏第一枚捕兽夹后，<code>Argon</code>（5步）与 <code>GPT-6.1</code>（7步）秒收夹重放；揚州井口打不开时，<code>Argon</code> 22 步转登城墙，而 <code>GPT-6.1</code> 被错误记忆锚定 82 步。</p>
-    <p><strong>③ 控制变量消元法：</strong>面对回合制批量结算（<code>ΔHP = x1+x2+x3</code>），<code>Claude</code> 固定两人投 1000 伤毒药解出单招真实伤害。</p>
-    <p><strong>④ 自演化代码库（Self-Coding Library）：</strong><code>--pure</code> 模式下三剑客将开门、寻路、反编译沉淀为持久化 JS 库，越往后越少被同一类障碍卡住。</p>
-  </div>
+<h2>排行 · 叁 基本工具通关</h2>
+<div class="empty-lb big"><strong>虚位以待。</strong>还没有模型提交「只用标准工具、从新游戏打到全剧终」的记录 —— 第一个上榜的就是你的模型。</div>
+
+<h2>排行 · 肆 编程通关</h2>
+<p class="muted"><code>--pure</code> 模式下从新游戏写代码打到全剧终的模型（详见「全游戏通关」页）。</p>
+<div class="scroll"><table class="wrap"><tr><th>#</th><th class="model">模型</th><th>结局</th><th class="num">工具调用</th><th class="num">会话</th><th class="num">自写代码库</th><th class="num">终局等级</th></tr>
+<tr><td class="num">🥇</td><td class="model">gpt-6.1-sol</td><td><span class="badge good">全剧终</span></td><td class="num strong">845</td><td class="num">1 段</td><td class="num">135 行</td><td class="num">Lv35 / 32 / 30</td></tr>
+<tr><td class="num">🥈</td><td class="model">claude-opus-5-5</td><td><span class="badge good">全剧终</span></td><td class="num">1,453</td><td class="num">2 段</td><td class="num">1,427 行</td><td class="num">Lv45 / 43 / 42</td></tr>
+<tr><td class="num">🥉</td><td class="model">gemini-4-argon</td><td><span class="badge good">全剧终</span></td><td class="num">1,704</td><td class="num">5 段</td><td class="num">731 行</td><td class="num">Lv36 / 33 / 31</td></tr>
+</table></div>
+<p class="muted">按工具调用次数排（越少越好）。</p>
+
+<div class="cta">
+  <h2>提交你的模型</h2>
+  <p>榜单<strong>只收通关的那一局</strong>：没打通的局不计，一局都没打通的模型不上榜。每一局都要先过 <code>bench verify</code> 的重放核验，PR 门禁会再自动查一遍 —— 维护者不用花钱重调模型。</p>
+  <ol>
+    <li>用自己的额度跑：<code>node bin/agent-pal.mjs bench run --model &lt;provider:model&gt; --tier B --tasks &lt;题&gt; --out bench/out/&lt;你的运行&gt;</code></li>
+    <li>核验并删掉没打通的局：<code>node bin/agent-pal.mjs bench verify bench/out/&lt;你的运行&gt;</code></li>
+    <li>本地自检后提 PR：<code>node bench/bench.mjs check-pr</code>，合并后榜单自动更新</li>
+  </ol>
+  <p><a class="btn" href="https://github.com/jianmliu/agent-pal" target="_blank" rel="noopener">去 GitHub 提交 PR →</a></p>
 </div>
 </section>`;
 }
@@ -488,6 +475,15 @@ function perTaskDeepDiveSection() {
   return `<section>
 <h2>四大专项实操擂台：分题目精细化数据统计与行为诊断</h2>
 <p class="muted">本页汇总四大核心实操考题中各模型的步数、回合数、Token 消耗与关键转折点遥测数据。</p>
+<div class="grid2">
+  <div class="card">
+    <h3>🧠 决定通关的四大底层 Agent 核心内功</h3>
+    <p><strong>① 零成本认知探针（Epistemic Probe）：</strong>面对 45° 坐标歧义，<code>Claude Opus 5.5</code> 用 1 步 <code>use_item</code> 实测代替代数空想，10 步破局。</p>
+    <p><strong>② 止损弹性（Pivot Elasticity）：</strong>白河猎场放偏第一枚捕兽夹后，<code>Argon</code>（5步）与 <code>GPT-6.1</code>（7步）秒收夹重放；揚州井口打不开时，<code>Argon</code> 22 步转登城墙，而 <code>GPT-6.1</code> 被错误记忆锚定 82 步。</p>
+    <p><strong>③ 控制变量消元法：</strong>面对回合制批量结算（<code>ΔHP = x1+x2+x3</code>），<code>Claude</code> 固定两人投 1000 伤毒药解出单招真实伤害。</p>
+    <p><strong>④ 自演化代码库（Self-Coding Library）：</strong><code>--pure</code> 模式下三剑客将开门、寻路、反编译沉淀为持久化 JS 库，越往后越少被同一类障碍卡住。</p>
+  </div>
+</div>
 
 <h3>擂台一：大理祈雨祭坛（<code>classic48-rain-orbs</code>，<code>par = 7</code>，预算 80 步）</h3>
 <p class="muted">考察点：石碑正交方位（东北/东南/西南/西北）向 45° 斜向梅花桩坐标的映射，以及“先内省证明 vs 先发 1 步探针”。</p>
@@ -545,6 +541,37 @@ function ironmanAndPrSection() {
   return `<section>
 <h2>终极铁人三项：从零手写代码全游戏通关（<code>--pure</code> 模式）与 PR 打榜指南</h2>
 <p class="muted">在 <code>--pure</code>（Tier P）模式下，系统剥夺 <code>walk_to</code>、<code>interact</code>、<code>map</code> 等一切高级工具，只提供底层方向键原语与 <code>run_code</code> JS 沙盒。模型必须自己手写寻路器、字节码反编译器与战斗状态机打穿全部 11 章 300 个场景。</p>
+
+<h3>🏆 三大全通满贯模型（Full-Clear Hall of Fame）深度画像对比</h3>
+<div class="podium">
+  <div class="champ gold">
+    <div class="champ-head"><span class="champ-title">🥇 Gemini 4 Argon</span><span class="badge good">全通 #1 · 竞速之王</span></div>
+    <div class="champ-metrics">
+      <div><div class="m-v">64% (14/22)</div><div class="m-k">闭卷笔试(并列第1)</div></div>
+      <div><div class="m-v">90步 / 161步</div><div class="m-k">白河 / 扬州(全场最快)</div></div>
+      <div><div class="m-v">7 回合 / 39 回合</div><div class="m-k">拜月常规(纪录) / 禁招</div></div>
+    </div>
+    <p class="champ-desc"><strong>核心特质：先验储备与在线纠错双修。</strong>白河采药钓完鱼 0 步废话直奔南门猎场；扬州井口受阻仅花 <strong>22 步</strong> 即破除“井边盲区”错误先验登上城墙；全游戏 <code>--pure</code> 模式自写 <strong>731 行</strong> 引擎库打穿 11 章。</p>
+  </div>
+  <div class="champ silver">
+    <div class="champ-head"><span class="champ-title">🥈 Claude Opus 5.5</span><span class="badge good">全通 #2 · 零先验推理之王</span></div>
+    <div class="champ-metrics">
+      <div><div class="m-v">14% (3卷0分)</div><div class="m-k">闭卷笔试(一张白纸)</div></div>
+      <div><div class="m-v">10 步 (par=7)</div><div class="m-k">祈雨祭坛(全场第1)</div></div>
+      <div><div class="m-v">36 回合夺冠!</div><div class="m-k">拜月禁招反事实赛</div></div>
+    </div>
+    <p class="champ-desc"><strong>核心特质：科学实验探针与控制变量消元。</strong>笔试对攻略一无所知，却靠 1 步零成本探针 10 步秒过祈雨坛；扬州横跨 4 重屋顶飞檐走壁奇袭；拜月禁招赛用<strong>控制变量线性消元法</strong>测准单招伤害并用 <code>化屍水</code> 斩杀满血 32,760 HP 拜月；自写 <strong>1,427 行</strong> 引擎库全通。</p>
+  </div>
+  <div class="champ bronze">
+    <div class="champ-head"><span class="champ-title">🥉 GPT-6.1-Sol</span><span class="badge good">全通 #3 · 一命稳健宗师</span></div>
+    <div class="champ-metrics">
+      <div><div class="m-v">59% (13/22)</div><div class="m-k">闭卷笔试(白河满分)</div></div>
+      <div><div class="m-v">第1命 14回合</div><div class="m-k">拜月全场唯一初见胜</div></div>
+      <div><div class="m-v">845 次调用</div><div class="m-k">--pure 单轮一气呵成</div></div>
+    </div>
+    <p class="champ-desc"><strong>核心特质：极致工程密度与零失误执行。</strong>拜月常规赛全场唯一<strong>初见第 1 命 0 团灭</strong>通关（3 颗隐蛊 + 4 发酒神）；禁招赛第 2 命构建 37 回合铁桶阵；<code>--pure</code> 全游戏仅用 <strong>135 行</strong> 高密度函数式代码库、<strong>单会话 845 步</strong>直通全剧终。</p>
+  </div>
+</div>
 
 <div class="scroll">
 <table class="wrap">
@@ -612,7 +639,7 @@ function banner(meta) {
   return `<header class="banner">${scape}
 <div class="banner-text">
   <div class="eyebrow"><span class="brush" lang="zh-CN">仙剑奇侠传</span><span class="seal" aria-hidden="true"><i>论</i><i>剑</i></span></div>
-  <h1>agent-pal-bench 排行与实测数据统计看板</h1>
+  <h1>agent-pal-bench：用《仙剑奇侠传》考 AI 智能体的长程决策</h1>
   <p class="meta">${meta}</p>
 </div>
 </header>`;
@@ -638,7 +665,7 @@ export function renderBoard(rows, { generatedAt = new Date().toISOString(), quiz
       `<h3>每题 success 率(括号内为局数)</h3>${taskMatrix([...main, ...ext])}</section>`;
   }).join('');
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>agent-pal-bench 排行与统计看板</title>
+<title>agent-pal-bench · 仙剑智能体基准</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&amp;text=%E4%BB%99%E5%89%91%E5%A5%87%E4%BE%A0%E4%BC%A0%E8%AE%BA&amp;display=swap">
 <style>${CSS}</style>
@@ -666,7 +693,7 @@ ${banner(`《仙剑奇侠传》(1995 DOS) 智能体长程决策基准 · 生成�
 <input class="tab-ctrl" type="radio" name="pal-tab" id="tab-quiz">
 
 <div class="tab-bar" role="tablist">
-  <label class="tab-lbl" for="tab-stats">🏆 全通统计与三剑客画像</label>
+  <label class="tab-lbl" for="tab-stats">🏠 基准介绍与排行</label>
   <label class="tab-lbl" for="tab-tiers">⚔️ 实操分档与帕累托榜 (${rows.length})</label>
   <label class="tab-lbl" for="tab-tasks">🎯 四大实操擂台拆解</label>
   <label class="tab-lbl" for="tab-ironman">💻 全游戏通关 (--pure) &amp; PR 指南</label>
@@ -674,7 +701,7 @@ ${banner(`《仙剑奇侠传》(1995 DOS) 智能体长程决策基准 · 生成�
 </div>
 
 <div class="panes">
-  <div class="tab-pane" id="pane-stats">${statsOverviewSection()}</div>
+  <div class="tab-pane" id="pane-stats">${landingSection(rows, quizzes)}</div>
   <div class="tab-pane" id="pane-tiers">
     <p class="muted">榜单只收通关的那一局:没打通的局不计,一局都没打通的运行不出现。score = 通关题数 / 这一档里有人通关过的题数(主排序),同分按本题集口径比较成功局平均 cost 或战斗回合；不同评分口径分开排。按档位分开排,外部 agent 单列。「核验」= bench verify 按日志重放的结果:只有全部局都重放一致才算已核验。共用一个 Ollama 订阅、额度不够没跑全的模型不上榜(运行记录仍在仓库里)。题集不同的运行 score 不可直接比,见每题矩阵。</p>
     ${rows.length ? sections : '<p>没有找到运行结果(bench run 的输出目录)。</p>'}
