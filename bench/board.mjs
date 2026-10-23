@@ -378,10 +378,6 @@ function statsOverviewSection() {
   return `<section>
 <h2>核心统计总览：华山论剑首期守擂榜（三剑客率先满贯，诚邀大家提交国产模型 PR 攻擂！）</h2>
 <p class="muted">评测基准涵盖 <strong>闭卷先验笔试（22 问）</strong>、<strong>四大专项实操擂台（祈雨祭坛 / 白河采药 / 扬州紫金葫芦 / 南诏王宫拜月决战 &amp; 禁招消融赛）</strong> 与 <strong>从零手写代码全游戏通关（<code>--pure</code> 模式 300 场景 11 章马拉松）</strong>。榜上 5 款模型（三剑客、<code>GPT-6 Astra</code> 与 <code>Claude Fable 5.1</code>）中，各自拥有独立个人订阅额度的<strong>“外来三剑客”（<code>Gemini 4 Argon</code>、<code>Claude Opus 5.5</code>、<code>GPT-6.1-Sol</code>）率先完成四大专项实操 100% 大满贯并打穿全游戏</strong>。</p>
-<div class="card" style="margin:0 0 16px;border-left:4px solid var(--warn);background:color-mix(in oklab, var(--warn) 7%, var(--card))">
-  <h3 style="margin:0 0 6px;color:var(--warn)">⚡ 江湖擂台声明：额度受限、没跑全的模型暂不上榜，国产模型席位虚位以待！</h3>
-  <p style="margin:0">本次评测完全由个人自费订阅完成：“外来三剑客”分别跑在各自独立的个人订阅账号上，因此有充足额度跑满全科；而 <strong>8 款国产模型（<code>DeepSeek</code>、<code>GLM</code>、<code>Kimi</code>、<code>MiniMax</code>）和 <code>Gemma 4</code> 全部共用同一个个人 Ollama Cloud 订阅账号分摊额度</strong>（例如 <code>DeepSeek V4.1 Flash</code> 在 <code>--pure</code> 模式一路连斩赤鬼王、石长老杀入第 5 章扬州城后直接把整月 Ollama 额度耗尽被迫中断；扬州 15 场景长链与 240/560 步扩容赛也因额度见底未能对其他国产模型全面展开；<code>Qwen</code>、<code>Doubao Seed</code>、<code>Step</code> 等国产主力更是尚未测试）。<strong>为了不把「额度不够没跑全」当成「打不过」，这 9 款模型暂不列入排名；另外<strong>榜单只收通关的那一局</strong>，没打通的局不计，一局都没打通的模型（如 <code>Laya</code>）也不上榜。本榜单定位是一座开放攻擂的“江湖擂台”</strong>——非常欢迎有额度的朋友跑分并通过 <strong>GitHub PR（$0 API 成本自动重放核验）</strong>提交国产模型记录，争夺首座国产大满贯奖杯！</p>
-</div>
 
 <div class="kpis">
   <div class="kpi"><div class="k-label">全游戏通关率 (--pure 11章)</div><div class="k-val good">3 / 5 (60%)</div><div class="k-sub">仅 Argon、Claude Opus 5.5、GPT-6.1-Sol 抵达全剧终</div></div>
