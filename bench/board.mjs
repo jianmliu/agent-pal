@@ -358,9 +358,11 @@ table.mini{font-size:13px;width:100%}table.mini th,table.mini td{padding:4px 6px
 .seal{display:inline-grid;grid-auto-rows:1fr;place-items:center;width:40px;height:52px;padding:3px 0;border:2px solid var(--seal);border-radius:4px;color:var(--seal);font-family:"Ma Shan Zheng","STKaiti","KaiTi",serif;font-size:19px;line-height:1;transform:rotate(-4deg)}.seal i{font-style:normal}
 .banner h1{margin:10px 0 4px;font-size:20px;color:var(--fg)}
 .banner .meta{display:inline-block;margin:0;padding:3px 10px;font-size:13px;color:var(--muted);background:color-mix(in srgb,var(--sky1) 82%,transparent);border-radius:6px}
-.navlinks{margin:0 0 4px}
+.banner .gh{position:absolute;top:14px;right:16px;z-index:1;font-size:13px;font-weight:600;color:var(--fg);text-decoration:none;padding:4px 10px;border:1px solid var(--line);border-radius:6px;background:color-mix(in srgb,var(--sky1) 80%,transparent)}
+.banner .gh:hover{border-color:var(--seal);color:var(--seal)}
+section p.muted a{color:var(--accent)}
 section>h2{border-left:3px solid var(--seal);padding-left:10px}
-@media (max-width:640px){.banner{min-height:200px}.banner-text{padding:18px 16px 0}.brush{font-size:38px}.seal{width:34px;height:44px;font-size:15px}.banner h1{font-size:17px}}
+@media (max-width:640px){.banner{min-height:200px}.banner-text{padding:18px 16px 0}.brush{font-size:34px}.banner .gh{top:10px;right:10px;padding:2px 8px;font-size:12px}.seal{width:34px;height:44px;font-size:15px}.banner h1{font-size:17px}}
 /* 宽表:模型列钉在左边,横向滚动时不丢「这一行是谁」;叙述性的最后一列换行,不把表撑到两千像素 */
 .scroll td.model,.scroll th.model{position:sticky;left:0;z-index:1;background:var(--card)}
 .scroll th.model{background:var(--soft)}
@@ -600,6 +602,7 @@ function banner(meta) {
 <path d="${ridge(41, { base: 246, amp: 58, step: 55 })}" fill="var(--ink)" opacity=".62"/>
 </svg>`;
   return `<header class="banner">${scape}
+<a class="gh" href="https://github.com/jianmliu/agent-pal" target="_blank" rel="noopener">GitHub ↗</a>
 <div class="banner-text">
   <div class="eyebrow"><span class="brush" lang="zh-CN">仙剑奇侠传</span><span class="seal" aria-hidden="true"><i>论</i><i>剑</i></span></div>
   <h1>agent-pal-bench：用《仙剑奇侠传》考 AI 智能体的长程决策</h1>
@@ -642,12 +645,6 @@ addEventListener('DOMContentLoaded', () => {
 });
 </script></head><body><main>
 ${banner(`《仙剑奇侠传》(1995 DOS) 智能体长程决策基准 · 生成于 ${esc(stamp(generatedAt))} · 共 ${rows.length} 条运行记录${quizzes.length ? `、${quizzes.length} 份闭卷测验` : ''}`)}
-<nav class="navlinks" aria-label="视图切换">
-  <a href="index.html">📊 模型归并主榜</a>
-  <a href="verified.html">✅ 严格已核验榜</a>
-  <a href="runs.html">🗂️ 原始运行批次</a>
-  <a href="https://github.com/jianmliu/agent-pal" target="_blank" rel="noopener">💻 GitHub 仓库 &amp; PR 打榜</a>
-</nav>
 
 <input class="tab-ctrl" type="radio" name="pal-tab" id="tab-stats" checked>
 <input class="tab-ctrl" type="radio" name="pal-tab" id="tab-quiz">
@@ -665,10 +662,12 @@ ${banner(`《仙剑奇侠传》(1995 DOS) 智能体长程决策基准 · 生成�
   <div class="tab-pane" id="pane-stats">${landingSection(rows, quizzes)}</div>
   <div class="tab-pane" id="pane-tiers">
 <h2>贰 · 分章节关卡详情</h2>
-    <p class="muted">榜单只收通关的那一局:没打通的局不计,一局都没打通的运行不出现。score = 通关题数 / 这一档里有人通关过的题数(主排序),同分按本题集口径比较成功局平均 cost 或战斗回合；不同评分口径分开排。按档位分开排,外部 agent 单列。「核验」= bench verify 按日志重放的结果:只有全部局都重放一致才算已核验。共用一个 Ollama 订阅、额度不够没跑全的模型不上榜(运行记录仍在仓库里)。题集不同的运行 score 不可直接比,见每题矩阵。</p>
+    <p class="muted">榜单只收通关的那一局:没打通的局不计,一局都没打通的运行不出现。score = 通关题数 / 这一档里有人通关过的题数(主排序),同分按本题集口径比较成功局平均 cost 或战斗回合；不同评分口径分开排。按档位分开排,外部 agent 单列。「核验」= bench verify 按日志重放的结果:只有全部局都重放一致才算已核验。共用一个 Ollama 订阅、额度不够没跑全的模型不上榜(运行记录仍在仓库里)。题集不同的运行 score 不可直接比。</p>
     ${rows.length ? sections : '<p>没有找到运行结果(bench run 的输出目录)。</p>'}
     ${perTaskDeepDiveSection()}
-    <section><h2>成绩怎么核验</h2><div class="grid2">
+    <section><h2>成绩怎么核验</h2>
+<p class="muted">另外两种视图,给想核对数据的人:<a href="verified.html">严格已核验榜</a>(只算 bench verify 重放一致的运行)· <a href="runs.html">原始运行批次</a>(不按模型归并,每次运行单独一行)。</p>
+<div class="grid2">
   <div class="card">
     <h3>🛡️ 零成本防作弊核验机制（<code>bench verify</code> &amp; <code>check-pr</code>）</h3>
     <p>为什么开放外部 PR 提交不需要维护者花钱重调大模型 API？因为游戏引擎完全确定性（同种子 + 同工具序列 = 状态 100% 唯一）：</p>
