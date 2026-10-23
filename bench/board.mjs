@@ -387,11 +387,11 @@ function statsOverviewSection() {
   </div>
 </div>
 
-<h3>📊 13 大参评模型跨维度总成绩单（闭卷笔试 × 四大专项实操 × 全游戏通关）</h3>
+<h3>📊 15 大参评模型跨维度总成绩单（闭卷笔试 × 四大专项实操 × 全游戏通关）</h3>
 <div class="scroll">
 <table>
   <tr>
-    <th>总座次</th><th>模型</th><th>类别 / 阵营</th><th>闭卷笔试 (22问)</th>
+    <th>总座次</th><th>模型</th><th>厂商 / 机构</th><th>闭卷笔试 (22问)</th>
     <th>实操① 祈雨祭坛<br><span class="muted">par=7 / 预算80</span></th>
     <th>实操② 白河采药<br><span class="muted">par=40 / 预算120–240</span></th>
     <th>实操③ 扬州紫金葫芦<br><span class="muted">par=74 / 15场景长链</span></th>
@@ -400,59 +400,69 @@ function statsOverviewSection() {
     <th>综合定性</th>
   </tr>
   <tr>
-    <td class="num strong">🏆 1</td><td class="model">agy-cli:gemini-4-argon</td><td>海外旗舰</td><td class="num strong">64% (14/22)</td>
+    <td class="num strong">🏆 1</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num strong">64% (14/22)</td>
     <td><span class="badge good">✓ 13 步</span></td><td><span class="badge good">✓ 90 步 (最快)</span></td><td><span class="badge good">✓ 161 步 (净139)</span></td><td><span class="badge good">✓ 7 回合</span> / <span class="badge good">✓ 39 回合</span></td>
     <td><span class="badge good">🏆 全剧终 (731行库)</span></td><td>四大实操 + 全游戏满贯</td>
   </tr>
   <tr>
-    <td class="num strong">🏆 2</td><td class="model">claude-cli:claude-opus-5-5</td><td>海外旗舰</td><td class="num">14% (3/22)</td>
+    <td class="num strong">🏆 2</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">14% (3/22)</td>
     <td><span class="badge good">✓ 10 步 (最快)</span></td><td><span class="badge good">✓ 143 步 (零先验)</span></td><td><span class="badge good">✓ 280 步 (跨屋顶)</span></td><td><span class="badge good">✓ 17 回合</span> / <span class="badge good">🥇 36 回合</span></td>
     <td><span class="badge good">🏆 全剧终 (1427行库)</span></td><td>零先验逆袭 + 禁招冠军</td>
   </tr>
   <tr>
-    <td class="num strong">🏆 3</td><td class="model">codex-cli:gpt-6.1-sol</td><td>海外旗舰</td><td class="num strong">59% (13/22)</td>
+    <td class="num strong">🏆 3</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num strong">59% (13/22)</td>
     <td><span class="badge good">✓ 22 步</span></td><td><span class="badge good">✓ 105 步</span></td><td><span class="badge good">✓ 218 步</span></td><td><span class="badge good">✓ 14 回合 (1命)</span> / <span class="badge good">✓ 37 回合</span></td>
-    <td><span class="badge good">🏆 全剧终 (845步单轮)</span></td><td>唯一初见斩拜月 + 单轮全通</td>
+    <td><span class="badge good">🏆 全剧终 (845步单轮)</span></td><td>初见1命斩拜月 + 单轮全通</td>
   </tr>
   <tr>
-    <td class="num">4</td><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td>中国本土</td><td class="num">31% (4/13)</td>
+    <td class="num strong">🏅 4</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="muted">–</td>
+    <td><span class="badge good">✓ 13 步</span></td><td><span class="badge good">✓ 107 步</span></td><td><span class="badge good">✓ 146 步 (最快)</span></td><td><span class="badge good">✓ 11 回合 (1命/28步)</span> / <span class="badge good">✓ 54 回合</span></td>
+    <td class="muted">⏳ 虚位待战</td><td>四大专项实操 (含禁招) 全胜满贯</td>
+  </tr>
+  <tr>
+    <td class="num">5</td><td class="model">claude-cli:claude-fable-5-1</td><td>Anthropic</td><td class="muted">–</td>
+    <td><span class="badge good">✓ 10 步 (并列最快)</span></td><td><span class="badge good">✓ 203 步 (240扩容)</span></td><td class="muted">⏳ 待测</td><td class="muted">⏳ 待测</td>
+    <td class="muted">⏳ 虚位待战</td><td>祈雨坛 10 步 + 白河村三味药通关</td>
+  </tr>
+  <tr>
+    <td class="num">6</td><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td>DeepSeek</td><td class="num">31% (4/13)</td>
     <td><span class="badge good">✓ 28 步</span></td><td><span class="badge warn">✗ 进度 0.75 (120步未扩容)</span></td><td><span class="badge warn">✗ 困于客栈楼梯</span></td><td><span class="badge good">🥈 10 回合 (1HP绝杀)</span> / <span class="badge bad">✗ 0%</span></td>
-    <td><span class="badge warn">⚔️ 闯至第5章扬州 (额度耗尽中断)</span></td><td>本土先锋：斩赤鬼王 &amp; 1HP绝杀拜月</td>
+    <td><span class="badge warn">⚔️ 闯至第5章扬州 (额度耗尽中断)</span></td><td>斩赤鬼王 &amp; 1HP绝杀拜月</td>
   </tr>
   <tr>
-    <td class="num">5</td><td class="model">ollama:glm-5.3:cloud</td><td>中国本土</td><td class="num">38% (5/13)</td>
+    <td class="num">7</td><td class="model">ollama:glm-5.3:cloud</td><td>Zhipu AI (智谱)</td><td class="num">38% (5/13)</td>
     <td><span class="badge good">✓ 16–19 步 (4K熔断)</span></td><td><span class="badge bad">✗ 进度 0.50 (未扩容)</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td><span class="badge bad">✗ 0% (压至22,502 HP)</span></td><td class="muted">⏳ 虚位待战</td><td>加思考熔断器后祈雨坛 3/3 满贯</td>
   </tr>
   <tr>
-    <td class="num">6</td><td class="model">ollama:kimi-k3:cloud</td><td>中国本土</td><td class="num">38% (5/13)</td>
+    <td class="num">8</td><td class="model">ollama:kimi-k3:cloud</td><td>Moonshot AI (月之暗面)</td><td class="num">38% (5/13)</td>
     <td><span class="badge good">✓ 31 步</span></td><td><span class="badge bad">✗ 进度 0.50 (未扩容)</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td><span class="badge warn">✗ 0% (第7命打空拜月本体)</span></td><td class="muted">⏳ 虚位待战</td><td>第 7 命击穿 32,760 HP 本体死于护卫</td>
   </tr>
   <tr>
-    <td class="num">7</td><td class="model">ollama:minimax-m3:cloud</td><td>中国本土</td><td class="num">31% (4/13)</td>
+    <td class="num">9</td><td class="model">ollama:minimax-m3:cloud</td><td>MiniMax</td><td class="num">31% (4/13)</td>
     <td><span class="badge good">✓ 38–44 步</span></td><td><span class="badge bad">✗ 进度 0.50 (未扩容)</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>祈雨坛试错通关，长程待扩容补测</td>
   </tr>
   <tr>
-    <td class="num">8</td><td class="model">ollama:glm-5.3-flash:cloud</td><td>中国本土</td><td class="num">31% (4/13)</td>
+    <td class="num">10</td><td class="model">ollama:glm-5.3-flash:cloud</td><td>Zhipu AI (智谱)</td><td class="num">31% (4/13)</td>
     <td><span class="badge good">✓ 34 步</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>背熟拜月招式但缺乏回蓝生存链</td>
   </tr>
   <tr>
-    <td class="num">9</td><td class="model">ollama:gemma4:31b-cloud</td><td>开源权重 (31B)</td><td class="num">23% (3/13)</td>
-    <td><span class="badge good">✓ 36 步</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">⏳ 待攻擂</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>中等参数量通过单场景空间解谜</td>
+    <td class="num">11</td><td class="model">ollama:gemma4:31b-cloud</td><td>Google</td><td class="num">23% (3/13)</td>
+    <td><span class="badge good">✓ 36 步</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">⏳ 待攻擂</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>31B 开源权重通过单场景空间解谜</td>
   </tr>
   <tr>
-    <td class="num">10</td><td class="model">ollama:deepseek-v4-pro:0813-cloud</td><td>中国本土</td><td class="num">23% (3/13)</td>
+    <td class="num">12</td><td class="model">ollama:deepseek-v4-pro:0813-cloud</td><td>DeepSeek</td><td class="num">23% (3/13)</td>
     <td><span class="badge bad">✗ 超时 (10.3万思考词)</span></td><td class="muted">⏳ 待攻擂 (额度受限)</td><td class="muted">⏳ 待攻擂 (额度受限)</td><td class="muted">⏳ 待攻擂 (额度受限)</td><td class="muted">⏳ 虚位待战</td><td>祈雨坛未加熔断陷入几何证明死循环</td>
   </tr>
   <tr>
-    <td class="num">11</td><td class="model">ollama:minimax-m3.1-flash / m2.7</td><td>中国本土</td><td class="num">15%–23%</td>
+    <td class="num">13</td><td class="model">ollama:minimax-m3.1-flash / m2.7</td><td>MiniMax</td><td class="num">15%–23%</td>
     <td><span class="badge bad">✗ 0%</span></td><td><span class="badge bad">✗ 进度 0.25</span></td><td class="muted">⏳ 待攻擂</td><td><span class="badge bad">✗ 0%</span></td><td class="muted">⏳ 虚位待战</td><td>状态追踪与工具参数易发散</td>
   </tr>
   <tr>
-    <td class="num">12</td><td class="model">laya:laya-multilingual</td><td>System-1 非自回归</td><td class="num">0% (无生成能力)</td>
+    <td class="num">14</td><td class="model">laya:laya-multilingual</td><td>ConvAI Innovations</td><td class="num">0% (无生成能力)</td>
     <td class="muted">–</td><td><span class="badge bad">✗ 0% (进度 0.00)</span></td><td class="muted">–</td><td class="muted">–</td><td class="muted">–</td><td>7ms 极速选工具，但无长程规划陷入死循环</td>
   </tr>
   <tr>
-    <td class="num strong">🎯</td><td class="model">Qwen / Doubao / Step / DeepSeek 等原生 API</td><td><strong>悬赏攻擂席</strong></td><td class="num"><span class="badge warn">欢迎 PR 提交</span></td>
+    <td class="num strong">🎯</td><td class="model">Qwen / Doubao / Step / DeepSeek 等原生 API</td><td><strong>Alibaba / ByteDance / StepFun 等</strong></td><td class="num"><span class="badge warn">欢迎 PR 提交</span></td>
     <td><span class="badge warn">欢迎 PR 挑战</span></td><td><span class="badge warn">欢迎 240步 挑战</span></td><td><span class="badge warn">欢迎 320步 挑战</span></td><td><span class="badge warn">欢迎挑战 36 回合</span></td>
     <td><span class="badge warn">🏆 悬赏首个国产全通!</span></td><td>提交 PR 自动运行 <code>bench verify</code> 合榜</td>
   </tr>
@@ -489,15 +499,17 @@ function perTaskDeepDiveSection() {
 <p class="muted">考察点：石碑正交方位（东北/东南/西南/西北）向 45° 斜向梅花桩坐标的映射，以及“先内省证明 vs 先发 1 步探针”。</p>
 <div class="scroll">
 <table>
-  <tr><th>排名</th><th>模型</th><th>笔试该题分</th><th>实操通关</th><th>通关步数</th><th>思考输出 Tokens</th><th>策略画像与死因分析</th></tr>
-  <tr><td class="num strong">🥇 1</td><td class="model">claude-cli:claude-opus-5-5</td><td class="num">0% (0/5)</td><td><span class="badge good">100%</span></td><td class="num strong">10 步</td><td class="num">2,158</td><td>1 步 <code>use_item</code> 探针试出旋转方向，下一轮 4 珠连放收官</td></tr>
-  <tr><td class="num strong">🥈 2</td><td class="model">agy-cli:gemini-4-argon</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num strong">13 步</td><td class="num">–</td><td>读碑后试放 1 次立即锁定 45° 顺时针映射</td></tr>
-  <tr><td class="num strong">🥉 3</td><td class="model">ollama:glm-5.3:cloud (4K熔断)</td><td class="num">20% (1/5)</td><td><span class="badge good">100% (3/3)</span></td><td class="num">16–19 步</td><td class="num">~18,000</td><td>单轮 4,096 思考熔断器截断过度怀疑后迅速通关</td></tr>
-  <tr><td class="num">4</td><td class="model">codex-cli:gpt-6.1-sol</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num">22 步</td><td class="num">4,295</td><td>稳健巡视五座石柱坐标后逐一配对归位</td></tr>
-  <tr><td class="num">5</td><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td class="num">0% (0/5)</td><td><span class="badge good">100%</span></td><td class="num">28 步</td><td class="num">~24,000</td><td>以快打慢，边走边试错完成五珠归位</td></tr>
-  <tr><td class="num">6</td><td class="model">ollama:kimi-k3 / minimax-m3 / gemma4</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num">31–44 步</td><td class="num">~35,000</td><td>经过多轮方位枚举后成功放齐五灵珠</td></tr>
-  <tr><td class="num">❌</td><td class="model">ollama:glm-5.3:cloud (16K无熔断)</td><td class="num">20% (1/5)</td><td><span class="badge bad">0% (超时)</span></td><td class="num">未完成</td><td class="num">290,000+</td><td>前 500 词已算对，因一句 "Let's not assume" 陷入无限自我怀疑</td></tr>
-  <tr><td class="num">❌</td><td class="model">ollama:deepseek-v4-pro:0813-cloud</td><td class="num">0% (0/5)</td><td><span class="badge bad">0% (超时)</span></td><td class="num">17 步 (0放珠)</td><td class="num">103,616</td><td>十万字坐标几何证明走火入魔，到死未调 1 次 <code>use_item</code></td></tr>
+  <tr><th>排名</th><th>模型</th><th>厂商</th><th>笔试该题分</th><th>实操通关</th><th>通关步数</th><th>思考输出 Tokens</th><th>策略画像与死因分析</th></tr>
+  <tr><td class="num strong">🥇 1</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">0% (0/5)</td><td><span class="badge good">100%</span></td><td class="num strong">10 步</td><td class="num">2,158</td><td>1 步 <code>use_item</code> 探针试出旋转方向，下一轮 4 珠连放收官</td></tr>
+  <tr><td class="num strong">🥇 1</td><td class="model">claude-cli:claude-fable-5-1</td><td>Anthropic</td><td class="num">–</td><td><span class="badge good">100%</span></td><td class="num strong">10 步</td><td class="num">1,259</td><td>1 步探针锁定方位，10 步并列全场最快</td></tr>
+  <tr><td class="num strong">🥉 3</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num strong">13 步</td><td class="num">–</td><td>读碑后试放 1 次立即锁定 45° 顺时针映射</td></tr>
+  <tr><td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td><span class="badge good">100%</span></td><td class="num strong">13 步</td><td class="num">726</td><td>1 步试放消解 45° 旋转歧义，13 步收官</td></tr>
+  <tr><td class="num">5</td><td class="model">ollama:glm-5.3:cloud (4K熔断)</td><td>Zhipu AI</td><td class="num">20% (1/5)</td><td><span class="badge good">100% (3/3)</span></td><td class="num">16–19 步</td><td class="num">~18,000</td><td>单轮 4,096 思考熔断器截断过度怀疑后迅速通关</td></tr>
+  <tr><td class="num">6</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num">22 步</td><td class="num">4,295</td><td>稳健巡视五座石柱坐标后逐一配对归位</td></tr>
+  <tr><td class="num">7</td><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td>DeepSeek</td><td class="num">0% (0/5)</td><td><span class="badge good">100%</span></td><td class="num">28 步</td><td class="num">~24,000</td><td>以快打慢，边走边试错完成五珠归位</td></tr>
+  <tr><td class="num">8</td><td class="model">ollama:kimi-k3 / minimax-m3 / gemma4</td><td>Moonshot / MiniMax / Google</td><td class="num">20% (1/5)</td><td><span class="badge good">100%</span></td><td class="num">31–44 步</td><td class="num">~35,000</td><td>经过多轮方位枚举后成功放齐五灵珠</td></tr>
+  <tr><td class="num">❌</td><td class="model">ollama:glm-5.3:cloud (16K无熔断)</td><td>Zhipu AI</td><td class="num">20% (1/5)</td><td><span class="badge bad">0% (超时)</span></td><td class="num">未完成</td><td class="num">290,000+</td><td>前 500 词已算对，因一句 "Let's not assume" 陷入无限自我怀疑</td></tr>
+  <tr><td class="num">❌</td><td class="model">ollama:deepseek-v4-pro:0813-cloud</td><td>DeepSeek</td><td class="num">0% (0/5)</td><td><span class="badge bad">0% (超时)</span></td><td class="num">17 步 (0放珠)</td><td class="num">103,616</td><td>十万字坐标几何证明走火入魔，到死未调 1 次 <code>use_item</code></td></tr>
 </table>
 </div>
 
@@ -505,12 +517,14 @@ function perTaskDeepDiveSection() {
 <p class="muted">考察点：银杏子 + 借竿钓鱼 + 猎场布夹赶鹿三线并进。对比“背过攻略直奔南门”与“零先验挨家搜全村”的步数拆解。</p>
 <div class="scroll">
 <table>
-  <tr><th>排名</th><th>模型</th><th>笔试得分</th><th>120步标准赛</th><th>240步扩容赛</th><th>村内6民居地毯搜索开销</th><th>猎场第一夹放偏后的止损步数</th></tr>
-  <tr><td class="num strong">🥇 1</td><td class="model">agy-cli:gemini-4-argon</td><td class="num">80% (4/5)</td><td><span class="badge good">100% (90步)</span></td><td><span class="badge good">100% (90/120步)</span></td><td class="num strong">0 步 (直奔南门猎场)</td><td class="num strong">5 步 (秒收夹改放 45,111)</td></tr>
-  <tr><td class="num strong">🥈 2</td><td class="model">codex-cli:gpt-6.1-sol</td><td class="num">100% (5/5)</td><td><span class="badge good">100% (105步)</span></td><td><span class="badge good">100% (105–117步)</span></td><td class="num strong">4 步 (直奔南门猎场)</td><td class="num strong">7–8 步 (迅速移夹至 44,110)</td></tr>
-  <tr><td class="num strong">🥉 3</td><td class="model">claude-cli:claude-opus-5-5</td><td class="num">0% (0/5)</td><td><span class="badge warn">进度 0.50</span></td><td><span class="badge good">100% (143/176步)</span></td><td class="num">39–43 步 (搜遍全村6民居)</td><td class="num">23–48 步 (执着赶鹿后起夹重放)</td></tr>
-  <tr><td class="num">4</td><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td class="num">40% (2/5)</td><td><span class="badge bad">进度 0.75</span></td><td><span class="badge bad">进度 0.75</span></td><td class="num">18 步</td><td class="num">找到猎场与捕兽夹但未捕获梅花鹿</td></tr>
-  <tr><td class="num">5–12</td><td class="model">Kimi K3 / GLM-5.3 / MiniMax / Laya</td><td class="num">0%–40%</td><td><span class="badge bad">进度 0.00–0.50</span></td><td><span class="badge bad">进度 0.00–0.50</span></td><td class="num">20–90 步</td><td class="num">卡在渔夫借竿对话链、村内迷路或猎场</td></tr>
+  <tr><th>排名</th><th>模型</th><th>厂商</th><th>笔试得分</th><th>120步标准赛</th><th>240步扩容赛</th><th>村内6民居地毯搜索开销</th><th>猎场第一夹放偏后的止损步数</th></tr>
+  <tr><td class="num strong">🥇 1</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">80% (4/5)</td><td><span class="badge good">100% (90步)</span></td><td><span class="badge good">100% (90/120步)</span></td><td class="num strong">0 步 (直奔南门猎场)</td><td class="num strong">5 步 (秒收夹改放 45,111)</td></tr>
+  <tr><td class="num strong">🥈 2</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">100% (5/5)</td><td><span class="badge good">100% (105步)</span></td><td><span class="badge good">100% (105–117步)</span></td><td class="num strong">4 步 (直奔南门猎场)</td><td class="num strong">7–8 步 (迅速移夹至 44,110)</td></tr>
+  <tr><td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td><span class="badge good">100% (107步)</span></td><td><span class="badge good">100% (107步)</span></td><td class="num">少量探路后进南门猎场</td><td class="num">107 步标准预算内一次通关</td></tr>
+  <tr><td class="num">4</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">0% (0/5)</td><td><span class="badge warn">进度 0.50</span></td><td><span class="badge good">100% (143/176步)</span></td><td class="num">39–43 步 (搜遍全村6民居)</td><td class="num">23–48 步 (执着赶鹿后起夹重放)</td></tr>
+  <tr><td class="num">5</td><td class="model">claude-cli:claude-fable-5-1</td><td>Anthropic</td><td class="num">–</td><td><span class="badge warn">未完</span></td><td><span class="badge good">100% (203步)</span></td><td class="num">全村探索清图</td><td class="num">203 步完成三味药收集交回医仙</td></tr>
+  <tr><td class="num">6</td><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td>DeepSeek</td><td class="num">40% (2/5)</td><td><span class="badge bad">进度 0.75</span></td><td><span class="badge bad">进度 0.75</span></td><td class="num">18 步</td><td class="num">找到猎场与捕兽夹但未捕获梅花鹿</td></tr>
+  <tr><td class="num">7–14</td><td class="model">Kimi K3 / GLM-5.3 / MiniMax / Laya</td><td>Moonshot / Zhipu / MiniMax / ConvAI</td><td class="num">0%–40%</td><td><span class="badge bad">进度 0.00–0.50</span></td><td><span class="badge bad">进度 0.00–0.50</span></td><td class="num">20–90 步</td><td class="num">卡在渔夫借竿对话链、村内迷路或猎场</td></tr>
 </table>
 </div>
 
@@ -518,10 +532,11 @@ function perTaskDeepDiveSection() {
 <p class="muted">考察点：客栈投宿 → 屋顶追女飞贼夺布包 → 富商诬陷 → 拜访寡妇姬三娘 → 登高处目击投井 → 古井底搜出紫金葫芦。</p>
 <div class="scroll">
 <table>
-  <tr><th>排名</th><th>模型</th><th>笔试葫芦考</th><th>总通关步数</th><th>净主线步数</th><th>M1 客栈夜警</th><th>M2 屋顶夺包</th><th>M3 富商诬陷</th><th>M4 拜访寡妇</th><th>M4→M5 破除“井边盲区”耗时与路径</th></tr>
-  <tr><td class="num strong">🥇 1</td><td class="model">agy-cli:gemini-4-argon</td><td class="num">60% (3/5)</td><td class="num strong">161 步</td><td class="num strong">139 步</td><td class="num">16</td><td class="num">50</td><td class="num">68</td><td class="num">101</td><td><strong>仅 22 步</strong>（井口受阻后调 map 登东北台阶上城墙；井底顺手开完11宝箱）</td></tr>
-  <tr><td class="num strong">🥈 2</td><td class="model">codex-cli:gpt-6.1-sol</td><td class="num">40% (2/5)</td><td class="num">218 步</td><td class="num">218 步</td><td class="num">18</td><td class="num">46</td><td class="num">60</td><td class="num">104</td><td><strong>被困 82 步</strong>（受错误先验锚定 5 次进出寡妇家搜家具，第186步才上城墙）</td></tr>
-  <tr><td class="num strong">🥉 3</td><td class="model">claude-cli:claude-opus-5-5</td><td class="num">0% (0/5)</td><td class="num">280 步</td><td class="num strong">215 步</td><td class="num">56</td><td class="num">161 (首胜@94漏捡)</td><td class="num">169</td><td class="num">177</td><td><strong>跨 4 重屋顶奇袭</strong>（回客栈二楼翻窗 <code>85→98→87→98→85→98→86</code> 复用屋顶图）</td></tr>
+  <tr><th>排名</th><th>模型</th><th>厂商</th><th>笔试葫芦考</th><th>总通关步数</th><th>净主线步数</th><th>M1 客栈夜警</th><th>M2 屋顶夺包</th><th>M3 富商诬陷</th><th>M4 拜访寡妇</th><th>M4→M5 破除“井边盲区”耗时与路径</th></tr>
+  <tr><td class="num strong">🥇 1</td><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td class="num strong">146 步</td><td class="num strong">146 步</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td><strong>146 步全场最低总步数</strong>标准预算内直通古井底拿到紫金葫芦</td></tr>
+  <tr><td class="num strong">🥈 2</td><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">60% (3/5)</td><td class="num strong">161 步</td><td class="num strong">139 步</td><td class="num">16</td><td class="num">50</td><td class="num">68</td><td class="num">101</td><td><strong>仅 22 步</strong>（井口受阻后调 map 登东北台阶上城墙；井底顺手开完11宝箱）</td></tr>
+  <tr><td class="num strong">🥉 3</td><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">40% (2/5)</td><td class="num">218 步</td><td class="num">218 步</td><td class="num">18</td><td class="num">46</td><td class="num">60</td><td class="num">104</td><td><strong>被困 82 步</strong>（受错误先验锚定 5 次进出寡妇家搜家具，第186步才上城墙）</td></tr>
+  <tr><td class="num">4</td><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">0% (0/5)</td><td class="num">280 步</td><td class="num strong">215 步</td><td class="num">56</td><td class="num">161 (首胜@94漏捡)</td><td class="num">169</td><td class="num">177</td><td><strong>跨 4 重屋顶奇袭</strong>（回客栈二楼翻窗 <code>85→98→87→98→85→98→86</code> 复用屋顶图）</td></tr>
 </table>
 </div>
 
@@ -529,12 +544,13 @@ function perTaskDeepDiveSection() {
 <p class="muted">考察点：面对 32,760 HP 终局 Boss 的同上下文团灭复盘学习（In-Context RL），以及禁用“酒神 + 乾坤一掷 + 隐蛊”后的纯机制推导。</p>
 <div class="scroll">
 <table>
-  <tr><th>模型</th><th>笔试拜月考</th><th>上半场：常规决战 (胜局回合)</th><th>常规赛战术拆解</th><th>下半场：禁招消融赛 (胜局回合)</th><th>禁招赛机制发现与成败归因</th></tr>
-  <tr><td class="model">agy-cli:gemini-4-argon</td><td class="num">100% (3/3)</td><td class="num strong">🥇 7.00 回合 (第2命/42步)</td><td>第 2 命补双 <code>五氣朝元</code> + <code>乾坤一擲</code> 创 7 回合 0 死纪录</td><td class="num strong">🥉 39.00 回合 (第2命/114步)</td><td>第 2 命叠防 + 投掷神兵，全场唯一发明 <code>{"action":"repeat"}</code> 循环宏</td></tr>
-  <tr><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td class="num">67% (2/3)</td><td class="num strong">🥈 10.00 回合 (第6命/172步)</td><td><strong>本土最高光：</strong>第 6 命仅剩 1 HP 阿奴砸出 <code>乾坤一擲</code>+<code>化屍水</code> 绝杀</td><td class="num">❌ 0% (23命/700步，剩21,022 HP)</td><td>悟出开局三盾，但栽在<strong>回合批量结算归因幻觉</strong>（误判逍遥灵儿法术 0 伤害）</td></tr>
-  <tr><td class="model">codex-cli:gpt-6.1-sol</td><td class="num">67% (2/3)</td><td class="num strong">🥉 14.00 回合 (第1命/33步)</td><td><strong>唯一初见一命胜：</strong>3 颗隐蛊维持 9 回合隐身 + 4 发酒神</td><td class="num strong">🥈 37.00 回合 (第2命/176步)</td><td>第 2 命构建“轮流 <code>真元護體</code> + 每回合 <code>五氣朝元</code>”37 回合铁桶阵</td></tr>
-  <tr><td class="model">claude-cli:claude-opus-5-5</td><td class="num">33% (1/3)</td><td class="num">17.00 回合 (第4命/157步)</td><td>全程未用 <code>乾坤一擲</code>，自研群攻清场流分文未花过关</td><td class="num strong">🥇 36.00 回合夺冠! (第11命/542步)</td><td><strong>控制变量线性消元法</strong>测准单招伤害，第 11 命心算 &lt;5% 血线用 <code>化屍水</code> 秒杀夺冠</td></tr>
-  <tr><td class="model">ollama:kimi-k3:cloud</td><td class="num">67% (2/3)</td><td class="num">❌ 0% (10命/240步)</td><td>第 7 命已打空拜月本体 (0 HP) 死于小怪；随后近因过拟合漏喂雪莲子</td><td class="muted">–</td><td class="muted">–</td></tr>
+  <tr><th>模型</th><th>厂商</th><th>笔试拜月考</th><th>上半场：常规决战 (胜局回合)</th><th>常规赛战术拆解</th><th>下半场：禁招消融赛 (胜局回合)</th><th>禁招赛机制发现与成败归因</th></tr>
+  <tr><td class="model">agy-cli:gemini-4-argon</td><td>Google</td><td class="num">100% (3/3)</td><td class="num strong">🥇 7.00 回合 (第2命/42步)</td><td>第 2 命补双 <code>五氣朝元</code> + <code>乾坤一擲</code> 创 7 回合 0 死纪录</td><td class="num strong">🥉 39.00 回合 (第2命/114步)</td><td>第 2 命叠防 + 投掷神兵，全场唯一发明 <code>{"action":"repeat"}</code> 循环宏</td></tr>
+  <tr><td class="model">ollama:deepseek-v4.1-flash:cloud</td><td>DeepSeek</td><td class="num">67% (2/3)</td><td class="num strong">🥈 10.00 回合 (第6命/172步)</td><td><strong>第 6 命仅剩 1 HP 阿奴砸出 <code>乾坤一擲</code>+<code>化屍水</code> 绝杀</strong></td><td class="num">❌ 0% (23命/700步，剩21,022 HP)</td><td>悟出开局三盾，但栽在<strong>回合批量结算归因幻觉</strong>（误判逍遥灵儿法术 0 伤害）</td></tr>
+  <tr><td class="model">codex-cli:gpt-6-astra</td><td>OpenAI</td><td class="num">–</td><td class="num strong">🥉 11.00 回合 (第1命/28步)</td><td><strong>初见第 1 命一次过：</strong>仅 28 步 / 95.3s 极速斩拜月</td><td class="num strong">✓ 54.00 回合 (第2命/220步)</td><td>第 2 命 <code>真元護體</code> + <code>天罡戰氣</code> + 投掷与剑神稳定磨穿 32,760 HP</td></tr>
+  <tr><td class="model">codex-cli:gpt-6.1-sol</td><td>OpenAI</td><td class="num">67% (2/3)</td><td class="num strong">✓ 14.00 回合 (第1命/33步)</td><td><strong>初见第 1 命一次过：</strong>3 颗隐蛊维持 9 回合隐身 + 4 发酒神</td><td class="num strong">🥈 37.00 回合 (第2命/176步)</td><td>第 2 命构建“轮流 <code>真元護體</code> + 每回合 <code>五氣朝元</code>”37 回合铁桶阵</td></tr>
+  <tr><td class="model">claude-cli:claude-opus-5-5</td><td>Anthropic</td><td class="num">33% (1/3)</td><td class="num">17.00 回合 (第4命/157步)</td><td>全程未用 <code>乾坤一擲</code>，自研群攻清场流分文未花过关</td><td class="num strong">🥇 36.00 回合夺冠! (第11命/542步)</td><td><strong>控制变量线性消元法</strong>测准单招伤害，第 11 命心算 &lt;5% 血线用 <code>化屍水</code> 秒杀夺冠</td></tr>
+  <tr><td class="model">ollama:kimi-k3:cloud</td><td>Moonshot AI</td><td class="num">67% (2/3)</td><td class="num">❌ 0% (10命/240步)</td><td>第 7 命已打空拜月本体 (0 HP) 死于小怪；随后近因过拟合漏喂雪莲子</td><td class="muted">–</td><td class="muted">–</td></tr>
 </table>
 </div>
 </section>`;
