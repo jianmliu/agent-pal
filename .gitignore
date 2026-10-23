@@ -2,8 +2,8 @@ node_modules/
 packages/game-engine/dist/
 pal-assets/
 pal-data/
-runs/
-saves/
+/runs/
+/saves/
 bench/out/**/*.client.jsonl
 bench/out/**/*.log
 bench/out/board.html
