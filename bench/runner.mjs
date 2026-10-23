@@ -26,15 +26,11 @@ import { taskFingerprint, runtimeFingerprint } from './start.mjs';
 import { systemPrompt, firstMessage, PROMPT_VERSION } from './prompt.mjs';
 import { costOf } from './providers.mjs';
 import { finalizeClient } from './client-finalization.mjs';
+import { CLAUDE_BIN, CODEX_BIN, AGY_BIN } from './cli-bins.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const benchCli = path.join(here, 'bench.mjs');
 const mcpEpisode = path.join(here, 'mcp-episode.mjs');
-const CLAUDE_BIN = fs.existsSync('/Users/jianmingliu/.local/bin/claude') ? '/Users/jianmingliu/.local/bin/claude' : 'claude';
-const CODEX_BIN = fs.existsSync('/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex')
-  ? '/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex'
-  : 'codex';
-const AGY_BIN = fs.existsSync('/Users/jianmingliu/.local/bin/agy') ? '/Users/jianmingliu/.local/bin/agy' : 'agy';
 
 const slug = (s) => s.replace(/[^A-Za-z0-9._-]+/g, '_');
 const stamp = () => new Date().toISOString().replace(/[-:]/g, '').replace(/\..*/, '');

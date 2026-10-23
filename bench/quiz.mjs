@@ -17,6 +17,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createProvider, costOf } from './providers.mjs';
 import { cleanClaudeEnv, codeRev } from './runner.mjs';
+import { CLAUDE_BIN, CODEX_BIN, AGY_BIN } from './cli-bins.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 export const QUIZ_DIR = path.join(here, 'quiz');
@@ -88,11 +89,6 @@ function userText(quiz, x) {
   return `${quiz.context ? quiz.context + '\n\n' : ''}问题:${x.q}`;
 }
 
-const CLAUDE_BIN = fs.existsSync('/Users/jianmingliu/.local/bin/claude') ? '/Users/jianmingliu/.local/bin/claude' : 'claude';
-const CODEX_BIN = fs.existsSync('/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex')
-  ? '/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex'
-  : 'codex';
-const AGY_BIN = fs.existsSync('/Users/jianmingliu/.local/bin/agy') ? '/Users/jianmingliu/.local/bin/agy' : 'agy';
 
 /** claude CLI 单轮:不给任何工具、不读设置、不落会话。 */
 function askClaudeCli(model, system, text) {

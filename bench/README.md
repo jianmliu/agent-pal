@@ -118,6 +118,8 @@ C 档开跑时把所用攻略文件与全图(索引 + 每张图)的内容哈希�
 | `replay:<task>` | — | 不调模型,按参考解出招:验证链路,零成本 |
 | `claude-cli:<model>` | 本机装了 `claude` | **外部 agent**:`claude -p` 挂本局的 MCP 服务来玩;成绩标 external、单列,不进主榜 |
 
+**外部 CLI 路径**:`claude:` / `codex:` / `agy:` 客户端依次找 `BENCH_CLAUDE_BIN` / `BENCH_CODEX_BIN` / `BENCH_AGY_BIN`、`~/.local/bin/<名字>`、(codex)macOS ChatGPT.app 自带的那份,最后用 PATH 里的同名命令。
+
 **地址覆盖**:`BENCH_OPENAI_BASE_URL` / `BENCH_ANTHROPIC_BASE_URL` / `BENCH_GEMINI_BASE_URL` 可以把请求发到代理或兼容服务;
 设了覆盖的那家,cost 记 `null`(请求不一定按官方价计费)。刻意不读 `ANTHROPIC_BASE_URL` —— Claude Code 会话里那个是它自己的端点。
 
