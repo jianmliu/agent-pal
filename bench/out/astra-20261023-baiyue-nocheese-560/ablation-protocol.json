@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-23",
+  "model": "codex-cli:gpt-6-astra",
+  "effort": "medium",
+  "seed": 42,
+  "tier": "B",
+  "hints": "standard",
+  "task": "baiyue-single-origin",
+  "toolCallCap": 560,
+  "wallSeconds": 1800,
+  "stripCheese": true,
+  "forbidden": {
+    "magicIds": [
+      370,
+      394
+    ],
+    "itemIds": [
+      141
+    ]
+  },
+  "reload": "Existing automatic defeat reload; stripping applied after every reload",
+  "continuation": "None beyond the prespecified 560-call/1800-second caps; no tactical coaching",
+  "comparison": "Historical single trajectories under different budgets; report cumulative calls, attempts and winning rounds separately",
+  "runtime": {
+    "node": "v25.2.1",
+    "agent": "198e8d70d0e85a1decec2fa7642f05d44cd8f40aa1fcf342b852e51b5c760eef",
+    "engine": "3fd4841b40424a0b9dbe4c409cca5134b8eea168f36ea3913acf0c72187e343c",
+    "bench": "5fb4d38096571c06eda51ca763af762a14a71897b782230358709ca2b9a617af",
+    "assets": "f1b6ed6c9884a73672c83fea1ff0671be5af9825c5a3174e363710c4dcd4c643"
+  },
+  "replayRuntimeRoot": "/Volumes/T7-Data/pal/reviews/astra-ablation-20261023/frozen-runtime"
+}

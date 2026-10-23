@@ -1,0 +1,4 @@
+✓ baiyue-single-origin seed 42: verified · claimed success (success)
+    note: run recorded on dirty worktree (12fd268-dirty)
+
+1/1 episode(s) verified

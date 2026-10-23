@@ -1,0 +1,79 @@
+{
+  "task": "baiyue-single-origin",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "codex-cli:gpt-6-astra",
+  "runId": "astra-20261023-baiyue-nocheese-560",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "budgetToolCalls": 560,
+  "success": true,
+  "successAt": 220,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "success",
+  "milestones": {},
+  "toolCalls": 220,
+  "invalidCalls": 0,
+  "softStops": 0,
+  "tokensIn": 6385688,
+  "tokensOut": 10087,
+  "tokensCached": 6261248,
+  "tokensCacheWrite": 0,
+  "cost": 8.009998,
+  "virtualSeconds": 685.803,
+  "battleRounds": 54,
+  "battles": [
+    {
+      "enemyTeam": 313,
+      "enemyObjects": [
+        546,
+        503,
+        511
+      ],
+      "completedRounds": 26,
+      "startedRounds": 27,
+      "rounds": 27,
+      "outcome": "lost"
+    },
+    {
+      "enemyTeam": 313,
+      "enemyObjects": [
+        546,
+        503,
+        493,
+        511
+      ],
+      "completedRounds": 53,
+      "startedRounds": 54,
+      "rounds": 54,
+      "outcome": "won"
+    }
+  ],
+  "progress": 1,
+  "final": {
+    "scene": 281,
+    "pos": {
+      "gx": 120,
+      "gy": 115
+    },
+    "mode": "dialog",
+    "visitedScenes": [
+      281
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "codex-cli",
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "numTurns": 1,
+    "durationMs": 512436,
+    "exitCode": 0,
+    "signal": null
+  },
+  "accountingStatus": "complete"
+}

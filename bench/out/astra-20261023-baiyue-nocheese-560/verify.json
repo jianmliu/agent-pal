@@ -1,0 +1,24 @@
+{
+  "verifiedAt": "2026-10-23T15:01:48.342Z",
+  "code": "12fd268-dirty",
+  "replayRuntimeRoot": "/Volumes/T7-Data/pal/reviews/astra-ablation-20261023/frozen-runtime",
+  "runDigest": "f5eace810212bafbe8be5eb99306bec04040f6aad201e62c28c6af855607bc08",
+  "episodes": [
+    {
+      "file": "baiyue-single-origin__s42.jsonl",
+      "task": "baiyue-single-origin",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "1a15381619e8b14a6e9032cb8d3b18ef9935f178f7ebbcea965c70cc458e33be",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (12fd268-dirty)"
+      ]
+    }
+  ]
+}

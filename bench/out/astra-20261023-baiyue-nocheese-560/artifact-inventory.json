@@ -1,0 +1,50 @@
+{
+  "summary.json": {
+    "sha256": "da0a6825e02afc38e94cb62d15c670ab429f5ae420eb860b3af62bda53a77180",
+    "bytes": 1352
+  },
+  "verification-output.txt": {
+    "sha256": "8f6b1a17952bc5f2bd5554de9dbd00406ef51d45b807fcaac7c6b3ff3e4d88f4",
+    "bytes": 154
+  },
+  "verify.json": {
+    "sha256": "7e68be85071062c4e8d112e9fcba35b280dc69a200bc5e57842d306e94dedc2b",
+    "bytes": 707
+  },
+  "ablation-validation.json": {
+    "sha256": "3b93c0487f8207b18d3bb66ebb1d24abde73c19a4198a998126773b28eb8eabe",
+    "bytes": 1452
+  },
+  "negative-control-without-stripping.txt": {
+    "sha256": "b21b3e4778a95f6f8f9a0089e705b61ae5b91f2147cc108caafc7a100147939a",
+    "bytes": 10482
+  },
+  "README.md": {
+    "sha256": "612f8c20c1d1a50b34173997a17f00b6c74b607028eeb882fcc531e5b9919859",
+    "bytes": 2124
+  },
+  "ablation-protocol.json": {
+    "sha256": "7771afa61d9b80201006025cdb8c30b7a2bc703781b0206b3850a21e96c55fe8",
+    "bytes": 1125
+  },
+  "run.json": {
+    "sha256": "efb7578d0e84e3c8a9a65e2934902c3a52ab12db0739864629b3fdd6f36b4612",
+    "bytes": 1072
+  },
+  "episodes/baiyue-single-origin__s42.jsonl": {
+    "sha256": "04e548dab982b9201888e57873ae1155147b6c74f36c3b6807e9a9f7a76d13b1",
+    "bytes": 1145997
+  },
+  "episodes/baiyue-single-origin__s42.client.jsonl": {
+    "sha256": "8cc5b030aefacdb99069975995df1f84918c772dda8bef034512994d5ce814e8",
+    "bytes": 3387312
+  },
+  "episodes/baiyue-single-origin__s42.stderr.log": {
+    "sha256": "d004fd8e57bb472101f5956136b606055d9e0ec75ae5501614b4923471e596a8",
+    "bytes": 1406
+  },
+  "episodes/baiyue-single-origin__s42.json": {
+    "sha256": "422b9caa1f00a9db32b41c54374926e348fdf6569b722acf61b63ed4a6ad7cc1",
+    "bytes": 1486
+  }
+}

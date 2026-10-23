@@ -1,0 +1,267 @@
+{
+  "date": "2026-10-23",
+  "scope": "One fresh seed-42 Astra ablation episode and three selected historical comparator trajectories; not a controlled population ranking",
+  "comparison": [
+    {
+      "model": "GPT-6 Astra",
+      "configuredModel": "codex-cli:gpt-6-astra",
+      "run": "astra-20261023-baiyue-nocheese-560",
+      "code": "12fd268-dirty",
+      "success": true,
+      "calls": 220,
+      "winningRounds": 54,
+      "winningAttempt": 2,
+      "budget": 560,
+      "invalidCalls": 0,
+      "client": {
+        "name": "codex-cli",
+        "model": "gpt-6-astra",
+        "effort": "medium",
+        "numTurns": 1,
+        "durationMs": 512436,
+        "exitCode": 0,
+        "signal": null
+      },
+      "firstObservedYinguAmounts": [
+        0
+      ],
+      "acceptedRemovedActionCalls": [],
+      "freshVerification": true,
+      "historicalVerifyAvailable": true
+    },
+    {
+      "model": "Claude Opus 5.5",
+      "configuredModel": "claude-cli:claude-opus-5-5",
+      "run": "claude-cli_claude-opus-5-5-B-baiyue-nocheese-560",
+      "code": "0884035-dirty",
+      "success": true,
+      "calls": 542,
+      "winningRounds": 36,
+      "winningAttempt": 11,
+      "budget": 560,
+      "invalidCalls": 5,
+      "client": {
+        "name": "claude-cli",
+        "model": "claude-opus-5-5",
+        "numTurns": 3,
+        "isError": false,
+        "subtype": "success",
+        "durationMs": 16236
+      },
+      "firstObservedYinguAmounts": [
+        0
+      ],
+      "acceptedRemovedActionCalls": [],
+      "freshVerification": false,
+      "historicalVerifyAvailable": false
+    },
+    {
+      "model": "GPT-6.1 Sol",
+      "configuredModel": "codex-cli:gpt-6.1-sol",
+      "run": "codex-cli_gpt-6.1-sol-B-baiyue-nocheese",
+      "code": "0884035-dirty",
+      "success": true,
+      "calls": 176,
+      "winningRounds": 37,
+      "winningAttempt": 2,
+      "budget": 180,
+      "invalidCalls": 3,
+      "client": {
+        "name": "codex-cli",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "numTurns": 1,
+        "durationMs": 387363
+      },
+      "firstObservedYinguAmounts": [
+        0
+      ],
+      "acceptedRemovedActionCalls": [],
+      "freshVerification": false,
+      "historicalVerifyAvailable": false
+    },
+    {
+      "model": "Gemini 4 Argon",
+      "configuredModel": "agy-cli:gemini-4-argon",
+      "run": "agy-cli_gemini-4-argon-B-baiyue-nocheese-360",
+      "code": "0884035-dirty",
+      "success": true,
+      "calls": 114,
+      "winningRounds": 39,
+      "winningAttempt": 2,
+      "budget": 360,
+      "invalidCalls": 0,
+      "client": {
+        "name": "agy-cli",
+        "model": "gemini-4-argon",
+        "effort": "medium",
+        "durationMs": 757823
+      },
+      "firstObservedYinguAmounts": [
+        0
+      ],
+      "acceptedRemovedActionCalls": [],
+      "freshVerification": false,
+      "historicalVerifyAvailable": false
+    }
+  ],
+  "sources": {
+    "bench/out/astra-20261023-baiyue-nocheese-560/episodes/baiyue-single-origin__s42.json": {
+      "sha256": "422b9caa1f00a9db32b41c54374926e348fdf6569b722acf61b63ed4a6ad7cc1",
+      "bytes": 1486
+    },
+    "bench/out/astra-20261023-baiyue-nocheese-560/episodes/baiyue-single-origin__s42.jsonl": {
+      "sha256": "04e548dab982b9201888e57873ae1155147b6c74f36c3b6807e9a9f7a76d13b1",
+      "bytes": 1145997
+    },
+    "bench/out/astra-20261023-baiyue-nocheese-560/run.json": {
+      "sha256": "efb7578d0e84e3c8a9a65e2934902c3a52ab12db0739864629b3fdd6f36b4612",
+      "bytes": 1072
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-baiyue-nocheese-560/episodes/baiyue-single-origin__s42.json": {
+      "sha256": "66cb0af9e31c9b38560e09c8d465f92d58829977d5604584b39064315aa3f6f1",
+      "bytes": 2051
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-baiyue-nocheese-560/episodes/baiyue-single-origin__s42.jsonl": {
+      "sha256": "32b5e71dd2de2bafb289946fdc97a6c811e7122d024d37e88f0fa59839438812",
+      "bytes": 3134830
+    },
+    "bench/out/claude-cli_claude-opus-5-5-B-baiyue-nocheese-560/run.json": {
+      "sha256": "1e9293212ad5efa4c0861a065191428157dc24f8fad469ea8da1850c542207b5",
+      "bytes": 1059
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-baiyue-nocheese/episodes/baiyue-single-origin__s42.json": {
+      "sha256": "1bd5b0ca3cdc5e901e95801092288277afda4dc8bb0f4b259e3d1c7e20ed135f",
+      "bytes": 962
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-baiyue-nocheese/episodes/baiyue-single-origin__s42.jsonl": {
+      "sha256": "7b3e310605e0a991777d8cd03817ad010732744ae6b5772583442a2290f60ad1",
+      "bytes": 917005
+    },
+    "bench/out/codex-cli_gpt-6.1-sol-B-baiyue-nocheese/run.json": {
+      "sha256": "6cafc0599684b326638a30709a1a85ff7135256b4cfe7a6b4382d1c26eee8f79",
+      "bytes": 1045
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-baiyue-nocheese-360/episodes/baiyue-single-origin__s42.json": {
+      "sha256": "f0d68eeacb2fd7b865aa71fdd9f4a1740e4a536ddcca16e3106be8e969d43616",
+      "bytes": 934
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-baiyue-nocheese-360/episodes/baiyue-single-origin__s42.jsonl": {
+      "sha256": "3ccc3a5e65a69bcadbffef2762b48c98f25ea7704088721d4e57621cecd1e883",
+      "bytes": 598796
+    },
+    "bench/out/agy-cli_gemini-4-argon-B-baiyue-nocheese-360/run.json": {
+      "sha256": "8d46185beba464e1e870d0bbe982a563da2ce595564dd74331fdd6b415a2d5d9",
+      "bytes": 1051
+    },
+    "bench/out/astra-20261023-baiyue-nocheese-560/verify.json": {
+      "sha256": "7e68be85071062c4e8d112e9fcba35b280dc69a200bc5e57842d306e94dedc2b",
+      "bytes": 707
+    },
+    "bench/out/astra-20261023-baiyue-nocheese-560/ablation-protocol.json": {
+      "sha256": "7771afa61d9b80201006025cdb8c30b7a2bc703781b0206b3850a21e96c55fe8",
+      "bytes": 1125
+    },
+    "bench/out/astra-20261023-baiyue-nocheese-560/ablation-validation.json": {
+      "sha256": "3b93c0487f8207b18d3bb66ebb1d24abde73c19a4198a998126773b28eb8eabe",
+      "bytes": 1452
+    },
+    "bench/out/astra-20261023-baiyue-nocheese-560/episodes/baiyue-single-origin__s42.client.jsonl": {
+      "sha256": "8cc5b030aefacdb99069975995df1f84918c772dda8bef034512994d5ce814e8",
+      "bytes": 3387312
+    },
+    "bench/out/astra-20261023-baiyue-nocheese-560/verification-output.txt": {
+      "sha256": "8f6b1a17952bc5f2bd5554de9dbd00406ef51d45b807fcaac7c6b3ff3e4d88f4",
+      "bytes": 154
+    },
+    "bench/out/astra-20261023-baiyue-nocheese-560/negative-control-without-stripping.txt": {
+      "sha256": "b21b3e4778a95f6f8f9a0089e705b61ae5b91f2147cc108caafc7a100147939a",
+      "bytes": 10482
+    }
+  },
+  "astraVerification": {
+    "verifiedAt": "2026-10-23T15:01:48.342Z",
+    "code": "12fd268-dirty",
+    "replayRuntimeRoot": "/Volumes/T7-Data/pal/reviews/astra-ablation-20261023/frozen-runtime",
+    "runDigest": "f5eace810212bafbe8be5eb99306bec04040f6aad201e62c28c6af855607bc08",
+    "episodes": [
+      {
+        "file": "baiyue-single-origin__s42.jsonl",
+        "task": "baiyue-single-origin",
+        "seed": 42,
+        "claimed": {
+          "success": true,
+          "endReason": "success"
+        },
+        "digest": "1a15381619e8b14a6e9032cb8d3b18ef9935f178f7ebbcea965c70cc458e33be",
+        "ok": true,
+        "verdict": "verified",
+        "diffs": [],
+        "warnings": [
+          "run recorded on dirty worktree (12fd268-dirty)"
+        ]
+      }
+    ]
+  },
+  "astraAudit": {
+    "callsAudited": 220,
+    "spellPromptsAudited": 218,
+    "violations": [],
+    "attempts": [
+      {
+        "attempt": 1,
+        "firstCall": 1,
+        "lastCall": 68,
+        "minimumObservedBossHp": 11966,
+        "outcome": "lost"
+      },
+      {
+        "attempt": 2,
+        "firstCall": 69,
+        "lastCall": 220,
+        "minimumObservedBossHp": 60,
+        "outcome": "won"
+      }
+    ],
+    "initialYinguAmounts": [
+      0
+    ],
+    "acceptedRemovedActions": 0,
+    "sources": {
+      "bench/out/astra-20261023-baiyue-nocheese-560/episodes/baiyue-single-origin__s42.jsonl": {
+        "sha256": "04e548dab982b9201888e57873ae1155147b6c74f36c3b6807e9a9f7a76d13b1",
+        "bytes": 1145997
+      },
+      "bench/out/astra-20261023-baiyue-nocheese-560/episodes/baiyue-single-origin__s42.json": {
+        "sha256": "422b9caa1f00a9db32b41c54374926e348fdf6569b722acf61b63ed4a6ad7cc1",
+        "bytes": 1486
+      },
+      "bench/out/astra-20261023-baiyue-nocheese-560/episodes/baiyue-single-origin__s42.client.jsonl": {
+        "sha256": "8cc5b030aefacdb99069975995df1f84918c772dda8bef034512994d5ce814e8",
+        "bytes": 3387312
+      },
+      "bench/out/astra-20261023-baiyue-nocheese-560/run.json": {
+        "sha256": "efb7578d0e84e3c8a9a65e2934902c3a52ab12db0739864629b3fdd6f36b4612",
+        "bytes": 1072
+      },
+      "bench/out/astra-20261023-baiyue-nocheese-560/ablation-protocol.json": {
+        "sha256": "7771afa61d9b80201006025cdb8c30b7a2bc703781b0206b3850a21e96c55fe8",
+        "bytes": 1125
+      }
+    }
+  },
+  "astraUsage": {
+    "tokensIn": 6385688,
+    "tokensOut": 10087,
+    "tokensCached": 6261248,
+    "cost": 8.009998,
+    "virtualSeconds": 685.803,
+    "accountingStatus": "complete"
+  },
+  "negativeControl": {
+    "condition": "BENCH_STRIP_CHEESE=0, same frozen runtime and recorded actions",
+    "expected": "verification fails",
+    "observed": "initial state and subsequent gameplay mismatch; original successful verify.json unchanged",
+    "output": "bench/out/astra-20261023-baiyue-nocheese-560/negative-control-without-stripping.txt"
+  }
+}

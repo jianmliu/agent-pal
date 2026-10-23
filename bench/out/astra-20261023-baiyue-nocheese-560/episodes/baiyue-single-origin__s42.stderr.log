@@ -1,0 +1,7 @@
+2026-10-23T14:52:02.308837Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-10-23T14:52:02.319958Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-10-23T14:52:02.327367Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-10-23T14:52:02.333747Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-10-23T14:52:02.335153Z  WARN codex_otel::auth_storage: credential storage file fallback completed credential_kind="mcp" store_mode="auto" selected_store="direct_keyring" actual_store="file" operation="load" secure_outcome="not_found" outcome="not_found" fallback_reason="secure_entry_missing" secure_error="none" storage_phase="policy" originator="codex_desktop"
+2026-10-23T14:52:02.335731Z  WARN codex_otel::auth_storage: credential storage file fallback completed credential_kind="mcp" store_mode="auto" selected_store="direct_keyring" actual_store="file" operation="load" secure_outcome="not_found" outcome="not_found" fallback_reason="secure_entry_missing" secure_error="none" storage_phase="policy" originator="codex_desktop"
+2026-10-23T14:52:02.341941Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
