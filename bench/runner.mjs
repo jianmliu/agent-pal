@@ -71,6 +71,7 @@ export function cleanClaudeEnv(source = process.env) {
     if (!CLAUDE_ENV_KEEP.has(k) && /^(CLAUDE|ANTHROPIC_BASE_URL$|MCP_)/.test(k)) continue;
     env[k] = v;
   }
+  if (source.BENCH_CLAUDE_BASE_URL) env.ANTHROPIC_BASE_URL = source.BENCH_CLAUDE_BASE_URL;
   return env;
 }
 
