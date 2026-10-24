@@ -33,7 +33,7 @@ export const TIER_TOOLS = {
   C: ['observe', 'walk_to', 'step', 'interact', 'search', 'advance', 'choose', 'use_item', 'equip', 'cast', 'battle', 'map', 'save', 'load', 'list_saves', 'press', 'wait', 'guide', 'atlas'],
   P: ['observe', 'step', 'search', 'advance', 'choose', 'battle', 'use_item', 'press', 'wait', 'save', 'load', 'list_saves', 'run_code']
 };
-const STUCK_K = 20;           // 连续这么多次推进游戏的调用状态视图毫无变化 → 判卡死(spec §6)
+const STUCK_K = 60;           // 连续这么多次推进游戏的调用状态视图毫无变化 → 判卡死(spec §6; 放宽至 60 以容纳 7×7 局部网格探测)
 /** A 像素档只看画面:工具结果只给成败(去掉「mode now …」这类结构化提示),画面随结果附上。 */
 export const PIXEL_TIERS = new Set(['A']);
 export function pixelResult(r, name = null) {
@@ -203,7 +203,7 @@ export async function createEpisode({ task, seed, tier = 'B', logFile = null, me
     battles: [], progress: 0
   };
   let done = false;
-  const stuck = createStuckCounter();
+  const stuck = createStuckCounter(meta.stuckK ?? STUCK_K);
   const fingerprint = (v) => JSON.stringify([v.scene, v.pos, v.mode, v.inBattle, v.textLog.length, v.inventory, v.cash, v.party.map((m) => [m.hp, m.level]), v.battles.length, ...(battleMetrics ? [v.battleTelemetry, v.enemies, v.party.map(m=>m.mp)] : [])]);
 
   const judge = (advancing = true) => {

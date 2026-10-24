@@ -1,0 +1,25 @@
+{
+  "scoring": "cost",
+  "runId": "agy-cli_gemini-3.8-flash-B-yangzhou-gourd-320cap",
+  "model": "agy-cli:gemini-3.8-flash",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic19-yangzhou-gourd",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 74
+      }
+    }
+  ],
+  "clientAccountingVersion": 1,
+  "promptVersion": 3,
+  "code": "44ee03c-dirty",
+  "startedAt": "2026-10-24T14:46:35.101Z",
+  "finishedAt": "2026-10-24T14:48:36.158Z"
+}

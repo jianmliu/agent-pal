@@ -138,7 +138,8 @@ export async function verifyChild(job) {
   const s = orig.start;
   const task = loadTask(s.task);
   const budgetToolCalls = s.budgetToolCalls ?? (orig.end?.endReason === 'budget-toolCalls' ? orig.end.toolCalls : undefined);
-  const ep = await createEpisode({ task, seed: s.seed, tier: s.tier, logFile: job.logFile, meta: { model: s.model, runId: s.runId, hints: s.hints ?? 'standard', ...(budgetToolCalls ? { budgetToolCalls } : {}) } });
+  const stuckK = s.stuckK ?? (orig.end?.endReason === 'stuck' ? 20 : undefined);
+  const ep = await createEpisode({ task, seed: s.seed, tier: s.tier, logFile: job.logFile, meta: { model: s.model, runId: s.runId, hints: s.hints ?? 'standard', ...(budgetToolCalls ? { budgetToolCalls } : {}), ...(stuckK ? { stuckK } : {}) } });
   for (const c of orig.calls) {
     if (ep.done) break;
     await ep.call(c.name, c.args);

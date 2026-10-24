@@ -1,0 +1,22 @@
+{
+  "verifiedAt": "2026-10-24T14:49:10.701Z",
+  "code": "44ee03c-dirty",
+  "episodes": [
+    {
+      "file": "classic19-yangzhou-gourd__s42.jsonl",
+      "task": "classic19-yangzhou-gourd",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "57815caa37251f18d4376a0963f4dc978cce67ba83ad429721757c65ae87f9a5",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (44ee03c-dirty)"
+      ]
+    }
+  ]
+}
