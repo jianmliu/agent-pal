@@ -1,0 +1,61 @@
+{
+  "task": "classic10-baihe-medicine",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "claude-cli:deepseek-v4.1-flash",
+  "runId": "claude-cli_deepseek-v4.1-flash-B-baihe-360cap",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "budgetToolCalls": 360,
+  "success": true,
+  "successAt": 269,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "success",
+  "milestones": {
+    "got-ginkgo": 34,
+    "got-carp": 192,
+    "got-antler": 263
+  },
+  "toolCalls": 269,
+  "invalidCalls": 29,
+  "softStops": 2,
+  "tokensIn": 1671347,
+  "tokensOut": 60780,
+  "tokensCached": 1489152,
+  "tokensCacheWrite": 0,
+  "cost": 2.2422104000000003,
+  "virtualSeconds": 485.128,
+  "battles": [],
+  "progress": 1,
+  "final": {
+    "scene": 52,
+    "pos": {
+      "gx": 82,
+      "gy": 94
+    },
+    "mode": "control",
+    "visitedScenes": [
+      52,
+      53,
+      49,
+      50,
+      51,
+      48
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "claude-cli",
+    "model": "deepseek-v4.1-flash",
+    "effort": "medium",
+    "numTurns": 30,
+    "durationMs": 771272,
+    "exitCode": 0,
+    "signal": null
+  },
+  "accountingStatus": "complete"
+}

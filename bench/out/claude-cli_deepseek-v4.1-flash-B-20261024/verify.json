@@ -1,0 +1,72 @@
+{
+  "verifiedAt": "2026-10-25T02:06:41.555Z",
+  "code": "8ec6c14-dirty",
+  "runDigest": "cb04e2bc22d94dfe6c2a0e6720aa843bf58faa729f75caa7b384194168638b89",
+  "episodes": [
+    {
+      "file": "baiyue-single-origin__s42.jsonl",
+      "task": "baiyue-single-origin",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "55a0bd0d5b00773880ff0c464fa6300c3c5ec5859231b239bc6d3b6a6b227057",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)"
+      ]
+    },
+    {
+      "file": "classic10-baihe-medicine__s42.jsonl",
+      "task": "classic10-baihe-medicine",
+      "seed": 42,
+      "claimed": {
+        "success": false,
+        "endReason": "budget-toolCalls"
+      },
+      "digest": "6e92d17fb9ab9911b5caa2c8889ccd213ec1a1faf0f87b032e23e263656f9761",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)"
+      ]
+    },
+    {
+      "file": "classic19-yangzhou-gourd__s42.jsonl",
+      "task": "classic19-yangzhou-gourd",
+      "seed": 42,
+      "claimed": {
+        "success": false,
+        "endReason": "wall-timeout"
+      },
+      "digest": "e2025eebb708f3103242a8d8504b70b1b441eeec8c9fa69d3485cbde4ae96031",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)",
+        "client accounting incomplete: usage/cost unknown, not zero"
+      ]
+    },
+    {
+      "file": "classic48-rain-orbs__s42.jsonl",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "0a0dd64c282012ebb1bbf03c9ec6a066116b3f8d41df7cdf4b5a803d0df62d63",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)"
+      ]
+    }
+  ]
+}

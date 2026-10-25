@@ -1,0 +1,186 @@
+{
+  "task": "classic19-yangzhou-gourd",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "claude-cli:deepseek-v4.1-flash",
+  "runId": "claude-cli_deepseek-v4.1-flash-B-yangzhou-600cap-part3",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "budgetToolCalls": 600,
+  "success": true,
+  "successAt": 563,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "success",
+  "milestones": {
+    "night-alarm": 171,
+    "recovered-bag": 340,
+    "accused-by-merchant": 346,
+    "met-widow": 404,
+    "entered-well": 542
+  },
+  "toolCalls": 563,
+  "invalidCalls": 48,
+  "softStops": 33,
+  "tokensIn": 445215,
+  "tokensOut": 16948,
+  "tokensCached": 391040,
+  "tokensCacheWrite": 0,
+  "cost": 0.633868,
+  "virtualSeconds": 1448.785,
+  "battles": [
+    {
+      "enemyTeam": null,
+      "outcome": "terminated"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    }
+  ],
+  "progress": 1,
+  "final": {
+    "scene": 81,
+    "pos": {
+      "gx": 110,
+      "gy": 80
+    },
+    "mode": "menu",
+    "visitedScenes": [
+      79,
+      82,
+      96,
+      93,
+      97,
+      95,
+      94,
+      84,
+      89,
+      99,
+      86,
+      85,
+      98,
+      87,
+      92,
+      81
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "claude-cli",
+    "model": "deepseek-v4.1-flash",
+    "effort": "medium",
+    "numTurns": 12,
+    "durationMs": 244925,
+    "exitCode": 0,
+    "signal": null
+  },
+  "accountingStatus": "complete"
+}

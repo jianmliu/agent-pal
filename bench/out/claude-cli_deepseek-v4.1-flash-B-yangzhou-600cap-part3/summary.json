@@ -1,0 +1,58 @@
+{
+  "runId": "claude-cli_deepseek-v4.1-flash-B-yangzhou-600cap-part3",
+  "model": "claude-cli:deepseek-v4.1-flash",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "8ec6c14-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "cost",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 1,
+  "progress": 1,
+  "costMeanOnSuccess": 0.633868,
+  "costTotal": 0.633868,
+  "tokensTotal": 462163,
+  "episodes": 1,
+  "tasks": [
+    {
+      "id": "classic19-yangzhou-gourd",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": 563,
+      "invalidRate": 0.0852575488454707,
+      "tokensMean": 462163,
+      "costTotal": 0.633868,
+      "costMeanOnSuccess": 0.633868,
+      "efficiencyMean": 0.131,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 563,
+          "successAt": 563,
+          "invalidCalls": 48,
+          "tokensIn": 445215,
+          "tokensOut": 16948,
+          "cost": 0.633868,
+          "virtualSeconds": 1448.785,
+          "battleRounds": null,
+          "par": 74,
+          "efficiency": 0.131
+        }
+      ]
+    }
+  ]
+}

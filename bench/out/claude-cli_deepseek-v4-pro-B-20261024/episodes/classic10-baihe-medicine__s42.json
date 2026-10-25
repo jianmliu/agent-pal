@@ -1,0 +1,60 @@
+{
+  "task": "classic10-baihe-medicine",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "claude-cli:deepseek-v4-pro",
+  "runId": "claude-cli_deepseek-v4-pro-B-20261024",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "success": false,
+  "successAt": null,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "budget-toolCalls",
+  "milestones": {
+    "got-ginkgo": 41,
+    "got-carp": 150,
+    "got-antler": null
+  },
+  "toolCalls": 240,
+  "invalidCalls": 16,
+  "softStops": 1,
+  "tokensIn": 183535,
+  "tokensOut": 3179,
+  "tokensCached": 160768,
+  "tokensCacheWrite": 0,
+  "cost": 0.18680159999999998,
+  "virtualSeconds": 413.852,
+  "battles": [],
+  "progress": 0.5,
+  "final": {
+    "scene": 52,
+    "pos": {
+      "gx": 82,
+      "gy": 92
+    },
+    "mode": "control",
+    "visitedScenes": [
+      52,
+      53,
+      49,
+      50,
+      48,
+      51
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "claude-cli",
+    "model": "deepseek-v4-pro",
+    "effort": "medium",
+    "numTurns": 15,
+    "durationMs": 89346,
+    "exitCode": 0,
+    "signal": null
+  },
+  "accountingStatus": "complete"
+}

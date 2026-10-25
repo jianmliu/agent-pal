@@ -465,17 +465,21 @@ function enumerateCandidates(ledger, latestText) {
   return candidates;
 }
 
-export function layaProvider() {
+export function layaProvider({ model = 'laya-multilingual' } = {}) {
+  const remoteUrl = process.env.BENCH_SYSTEMONE_URL || (model === 'decision-model-preview' ? 'https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1/systemone' : null);
+  const remoteHeaders = () => (process.env.OPENAI_API_KEY ? { authorization: `Bearer ${process.env.OPENAI_API_KEY}` } : {});
   return {
     async turn({ system, history, tools, signal }) {
-      await ensureDaemon(signal);
+      if (!remoteUrl) await ensureDaemon(signal);
+      const endpoint = remoteUrl || `${DAEMON_URL}/predict`;
       const latestText = String(history.at(-1)?.text || '');
 
       // Case 1: Closed-Book Quiz (`bench quiz` passes tools = [])
       if (!tools || tools.length === 0) {
         const res = await postJson(
-          `${DAEMON_URL}/predict`,
+          endpoint,
           {
+            ...(remoteUrl ? { model } : {}),
             state: { system, prompt: latestText },
             questions: {
               can_generate_free_text: {
@@ -484,7 +488,7 @@ export function layaProvider() {
               }
             }
           },
-          {},
+          remoteUrl ? remoteHeaders() : {},
           { signal }
         );
         const noul = res.answers?.can_generate_free_text?.noul ?? 0;
@@ -530,8 +534,9 @@ export function layaProvider() {
       };
 
       const res = await postJson(
-        `${DAEMON_URL}/predict`,
+        endpoint,
         {
+          ...(remoteUrl ? { model } : {}),
           state: statePayload,
           questions: {
             next_action: {
@@ -541,7 +546,7 @@ export function layaProvider() {
             }
           }
         },
-        {},
+        remoteUrl ? remoteHeaders() : {},
         { signal }
       );
 

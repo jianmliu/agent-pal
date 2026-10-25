@@ -1,0 +1,25 @@
+{
+  "scoring": "cost",
+  "runId": "claude-cli_deepseek-v4.1-flash-B-yangzhou-600cap-part3",
+  "model": "claude-cli:deepseek-v4.1-flash",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic19-yangzhou-gourd",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 74
+      }
+    }
+  ],
+  "clientAccountingVersion": 1,
+  "promptVersion": 3,
+  "code": "8ec6c14-dirty",
+  "startedAt": "2026-10-25T03:59:24.831Z",
+  "finishedAt": "2026-10-25T04:04:31.387Z"
+}

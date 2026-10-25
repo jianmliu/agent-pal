@@ -1,0 +1,67 @@
+{
+  "task": "classic19-yangzhou-gourd",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "claude-cli:deepseek-v4.1-flash",
+  "runId": "claude-cli_deepseek-v4.1-flash-B-20261024",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "success": false,
+  "successAt": null,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "wall-timeout",
+  "milestones": {
+    "night-alarm": null,
+    "recovered-bag": null,
+    "accused-by-merchant": null,
+    "met-widow": null,
+    "entered-well": null
+  },
+  "toolCalls": 129,
+  "invalidCalls": 11,
+  "softStops": 3,
+  "tokensIn": null,
+  "tokensOut": null,
+  "tokensCached": null,
+  "tokensCacheWrite": null,
+  "cost": null,
+  "virtualSeconds": 247.762,
+  "battles": [],
+  "progress": 0,
+  "final": {
+    "scene": 84,
+    "pos": {
+      "gx": 85,
+      "gy": 121
+    },
+    "mode": "dialog",
+    "visitedScenes": [
+      79,
+      82,
+      96,
+      93,
+      97,
+      95,
+      94,
+      84,
+      89,
+      99,
+      86
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "claude-cli",
+    "model": "deepseek-v4.1-flash",
+    "effort": "medium",
+    "numTurns": null,
+    "durationMs": 1800000,
+    "exitCode": null,
+    "signal": "SIGTERM"
+  },
+  "accountingStatus": "incomplete"
+}

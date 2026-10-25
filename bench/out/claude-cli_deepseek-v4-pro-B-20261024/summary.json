@@ -1,0 +1,169 @@
+{
+  "runId": "claude-cli_deepseek-v4-pro-B-20261024",
+  "model": "claude-cli:deepseek-v4-pro",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "code": "8ec6c14-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "mixed",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 0.5,
+  "progress": 0.625,
+  "costMeanOnSuccess": 1.4238792,
+  "costTotal": 8.526232800000002,
+  "tokensTotal": 23797024,
+  "episodes": 4,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": 44,
+      "invalidRate": 0.1590909090909091,
+      "tokensMean": 854006,
+      "costTotal": 0.5716688000000001,
+      "costMeanOnSuccess": 0.5716688000000001,
+      "efficiencyMean": 0.159,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 44,
+          "successAt": 44,
+          "invalidCalls": 7,
+          "tokensIn": 844271,
+          "tokensOut": 9735,
+          "cost": 0.5716688000000001,
+          "virtualSeconds": 59.127,
+          "battleRounds": null,
+          "par": 7,
+          "efficiency": 0.159
+        }
+      ]
+    },
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0.5,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0.06666666666666667,
+      "tokensMean": 186714,
+      "costTotal": 0.18680159999999998,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "budget-toolCalls": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "budget-toolCalls",
+          "progress": 0.5,
+          "toolCalls": 240,
+          "successAt": null,
+          "invalidCalls": 16,
+          "tokensIn": 183535,
+          "tokensOut": 3179,
+          "cost": 0.18680159999999998,
+          "virtualSeconds": 413.852,
+          "battleRounds": null,
+          "par": 40,
+          "efficiency": null
+        }
+      ]
+    },
+    {
+      "id": "classic19-yangzhou-gourd",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0.1,
+      "tokensMean": 18999463,
+      "costTotal": 5.4916728000000035,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "budget-toolCalls": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "budget-toolCalls",
+          "progress": 0,
+          "toolCalls": 230,
+          "successAt": null,
+          "invalidCalls": 23,
+          "tokensIn": 18967456,
+          "tokensOut": 32007,
+          "cost": 5.4916728000000035,
+          "virtualSeconds": 436.265,
+          "battleRounds": null,
+          "par": 74,
+          "efficiency": null
+        }
+      ]
+    },
+    {
+      "id": "baiyue-single-origin",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 1,
+      "progressMean": 1,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": 9,
+      "toolCallsMedianOnSuccess": 50,
+      "invalidRate": 0,
+      "tokensMean": 3756841,
+      "costTotal": 2.2760895999999997,
+      "costMeanOnSuccess": 2.2760895999999997,
+      "efficiencyMean": 0.7,
+      "endReasons": {
+        "success": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": true,
+          "endReason": "success",
+          "progress": 1,
+          "toolCalls": 50,
+          "successAt": 50,
+          "invalidCalls": 0,
+          "tokensIn": 3736789,
+          "tokensOut": 20052,
+          "cost": 2.2760895999999997,
+          "virtualSeconds": 227.157,
+          "battleRounds": 9,
+          "par": 35,
+          "efficiency": 0.7
+        }
+      ]
+    }
+  ]
+}

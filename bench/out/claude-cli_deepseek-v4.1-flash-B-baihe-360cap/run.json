@@ -1,0 +1,25 @@
+{
+  "scoring": "cost",
+  "runId": "claude-cli_deepseek-v4.1-flash-B-baihe-360cap",
+  "model": "claude-cli:deepseek-v4.1-flash",
+  "tier": "B",
+  "hints": "standard",
+  "external": true,
+  "tasks": [
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 40
+      }
+    }
+  ],
+  "clientAccountingVersion": 1,
+  "promptVersion": 3,
+  "code": "8ec6c14-dirty",
+  "startedAt": "2026-10-25T02:11:54.110Z",
+  "finishedAt": "2026-10-25T02:25:03.745Z"
+}

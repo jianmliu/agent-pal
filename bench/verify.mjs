@@ -138,7 +138,14 @@ export async function verifyChild(job) {
   const s = orig.start;
   const task = loadTask(s.task);
   const budgetToolCalls = s.budgetToolCalls ?? (orig.end?.endReason === 'budget-toolCalls' ? orig.end.toolCalls : undefined);
-  const stuckK = s.stuckK ?? (orig.end?.endReason === 'stuck' ? 20 : undefined);
+  let tailSame = 0;
+  if (orig.end?.endReason === 'stuck' && orig.calls.length > 0) {
+    const last = orig.calls[orig.calls.length - 1];
+    const sig = (c) => JSON.stringify([c.scene, c.pos, c.mode, c.milestones]);
+    const target = sig(last);
+    for (let i = orig.calls.length - 1; i >= 0 && sig(orig.calls[i]) === target; i--) tailSame++;
+  }
+  const stuckK = s.stuckK ?? (orig.end?.endReason === 'stuck' && tailSame < 60 ? 20 : undefined);
   const ep = await createEpisode({ task, seed: s.seed, tier: s.tier, logFile: job.logFile, meta: { model: s.model, runId: s.runId, hints: s.hints ?? 'standard', ...(budgetToolCalls ? { budgetToolCalls } : {}), ...(stuckK ? { stuckK } : {}) } });
   for (const c of orig.calls) {
     if (ep.done) break;

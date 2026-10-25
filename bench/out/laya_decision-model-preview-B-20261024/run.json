@@ -1,0 +1,66 @@
+{
+  "scoring": "mixed",
+  "runId": "laya_decision-model-preview-B-20261024",
+  "model": "laya:decision-model-preview",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 7
+      }
+    },
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 40
+      }
+    },
+    {
+      "id": "classic19-yangzhou-gourd",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 74
+      }
+    },
+    {
+      "id": "baiyue-single-origin",
+      "version": 1,
+      "seeds": [
+        42
+      ],
+      "par": {
+        "42": 35
+      },
+      "fingerprint": {
+        "task": "e1ab3166715096c7ab1a7d7e77c3626e75a5fb226f053ed97caff8a234a22038",
+        "save": "bd440080023640ed50d1a871654725783d8a94b1e29848ed80fa20b0c35dff58"
+      }
+    }
+  ],
+  "clientAccountingVersion": null,
+  "promptVersion": 3,
+  "code": "8ec6c14-dirty",
+  "startedAt": "2026-10-25T02:48:15.716Z",
+  "runtime": {
+    "node": "v25.2.1",
+    "agent": "198e8d70d0e85a1decec2fa7642f05d44cd8f40aa1fcf342b852e51b5c760eef",
+    "engine": "3fd4841b40424a0b9dbe4c409cca5134b8eea168f36ea3913acf0c72187e343c",
+    "bench": "d5a6f9fdeb161f5da9ae9e2b294a302f9ab3584b3354c7496ffe68e25f918c13",
+    "assets": "f1b6ed6c9884a73672c83fea1ff0671be5af9825c5a3174e363710c4dcd4c643"
+  },
+  "finishedAt": "2026-10-25T02:51:15.681Z"
+}

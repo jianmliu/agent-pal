@@ -1,0 +1,103 @@
+{
+  "task": "classic19-yangzhou-gourd",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "claude-cli:deepseek-v4-pro",
+  "runId": "claude-cli_deepseek-v4-pro-B-20261024",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "success": false,
+  "successAt": null,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "budget-toolCalls",
+  "milestones": {
+    "night-alarm": null,
+    "recovered-bag": null,
+    "accused-by-merchant": null,
+    "met-widow": null,
+    "entered-well": null
+  },
+  "toolCalls": 230,
+  "invalidCalls": 23,
+  "softStops": 11,
+  "tokensIn": 18967456,
+  "tokensOut": 32007,
+  "tokensCached": 18689024,
+  "tokensCacheWrite": 0,
+  "cost": 5.4916728000000035,
+  "virtualSeconds": 436.265,
+  "battles": [
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    },
+    {
+      "enemyTeam": null,
+      "outcome": "won"
+    }
+  ],
+  "progress": 0,
+  "final": {
+    "scene": 87,
+    "pos": {
+      "gx": 111,
+      "gy": 100
+    },
+    "mode": "battle",
+    "visitedScenes": [
+      79,
+      83,
+      80,
+      78,
+      77,
+      82,
+      84,
+      86,
+      98,
+      85,
+      87,
+      96,
+      95,
+      93,
+      97,
+      94,
+      89,
+      99
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "claude-cli",
+    "model": "deepseek-v4-pro",
+    "effort": "medium",
+    "numTurns": 231,
+    "durationMs": 1759463,
+    "exitCode": 0,
+    "signal": null
+  },
+  "accountingStatus": "complete"
+}

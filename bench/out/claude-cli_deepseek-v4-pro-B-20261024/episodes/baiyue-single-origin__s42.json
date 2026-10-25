@@ -1,0 +1,85 @@
+{
+  "task": "baiyue-single-origin",
+  "taskVersion": 1,
+  "seed": 42,
+  "tier": "B",
+  "model": "claude-cli:deepseek-v4-pro",
+  "runId": "claude-cli_deepseek-v4-pro-B-20261024",
+  "hints": "standard",
+  "clientAccountingVersion": 1,
+  "success": true,
+  "successAt": 50,
+  "failed": false,
+  "failAt": null,
+  "stuck": false,
+  "crashed": false,
+  "endReason": "success",
+  "milestones": {},
+  "toolCalls": 50,
+  "invalidCalls": 0,
+  "softStops": 0,
+  "tokensIn": 3736789,
+  "tokensOut": 20052,
+  "tokensCached": 3467264,
+  "tokensCacheWrite": 0,
+  "cost": 2.2760895999999997,
+  "virtualSeconds": 227.157,
+  "battleRounds": 9,
+  "battles": [
+    {
+      "enemyTeam": 313,
+      "enemyObjects": [
+        546,
+        493
+      ],
+      "completedRounds": 8,
+      "startedRounds": 9,
+      "rounds": 9,
+      "outcome": "lost"
+    },
+    {
+      "enemyTeam": 313,
+      "enemyObjects": [
+        546
+      ],
+      "completedRounds": 5,
+      "startedRounds": 6,
+      "rounds": 6,
+      "outcome": "lost"
+    },
+    {
+      "enemyTeam": 313,
+      "enemyObjects": [
+        546,
+        511
+      ],
+      "completedRounds": 8,
+      "startedRounds": 9,
+      "rounds": 9,
+      "outcome": "won"
+    }
+  ],
+  "progress": 1,
+  "final": {
+    "scene": 281,
+    "pos": {
+      "gx": 120,
+      "gy": 115
+    },
+    "mode": "dialog",
+    "visitedScenes": [
+      281
+    ]
+  },
+  "external": true,
+  "client": {
+    "name": "claude-cli",
+    "model": "deepseek-v4-pro",
+    "effort": "medium",
+    "numTurns": 52,
+    "durationMs": 562982,
+    "exitCode": 0,
+    "signal": null
+  },
+  "accountingStatus": "complete"
+}

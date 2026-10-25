@@ -1,0 +1,71 @@
+{
+  "verifiedAt": "2026-10-25T00:56:05.348Z",
+  "code": "8ec6c14-dirty",
+  "runDigest": "54b5c9507b99640c7405555f10d567878c70944380f1dd9845bf9ae15d8e5d29",
+  "episodes": [
+    {
+      "file": "baiyue-single-origin__s42.jsonl",
+      "task": "baiyue-single-origin",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "8b4ba2e5d3d38e466aa26d04cb22a6177a620e1bd05dd80d7ce9e0a4af1556a0",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)"
+      ]
+    },
+    {
+      "file": "classic10-baihe-medicine__s42.jsonl",
+      "task": "classic10-baihe-medicine",
+      "seed": 42,
+      "claimed": {
+        "success": false,
+        "endReason": "budget-toolCalls"
+      },
+      "digest": "0b0297c244a0325d85a719f747b953241ce625206b66e02c9e1fcd76ab2b27bb",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)"
+      ]
+    },
+    {
+      "file": "classic19-yangzhou-gourd__s42.jsonl",
+      "task": "classic19-yangzhou-gourd",
+      "seed": 42,
+      "claimed": {
+        "success": false,
+        "endReason": "budget-toolCalls"
+      },
+      "digest": "0b25830100f3ee749037e6e2454e61bf0cc0bfa044034a604ee6ea84dbfc3695",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)"
+      ]
+    },
+    {
+      "file": "classic48-rain-orbs__s42.jsonl",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "8282a910e6b87c1d339c3b5b01620a989ea2967ace7434d19529967d38117504",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)"
+      ]
+    }
+  ]
+}

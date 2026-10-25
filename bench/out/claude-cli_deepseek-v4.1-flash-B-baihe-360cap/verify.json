@@ -1,0 +1,22 @@
+{
+  "verifiedAt": "2026-10-25T02:26:15.339Z",
+  "code": "8ec6c14-dirty",
+  "episodes": [
+    {
+      "file": "classic10-baihe-medicine__s42.jsonl",
+      "task": "classic10-baihe-medicine",
+      "seed": 42,
+      "claimed": {
+        "success": true,
+        "endReason": "success"
+      },
+      "digest": "403bc4d67d65ebbce0170c4f988450c307466b4d11e4e51c4a057221be03c2a1",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)"
+      ]
+    }
+  ]
+}

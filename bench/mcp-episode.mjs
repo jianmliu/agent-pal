@@ -69,13 +69,17 @@ const serial = (fn) => (queue = queue.then(fn, fn));
 
 // 不用 setTimeout:确定性模式下引擎把计时器接到虚拟时钟上,没人推进就永远不触发
 const shutdown = (reason) => { finish(reason).finally(() => process.exit(0)); };
-process.removeAllListeners('SIGINT');
-process.removeAllListeners('SIGTERM');
-process.on('SIGINT', () => shutdown('agent-stopped'));   // runner:客户端自己结束了
-process.on('SIGTERM', () => shutdown('wall-timeout'));   // runner:墙钟到点
+function bindSignals() {
+  process.removeAllListeners('SIGINT');
+  process.removeAllListeners('SIGTERM');
+  process.on('SIGINT', () => shutdown('agent-stopped'));   // runner:客户端自己结束了
+  process.on('SIGTERM', () => shutdown('wall-timeout'));   // runner:墙钟到点
+}
+bindSignals();
 
 if (httpMode) {
   const ep = await getEpisode();
+  bindSignals();
   if (process.env.BENCH_REPLAY_PREFIX && fs.existsSync(process.env.BENCH_REPLAY_PREFIX)) {
     const lines = fs.readFileSync(process.env.BENCH_REPLAY_PREFIX, 'utf8').trim().split('\n').filter(Boolean);
     let lastR = null;

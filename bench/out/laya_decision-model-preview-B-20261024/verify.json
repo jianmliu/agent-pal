@@ -1,0 +1,75 @@
+{
+  "verifiedAt": "2026-10-25T04:07:14.649Z",
+  "code": "8ec6c14-dirty",
+  "runDigest": "29fc32548d51176f9853e6f7feefc7fc355e1bb35cfa2d6850f74cf2678144cf",
+  "episodes": [
+    {
+      "file": "baiyue-single-origin__s42.jsonl",
+      "task": "baiyue-single-origin",
+      "seed": 42,
+      "claimed": {
+        "success": false,
+        "endReason": "budget-toolCalls"
+      },
+      "digest": "17a9f2771de9a3366f17cbbe6ddc5ec5d7e75985a50e8ec5a1ba19dfb309c8ac",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)",
+        "zero output tokens across tool calls (non-generative / custom decision adapter)"
+      ]
+    },
+    {
+      "file": "classic10-baihe-medicine__s42.jsonl",
+      "task": "classic10-baihe-medicine",
+      "seed": 42,
+      "claimed": {
+        "success": false,
+        "endReason": "budget-toolCalls"
+      },
+      "digest": "c5d8e7fea5485d3f6b5518707e810cfc9158ced65978ef02c5df655f0393f0ba",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)",
+        "zero output tokens across tool calls (non-generative / custom decision adapter)"
+      ]
+    },
+    {
+      "file": "classic19-yangzhou-gourd__s42.jsonl",
+      "task": "classic19-yangzhou-gourd",
+      "seed": 42,
+      "claimed": {
+        "success": false,
+        "endReason": "stuck"
+      },
+      "digest": "d5e73f912ca40e600fba59f0b92c2ec4021cd25e919f933fc23dd222228d00e3",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)",
+        "zero output tokens across tool calls (non-generative / custom decision adapter)"
+      ]
+    },
+    {
+      "file": "classic48-rain-orbs__s42.jsonl",
+      "task": "classic48-rain-orbs",
+      "seed": 42,
+      "claimed": {
+        "success": false,
+        "endReason": "budget-toolCalls"
+      },
+      "digest": "370e09be92e2f3802228ce9babead4f25f93858fbbcf491e373741aa088e58ab",
+      "ok": true,
+      "verdict": "verified",
+      "diffs": [],
+      "warnings": [
+        "run recorded on dirty worktree (8ec6c14-dirty)",
+        "zero output tokens across tool calls (non-generative / custom decision adapter)"
+      ]
+    }
+  ]
+}

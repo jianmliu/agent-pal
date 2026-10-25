@@ -1,0 +1,169 @@
+{
+  "runId": "laya_decision-model-preview-B-20261024",
+  "model": "laya:decision-model-preview",
+  "tier": "B",
+  "hints": "standard",
+  "external": false,
+  "code": "8ec6c14-dirty",
+  "promptVersion": 3,
+  "books": null,
+  "scoring": "mixed",
+  "battleRoundsMeanOnSuccess": null,
+  "complete": true,
+  "score": 0,
+  "progress": 0.0625,
+  "costMeanOnSuccess": null,
+  "costTotal": 0,
+  "tokensTotal": 758211,
+  "episodes": 4,
+  "tasks": [
+    {
+      "id": "classic48-rain-orbs",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0,
+      "tokensMean": 70889,
+      "costTotal": 0,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "budget-toolCalls": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "budget-toolCalls",
+          "progress": 0,
+          "toolCalls": 80,
+          "successAt": null,
+          "invalidCalls": 0,
+          "tokensIn": 70889,
+          "tokensOut": 0,
+          "cost": 0,
+          "virtualSeconds": 76.834,
+          "battleRounds": null,
+          "par": 7,
+          "efficiency": null
+        }
+      ]
+    },
+    {
+      "id": "classic10-baihe-medicine",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0.25,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0.04583333333333333,
+      "tokensMean": 262607,
+      "costTotal": 0,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "budget-toolCalls": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "budget-toolCalls",
+          "progress": 0.25,
+          "toolCalls": 240,
+          "successAt": null,
+          "invalidCalls": 11,
+          "tokensIn": 262607,
+          "tokensOut": 0,
+          "cost": 0,
+          "virtualSeconds": 358.967,
+          "battleRounds": null,
+          "par": 40,
+          "efficiency": null
+        }
+      ]
+    },
+    {
+      "id": "classic19-yangzhou-gourd",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0,
+      "tokensMean": 55416,
+      "costTotal": 0,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "stuck": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "stuck",
+          "progress": 0,
+          "toolCalls": 75,
+          "successAt": null,
+          "invalidCalls": 0,
+          "tokensIn": 55416,
+          "tokensOut": 0,
+          "cost": 0,
+          "virtualSeconds": 33.135,
+          "battleRounds": null,
+          "par": 74,
+          "efficiency": null
+        }
+      ]
+    },
+    {
+      "id": "baiyue-single-origin",
+      "version": 1,
+      "seedsPlanned": 1,
+      "n": 1,
+      "successRate": 0,
+      "progressMean": 0,
+      "progressSd": 0,
+      "battleRoundsMeanOnSuccess": null,
+      "toolCallsMedianOnSuccess": null,
+      "invalidRate": 0,
+      "tokensMean": 369299,
+      "costTotal": 0,
+      "costMeanOnSuccess": null,
+      "efficiencyMean": null,
+      "endReasons": {
+        "budget-toolCalls": 1
+      },
+      "episodes": [
+        {
+          "seed": 42,
+          "success": false,
+          "endReason": "budget-toolCalls",
+          "progress": 0,
+          "toolCalls": 180,
+          "successAt": null,
+          "invalidCalls": 0,
+          "tokensIn": 369299,
+          "tokensOut": 0,
+          "cost": 0,
+          "virtualSeconds": 862.031,
+          "battleRounds": null,
+          "par": 35,
+          "efficiency": null
+        }
+      ]
+    }
+  ]
+}
