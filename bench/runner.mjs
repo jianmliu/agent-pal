@@ -19,7 +19,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import readline from 'node:readline';
-import { finished } from 'node:stream/promises';
+import { performance } from 'node:perf_hooks';
 import { fileURLToPath } from 'node:url';
 import { loadTask, listTasks, loadReference } from './task.mjs';
 import { taskFingerprint, runtimeFingerprint } from './start.mjs';
@@ -27,6 +27,7 @@ import { systemPrompt, firstMessage, PROMPT_VERSION } from './prompt.mjs';
 import { costOf } from './providers.mjs';
 import { finalizeClient } from './client-finalization.mjs';
 import { CLAUDE_BIN, CODEX_BIN, AGY_BIN } from './cli-bins.mjs';
+import { protocolContract, lifecycleLimits, episodeBasename, trialIdentity, assertFormalFresh, cliIdentity, waitForReady, terminateChild, monitorClient, boundedStreamEnd, boundedReadable } from './protocol-contract.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const benchCli = path.join(here, 'bench.mjs');
@@ -81,6 +82,9 @@ export function cleanClaudeEnv(source = process.env) {
  */
 export function resumeMismatch(meta, want) {
   const diffs = [];
+  for (const key of ['protocols', 'formal']) if (meta[key] != null || want[key] != null) {
+    if (JSON.stringify(meta[key] ?? null) !== JSON.stringify(want[key] ?? null)) diffs.push(`${key} differs`);
+  }
   for (const k of ['model', 'tier', 'promptVersion', 'code']) {
     if (meta[k] !== want[k]) diffs.push(`${k}: ${JSON.stringify(meta[k])} → ${JSON.stringify(want[k])}`);
   }
@@ -118,17 +122,33 @@ export function booksFingerprint(env = process.env) {
   return { id: sha(JSON.stringify([guide, atlas])).slice(0, 8), guide, atlas };
 }
 
-const exited = (child) => new Promise((res) => {
-  if (child.exitCode !== null || child.signalCode !== null) res(child.exitCode);
-  else child.once('exit', (code) => res(code));
-});
+const ownedChildren = new WeakMap();
+const ownedFds = new WeakMap();
+function stderrFd(job) { const fd=fs.openSync(job.stderrFile,'a'); ownedFds.set(job,fd); return fd; }
+function spawnOwned(job, bin, args, options) {
+  const child = spawn(bin, args, {...options, detached: process.platform !== 'win32'});
+  const children = ownedChildren.get(job) || [];
+  children.push(child); ownedChildren.set(job, children);
+  return child;
+}
+async function cleanupChildren(job) {
+  for (const child of ownedChildren.get(job) || []) {
+    await terminateChild(child, {killMs:job.killSeconds * 1000});
+    // POSIX process groups also cover helper subprocesses left by an exited CLI.
+    if (process.platform !== 'win32' && child.pid) {
+      try { process.kill(-child.pid, 'SIGKILL'); } catch (error) { if (error.code !== 'ESRCH') throw error; }
+    }
+  }
+  ownedChildren.delete(job);
+  if(ownedFds.has(job)){try{fs.closeSync(ownedFds.get(job));}catch(error){if(error.code!=='EBADF')throw error;}ownedFds.delete(job);}
+}
 
 /** 兜底结果:子进程没留下结果文件时(崩溃 / 被杀)。 */
 function harnessFailure(job, reason) {
   return {
     task: job.taskId, seed: job.seed, tier: job.tier, ...job.meta,
     success: false, successAt: null, failed: false, failAt: null, stuck: false, crashed: true,
-    endReason: reason, milestones: {}, toolCalls: 0, invalidCalls: 0, tokensIn: 0, tokensOut: 0, cost: null,
+    endReason: reason, milestones: {}, toolCalls: 0, invalidCalls: 0, tokensIn: null, tokensOut: null, cost: null, accountingStatus:'unknown',
     virtualSeconds: 0, battles: [], progress: 0
   };
 }
@@ -144,39 +164,42 @@ export async function episodeChild(job) {
   const ctx = job.model.startsWith('replay:') ? { reference: loadReference(replayTaskId(job.model, job.taskId)), seed: job.seed } : {};
   const provider = createProvider(job.model, ctx);
   const episode = await createEpisode({ task, seed: job.seed, tier: job.tier, logFile: job.logFile, meta: job.meta });
+  process.send?.({type:'episode-ready'});
   const res = await runLoop({ episode, provider, model: job.model });
   fs.writeFileSync(job.resultFile, JSON.stringify(res));
+  if(process.connected)process.disconnect();
 }
 
 async function runBuiltin(job, tmp) {
-  const err = fs.openSync(job.stderrFile, 'a');
-  const child = spawn(process.execPath, [benchCli, '--episode', JSON.stringify(job)], { stdio: ['ignore', 'ignore', err], env: episodeEnv(tmp) });
-  const timer = setTimeout(() => child.kill('SIGKILL'), job.wallSeconds * 1000);
-  const code = await exited(child);
-  clearTimeout(timer);
+  const err = stderrFd(job);
+  const child = spawnOwned(job, process.execPath, [benchCli, '--episode', JSON.stringify(job)], { stdio: ['ignore', 'ignore', err, 'ipc'], env: episodeEnv(tmp) });
+  let ready;
+  try { ready = await waitForReady(child, {ipc:true,startupMs:job.startupSeconds*1000,killMs:job.killSeconds*1000}); }
+  catch(error) { fs.closeSync(err); if (!fs.existsSync(job.resultFile)) fs.writeFileSync(job.resultFile,JSON.stringify(harnessFailure(job,error.message))); return; }
+  const lifecycle = await monitorClient(child, { wallMs: job.wallSeconds * 1000, killMs: job.killSeconds * 1000 });
+  const code = child.exitCode;
+  job.meta.lifecycle = {startupMs:ready.startupMs,...lifecycle};
   fs.closeSync(err);
-  if (!fs.existsSync(job.resultFile)) fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, `harness-crash (exit ${code})`)));
+  if (!fs.existsSync(job.resultFile)) fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, lifecycle.cause === 'wall-timeout' ? 'wall-timeout' : `harness-crash (exit ${code})`)));
 }
 
 async function runClaudeCli(job, tmp) {
   const claudeModel = job.model.slice('claude-cli:'.length);
-  const err = fs.openSync(job.stderrFile, 'a');
+  const err = stderrFd(job);
   // 服务判分结果先落 .server.json,并上客户端用量后才写正式结果 —— 正式结果文件存在 = 这局完整结束(续跑据此跳过)
   const serverResult = job.resultFile.replace(/\.json$/, '.server.json');
   // 1) 起本局 MCP 服务(HTTP),等它开机到起点、报出地址与开局观察
-  const server = spawn(process.execPath, [mcpEpisode, '--http'], {
+  const server = spawnOwned(job, process.execPath, [mcpEpisode, '--http'], {
     stdio: ['ignore', 'pipe', err], env: { ...episodeEnv(tmp), BENCH_EPISODE: JSON.stringify({ ...job, resultFile: serverResult }) }
   });
-  const ready = await new Promise((res) => {
-    const rl = readline.createInterface({ input: server.stdout });
-    rl.once('line', (l) => { try { res(JSON.parse(l)); } catch { res(null); } });
-    server.once('exit', () => res(null));
-  });
-  if (!ready) {
+  let ready;
+  try { ready = await waitForReady(server, { startupMs: job.startupSeconds * 1000, killMs: job.killSeconds * 1000 }); }
+  catch (error) {
     fs.closeSync(err);
-    fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, 'harness-crash (mcp server did not start)')));
+    fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, error.message)));
     return;
   }
+  const readyAt = performance.now();
   const task = loadTask(job.taskId);
   const cfg = path.join(tmp, 'mcp.json');
   fs.writeFileSync(cfg, JSON.stringify({ mcpServers: { palbench: { type: 'http', url: ready.url } } }));
@@ -194,7 +217,8 @@ async function runClaudeCli(job, tmp) {
     '--model', claudeModel
   ];
   const clientLog = fs.createWriteStream(job.clientLogFile);
-  const claude = spawn(CLAUDE_BIN, args, { cwd: tmp, stdio: ['ignore', 'pipe', err], env: cleanClaudeEnv() });
+  clientLog.on('error', () => {}); // Finalization validates the complete file or fails explicitly.
+  const claude = spawnOwned(job, CLAUDE_BIN, args, { cwd: tmp, stdio: ['ignore', 'pipe', err], env: cleanClaudeEnv() });
   let final = null;
   const rl = readline.createInterface({ input: claude.stdout });
   rl.on('line', (l) => {
@@ -202,42 +226,36 @@ async function runClaudeCli(job, tmp) {
     try { const ev = JSON.parse(l); if (ev.type === 'result') final = ev; } catch {}
   });
   // 一局判完后给客户端一点收尾时间,再不退就杀;另有墙钟上限
-  let timedOut = false;
-  const wall = setTimeout(() => { timedOut = true; claude.kill('SIGTERM'); }, job.wallSeconds * 1000);
-  const poll = setInterval(() => {
-    if (fs.existsSync(serverResult)) { clearInterval(poll); setTimeout(() => claude.kill('SIGTERM'), 60_000).unref(); }
-  }, 1000);
-  const clientExitCode = await exited(claude);
-  clearTimeout(wall); clearInterval(poll);
-  await finished(claude.stdout);
-  await new Promise((res) => clientLog.end(res));
-
-  // 3) 收尾:服务若还没判完,按「客户端自己停了」或「墙钟超时」结算
-  server.kill(timedOut ? 'SIGTERM' : 'SIGINT');
-  await exited(server);
+  const lifecycle = await monitorClient(claude, { wallMs: Math.max(1, job.wallSeconds * 1000 - (performance.now() - readyAt)), drainMs: job.drainSeconds * 1000, killMs: job.killSeconds * 1000,
+    terminal: () => fs.existsSync(serverResult), onWall: () => terminateChild(server, { killMs: job.killSeconds * 1000 }) });
+  const timedOut = lifecycle.cause === 'wall-timeout';
+  const clientExitCode = claude.exitCode;
+  // A terminal server rejects further gameplay calls while the client flushes usage.
+  await terminateChild(server, { signal: timedOut ? 'SIGTERM' : 'SIGINT', killMs: job.killSeconds * 1000 });
+  await boundedReadable(claude.stdout, job.killSeconds * 1000);
+  await boundedStreamEnd(clientLog, job.killSeconds * 1000);
+  job.meta.lifecycle = { startupMs: ready.startupMs, ...lifecycle };
   fs.closeSync(err);
-  finalizeClient({ ...job, client: { name: 'claude-cli', model: claudeModel, effort, numTurns: final?.num_turns ?? null, durationMs: final?.duration_ms ?? null, exitCode: clientExitCode, signal: claude.signalCode }, timedOut });
+  finalizeClient({ ...job, client: { lifecycle: job.meta.lifecycle, name: 'claude-cli', model: claudeModel, effort, numTurns: final?.num_turns ?? null, durationMs: final?.duration_ms ?? null, exitCode: clientExitCode, signal: claude.signalCode }, timedOut });
   fs.rmSync(serverResult, { force: true });
 }
 
 async function runCodexCli(job, tmp) {
   const codexModel = job.model.slice('codex-cli:'.length);
   const effort = process.env.BENCH_EFFORT || 'medium';
-  const err = fs.openSync(job.stderrFile, 'a');
+  const err = stderrFd(job);
   const serverResult = job.resultFile.replace(/\.json$/, '.server.json');
-  const server = spawn(process.execPath, [mcpEpisode, '--http'], {
+  const server = spawnOwned(job, process.execPath, [mcpEpisode, '--http'], {
     stdio: ['ignore', 'pipe', err], env: { ...episodeEnv(tmp), BENCH_EPISODE: JSON.stringify({ ...job, resultFile: serverResult }) }
   });
-  const ready = await new Promise((res) => {
-    const rl = readline.createInterface({ input: server.stdout });
-    rl.once('line', (l) => { try { res(JSON.parse(l)); } catch { res(null); } });
-    server.once('exit', () => res(null));
-  });
-  if (!ready) {
+  let ready;
+  try { ready = await waitForReady(server, { startupMs: job.startupSeconds * 1000, killMs: job.killSeconds * 1000 }); }
+  catch (error) {
     fs.closeSync(err);
-    fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, 'harness-crash (mcp server did not start)')));
+    fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, error.message)));
     return;
   }
+  const readyAt = performance.now();
   const task = loadTask(job.taskId);
   const prompt = `${systemPrompt(job.tier)}\n\n${firstMessage(task, ready.intro)}`;
   const args = [
@@ -254,8 +272,10 @@ async function runCodexCli(job, tmp) {
     '-c', 'web_search="disabled"'
   ];
   const clientLog = fs.createWriteStream(job.clientLogFile);
+  clientLog.on('error', () => {}); // Finalization validates the complete file or fails explicitly.
   const t0 = Date.now();
-  const codex = spawn(CODEX_BIN, args, { cwd: tmp, stdio: ['pipe', 'pipe', err] });
+  const codex = spawnOwned(job, CODEX_BIN, args, { cwd: tmp, stdio: ['pipe', 'pipe', err] });
+  codex.stdin.on('error', () => {}); // Spawn failures are classified by the lifecycle monitor.
   codex.stdin.write(prompt);
   codex.stdin.end();
   let turns = 0;
@@ -269,40 +289,35 @@ async function runCodexCli(job, tmp) {
       }
     } catch {}
   });
-  let timedOut = false;
-  const wall = setTimeout(() => { timedOut = true; codex.kill('SIGTERM'); }, job.wallSeconds * 1000);
-  const poll = setInterval(() => {
-    if (fs.existsSync(serverResult)) { clearInterval(poll); setTimeout(() => codex.kill('SIGTERM'), 15_000).unref(); }
-  }, 1000);
-  const clientExitCode = await exited(codex);
-  clearTimeout(wall); clearInterval(poll);
-  await finished(codex.stdout);
-  await new Promise((res) => clientLog.end(res));
-
-  server.kill(timedOut ? 'SIGTERM' : 'SIGINT');
-  await exited(server);
+  const lifecycle = await monitorClient(codex, { wallMs: Math.max(1, job.wallSeconds * 1000 - (performance.now() - readyAt)), drainMs: job.drainSeconds * 1000, killMs: job.killSeconds * 1000,
+    terminal: () => fs.existsSync(serverResult), onWall: () => terminateChild(server, { killMs: job.killSeconds * 1000 }) });
+  const timedOut = lifecycle.cause === 'wall-timeout';
+  const clientExitCode = codex.exitCode;
+  // A terminal server rejects further gameplay calls while the client flushes usage.
+  await terminateChild(server, { signal: timedOut ? 'SIGTERM' : 'SIGINT', killMs: job.killSeconds * 1000 });
+  await boundedReadable(codex.stdout, job.killSeconds * 1000);
+  await boundedStreamEnd(clientLog, job.killSeconds * 1000);
+  job.meta.lifecycle = { startupMs: ready.startupMs, ...lifecycle };
   fs.closeSync(err);
-  finalizeClient({ ...job, client: { name: 'codex-cli', model: codexModel, effort, numTurns: turns, durationMs: Date.now() - t0, exitCode: clientExitCode, signal: codex.signalCode }, timedOut });
+  finalizeClient({ ...job, client: { lifecycle: job.meta.lifecycle, name: 'codex-cli', model: codexModel, effort, numTurns: turns, durationMs: Date.now() - t0, exitCode: clientExitCode, signal: codex.signalCode }, timedOut });
   fs.rmSync(serverResult, { force: true });
 }
 
 async function runAgyCli(job, tmp) {
   const agyModel = job.model.slice('agy-cli:'.length);
-  const err = fs.openSync(job.stderrFile, 'a');
+  const err = stderrFd(job);
   const serverResult = job.resultFile.replace(/\.json$/, '.server.json');
-  const server = spawn(process.execPath, [mcpEpisode, '--http'], {
+  const server = spawnOwned(job, process.execPath, [mcpEpisode, '--http'], {
     stdio: ['ignore', 'pipe', err], env: { ...episodeEnv(tmp), BENCH_EPISODE: JSON.stringify({ ...job, resultFile: serverResult }) }
   });
-  const ready = await new Promise((res) => {
-    const rl = readline.createInterface({ input: server.stdout });
-    rl.once('line', (l) => { try { res(JSON.parse(l)); } catch { res(null); } });
-    server.once('exit', () => res(null));
-  });
-  if (!ready) {
+  let ready;
+  try { ready = await waitForReady(server, { startupMs: job.startupSeconds * 1000, killMs: job.killSeconds * 1000 }); }
+  catch (error) {
     fs.closeSync(err);
-    fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, 'harness-crash (mcp server did not start)')));
+    fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, error.message)));
     return;
   }
+  const readyAt = performance.now();
   const helperFile = path.join(tmp, 'palbench.mjs');
   fs.writeFileSync(helperFile, `#!/usr/bin/env node
 const [,, name, rawArgs] = process.argv;
@@ -316,6 +331,7 @@ if (name === '--list') console.log(JSON.stringify(j.result?.tools || [], null, 2
 else console.log((j.result?.content || []).map(c => c.text || '').join('\\n'));
 `);
   const listRes = await fetch(ready.url, {
+    signal: AbortSignal.timeout(job.startupSeconds * 1000),
     method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/list', params: {} })
   }).then((r) => r.json());
@@ -335,10 +351,11 @@ else console.log((j.result?.content || []).map(c => c.text || '').join('\\n'));
     '--log-file', agyLog
   ];
   const t0 = Date.now();
-  const agy = spawn(AGY_BIN, args, {
+  const agy = spawnOwned(job, AGY_BIN, args, {
     cwd: tmp, stdio: ['ignore', 'pipe', err]
   });
   const clientLog = fs.createWriteStream(job.clientLogFile);
+  clientLog.on('error', () => {}); // Finalization validates the complete file or fails explicitly.
   let final = null;
   let steps = 0;
   const rl = readline.createInterface({ input: agy.stdout });
@@ -350,20 +367,17 @@ else console.log((j.result?.content || []).map(c => c.text || '').join('\\n'));
       if (ev.event === 'result' && ev.result) final = ev.result;
     } catch {}
   });
-  let timedOut = false;
-  const wall = setTimeout(() => { timedOut = true; agy.kill('SIGTERM'); }, (job.wallSeconds + 90) * 1000);
-  const poll = setInterval(() => {
-    if (fs.existsSync(serverResult)) { clearInterval(poll); setTimeout(() => agy.kill('SIGTERM'), 15_000).unref(); }
-  }, 1000);
-  const clientExitCode = await exited(agy);
-  clearTimeout(wall); clearInterval(poll);
-  await finished(agy.stdout);
-  await new Promise((res) => clientLog.end(res));
-
-  server.kill(timedOut ? 'SIGTERM' : 'SIGINT');
-  await exited(server);
+  const lifecycle = await monitorClient(agy, { wallMs: Math.max(1, job.wallSeconds * 1000 - (performance.now() - readyAt)), drainMs: job.drainSeconds * 1000, killMs: job.killSeconds * 1000,
+    terminal: () => fs.existsSync(serverResult), onWall: () => terminateChild(server, { killMs: job.killSeconds * 1000 }) });
+  const timedOut = lifecycle.cause === 'wall-timeout';
+  const clientExitCode = agy.exitCode;
+  // A terminal server rejects further gameplay calls while the client flushes usage.
+  await terminateChild(server, { signal: timedOut ? 'SIGTERM' : 'SIGINT', killMs: job.killSeconds * 1000 });
+  await boundedReadable(agy.stdout, job.killSeconds * 1000);
+  await boundedStreamEnd(clientLog, job.killSeconds * 1000);
+  job.meta.lifecycle = { startupMs: ready.startupMs, ...lifecycle };
   fs.closeSync(err);
-  finalizeClient({ ...job, client: { name: 'agy-cli', model: agyModel, effort, numTurns: final?.num_turns ?? steps, durationMs: final?.duration_seconds != null ? Math.round(final.duration_seconds * 1000) : Date.now() - t0, exitCode: clientExitCode, signal: agy.signalCode }, timedOut });
+  finalizeClient({ ...job, client: { lifecycle: job.meta.lifecycle, name: 'agy-cli', model: agyModel, effort, numTurns: final?.num_turns ?? steps, durationMs: final?.duration_seconds != null ? Math.round(final.duration_seconds * 1000) : Date.now() - t0, exitCode: clientExitCode, signal: agy.signalCode }, timedOut });
   fs.rmSync(serverResult, { force: true });
 }
 
@@ -391,7 +405,10 @@ export function parFor(taskId, seeds) {
 }
 
 /** bench run:返回 runDir。 */
-export async function runBench({ model, tier = 'B', hints = 'standard', tasks, seeds, jobs = 1, wallSeconds = 1800, out }) {
+export async function runBench({ model, tier = 'B', hints = 'standard', tasks, seeds, jobs = 1, wallSeconds = 1800, out, formal = null }) {
+  if (!formal && process.env.BENCH_RELEASE_MANIFEST) formal = JSON.parse(fs.readFileSync(process.env.BENCH_RELEASE_MANIFEST, 'utf8'));
+  if (formal && !model.startsWith('replay:') && formal.inferenceEnabled !== true) throw Error('formal inference is disabled; numerical budget authorization is required');
+  const limits = lifecycleLimits({ wallSeconds });
   if (hints !== 'standard' && hints !== 'full') throw new Error(`--hints must be standard or full, got ${hints}`);
   const ids = tasks?.length ? tasks : listTasks();
   const plan = ids.map((id) => {
@@ -406,30 +423,36 @@ export async function runBench({ model, tier = 'B', hints = 'standard', tasks, s
     scoring: plan.every(p=>p.task.scoring?.secondary==='battleRounds') ? 'battleRounds' : plan.some(p=>p.task.scoring?.secondary==='battleRounds') ? 'mixed' : 'cost',
     runId: path.basename(runDir), model, tier, hints, external: /^(claude|codex|agy)-cli:/.test(model),
     // par 冻进 run.json:参考解以后重录(引擎修了战斗数值等)不改写这次运行的效率分
-    tasks: plan.map((p) => ({ id: p.task.id, version: p.task.version, seeds: p.seeds, par: parFor(p.task.id, p.seeds), ...(p.task.scoring ? { fingerprint: taskFingerprint(p.task) } : {}) })),
+    tasks: plan.map((p) => ({ id: p.task.id, version: p.task.version, seeds: p.seeds, par: parFor(p.task.id, p.seeds), fingerprint: taskFingerprint(p.task) })),
     clientAccountingVersion: /^(claude|codex|agy)-cli:/.test(model) ? 1 : null,
     promptVersion: PROMPT_VERSION, code: codeRev(runDir), startedAt: new Date().toISOString()
   };
-  if (plan.some(p=>p.task.scoring)) fresh.runtime = runtimeFingerprint();
+  try { fresh.runtime = runtimeFingerprint(); } catch (error) { if (formal) throw error; fresh.runtime = { unavailable: true }; }
+  const binary = model.startsWith('claude-cli:') ? CLAUDE_BIN : model.startsWith('codex-cli:') ? CODEX_BIN : model.startsWith('agy-cli:') ? AGY_BIN : null;
+  fresh.protocols = plan.map(({task}) => ({task: task.id, contract: protocolContract({task,model,tier,hints,wallSeconds,formal,runtime:fresh.runtime,adapterIdentity:binary?cliIdentity(binary):null})}));
+  if (formal) fresh.formal = formal;
   if (tier === 'C') {
     // 冻结所用资料的版本:续跑时资料变了就拒绝,排行榜上也能分辨
     fresh.books = booksFingerprint();
     if (!fresh.books) throw new Error('tier C needs the walkthrough and the map atlas: set AGENT_PAL_GUIDE and AGENT_PAL_ATLAS_INDEX (see bench/README.md)');
   }
   const meta = fs.existsSync(runFile) ? JSON.parse(fs.readFileSync(runFile, 'utf8')) : fresh;
-  const diffs = meta === fresh ? [] : resumeMismatch(meta, fresh);
+  const resumeWant = !formal && meta !== fresh && !meta.protocols ? {...fresh, protocols: undefined, runtime: meta.runtime ? fresh.runtime : undefined, tasks: fresh.tasks.map((t,i)=>({...t,fingerprint:meta.tasks[i]?.fingerprint ? t.fingerprint : undefined}))} : fresh;
+  const diffs = meta === fresh ? [] : resumeMismatch(meta, resumeWant);
   if (diffs.length) throw new Error(`${runDir} was started with a different setup; use a fresh --out:\n  ${diffs.join('\n  ')}`);
   fs.writeFileSync(runFile, JSON.stringify(meta, null, 2));
 
   const queue = [];
   for (const { task, seeds: ss } of plan) {
     for (const seed of ss) {
-      const base = path.join(epDir, `${task.id}__s${seed}`);
+      const trial = formal ? trialIdentity(formal, task.id, seed, model) : null;
+      const base = path.join(epDir, episodeBasename(task.id,seed));
+      if (trial) { assertFormalFresh(base); fs.writeFileSync(base + '.claim', JSON.stringify(trial), {flag:'wx'}); }
       if (fs.existsSync(base + '.json')) { console.log(`· ${task.id} seed ${seed}: already done, skipping`); continue; }
       queue.push({
-        taskId: task.id, seed, tier, model, wallSeconds,
+        taskId: task.id, seed, tier, model, ...limits,
         resultFile: base + '.json', logFile: base + '.jsonl', stderrFile: base + '.stderr.log', clientLogFile: base + '.client.jsonl',
-        meta: { model, runId: meta.runId, hints, ...(/^(claude|codex|agy)-cli:/.test(model) ? {clientAccountingVersion: 1} : {}) }
+        meta: { model, taskVersion: task.version, runId: meta.runId, hints, fingerprint: taskFingerprint(task), protocol: fresh.protocols.find(p=>p.task===task.id).contract, ...(trial ? {trial} : {}), ...(/^(claude|codex|agy)-cli:/.test(model) ? {clientAccountingVersion: 1} : {}) }
       });
     }
   }
@@ -437,16 +460,18 @@ export async function runBench({ model, tier = 'B', hints = 'standard', tasks, s
   const worker = async () => {
     for (let job; (job = queue.shift());) {
       const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-pal-bench-'));
-      for (const f of [job.logFile]) if (fs.existsSync(f)) fs.rmSync(f);          // 上次中断的半截日志
+      for (const f of (formal ? [] : [job.logFile])) if (fs.existsSync(f)) fs.rmSync(f);          // 上次中断的半截日志
       const t0 = Date.now();
+      const monotonicStart = performance.now();
       try {
         await (model.startsWith('claude-cli:') ? runClaudeCli(job, tmp)
           : model.startsWith('codex-cli:') ? runCodexCli(job, tmp)
           : model.startsWith('agy-cli:') ? runAgyCli(job, tmp)
           : runBuiltin(job, tmp));
       } catch (err) {
-        fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, `harness-crash (${err?.message || err})`)));
-      }
+        if (!fs.existsSync(job.resultFile)) fs.writeFileSync(job.resultFile, JSON.stringify(harnessFailure(job, `harness-crash (${err?.message || err})`)));
+      } finally { await cleanupChildren(job); }
+      fs.writeFileSync(job.resultFile.replace(/\.json$/, '.harness.json'), JSON.stringify({version:1,clock:'monotonic milliseconds',elapsedMs:performance.now()-monotonicStart,...job.meta.lifecycle}), {flag:'wx'});
       fs.rmSync(tmp, { recursive: true, force: true });
       const r = JSON.parse(fs.readFileSync(job.resultFile, 'utf8'));
       console.log(`${r.success ? '✓' : '✗'} ${job.taskId} seed ${job.seed}: ${r.endReason} · calls ${r.toolCalls} · progress ${r.progress.toFixed(2)}` +

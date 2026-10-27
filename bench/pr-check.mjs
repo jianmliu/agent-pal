@@ -13,32 +13,24 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { verify, verifyEpisode, episodeLogs, readLog } from './verify.mjs';
+import { verify, replayCertification } from './verify.mjs';
 import { score } from './score.mjs';
 import { verifyStatus } from './board.mjs';
-import { engineOptions } from './start.mjs';
+import { resolveAssetsDir } from './resource-contract.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
-function hasLocalGameAssets() {
+export function hasLocalGameAssets({ env = process.env } = {}) {
   try {
-    const opts = engineOptions();
-    return Boolean(opts?.assetsDir && fs.existsSync(path.join(opts.assetsDir, 'FBP.MKF')));
-  } catch {
-    return false;
-  }
+    const dir = resolveAssetsDir({env});
+    return ['PAT.MKF','pat.mkf'].some(name => fs.existsSync(path.join(dir,name)));
+  } catch { return false; }
 }
 
-function defaultVerifyDir(dirPath) {
-  if (hasLocalGameAssets()) return verify(dirPath);
-  const runFile = path.join(dirPath, 'run.json');
-  const runMeta = fs.existsSync(runFile) ? JSON.parse(fs.readFileSync(runFile, 'utf8')) : null;
-  return episodeLogs(dirPath).map((f) => verifyEpisode(f, {
-    runMeta,
-    currentRuntime: runMeta?.runtime ?? null,
-    currentTaskFingerprint: () => (fs.existsSync(f) ? readLog(f).start?.fingerprint ?? null : null),
-    replay: readLog
-  }));
+/** No-resource CI may check logs, but must preserve previously recorded replay evidence. */
+export function defaultVerifyDir(dirPath, {env = process.env, verifyFn = verify, hasAssets = hasLocalGameAssets} = {}) {
+  if (hasAssets({env})) return verifyFn(dirPath);
+  return verify(dirPath, {backend: 'log-consistency'});
 }
 
 /** 分类 PR 改动的文件列表,检查是否违反零冲突或防篡改沙箱协议。纯函数。 */
@@ -115,14 +107,14 @@ export function checkPrSubmission({ changedFiles = null, baseRef = 'origin/main'
           failed.map((r) => `${r.task} s${r.seed} (${r.endReason})`).join(', '));
       }
       const results = verifyFn(dirPath);
-      const bad = results.filter((r) => !r.ok || r.verdict !== 'verified');
+      const bad = results.filter((r) => !replayCertification(r));
       if (bad.length > 0) {
-        errors.push(`${name}: replay verification failed on ${bad.length}/${results.length} episode(s): ` +
-          bad.map((b) => `${b.task} s${b.seed} (${b.verdict}: ${b.diffs.join('; ')})`).join(', '));
+        errors.push(`${name}: engine-replay certification unavailable or failed on ${bad.length}/${results.length} episode(s): ` +
+          bad.map((b) => `${b.task} s${b.seed} (${b.backend ?? 'legacy-unknown'}/${b.verdict}: ${(b.diffs || []).join('; ')})`).join(', '));
       }
       const summary = score(dirPath);
       const warnings = [...new Set(results.flatMap((r) => r.warnings || []))];
-      runReports.push({ name, type: 'run', ok: pre.state === 'verified' && bad.length === 0, summary, episodesVerified: results.length - bad.length, episodesTotal: results.length, warnings });
+      runReports.push({ name, type: 'run', ok: pre.state === 'verified' && bad.length === 0 && failed.length === 0, summary, episodesVerified: results.length - bad.length, episodesTotal: results.length, evidenceLevels: [...new Set(results.map(r => r.evidenceLevel ?? 'legacy-unknown'))], warnings });
     } else if (fs.existsSync(quizFile)) {
       try {
         const q = JSON.parse(fs.readFileSync(quizFile, 'utf8'));
@@ -151,9 +143,9 @@ export function checkPrSubmission({ changedFiles = null, baseRef = 'origin/main'
   const runs = runReports.filter((r) => r.type === 'run' && r.summary);
   if (runs.length) {
     md.push(
-      '### Verified Run Submissions',
-      '| Directory | Model | Tier | Score | Progress | Cost / Win | Total Cost | Tokens | Verified | Notes |',
-      '|---|---|---:|---:|---:|---:|---:|---:|---:|---|'
+      '### Run Submission Evidence',
+      '| Directory | Model | Tier | Score | Progress | Cost / Win | Total Cost | Tokens | Engine replay | Evidence | Notes |',
+      '|---|---|---:|---:|---:|---:|---:|---:|---:|---|---|'
     );
     for (const r of runs) {
       const s = r.summary;
@@ -162,7 +154,7 @@ export function checkPrSubmission({ changedFiles = null, baseRef = 'origin/main'
       const cWin = s.costMeanOnSuccess == null ? '–' : `$${s.costMeanOnSuccess.toFixed(4)}`;
       const cTot = s.costTotal == null ? '?' : `$${s.costTotal.toFixed(4)}`;
       const notes = r.warnings.length ? r.warnings.join('; ') : 'clean';
-      md.push(`| \`${r.name}\` | \`${s.model}\` | ${s.tier} | **${pct}** | ${prog} | ${cWin} | ${cTot} | ${s.tokensTotal.toLocaleString('en-US')} | ${r.episodesVerified}/${r.episodesTotal} | ${notes} |`);
+      md.push(`| \`${r.name}\` | \`${s.model}\` | ${s.tier} | **${pct}** | ${prog} | ${cWin} | ${cTot} | ${s.tokensTotal.toLocaleString('en-US')} | ${r.episodesVerified}/${r.episodesTotal} | ${r.evidenceLevels.join(', ')} | ${notes} |`);
     }
     md.push('');
   }

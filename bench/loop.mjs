@@ -29,6 +29,19 @@ export async function runLoop({ episode, provider, model }) {
   const history = [{ role: 'user', text: firstMessage(episode.task, episode.intro), ...(episode.introImage ? { image: episode.introImage } : {}) }];
   let textOnly = 0;
   let turns = 0;
+  let usageIncomplete = false;
+  const usageFields = ['tokensIn', 'tokensOut', 'tokensCached', 'tokensCacheWrite', 'cost'];
+  // Capture accounting before finish writes the immutable game end event.
+  const finish = (reason = null) => {
+    episode.result.turns = turns;
+    episode.result.accountingStatus = usageIncomplete ? 'incomplete' : 'complete';
+    if (usageIncomplete) {
+      episode.result.measuredUsage = Object.fromEntries(usageFields.map(key => [key, episode.result[key] ?? null]));
+      episode.result.measuredUsage.turns = turns;
+      for (const key of usageFields) episode.result[key] = null;
+    }
+    return episode.finish(reason);
+  };
   while (!episode.done) {
     let resp;
     try {
@@ -36,17 +49,27 @@ export async function runLoop({ episode, provider, model }) {
       resp = await provider.turn({ system, history: provider.ownsContext ? history : compact(history), tools: episode.tools, keep: KEEP_OBS });
     } catch (err) {
       episode.result.error = String(err?.message || err).slice(0, 500);
-      return episode.finish('provider-error');
+      usageIncomplete = true;
+      return finish('provider-error');
     }
     turns++;
     episode.logTurn(resp);
-    const cost = costOf(model, resp.usage);
-    episode.addUsage({ ...resp.usage, cost: cost ?? 0 });
+    const usage = {...resp.usage};
+    for (const key of ['tokensIn', 'tokensOut', 'cacheRead', 'cacheWrite']) {
+      const optional = key === 'cacheRead' || key === 'cacheWrite';
+      const reported = optional || resp.usageReported?.[key] !== false;
+      if ((!optional || usage[key] !== undefined) && (!reported || !Number.isSafeInteger(usage[key]) || usage[key] < 0)) {
+        usageIncomplete = true;
+        usage[key] = 0;
+      }
+    }
+    const cost = costOf(model, usage);
+    episode.addUsage({ ...usage, cost: cost ?? 0 });
     if (cost == null) episode.result.cost = null;          // 未知价:整局 cost 记 null,不当 0
     if (episode.done) break;                                 // token 预算在 addUsage 里判
     history.push({ role: 'assistant', text: resp.text, calls: resp.calls, ...(resp.raw ? { raw: resp.raw } : {}) });   // raw:provider 要原样回传的内容块(思考块等)
     if (!resp.calls.length) {
-      if (++textOnly >= MAX_TEXT_ONLY) return episode.finish('agent-stopped');
+      if (++textOnly >= MAX_TEXT_ONLY) return finish('agent-stopped');
       history.push({ role: 'user', text: '继续:请调用工具推进游戏(任务完成时工具结果会明确告诉你)。' });
       continue;
     }
@@ -59,6 +82,5 @@ export async function runLoop({ episode, provider, model }) {
       if (r.done) break;
     }
   }
-  episode.result.turns = turns;
-  return episode.finish();
+  return finish();
 }

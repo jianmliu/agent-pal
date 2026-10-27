@@ -1,21 +1,21 @@
 # agent-pal-bench 使用说明
 
 让不同的 AI 玩经典《仙剑奇侠传》(1995 DOS 版)的指定任务,比成功率与花费。设计与口径见
-[docs/specs/agent-pal-bench.md](../../../docs/specs/agent-pal-bench.md);本文只讲怎么用。
+[正式发布资源说明](../docs/benchmark-release/resources.md);本文只讲怎么用。
 
-所有命令都从仓库根目录跑,入口是 `node apps/agent-pal/bench/bench.mjs <子命令>`(下文简写为 `bench`)。
-结果默认写在 `apps/agent-pal/bench/out/`(跟着脚本位置走,与当前目录无关;下文简写为 `out/`)。
+所有命令都从仓库根目录跑,入口是 `node bench/bench.mjs <子命令>`(下文简写为 `bench`)。
+结果默认写在 `bench/out/`(跟着脚本位置走,与当前目录无关;下文简写为 `out/`)。
 
 ## 准备
 
 | 需要 | 说明 |
 |---|---|
-| 游戏资产 | `PAL_ASSET_DIR` 指向游戏数据目录;不设则找 `apps/pal-playground/public/pal-assets`(或 `dist/pal-assets`) |
-| 经典存档 | 从经典存档开局的题(`start.rpg`)要 `AGENT_PAL_CLASSIC_SAVES` 指向放 `01.rpg`…`51.rpg` 的目录;新游戏开局、仓库自带存档开局(`start.saves`,文件在 `saves/`)的题不需要 |
+| 游戏资产 | `PAL_ASSET_DIR` 指向游戏数据目录;不设则先找仓库 `pal-assets/`,再找相邻 `pal-playground/public/pal-assets`(或 `dist/pal-assets`) |
+| 经典存档 | 从经典存档开局的题(`start.rpg`)默认使用 `bench/saves/classic/`;可用 `AGENT_PAL_CLASSIC_SAVES` 指向同名起始文件的目录;新游戏开局、仓库自带存档开局(`start.saves`,文件在 `saves/`)的题不需要 |
 | 模型钥匙 | 见下面「模型」一节;`replay:` 与 `ollama:` 不需要 |
 | 攻略与全图 | 只有 C 档要:`AGENT_PAL_GUIDE` 指向攻略 / 剧本文本,`AGENT_PAL_ATLAS_INDEX` 指向全图索引(见 [app README](../README.md));两样缺一样 C 档就拒绝开局 |
 
-不需要资产的单元测试(CI 跑的就是它):`pnpm --filter @onchainpal/agent-pal test:bench`。
+不需要资产的单元测试(CI 跑的就是它):`pnpm run test:bench`。
 
 ## 一次完整的跑分
 
@@ -23,7 +23,7 @@
 bench validate                                     # 只校验题目格式(不起引擎)
 bench check                                        # 每题每种子回放参考解,全部判为成功 = 题目可解
 bench run --model anthropic:<model>                # 题 × 种子各一局,结果落 out/<runId>/,跑完自动打分
-bench verify apps/agent-pal/bench/out/<runId>      # 按日志重放核验每局成绩,写 verify.json
+bench verify bench/out/<runId>      # 按日志重放核验每局成绩,写 verify.json
 bench board                                        # out/ 下所有运行汇总成排行页 out/board.html
 ```
 
@@ -196,7 +196,7 @@ token 与成本不在重放范围内。代码版本和 `run.json` 不同只提�
 不开游戏、不给工具,只问模型对这款游戏记得多少(训练数据污染检测,spec §8.1):
 
 ```bash
-node apps/agent-pal/bench/bench.mjs quiz --model claude-cli:sonnet --jobs 6     # 或 anthropic: / openai: / gemini: / ollama:
+node bench/bench.mjs quiz --model claude-cli:sonnet --jobs 6     # 或 anthropic: / openai: / gemini: / ollama:
 ```
 
 - 题目:`bench/quiz/<task>.json`,每道 bench 题 3–5 问;`validate` 校验格式,`test:bench` 要求每道题都有测验。
@@ -239,9 +239,9 @@ node apps/agent-pal/bench/bench.mjs quiz --model claude-cli:sonnet --jobs 6     
 
 ```bash
 baiyue_tasks=baiyue-single-origin,baiyue-single-mana-budget,baiyue-single-sustain-no-wine,baiyue-single-fragile-stocked
-node apps/agent-pal/bench/bench.mjs run --model replay:auto --tasks "$baiyue_tasks" --jobs 4 --out apps/agent-pal/bench/out/baiyue-smoke
-node apps/agent-pal/bench/bench.mjs verify apps/agent-pal/bench/out/baiyue-smoke
-node apps/agent-pal/bench/bench.mjs board apps/agent-pal/bench/out/baiyue-smoke --out apps/agent-pal/bench/out/baiyue-smoke/board.html
+node bench/bench.mjs run --model replay:auto --tasks "$baiyue_tasks" --jobs 4 --out bench/out/baiyue-smoke
+node bench/bench.mjs verify bench/out/baiyue-smoke
+node bench/bench.mjs board bench/out/baiyue-smoke --out bench/out/baiyue-smoke/board.html
 ```
 
 `replay:auto` 按每局题目选择自己的参考解，可验证多题链路；原有 `replay:<task-id>` 仍指定一份参考解。正式比较模型时把 `--model` 换为已支持的 provider:model 并使用新的 `--out`。
@@ -251,11 +251,11 @@ node apps/agent-pal/bench/bench.mjs board apps/agent-pal/bench/out/baiyue-smoke 
 ### 全链路验收
 
 ```bash
-node apps/agent-pal/bench/test/bench.test.mjs
-node apps/agent-pal/bench/test/baiyue.test.mjs
-node apps/agent-pal/bench/test/battle-metrics.test.mjs
+node bench/test/bench.test.mjs
+node bench/test/baiyue.test.mjs
+node bench/test/battle-metrics.test.mjs
 pnpm --filter @onchainpal/game-engine build
-node apps/agent-pal/bench/test/baiyue-e2e.mjs
+node bench/test/baiyue-e2e.mjs
 ```
 
 最后一条需要本地游戏资产，不调用付费模型。它执行 validate、四题check、12局run、score、verify和board，并检查非法动作、预算起点、回合篡改与元数据删改。产物目录写在结束输出中，`acceptance.json` 表示完整验收成功。旧题的成本评分与外部agent分区保留。

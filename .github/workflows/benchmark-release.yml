@@ -1,0 +1,28 @@
+name: Benchmark release contract (no inference)
+on:
+  pull_request:
+    paths: ['bench/**', 'src/**', 'packages/**', 'package.json', 'pnpm-lock.yaml', '.github/workflows/benchmark-release.yml']
+  push:
+    branches: [main]
+    paths: ['bench/**', 'src/**', 'packages/**', 'package.json', 'pnpm-lock.yaml', '.github/workflows/benchmark-release.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.16.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build:engine
+      - run: pnpm run test:bench
+      - run: node bench/release.mjs validate-campaign bench/releases/ed-v1/campaign.json
+      - name: Evidence scope
+        run: echo 'Schema, build and contract checks only. This job has no proprietary resources and does not certify engine replay or run a model.'

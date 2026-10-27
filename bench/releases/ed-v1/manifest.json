@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "releaseId": "ed-v1",
+  "status": "candidate-technical-acceptance-pending",
+  "inferenceEnabled": false,
+  "sourceBase": "97c11865501c99488821df98d6b8e154bbe9271b",
+  "candidateTasks": [
+    "pal-ch1-island",
+    "classic10-baihe-medicine",
+    "classic19-yangzhou-gourd",
+    "classic28-tower-chain",
+    "classic31-banana-monkeys",
+    "classic40-water-orb",
+    "classic48-rain-orbs",
+    "baiyue-single-origin"
+  ],
+  "expectedRuntime": {
+    "node": "22.16.0",
+    "pnpm": "9.15.9"
+  },
+  "resources": "resources.json",
+  "campaign": "campaign.json",
+  "gates": {
+    "taskCurationAccepted": false,
+    "cleanBuildAccepted": false,
+    "engineReplayAccepted": false,
+    "rightsCleared": false,
+    "independentAccessTested": false,
+    "independentInstallAccepted": false,
+    "spendAuthorized": false
+  },
+  "modelEvaluationsStarted": false
+}

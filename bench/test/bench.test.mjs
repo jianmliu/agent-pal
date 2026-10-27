@@ -1014,18 +1014,18 @@ console.log('  ✓ ㉒ Tier P (Pure 编程档):L0 原语 + run_code 工具面与
   fs.writeFileSync(path.join(rDir, 'episodes', `${t.id}__s42.json`), JSON.stringify(epJson));
   fs.writeFileSync(epLog, JSON.stringify({ type: 'start', task: t.id, taskVersion: t.version, seed: 42, tier: 'B' }) + '\n');
   // 没写 verify.json → 门禁拒绝
-  const failPr = checkPrSubmission({ changedFiles: ['bench/out/sub1/run.json'], repoRoot: tmpRepo, verifyFn: () => [{ task: t.id, seed: 42, ok: true, verdict: 'verified', diffs: [], warnings: [] }] });
+  const failPr = checkPrSubmission({ changedFiles: ['bench/out/sub1/run.json'], repoRoot: tmpRepo, verifyFn: () => [{ task: t.id, seed: 42, ok: true, verdict: 'verified', backend: 'engine-replay', evidenceLevel: 'engine-replay', diffs: [], warnings: [] }] });
   assert.equal(failPr.ok, false);
   assert.match(failPr.errors[0], /committed verify\.json is none/);
   // 补齐匹配指纹的 verify.json → 门禁放行并生成 Markdown 报表
   fs.writeFileSync(path.join(rDir, 'verify.json'), JSON.stringify({ episodes: [{ file: `${t.id}__s42.jsonl`, ok: true, digest: episodeDigest(epLog) }] }));
-  const passPr = checkPrSubmission({ changedFiles: ['bench/out/sub1/run.json'], repoRoot: tmpRepo, verifyFn: () => [{ task: t.id, seed: 42, ok: true, verdict: 'verified', diffs: [], warnings: [] }] });
+  const passPr = checkPrSubmission({ changedFiles: ['bench/out/sub1/run.json'], repoRoot: tmpRepo, verifyFn: () => [{ task: t.id, seed: 42, ok: true, verdict: 'verified', backend: 'engine-replay', evidenceLevel: 'engine-replay', diffs: [], warnings: [] }] });
   assert.equal(passPr.ok, true);
   assert.match(passPr.markdown, /✅ Agent-PAL-Bench PR Submission Check/);
   assert.match(passPr.markdown, /`sub1`/);
   // 只收通关的那一局:目录里有没打通的局 → 拒收,并点名是哪一局
   fs.writeFileSync(path.join(rDir, 'episodes', `${t.id}__s42.json`), JSON.stringify({ ...epJson, success: false, successAt: null, endReason: 'budget-toolCalls', progress: 0.5 }));
-  const lostPr = checkPrSubmission({ changedFiles: ['bench/out/sub1/run.json'], repoRoot: tmpRepo, verifyFn: () => [{ task: t.id, seed: 42, ok: true, verdict: 'verified', diffs: [], warnings: [] }] });
+  const lostPr = checkPrSubmission({ changedFiles: ['bench/out/sub1/run.json'], repoRoot: tmpRepo, verifyFn: () => [{ task: t.id, seed: 42, ok: true, verdict: 'verified', backend: 'engine-replay', evidenceLevel: 'engine-replay', diffs: [], warnings: [] }] });
   assert.equal(lostPr.ok, false);
   assert.ok(lostPr.errors.some((e) => /only cleared episodes are accepted/.test(e) && e.includes(`${t.id} s42 (budget-toolCalls)`)));
   fs.rmSync(tmpRepo, { recursive: true, force: true });

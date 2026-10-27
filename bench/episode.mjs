@@ -16,6 +16,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
+import { effectiveBudget } from './protocol-contract.mjs';
+import { resolveClassicSave } from './resource-contract.mjs';
 import { evaluate } from './predicates.mjs';
 import { createStateTracker } from './state-view.mjs';
 import { initializeTask, taskFingerprint, engineOptions, executeTaskTool } from './start.mjs';
@@ -84,7 +86,7 @@ export const PIXEL_INTRO = '当前画面见附图(没有附图就先调用 scree
 /** 把题目起点写进本局存档文件(引擎启动时读)。 */
 function prepareSaves(start) {
   if (start.rpg) {
-    const raw = fs.readFileSync(path.join(process.env.AGENT_PAL_CLASSIC_SAVES || path.join(startSaves, 'classic'), start.rpg));
+    const raw = fs.readFileSync(resolveClassicSave(start.rpg));
     const payload = { version: 1, savedTimes: raw.readUInt16LE(0), timestamp: 0, bytes: Array.from(raw) };
     fs.writeFileSync(process.env.AGENT_PAL_SAVES, JSON.stringify({ 'PAL-SAVE-1': JSON.stringify(payload) }));
   } else if (start.saves) {
@@ -185,15 +187,9 @@ export async function createEpisode({ task, seed, tier = 'B', logFile = null, me
     await codeRunner.deliver(l0.hello('pure'));
   }
 
-  const budgetToolCalls = Number(process.env.BENCH_BUDGET_TOOL_CALLS) || meta.budgetToolCalls || task.budget.toolCalls;
-  if (budgetToolCalls !== task.budget.toolCalls) meta = { ...meta, budgetToolCalls };
-  const scale = budgetToolCalls / task.budget.toolCalls;
-  const budget = {
-    ...task.budget,
-    toolCalls: budgetToolCalls,
-    ...(task.budget.tokens ? { tokens: Math.round(task.budget.tokens * Math.max(scale, 500)) } : {}),
-    ...(task.budget.virtualSeconds ? { virtualSeconds: Math.round(task.budget.virtualSeconds * Math.max(scale, 20)) } : {})
-  };
+  const budget = effectiveBudget(task, {meta});
+  if (meta.protocol && JSON.stringify(meta.protocol.budget) !== JSON.stringify(budget)) throw Error('effective budget differs from frozen protocol');
+  if (budget.toolCalls !== task.budget.toolCalls) meta = {...meta, budgetToolCalls:budget.toolCalls};
   const res = {
     task: task.id, taskVersion: task.version, seed, tier, ...meta,
     success: false, successAt: null, failed: false, failAt: null, stuck: false, crashed: false,
@@ -229,7 +225,7 @@ export async function createEpisode({ task, seed, tier = 'B', logFile = null, me
   };
   let intro = pixel ? PIXEL_INTRO : (tier === 'P' ? renderPure(null, l0.observe(), 'full state') : a.observe());
   let introImage = pixel ? frame() : null;
-  log({ type: 'start', task: task.id, taskVersion: task.version, seed, tier, scene: v0.scene, ...meta, ...(battleMetrics ? { fingerprint: taskFingerprint(task), initial: initial.view, setup: initial.setup } : {}) });
+  log({ type: 'start', task: task.id, taskVersion: task.version, seed, tier, scene: v0.scene, ...meta, fingerprint: meta.fingerprint ?? taskFingerprint(task), effectiveBudget: budget, ...(battleMetrics ? { initial: initial.view, setup: initial.setup } : {}) });
 
   const stopReason = () => {
     if (res.success) return 'success';
@@ -314,6 +310,7 @@ export async function createEpisode({ task, seed, tier = 'B', logFile = null, me
   }
 
   function finish(reason = null) {
+    done = true;
     if (!res.endReason) res.endReason = reason || stopReason() || 'agent-stopped';
     const total = (task.milestones || []).length;
     res.progress = res.success ? 1 : total ? Object.values(res.milestones).filter((x) => x != null).length / (total + 1) : 0;

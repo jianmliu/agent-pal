@@ -26,7 +26,8 @@ export const OUT_DIR = path.join(here, 'out');
  *   verified —— 现在的每一局都有核验记录、都通过,且指纹(成绩 + 日志的 sha256)与核验时一致
  *   mismatch —— 现在的某一局核验不一致
  *   stale    —— 有局没核过,或核验后成绩 / 日志被替换(指纹变了),或记录是旧版没有指纹
- *   none     —— 没跑过 bench verify
+ *   none     —— 没跑过引擎重放,或显式记录为仅日志一致性 / 未重放
+ * 历史记录缺少 backend 时保留展示兼容,但 provenance=legacy-unknown,不能用于正式认证。
  */
 export function verifyStatus(runDir) {
   const logs = fs.existsSync(path.join(runDir, 'episodes')) ? episodeLogs(runDir) : [];
@@ -37,15 +38,28 @@ export function verifyStatus(runDir) {
   const meta=fs.existsSync(runFile)?JSON.parse(fs.readFileSync(runFile,'utf8')):null;
   if((v.runDigest || meta?.runtime || meta?.scoring==='battleRounds') && (!meta || v.runDigest!==runDigest(meta)))return {state:'stale',ok:0,total:logs.length,at:v.verifiedAt||null};
   const byFile = new Map((v.episodes || []).map((e) => [e.file, e]));
-  let ok = 0, bad = 0, stale = 0;
+  let ok = 0, bad = 0, stale = 0, unreplayed = 0;
+  const provenance = new Set();
   for (const log of logs) {
     const e = byFile.get(path.basename(log));
-    if (!e || !e.digest || e.digest !== episodeDigest(log)) stale++;
-    else if (e.ok) ok++;
-    else bad++;
+    if (!e || !e.digest || e.digest !== episodeDigest(log)) { stale++; continue; }
+    // Labels at either level constrain the evidence; a row cannot upgrade its report.
+    const labels = [v.backend, v.evidenceLevel, e.backend, e.evidenceLevel].filter(x => x !== undefined);
+    const nonEngine = labels.find(x => x !== 'engine-replay');
+    const level = nonEngine !== undefined
+      ? (['log-consistency','not-replayed'].includes(nonEngine) ? nonEngine : 'unknown')
+      : e.verdict === 'no-log' ? 'not-replayed' : e.verdict === 'consistent' ? 'log-consistency'
+      : e.verdict != null && e.verdict !== 'verified' ? 'unknown'
+      : labels.length ? 'engine-replay' : 'legacy-unknown';
+    provenance.add(level);
+    if (!e.ok) bad++;
+    else if (nonEngine !== undefined || (e.verdict != null && e.verdict !== 'verified')) unreplayed++;
+    else ok++;
   }
-  const state = bad ? 'mismatch' : stale ? 'stale' : 'verified';
-  return { state, ok, total: logs.length, at: v.verifiedAt || null };
+  const state = bad ? 'mismatch' : stale ? 'stale' : unreplayed ? 'none' : 'verified';
+  return { state, ok, total: logs.length, at: v.verifiedAt || null,
+    provenance: provenance.size === 1 ? [...provenance][0] : provenance.size ? 'mixed' : 'unknown' };
+
 }
 
 /** 读入若干运行目录(有 run.json 的),每个都重新 score 一遍(summary.json 可能过期)。 */

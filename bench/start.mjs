@@ -4,6 +4,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
+import {resolveClassicSave, resolveAssetsDir, preflightResources} from './resource-contract.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const saves = path.join(here, 'saves');
@@ -14,8 +15,8 @@ export function taskFingerprint(task) {
   let bytes = null;
   if (task.start.saves) {
     bytes = zlib.gunzipSync(fs.readFileSync(path.join(saves, task.start.saves)));
-  } else if (task.start.rpg && process.env.AGENT_PAL_CLASSIC_SAVES) {
-    bytes = fs.readFileSync(path.join(process.env.AGENT_PAL_CLASSIC_SAVES, task.start.rpg));
+  } else if (task.start.rpg) {
+    bytes = fs.readFileSync(resolveClassicSave(task));
   }
   return { task: hash(JSON.stringify(task)), save: bytes ? hash(bytes) : null };
 }
@@ -87,7 +88,7 @@ export async function initializeTask({ e, a, task, runTool, tracker }) {
 /** Freeze the actual runtime and assets, including dirty source/build content. */
 export function runtimeFingerprint() {
   const standaloneRoot = path.resolve(here, '..');
-  const repo = fs.existsSync(path.join(standaloneRoot, 'packages/game-engine/dist')) ? standaloneRoot : path.resolve(here, '../../..');
+  const repo = standaloneRoot;
   const excluded = new Set(['out', 'saves', 'reference', 'tasks', 'quiz', 'test']);
   const digestDir = (dir, filter = () => true) => {
     const h = crypto.createHash('sha256');
@@ -105,18 +106,14 @@ export function runtimeFingerprint() {
     walk(dir);
     return h.digest('hex');
   };
-  const assets = [process.env.PAL_ASSET_DIR,
-    path.join(standaloneRoot, 'pal-assets'),
-    path.join(repo, 'apps/pal-playground/public/pal-assets'),
-    path.join(repo, 'apps/pal-playground/dist/pal-assets')]
-    .find(dir => dir && (fs.existsSync(path.join(dir, 'PAT.MKF')) || fs.existsSync(path.join(dir, 'pat.mkf'))));
-  if (!assets) throw Error('cannot fingerprint missing game assets');
+  const assets = resolveAssetsDir();
+  const resources = preflightResources({assetsDir:assets});
   return {
     node: process.version,
     agent: digestDir(path.resolve(here, '../src')),
     engine: digestDir(path.join(repo, 'packages/game-engine/dist')),
     bench: digestDir(here, file => file.endsWith('.mjs')),
-    assets: digestDir(assets, file => !path.basename(file).startsWith('.'))
+    assets: hash(JSON.stringify(resources.assets))
   };
 }
 

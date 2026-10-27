@@ -40,6 +40,7 @@ import { checkPrSubmission } from './pr-check.mjs';
 import { runQuiz, printQuiz, listQuizzes, validateQuiz, QUIZ_DIR } from './quiz.mjs';
 import { referenceToolErrors, replayReferenceStep } from './episode.mjs';
 import { initializeTask, engineOptions, executeTaskTool } from './start.mjs';
+import { resolveClassicSave } from './resource-contract.mjs';
 import { createBattleMetrics, actionError } from './battle-metrics.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -208,7 +209,7 @@ function runChildAsync(job) {
 async function child({ task, seed, steps, out, dump }) {
   const start = task.start;
   if (start.rpg) {
-    const raw = fs.readFileSync(path.join(process.env.AGENT_PAL_CLASSIC_SAVES || path.join(startSaves, 'classic'), start.rpg));
+    const raw = fs.readFileSync(resolveClassicSave(start.rpg));
     const payload = { version: 1, savedTimes: raw.readUInt16LE(0), timestamp: 0, bytes: Array.from(raw) };
     fs.writeFileSync(process.env.AGENT_PAL_SAVES, JSON.stringify({ 'PAL-SAVE-1': JSON.stringify(payload) }));
   } else if (start.saves) {

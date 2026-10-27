@@ -1,0 +1,46 @@
+✓ baiyue-single-fragile-stocked
+✓ baiyue-single-mana-budget
+✓ baiyue-single-origin
+✓ baiyue-single-sustain-no-wine
+✓ classic08-leave-area
+✓ classic10-baihe-medicine
+✓ classic16-guiyin-altar
+✓ classic19-yangzhou-gourd
+✓ classic19-yangzhou-night
+✓ classic28-tower-chain
+✓ classic28-tower-gate
+✓ classic31-banana-monkeys
+✓ classic40-phoenix-handkerchief
+✓ classic40-water-orb
+✓ classic48-rain-orbs
+✓ opening-serve-dishes
+✓ pal-ch1-corridor
+✓ pal-ch1-island
+✓ pal-ch1-island-hardcore
+✓ pal-ch1-meet-linger
+✓ pal-ch1-meet-linger-hardcore
+✓ pal-final-preboss-reserve
+✓ wine-to-drunk-taoist
+✓ quiz baiyue-single-fragile-stocked
+✓ quiz baiyue-single-mana-budget
+✓ quiz baiyue-single-origin
+✓ quiz baiyue-single-sustain-no-wine
+✓ quiz classic08-leave-area
+✓ quiz classic10-baihe-medicine
+✓ quiz classic16-guiyin-altar
+✓ quiz classic19-yangzhou-gourd
+✓ quiz classic19-yangzhou-night
+✓ quiz classic28-tower-chain
+✓ quiz classic28-tower-gate
+✓ quiz classic31-banana-monkeys
+✓ quiz classic40-phoenix-handkerchief
+✓ quiz classic40-water-orb
+✓ quiz classic48-rain-orbs
+✓ quiz opening-serve-dishes
+✓ quiz pal-ch1-corridor
+✓ quiz pal-ch1-island
+✓ quiz pal-ch1-island-hardcore
+✓ quiz pal-ch1-meet-linger
+✓ quiz pal-ch1-meet-linger-hardcore
+✓ quiz pal-final-preboss-reserve
+✓ quiz wine-to-drunk-taoist

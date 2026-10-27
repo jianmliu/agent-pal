@@ -1,0 +1,576 @@
+{
+  "schemaVersion": 1,
+  "observedAtUtc": "2026-10-23T19:05:09.199165+00:00",
+  "commit": "d3cb0eb037441019977214bf6ca1284c807d27e2",
+  "scope": "Read-only local reconnaissance plus planning; not a clean build, model evaluation, fresh verification of historical runs, or release certification. Shared workspace had unrelated edits.",
+  "workingTreeStatusAtCapture": [
+    " M bench/board.mjs",
+    "?? bench/out/agy-cli_gemini-3.8-flash-B-20261023/",
+    "?? docs/release-audit/",
+    "?? docs/superpowers/plans/2026-10-23-neurips-ed-benchmark-release.md"
+  ],
+  "catalog": {
+    "tasks": 23,
+    "plannedTaskSeedEpisodes": 67,
+    "rpgStarts": 11,
+    "bundledSaveStarts": 8,
+    "newGameStarts": 4,
+    "explicitStartAssertions": 4,
+    "allReferencedStartsExist": true,
+    "allReferenceSeedEntriesExist": true
+  },
+  "checks": {
+    "schemaValidation": {
+      "exitCode": 0,
+      "artifact": "schema-validation.txt"
+    },
+    "benchTests": {
+      "exitCode": 0,
+      "artifact": "bench-tests.txt"
+    },
+    "referenceReconnaissance": {
+      "command": "node bench/bench.mjs check --jobs 2",
+      "environment": {
+        "PAL_ASSET_DIR": "<repository>/pal-assets",
+        "AGENT_PAL_CLASSIC_SAVES": "<repository>/bench/saves/classic"
+      },
+      "globalAuditTimeoutSeconds": 240,
+      "timedOut": true,
+      "completedRows": 62,
+      "passedRows": 62,
+      "failedRows": 0,
+      "unobservedPairs": [
+        {
+          "task": "pal-ch1-meet-linger-hardcore",
+          "seed": 3
+        },
+        {
+          "task": "pal-final-preboss-reserve",
+          "seed": 42
+        },
+        {
+          "task": "wine-to-drunk-taoist",
+          "seed": 1
+        },
+        {
+          "task": "wine-to-drunk-taoist",
+          "seed": 2
+        },
+        {
+          "task": "wine-to-drunk-taoist",
+          "seed": 3
+        }
+      ],
+      "artifact": "reference-reconnaissance.txt",
+      "interpretation": "Unobserved is unknown, not a task failure. Earlier output may be buffered in task order; no fresh 67/67 or 59/67 claim.",
+      "perPair": [
+        {
+          "task": "baiyue-single-fragile-stocked",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 38/38 · rounds 13 · milestones (none) · vt 152.718s"
+        },
+        {
+          "task": "baiyue-single-fragile-stocked",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 38/38 · rounds 13 · milestones (none) · vt 155.168s"
+        },
+        {
+          "task": "baiyue-single-fragile-stocked",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 35/35 · rounds 12 · milestones (none) · vt 139.988s"
+        },
+        {
+          "task": "baiyue-single-mana-budget",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 47/47 · rounds 16 · milestones (none) · vt 177.678s"
+        },
+        {
+          "task": "baiyue-single-mana-budget",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 51/51 · rounds 17 · milestones (none) · vt 180.088s"
+        },
+        {
+          "task": "baiyue-single-mana-budget",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 57/57 · rounds 21 · milestones (none) · vt 208.788s"
+        },
+        {
+          "task": "baiyue-single-origin",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 35/35 · rounds 12 · milestones (none) · vt 141.558s"
+        },
+        {
+          "task": "baiyue-single-origin",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 36/36 · rounds 12 · milestones (none) · vt 142.588s"
+        },
+        {
+          "task": "baiyue-single-origin",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 36/36 · rounds 14 · milestones (none) · vt 158.398s"
+        },
+        {
+          "task": "baiyue-single-sustain-no-wine",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 45/45 · rounds 15 · milestones (none) · vt 138.408s"
+        },
+        {
+          "task": "baiyue-single-sustain-no-wine",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 47/47 · rounds 17 · milestones (none) · vt 145.978s"
+        },
+        {
+          "task": "baiyue-single-sustain-no-wine",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 42/42 · rounds 14 · milestones (none) · vt 126.768s"
+        },
+        {
+          "task": "classic08-leave-area",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 1/1 · milestones explored-upper-level@– · vt 13.275s"
+        },
+        {
+          "task": "classic08-leave-area",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 1/1 · milestones explored-upper-level@– · vt 13.275s"
+        },
+        {
+          "task": "classic08-leave-area",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 1/1 · milestones explored-upper-level@– · vt 13.275s"
+        },
+        {
+          "task": "classic10-baihe-medicine",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 40/40 · milestones got-ginkgo@8 got-carp@16 got-antler@34 · vt 123.092s"
+        },
+        {
+          "task": "classic10-baihe-medicine",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 40/40 · milestones got-ginkgo@8 got-carp@16 got-antler@34 · vt 124.009s"
+        },
+        {
+          "task": "classic10-baihe-medicine",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 40/40 · milestones got-ginkgo@8 got-carp@16 got-antler@34 · vt 123.764s"
+        },
+        {
+          "task": "classic16-guiyin-altar",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 20/20 · milestones on-the-mountain@9 through-cave-74@10 through-cave-73@12 · vt 73.056s"
+        },
+        {
+          "task": "classic16-guiyin-altar",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 20/20 · milestones on-the-mountain@9 through-cave-74@10 through-cave-73@12 · vt 69.721s"
+        },
+        {
+          "task": "classic16-guiyin-altar",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 20/20 · milestones on-the-mountain@9 through-cave-74@10 through-cave-73@12 · vt 70.305s"
+        },
+        {
+          "task": "classic19-yangzhou-gourd",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 74/74 · milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 · vt 250.718s"
+        },
+        {
+          "task": "classic19-yangzhou-gourd",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 74/74 · milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 · vt 251.181s"
+        },
+        {
+          "task": "classic19-yangzhou-gourd",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 74/74 · milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 · vt 249.782s"
+        },
+        {
+          "task": "classic19-yangzhou-night",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 13/13 · milestones entered-city@2 booked-room@6 · vt 41.978s"
+        },
+        {
+          "task": "classic19-yangzhou-night",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 13/13 · milestones entered-city@2 booked-room@6 · vt 41.978s"
+        },
+        {
+          "task": "classic19-yangzhou-night",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 13/13 · milestones entered-city@2 booked-room@6 · vt 41.978s"
+        },
+        {
+          "task": "classic28-tower-chain",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 114/114 · milestones ghost-king-agreed@55 through-bronze-gate@67 got-heavenly-book@98 · vt 360.095s"
+        },
+        {
+          "task": "classic28-tower-chain",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 115/115 · milestones ghost-king-agreed@57 through-bronze-gate@71 got-heavenly-book@100 · vt 376.731s"
+        },
+        {
+          "task": "classic28-tower-chain",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 109/109 · milestones ghost-king-agreed@57 through-bronze-gate@67 got-heavenly-book@96 · vt 352.797s"
+        },
+        {
+          "task": "classic28-tower-gate",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 67/67 · milestones entered-148@35 ghost-king-agreed@55 · vt 229.57s"
+        },
+        {
+          "task": "classic28-tower-gate",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 71/71 · milestones entered-148@37 ghost-king-agreed@57 · vt 237.544s"
+        },
+        {
+          "task": "classic28-tower-gate",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 67/67 · milestones entered-148@39 ghost-king-agreed@57 · vt 222.237s"
+        },
+        {
+          "task": "classic31-banana-monkeys",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 22/22 · milestones got-bananas@3 entered-tree-maze@5 · vt 39.889s"
+        },
+        {
+          "task": "classic31-banana-monkeys",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 22/22 · milestones got-bananas@3 entered-tree-maze@5 · vt 39.868s"
+        },
+        {
+          "task": "classic31-banana-monkeys",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 22/22 · milestones got-bananas@3 entered-tree-maze@5 · vt 40.576s"
+        },
+        {
+          "task": "classic40-phoenix-handkerchief",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 9/9 · milestones entered-temple@3 old-woman-calls@7 · vt 36.515s"
+        },
+        {
+          "task": "classic40-phoenix-handkerchief",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 9/9 · milestones entered-temple@3 old-woman-calls@7 · vt 36.515s"
+        },
+        {
+          "task": "classic40-phoenix-handkerchief",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 9/9 · milestones entered-temple@3 old-woman-calls@7 · vt 36.515s"
+        },
+        {
+          "task": "classic40-water-orb",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 83/83 · milestones handkerchief-delivered@28 got-wooden-sword@23 opened-box@80 · vt 172.82s"
+        },
+        {
+          "task": "classic40-water-orb",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 83/83 · milestones handkerchief-delivered@28 got-wooden-sword@23 opened-box@80 · vt 171.87s"
+        },
+        {
+          "task": "classic40-water-orb",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 83/83 · milestones handkerchief-delivered@28 got-wooden-sword@23 opened-box@80 · vt 171.659s"
+        },
+        {
+          "task": "classic48-rain-orbs",
+          "seed": 42,
+          "success": true,
+          "detail": "goal at step 7/7 · milestones tablet-activated@1 first-orb-placed@3 · vt 39.564s"
+        },
+        {
+          "task": "classic48-rain-orbs",
+          "seed": 43,
+          "success": true,
+          "detail": "goal at step 7/7 · milestones tablet-activated@1 first-orb-placed@3 · vt 39.564s"
+        },
+        {
+          "task": "classic48-rain-orbs",
+          "seed": 44,
+          "success": true,
+          "detail": "goal at step 7/7 · milestones tablet-activated@1 first-orb-placed@3 · vt 39.564s"
+        },
+        {
+          "task": "opening-serve-dishes",
+          "seed": 1,
+          "success": true,
+          "detail": "goal at step 58/58 · milestones (none) · vt 85.869s"
+        },
+        {
+          "task": "opening-serve-dishes",
+          "seed": 2,
+          "success": true,
+          "detail": "goal at step 36/36 · milestones (none) · vt 66.908s"
+        },
+        {
+          "task": "opening-serve-dishes",
+          "seed": 3,
+          "success": true,
+          "detail": "goal at step 47/47 · milestones (none) · vt 79.335s"
+        },
+        {
+          "task": "pal-ch1-corridor",
+          "seed": 1,
+          "success": true,
+          "detail": "goal at step 30/30 · milestones reached-leaf-maze@9 statues-1@10 statues-3@14 statues-6@20 entered-xianling-dongtian@28 found-clothes@29 · vt 117.663s"
+        },
+        {
+          "task": "pal-ch1-corridor",
+          "seed": 2,
+          "success": true,
+          "detail": "goal at step 32/32 · milestones reached-leaf-maze@11 statues-1@12 statues-3@16 statues-6@22 entered-xianling-dongtian@30 found-clothes@31 · vt 120.608s"
+        },
+        {
+          "task": "pal-ch1-corridor",
+          "seed": 3,
+          "success": true,
+          "detail": "goal at step 29/29 · milestones reached-leaf-maze@9 statues-1@10 statues-3@14 statues-6@20 entered-xianling-dongtian@27 found-clothes@28 · vt 112.871s"
+        },
+        {
+          "task": "pal-ch1-island",
+          "seed": 1,
+          "success": true,
+          "detail": "goal at step 31/31 · milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@29 found-clothes@30 · vt 120.163s"
+        },
+        {
+          "task": "pal-ch1-island",
+          "seed": 2,
+          "success": true,
+          "detail": "goal at step 33/33 · milestones entered-corridor@1 reached-leaf-maze@12 statues-1@13 statues-3@17 statues-6@23 entered-xianling-dongtian@31 found-clothes@32 · vt 123.087s"
+        },
+        {
+          "task": "pal-ch1-island",
+          "seed": 3,
+          "success": true,
+          "detail": "goal at step 30/30 · milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@28 found-clothes@29 · vt 115.288s"
+        },
+        {
+          "task": "pal-ch1-island-hardcore",
+          "seed": 1,
+          "success": true,
+          "detail": "goal at step 31/31 · milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@29 found-clothes@30 · vt 120.163s"
+        },
+        {
+          "task": "pal-ch1-island-hardcore",
+          "seed": 2,
+          "success": true,
+          "detail": "goal at step 33/33 · milestones entered-corridor@1 reached-leaf-maze@12 statues-1@13 statues-3@17 statues-6@23 entered-xianling-dongtian@31 found-clothes@32 · vt 123.087s"
+        },
+        {
+          "task": "pal-ch1-island-hardcore",
+          "seed": 3,
+          "success": true,
+          "detail": "goal at step 30/30 · milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@28 found-clothes@29 · vt 115.288s"
+        },
+        {
+          "task": "pal-ch1-meet-linger",
+          "seed": 1,
+          "success": true,
+          "detail": "goal at step 126/126 · milestones served-dishes@58 wine-to-taoist@64 shrimp-errand@67 heard-of-fairy@71 aunt-collapsed@76 island-medicine@82 got-hammer@84 landed-on-island@90 reached-leaf-maze@102 statues-1@106 statues-3@110 statues-6@116 entered-xianling-dongtian@124 found-clothes@125 · vt 286.909s"
+        },
+        {
+          "task": "pal-ch1-meet-linger",
+          "seed": 2,
+          "success": true,
+          "detail": "goal at step 100/100 · milestones served-dishes@36 wine-to-taoist@42 shrimp-errand@45 heard-of-fairy@49 aunt-collapsed@54 island-medicine@60 got-hammer@62 landed-on-island@68 reached-leaf-maze@79 statues-1@80 statues-3@84 statues-6@90 entered-xianling-dongtian@98 found-clothes@99 · vt 263.739s"
+        },
+        {
+          "task": "pal-ch1-meet-linger",
+          "seed": 3,
+          "success": true,
+          "detail": "goal at step 111/111 · milestones served-dishes@46 wine-to-taoist@52 shrimp-errand@55 heard-of-fairy@59 aunt-collapsed@64 island-medicine@70 got-hammer@72 landed-on-island@78 reached-leaf-maze@91 statues-1@92 statues-3@96 statues-6@102 entered-xianling-dongtian@109 found-clothes@110 · vt 282.269s"
+        },
+        {
+          "task": "pal-ch1-meet-linger-hardcore",
+          "seed": 1,
+          "success": true,
+          "detail": "goal at step 123/123 · milestones served-dishes@58 wine-to-taoist@64 shrimp-errand@67 heard-of-fairy@71 aunt-collapsed@76 island-medicine@82 got-hammer@84 landed-on-island@90 reached-leaf-maze@102 statues-1@103 statues-3@107 statues-6@113 entered-xianling-dongtian@121 found-clothes@122 · vt 285.557s"
+        },
+        {
+          "task": "pal-ch1-meet-linger-hardcore",
+          "seed": 2,
+          "success": true,
+          "detail": "goal at step 102/102 · milestones served-dishes@36 wine-to-taoist@42 shrimp-errand@45 heard-of-fairy@49 aunt-collapsed@54 island-medicine@60 got-hammer@62 landed-on-island@68 reached-leaf-maze@79 statues-1@82 statues-3@86 statues-6@92 entered-xianling-dongtian@100 found-clothes@101 · vt 272.323s"
+        }
+      ]
+    },
+    "directChecks": [
+      {
+        "name": "default-classic-save-fingerprint",
+        "task": "classic19-yangzhou-gourd",
+        "classicSaveEnvUnset": true,
+        "observedSaveHash": null
+      },
+      {
+        "name": "pr-asset-detection-engineOptions-without-task",
+        "observedError": "TypeError: Cannot read properties of undefined (reading 'engineProfile')"
+      }
+    ],
+    "modelCallsUnderAudit": 0
+  },
+  "resourceObservation": {
+    "localAssetsFiles": 65,
+    "localAssetsIgnored": true,
+    "engineDistAlreadyPresent": true,
+    "trackedStartingFiles": 15,
+    "licenseNoticeFilenameScanFound": [],
+    "rightsAssessment": "No redistribution permission established by this audit."
+  },
+  "missingHistoricalLocalReferences": [
+    "docs/agent-pal-bench-evidence.json",
+    "docs/agent-pal-bench-review.md",
+    "docs/agent-pal-bench-experiment-log.en.md",
+    "docs/specs/agent-pal-bench.md"
+  ],
+  "sourceFiles": {
+    "bench/task.mjs": {
+      "sha256": "616186019b8aa33a561ff5fabc8e2575406fbc2aa50f3f20abc1451c3eb9c60e",
+      "bytes": 7067
+    },
+    "bench/start.mjs": {
+      "sha256": "1df18d26eaf50e2665e080c05801d034329750ecbeedec09a6bc4b1c510dab20",
+      "bytes": 7373
+    },
+    "bench/runner.mjs": {
+      "sha256": "20a7a185a64c5878e31a4ad6735ab10b8a52936719bcb81cf1d2a719c9687c8a",
+      "bytes": 25081
+    },
+    "bench/episode.mjs": {
+      "sha256": "7105c2cadef56b31cd28cb383fc9a874d70e9bd91211a4a9e2a8cdd892fb3621",
+      "bytes": 22917
+    },
+    "bench/verify.mjs": {
+      "sha256": "6a62829f339f2f000e49c6f048f71c6797321ac1fb7a1cfdd731e2320e79f8d6",
+      "bytes": 21586
+    },
+    "bench/pr-check.mjs": {
+      "sha256": "3cca313965e9b0dd7e7ad779a31de2a23b559eb3747a378e3efcf814a5e5e725",
+      "bytes": 8679
+    },
+    "bench/score.mjs": {
+      "sha256": "8aada2c3baf91df9bbcf185b908a53a18d21e13585de71f384cef4d9efc09610",
+      "bytes": 6771
+    },
+    "bench/board.mjs": {
+      "sha256": "9a387cd9ea945a8bb833f9511759efb57be183e1c3e70835106ebf47416fce94",
+      "bytes": 70366
+    },
+    "bench/loop.mjs": {
+      "sha256": "86de147116a122163276a313c2af2610987dcb0aaba7a86f0b3f827735893aa8",
+      "bytes": 3500
+    },
+    "bench/client-finalization.mjs": {
+      "sha256": "0d2c3dc0303d58b76f9b53e648064ec98169b8e66903cab4b976d6b1c7163a57",
+      "bytes": 7398
+    },
+    "bench/README.md": {
+      "sha256": "7685185021bfb938a8043cf3a5b23688155ff68cb37c367079e9c240c362d464",
+      "bytes": 23404
+    },
+    "src/engine.mjs": {
+      "sha256": "5b47cd0475d696caf88373a0582610a0f9c74e8e115bdd3a88e05be4e3294b36",
+      "bytes": 36877
+    },
+    "package.json": {
+      "sha256": "34cb13b00b6f042b3280f4e7c0784f3c034336188ec41e12e0ec61afbba7d985",
+      "bytes": 2338
+    },
+    "pnpm-lock.yaml": {
+      "sha256": "cdee802e43195482d02da390df3d9c50994adde26a575ff3b763563cdfad4591",
+      "bytes": 18465
+    },
+    ".github/workflows/leaderboard.yml": {
+      "sha256": "f3b970a938a1592c51af17bd46f25d111a401646b6c7c2ee48dbf2eae0895dcb",
+      "bytes": 2297
+    },
+    "scripts/pack-npx.mjs": {
+      "sha256": "8b3030a18db1b9204cf205678eddbeec96f370c7b2f80df30b14b8d587ee403e",
+      "bytes": 3066
+    },
+    "docs/agent-pal-bench-draft.en.md": {
+      "sha256": "9bb2f91f0b6510092e593dffb77be29649ae86cb2e636cba7f575ff33b77a76c",
+      "bytes": 96200
+    }
+  },
+  "artifactFiles": {
+    "README.md": {
+      "sha256": "e0046ddcdb497a52c8cbaa8e96585b013662f581b3ebc1ae15f6acd7cfe92d28",
+      "bytes": 2203
+    },
+    "bench-tests.txt": {
+      "sha256": "358b38b75e8e2c4474fe07a13d289472949ac7f9cd0e83b0b2fe80c740c23f3d",
+      "bytes": 6319
+    },
+    "reference-process-status.json": {
+      "sha256": "65122ba1325c17ffa0bcb942ed4dccb1f0d49d6f48e64130b853f520928da729",
+      "bytes": 68
+    },
+    "reference-reconnaissance.txt": {
+      "sha256": "01641c61149096f3aaec6687a9b3293784d1ac18153a791f0a9ed98bcc21a283",
+      "bytes": 9266
+    },
+    "runtime-observed.json": {
+      "sha256": "abac505bd2e97629b22aae8ab80ab5f67eb0d0ece0007f22fdf530004a9735c4",
+      "bytes": 342
+    },
+    "schema-validation.txt": {
+      "sha256": "aa4d5177ff639f4f970068d7f0d851c912c0da813827ed66fede8bd69331a3ce",
+      "bytes": 1375
+    },
+    "task-catalog.json": {
+      "sha256": "9aee3618b3fdf2b345a613c0af6b294d6b047b3924765fd4ae4c4c8c1baaf877",
+      "bytes": 12325
+    }
+  },
+  "officialPolicySources": {
+    "basisYear": 2026,
+    "checkedOn": "2026-10-23",
+    "call": "https://neurips.cc/Conferences/2026/CallForEvaluationsDatasets",
+    "review": "https://neurips.cc/Conferences/2026/EvaluationsDatasetsReviewerGuidelines",
+    "faq": "https://neurips.cc/Conferences/2026/EvaluationsDatasetsFAQ"
+  }
+}

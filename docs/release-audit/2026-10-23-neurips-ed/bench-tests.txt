@@ -1,0 +1,122 @@
+
+> @onchainpal/agent-pal@0.1.0 test:bench /Volumes/T7-Data/pal/agent-pal
+> node --test bench/test/client-finalization.test.mjs && node bench/test/bench.test.mjs && node bench/test/baiyue.test.mjs && node bench/test/battle-metrics.test.mjs && node --test bench/test/provider-cancellation.test.mjs && node bench/bench.mjs validate
+
+✔ shared finalizer exists (0.585042ms)
+✔ append receipt, retain original prefix and verify projected result (6.208458ms)
+✔ duplicate finalization is idempotent and repairs missing projected result (1.689458ms)
+✔ missing and timed-out usage stays unknown rather than zero (3.069791ms)
+✔ receipt and original source tampering are rejected (2.025166ms)
+✔ malformed usage is not silently coerced to zero (1.001083ms)
+✔ Claude extraction includes cached tokens and respects client cost (0.0555ms)
+✔ Argon without machine-readable usage is explicitly unknown (0.035625ms)
+✔ missing required receipt is rejected for new external episodes (1.123458ms)
+✔ receipt cannot hide altered gameplay or duplicate accounting (1.331833ms)
+✔ changed server-end bytes invalidate prefix binding (1.31ms)
+✔ unknown accounting is visible as warning instead of claimed zero (1.090833ms)
+✔ backfill preserves source files and first failed verification (3.642875ms)
+✔ verification cache fingerprint tracks bound CLI evidence (1.54175ms)
+✔ receipt numeric tampering fails even when projected result is also changed (1.697375ms)
+✔ an interrupted client turn cannot produce complete accounting (0.053917ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 118.220875
+  ✓ ① 原子谓词
+  ✓ ② all / any / not
+  ✓ ③ 谓词结构校验(含路径定位)
+  ✓ ④ 23 道题全部合法、都有参考解与 par、预算 ≥ 3×par、token 预算 ≥ 12k×调用;坏题被拒
+  ✓ ⑤ 上下文截断规则
+  ✓ ⑥ 价目表(每条有官方来源与核对日期)
+  ✓ ⑦ score 聚合
+  ✓ ⑧ 续跑前核对冻结元数据;代码版本不把本次输出算作改动
+  ✓ ⑨ claude 子进程环境
+  ✓ ⑪ 重放核验:逐次判分 / 终局 / 登记成绩对照,改版、缺日志、重放出错;C 档资料指纹
+  ✓ ⑫ 排行页:分档、外部单列、排序、帕累托前沿、按局 + 指纹核验、题目版本分行、转义、闭卷测验列与分节
+  ✓ ⑬ Gemini 适配器:请求格式、schema 子集(含联合类型)、thoughtSignature / id 回传、思考 token 计入输出、拦截报错;guide 认数字字符串序号
+  ✓ ⑭ Anthropic 提示缓存:系统提示 + 最后一条占位两个断点,末尾不打;usage 含缓存读写
+  ✓ ⑮ Anthropic ?context=server:服务端按同一规则清理、历史与思考块原样回传;默认模式不变
+  ✓ ⑯ A 像素档:成败 + 画面、截断连画面一起丢、循环传图,OpenAI / Anthropic / Gemini 各按自家格式附图
+  ✓ ⑩ provider 退避不受虚拟时钟影响
+  ✓ ⑰ C 档 guide / atlas 真的接上了;每档工具都有人接;资料指纹冻进 run.json
+  ✓ ⑱ 闭卷测验:关键词判分;23 道题都有合法测验
+  ✓ ⑲ 卡死只数推进游戏的调用
+  ✓ ⑳ 挑战题:逃跑 / 倒下谓词、disallowTools、参考解守规则
+  ✓ ㉑ 存档起点:文件名受限、存档在库、槽位有档
+  ✓ ㉒ Tier P (Pure 编程档):L0 原语 + run_code 工具面与系统提示
+  ✓ ㉓ 公共 Leaderboard PR 门禁(零冲突 / 防篡改 / 增量核验)与同模型跨运行归并
+  ✓ 外部 CLI 路径按环境变量 / 当前用户解析,不写死家目录
+
+BENCH TESTS PASSED ✅
+Baiyue schema, scoring, and round tamper checks passed
+lazy battle lifecycle, partial/poison rounds, identity and action restrictions passed
+✔ openai: abort cancels a hanging HTTP request without retry (80.251083ms)
+✔ openai: ordinary calls preserve payload and usage, with missing versus zero evidence (8.163375ms)
+✔ ollama: abort cancels a hanging HTTP request without retry (64.5325ms)
+✔ ollama: ordinary calls preserve payload and usage, with missing versus zero evidence (2.949125ms)
+✔ anthropic: abort cancels a hanging HTTP request without retry (64.844333ms)
+✔ anthropic: ordinary calls preserve payload and usage, with missing versus zero evidence (3.223167ms)
+✔ gemini: abort cancels a hanging HTTP request without retry (65.222417ms)
+✔ gemini: ordinary calls preserve payload and usage, with missing versus zero evidence (3.614375ms)
+✔ postJson: abort interrupts retry backoff and makes no later request (382.5515ms)
+✔ postJson: no signal retains normal retry and successful JSON behavior (36.405958ms)
+✔ anthropic: malformed summed usage is unreported while valid sums are reported (2.807625ms)
+✔ gemini: malformed summed usage is unreported while valid sums are reported (2.351167ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 839.229
+✓ baiyue-single-fragile-stocked
+✓ baiyue-single-mana-budget
+✓ baiyue-single-origin
+✓ baiyue-single-sustain-no-wine
+✓ classic08-leave-area
+✓ classic10-baihe-medicine
+✓ classic16-guiyin-altar
+✓ classic19-yangzhou-gourd
+✓ classic19-yangzhou-night
+✓ classic28-tower-chain
+✓ classic28-tower-gate
+✓ classic31-banana-monkeys
+✓ classic40-phoenix-handkerchief
+✓ classic40-water-orb
+✓ classic48-rain-orbs
+✓ opening-serve-dishes
+✓ pal-ch1-corridor
+✓ pal-ch1-island
+✓ pal-ch1-island-hardcore
+✓ pal-ch1-meet-linger
+✓ pal-ch1-meet-linger-hardcore
+✓ pal-final-preboss-reserve
+✓ wine-to-drunk-taoist
+✓ quiz baiyue-single-fragile-stocked
+✓ quiz baiyue-single-mana-budget
+✓ quiz baiyue-single-origin
+✓ quiz baiyue-single-sustain-no-wine
+✓ quiz classic08-leave-area
+✓ quiz classic10-baihe-medicine
+✓ quiz classic16-guiyin-altar
+✓ quiz classic19-yangzhou-gourd
+✓ quiz classic19-yangzhou-night
+✓ quiz classic28-tower-chain
+✓ quiz classic28-tower-gate
+✓ quiz classic31-banana-monkeys
+✓ quiz classic40-phoenix-handkerchief
+✓ quiz classic40-water-orb
+✓ quiz classic48-rain-orbs
+✓ quiz opening-serve-dishes
+✓ quiz pal-ch1-corridor
+✓ quiz pal-ch1-island
+✓ quiz pal-ch1-island-hardcore
+✓ quiz pal-ch1-meet-linger
+✓ quiz pal-ch1-meet-linger-hardcore
+✓ quiz pal-final-preboss-reserve
+✓ quiz wine-to-drunk-taoist

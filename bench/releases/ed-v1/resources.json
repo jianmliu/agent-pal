@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 1,
+  "release": "ed-v1",
+  "status": "blocked-resource-access-and-rights",
+  "inferenceEnabled": false,
+  "supportedVersion": {
+    "label": "locally observed original DOS traditional-Chinese data profile",
+    "independentVersionIdentification": "unverified",
+    "acquisitionProcedure": "not independently tested; user-provided lawful local files only",
+    "redistributionPermission": "not established"
+  },
+  "gates": {
+    "rightsCleared": false,
+    "independentAccessTested": false,
+    "twoIndependentReplays": false,
+    "engineBuildAccepted": false
+  },
+  "sourceProvenance": {
+    "authoredCode": "tracked source; license and attribution lineage not independently cleared",
+    "vendoredEngine": "packages/game-engine; provenance/license audit outstanding",
+    "dependencies": "pnpm-lock.yaml pins dependencies; individual upstream licenses remain subject to review"
+  },
+  "loaderInspection": {
+    "required": [
+      "packages/game-engine/src/js/pal/main.ts:STARTUP_MKFS and SCENE_MKFS",
+      "packages/game-engine/src/js/pal/battle.ts:battle loadMKF",
+      "packages/game-engine/src/js/pal/text.ts:text.init",
+      "packages/game-engine/src/js/pal/font.ts:font.init"
+    ],
+    "optional": "desc.dat has a fallback; audio archives are optional for headless Tier B; original executables, drivers, and installers are not engine inputs"
+  },
+  "localProfile": {
+    "purpose": "hash inventory of one locally available profile, not an independently certified supported distribution",
+    "assets": [
+      {
+        "name": "ABC.MKF",
+        "required": true,
+        "present": true,
+        "size": 1022564,
+        "sha256": "ef2920716b87b5bd0ecb184cbbcf8585512184bc0cbe4dfff07f8a4617f2af0b"
+      },
+      {
+        "name": "BALL.MKF",
+        "required": true,
+        "present": true,
+        "size": 134704,
+        "sha256": "be8e7218ee21baf64eaa90ec9f27967544a1b0136ce490604ac5f6dedb22830b"
+      },
+      {
+        "name": "DATA.MKF",
+        "required": true,
+        "present": true,
+        "size": 66418,
+        "sha256": "d9e82696a42d93f9623c63714a68a12645c7d650776eaa8510ec27b7c35e819a"
+      },
+      {
+        "name": "F.MKF",
+        "required": true,
+        "present": true,
+        "size": 186966,
+        "sha256": "6fc9a9978dd06bee8e381c80e68683b6f3033c2aa40f61eb0e1a2194fc570f65"
+      },
+      {
+        "name": "FBP.MKF",
+        "required": true,
+        "present": true,
+        "size": 1128064,
+        "sha256": "f38d0243a4f635886f27324c2a44016e7ff46db2146c853ab8edda12b8d5652c"
+      },
+      {
+        "name": "FIRE.MKF",
+        "required": true,
+        "present": true,
+        "size": 834728,
+        "sha256": "eab713c53b4236f4aeefd30239675d62e887f10bb576ce1950a5be5b0d7458dd"
+      },
+      {
+        "name": "GOP.MKF",
+        "required": true,
+        "present": true,
+        "size": 11530322,
+        "sha256": "dbb17aeb8fcef6e24232b05abb58d5e9acf06a868b73bc0dc6c9a9e955fffb9c"
+      },
+      {
+        "name": "MAP.MKF",
+        "required": true,
+        "present": true,
+        "size": 1532520,
+        "sha256": "a40f22319d70a97a8871dfc85494c2d28e793c1e10d752734ab8f61704355066"
+      },
+      {
+        "name": "MGO.MKF",
+        "required": true,
+        "present": true,
+        "size": 1577442,
+        "sha256": "a9f9fc0ceeccb354906a96eaf6003f9c7ece8db6789856144201d926f5ff76b1"
+      },
+      {
+        "name": "PAT.MKF",
+        "required": true,
+        "present": true,
+        "size": 8488,
+        "sha256": "78b08ef4c4630b703c714da25ab6482d4524a577c56c9554a369bbf30cc67eab"
+      },
+      {
+        "name": "RGM.MKF",
+        "required": true,
+        "present": true,
+        "size": 453202,
+        "sha256": "fbeb7cbafd374af8c07088ab18996edcadd6ec52b8bb0a0af644c2cee4e26bac"
+      },
+      {
+        "name": "SSS.MKF",
+        "required": true,
+        "present": true,
+        "size": 569640,
+        "sha256": "8ebbbcfa5bdae5fe6b73752e3a6e6d3fd28d6fa857ffefcb6c8c0242eaf0252c"
+      },
+      {
+        "name": "M.MSG",
+        "required": true,
+        "present": true,
+        "size": 212668,
+        "sha256": "f6480a5095e8cc358ecb3e8329ca80996c6068c34327f2f86ec03375ad40b654"
+      },
+      {
+        "name": "WORD.DAT",
+        "required": true,
+        "present": true,
+        "size": 5650,
+        "sha256": "856fd6649a3e5bf143af30281eb33b2c67b1f6776290ce9650b065b1f78f49bb"
+      },
+      {
+        "name": "WOR16.ASC",
+        "required": true,
+        "present": true,
+        "size": 5088,
+        "sha256": "d28985aee96b96981be1542172f6f32509541dec325163e857cd677f56dad8f9"
+      },
+      {
+        "name": "WOR16.FON",
+        "required": true,
+        "present": true,
+        "size": 77986,
+        "sha256": "c862b8f587b246195fac3c8c3ecf8d00ddb7b10aed6bad4c8b3c5b3fa46f5d83"
+      },
+      {
+        "name": "DESC.DAT",
+        "required": false,
+        "present": true,
+        "size": 16269,
+        "sha256": "78d84c183cb5b2132d229af50e2c007677a94d4f51ab48f0d637097e4211f0fa"
+      },
+      {
+        "name": "VOC.MKF",
+        "required": false,
+        "present": true,
+        "size": 1997044,
+        "sha256": "c6e14eaaff50979df269b7d6d5f7401cb354be38e3ad737e4ca3ec473c1c5ab3"
+      },
+      {
+        "name": "SOUNDS.MKF",
+        "required": false,
+        "present": false,
+        "size": null,
+        "sha256": null
+      },
+      {
+        "name": "MIDI.MKF",
+        "required": false,
+        "present": true,
+        "size": 762442,
+        "sha256": "70587d762bdcea0a6e07f0f13808993045a6f382c713f0ad81793a7f6991f913"
+      },
+      {
+        "name": "MUS.MKF",
+        "required": false,
+        "present": true,
+        "size": 331284,
+        "sha256": "8367c9d34331f67b20b12380e809a38d3313cae199f260d272d07fcf55e11a21"
+      },
+      {
+        "name": "RNG.MKF",
+        "required": false,
+        "present": true,
+        "size": 4546074,
+        "sha256": "226a7932b94548071ecfb6274ac069f890ea347aef99c79c72b69655457310a3"
+      }
+    ]
+  },
+  "startingFiles": [
+    {
+      "path": "bench/saves/baiyue-single-fragile-stocked.saves.json.gz",
+      "kind": "bundled-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 59595,
+      "sha256": "a65743e4c4e6c79ea2a04e653b869d9aa5691be8d7730078414386ce5a07736b",
+      "decodedSize": 426841,
+      "decodedSha256": "3f60c2e7791c1e3fb31448bd554ac4f36439b7462d2dea9662f772d1ebd2c211",
+      "rights": "not-independently-cleared",
+      "embeddedSlots": [
+        {
+          "slot": "PAL-SAVE-1",
+          "size": 188864,
+          "sha256": "1fad3e444175a82222d728612757eba26b630e8f3d2703e4aed36f6e08fe1f70"
+        }
+      ]
+    },
+    {
+      "path": "bench/saves/baiyue-single-mana-budget.saves.json.gz",
+      "kind": "bundled-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 59729,
+      "sha256": "11062a25003e5a18aca0ab922ffdcaa3a8aeddb55ea115a94a383070586c7a2d",
+      "decodedSize": 426885,
+      "decodedSha256": "451d968ace18832795a936237a83c7fa274137d234a593e43d8d056e37163ea6",
+      "rights": "not-independently-cleared",
+      "embeddedSlots": [
+        {
+          "slot": "PAL-SAVE-1",
+          "size": 188864,
+          "sha256": "4b4d0a31ea0eb063ac621fd445d5635e093a152ccbde625a7c057cff53594ac9"
+        }
+      ]
+    },
+    {
+      "path": "bench/saves/baiyue-single-origin.saves.json.gz",
+      "kind": "bundled-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 59730,
+      "sha256": "7b62b4d55b8dffb56c9b96c1fe2f227422c350f1611144afb9ed7bb7f93d2785",
+      "decodedSize": 426884,
+      "decodedSha256": "bd440080023640ed50d1a871654725783d8a94b1e29848ed80fa20b0c35dff58",
+      "rights": "not-independently-cleared",
+      "embeddedSlots": [
+        {
+          "slot": "PAL-SAVE-1",
+          "size": 188864,
+          "sha256": "f422f1d4ed09461ec6b47362e40f790417b7d56c6a835dc1b5e06939913f0bf1"
+        }
+      ]
+    },
+    {
+      "path": "bench/saves/baiyue-single-sustain-no-wine.saves.json.gz",
+      "kind": "bundled-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 59604,
+      "sha256": "019218f13aa2fd8f0564561566e3e60fa3d2ef40f11a4534afbd21c7cfb59dd9",
+      "decodedSize": 426839,
+      "decodedSha256": "51d6bd253a9657c44990977a88eb8aaa31a078664c4e27138c2c0d6d5945487c",
+      "rights": "not-independently-cleared",
+      "embeddedSlots": [
+        {
+          "slot": "PAL-SAVE-1",
+          "size": 188864,
+          "sha256": "d06694374c50e06f00d8da3c95139c420eaf7285f7d276fd03af390d74d330d1"
+        }
+      ]
+    },
+    {
+      "path": "bench/saves/classic/08.rpg",
+      "kind": "classic-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 183488,
+      "sha256": "26af97b183abf0f2759f92432224a18ba12723e036ad8928faa88d9734068fcd",
+      "decodedSize": 183488,
+      "decodedSha256": "26af97b183abf0f2759f92432224a18ba12723e036ad8928faa88d9734068fcd",
+      "rights": "not-independently-cleared"
+    },
+    {
+      "path": "bench/saves/classic/10.rpg",
+      "kind": "classic-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 183488,
+      "sha256": "b95c093fdbb8d30d4ff4a6d0066709f51086618d79af786c584d4c8d9c04c9cc",
+      "decodedSize": 183488,
+      "decodedSha256": "b95c093fdbb8d30d4ff4a6d0066709f51086618d79af786c584d4c8d9c04c9cc",
+      "rights": "not-independently-cleared"
+    },
+    {
+      "path": "bench/saves/classic/16.rpg",
+      "kind": "classic-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 183488,
+      "sha256": "695222eb9e8db6f770ce81230de19258501c3edd31b353a8e19c9afe0265624c",
+      "decodedSize": 183488,
+      "decodedSha256": "695222eb9e8db6f770ce81230de19258501c3edd31b353a8e19c9afe0265624c",
+      "rights": "not-independently-cleared"
+    },
+    {
+      "path": "bench/saves/classic/19.rpg",
+      "kind": "classic-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 183488,
+      "sha256": "a203e4763705d15b55e70ae75f6b7d67591f91ce9754283c5785683d00391fd9",
+      "decodedSize": 183488,
+      "decodedSha256": "a203e4763705d15b55e70ae75f6b7d67591f91ce9754283c5785683d00391fd9",
+      "rights": "not-independently-cleared"
+    },
+    {
+      "path": "bench/saves/classic/28.rpg",
+      "kind": "classic-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 183488,
+      "sha256": "ca4e417239a77184b4d5517c4dccff6e5e9df5aa31a19089eed8bd5ebd1d901d",
+      "decodedSize": 183488,
+      "decodedSha256": "ca4e417239a77184b4d5517c4dccff6e5e9df5aa31a19089eed8bd5ebd1d901d",
+      "rights": "not-independently-cleared"
+    },
+    {
+      "path": "bench/saves/classic/31.rpg",
+      "kind": "classic-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 183488,
+      "sha256": "766962a1bd25818b72a472fa32d76e71b0f93a92eed662d07289617ca6cde3e2",
+      "decodedSize": 183488,
+      "decodedSha256": "766962a1bd25818b72a472fa32d76e71b0f93a92eed662d07289617ca6cde3e2",
+      "rights": "not-independently-cleared"
+    },
+    {
+      "path": "bench/saves/classic/40.rpg",
+      "kind": "classic-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 183488,
+      "sha256": "972eb5307e909a8062735dad9267e264894e4bb35c412535d9269660a4731d34",
+      "decodedSize": 183488,
+      "decodedSha256": "972eb5307e909a8062735dad9267e264894e4bb35c412535d9269660a4731d34",
+      "rights": "not-independently-cleared"
+    },
+    {
+      "path": "bench/saves/classic/48.rpg",
+      "kind": "classic-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 183488,
+      "sha256": "7f969559d9f7da949343a332dbfc9d3b216fe58510a78fb48d651305060e6a23",
+      "decodedSize": 183488,
+      "decodedSha256": "7f969559d9f7da949343a332dbfc9d3b216fe58510a78fb48d651305060e6a23",
+      "rights": "not-independently-cleared"
+    },
+    {
+      "path": "bench/saves/pal-ch1-corridor.saves.json.gz",
+      "kind": "bundled-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 50823,
+      "sha256": "80473d21b48fb3f501cf36a93e95b0383102afe45e0d08d31b2b41424e3089a8",
+      "decodedSize": 423202,
+      "decodedSha256": "93cad3a3f67a7004429fdf47f7fc011795200b38da37daa28e7ed02d2f0eb351",
+      "rights": "not-independently-cleared",
+      "embeddedSlots": [
+        {
+          "slot": "PAL-SAVE-1",
+          "size": 188864,
+          "sha256": "7701975ce826656c3f778670aa795c06904d713f5e059c32d32ba3250dcdca8f"
+        }
+      ]
+    },
+    {
+      "path": "bench/saves/pal-ch1-island.saves.json.gz",
+      "kind": "bundled-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 53479,
+      "sha256": "1dc61bdc4035c10cb6cb6ec137448e8d42b98fad35af951e25115dde227920ad",
+      "decodedSize": 423164,
+      "decodedSha256": "79560b604efabcd29855782884e5ef6a07151d5852829a36dec978a78f2e0ce0",
+      "rights": "not-independently-cleared",
+      "embeddedSlots": [
+        {
+          "slot": "PAL-SAVE-1",
+          "size": 188864,
+          "sha256": "39fcaeab80112ebf63c97bd6193b8db043d470d3e509858088460a456c71d827"
+        }
+      ]
+    },
+    {
+      "path": "bench/saves/pal-final-preboss-reserve.saves.json.gz",
+      "kind": "bundled-save",
+      "tracked": true,
+      "source": "repository",
+      "size": 57245,
+      "sha256": "719014113e6f36a056355c0986f9a76bca2f9ac1d824fad018f52f06f095ac2b",
+      "decodedSize": 427513,
+      "decodedSha256": "67e0c5c18ec8689b9d857558f8eed714af36be9d899e8d1e50d34683170c2b7e",
+      "rights": "not-independently-cleared",
+      "embeddedSlots": [
+        {
+          "slot": "PAL-SAVE-3",
+          "size": 188864,
+          "sha256": "f7952dde75ef048dddd7af1dd9f9c27fdb296a27400e1db80f44941d7a20903c"
+        }
+      ]
+    }
+  ],
+  "build": {
+    "present": false,
+    "sha256": null,
+    "status": "awaiting consolidated clean build; local precompiled cache not accepted"
+  },
+  "distribution": {
+    "originalAssets": "excluded",
+    "startingFiles": "tracked presence is not a license grant; embedded original tables may require separate rights",
+    "walkthroughAndAtlas": "excluded from Tier-B model access",
+    "staticDataDumps": "excluded from Tier-B model access; rights review required before publication",
+    "trajectories": "may contain original dialogue and identifiers; review rights, secrets, anonymity and dataset classification before hosting",
+    "datasetDeclaration": "unresolved; Croissant/RAI and durable hosting required if submitted as datasets"
+  },
+  "blockers": [
+    "Independently identify and obtain the exact supported original version without personal author access.",
+    "Document code, vendored engine, assets and embedded-save rights; no permission inferred from possession or hashes.",
+    "Complete a clean engine build and two independent resource-equipped replay installations."
+  ]
+}

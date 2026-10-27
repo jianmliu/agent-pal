@@ -1,0 +1,622 @@
+[
+  {
+    "id": "baiyue-single-fragile-stocked",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "saves",
+    "startFile": "bench/saves/baiyue-single-fragile-stocked.saves.json.gz",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B"
+    ],
+    "callCap": 180,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": true,
+    "scoring": {
+      "secondary": "battleRounds"
+    },
+    "family": "baiyue-single-fragile-stocked",
+    "taskSha256": "3168bf7509d07b5496e3ee1750f846b0e97d336d2a90946cdf89f5ff099399b6"
+  },
+  {
+    "id": "baiyue-single-mana-budget",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "saves",
+    "startFile": "bench/saves/baiyue-single-mana-budget.saves.json.gz",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B"
+    ],
+    "callCap": 195,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": true,
+    "scoring": {
+      "secondary": "battleRounds"
+    },
+    "family": "baiyue-single-mana-budget",
+    "taskSha256": "c5371b60279c9f3d3775156fa85b03c809941fd496546db5fbe62a16cf169732"
+  },
+  {
+    "id": "baiyue-single-origin",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "saves",
+    "startFile": "bench/saves/baiyue-single-origin.saves.json.gz",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B"
+    ],
+    "callCap": 180,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": true,
+    "scoring": {
+      "secondary": "battleRounds"
+    },
+    "family": "baiyue-single-origin",
+    "taskSha256": "130f135db2ec2daef4d3d71d0110a4e05929b4f4b9fd762bfc79176cb1b288f7"
+  },
+  {
+    "id": "baiyue-single-sustain-no-wine",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "saves",
+    "startFile": "bench/saves/baiyue-single-sustain-no-wine.saves.json.gz",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B"
+    ],
+    "callCap": 180,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": true,
+    "scoring": {
+      "secondary": "battleRounds"
+    },
+    "family": "baiyue-single-sustain-no-wine",
+    "taskSha256": "1b2cce1af9373351ca65e46e5d8a03df22718cef66fcacea9e1a4a9b08cc4068"
+  },
+  {
+    "id": "classic08-leave-area",
+    "version": 3,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "rpg",
+    "startFile": "bench/saves/classic/08.rpg",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 80,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "classic08-leave-area",
+    "taskSha256": "1ac9588bb628ec4c15c4996993e6c0432fbf655048792b5248b5555d182ca82f"
+  },
+  {
+    "id": "classic10-baihe-medicine",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "rpg",
+    "startFile": "bench/saves/classic/10.rpg",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 240,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "classic10-baihe-medicine",
+    "taskSha256": "9871cc4088af38eaab6545220e41e9b189e35282be3b6f9a89ad20084a636a27"
+  },
+  {
+    "id": "classic16-guiyin-altar",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "rpg",
+    "startFile": "bench/saves/classic/16.rpg",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 80,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "classic16-guiyin-altar",
+    "taskSha256": "eac3670f793c49c56e710950de2ac48269a7b2a729a4edd93f69194f1ab68100"
+  },
+  {
+    "id": "classic19-yangzhou-gourd",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "rpg",
+    "startFile": "bench/saves/classic/19.rpg",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 230,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "classic19-yangzhou-gourd",
+    "taskSha256": "9ed5ef4869989f1c145e9fb24e7899050df6b9a53a2a94992f55a7b5b3f1fd09"
+  },
+  {
+    "id": "classic19-yangzhou-night",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "rpg",
+    "startFile": "bench/saves/classic/19.rpg",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 80,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "classic19-yangzhou-night",
+    "taskSha256": "a59ca57c6611390229b7cae1d2df5d000fc986b5f1abeac66bce79ef5a1f09ac"
+  },
+  {
+    "id": "classic28-tower-chain",
+    "version": 2,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "rpg",
+    "startFile": "bench/saves/classic/28.rpg",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 345,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "classic28-tower-chain",
+    "taskSha256": "6f6143131a0a98182ff8d8828fd8b89c5c2c3ca8bb31f4d5d35b19e2f8603bdb"
+  },
+  {
+    "id": "classic28-tower-gate",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "rpg",
+    "startFile": "bench/saves/classic/28.rpg",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 320,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "classic28-tower-gate",
+    "taskSha256": "d97dd1037d2fc159445b888182b93dd90ee9b9741e182c169e35f21e61244cd4"
+  },
+  {
+    "id": "classic31-banana-monkeys",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "rpg",
+    "startFile": "bench/saves/classic/31.rpg",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 80,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "classic31-banana-monkeys",
+    "taskSha256": "85ae249c247d3e6a13aa5187cb2f2a367e615582f54f9e8c31f6eb34d5899419"
+  },
+  {
+    "id": "classic40-phoenix-handkerchief",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "rpg",
+    "startFile": "bench/saves/classic/40.rpg",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 80,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "classic40-phoenix-handkerchief",
+    "taskSha256": "0bcbc59600b03282d5238755de9340cf5c3c7ad465719ea735345777d796b0ed"
+  },
+  {
+    "id": "classic40-water-orb",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "rpg",
+    "startFile": "bench/saves/classic/40.rpg",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 250,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "classic40-water-orb",
+    "taskSha256": "690b6360fcd52a0ab7fb92d78e3cdeaabb881620697db9224349cafd893819f0"
+  },
+  {
+    "id": "classic48-rain-orbs",
+    "version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "startKind": "rpg",
+    "startFile": "bench/saves/classic/48.rpg",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 80,
+    "referenceSeeds": [
+      42,
+      43,
+      44
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "classic48-rain-orbs",
+    "taskSha256": "49df8d8a2e8d0dfe8dda084660fb6b5910efe1d2485902c7a9050b503d97b4cd"
+  },
+  {
+    "id": "opening-serve-dishes",
+    "version": 3,
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "startKind": "newGame",
+    "startFile": null,
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 174,
+    "referenceSeeds": [
+      1,
+      2,
+      3
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "opening-serve-dishes",
+    "taskSha256": "1a7549e602dea26cb7cdb8411e26ba41ba90c246e70ebd8786e339af3689a480"
+  },
+  {
+    "id": "pal-ch1-corridor",
+    "version": 1,
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "startKind": "saves",
+    "startFile": "bench/saves/pal-ch1-corridor.saves.json.gz",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 105,
+    "referenceSeeds": [
+      1,
+      2,
+      3
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "pal-ch1-corridor",
+    "taskSha256": "88d5aabf335afac419a036beee2b29338631f5eb9330a424700cccb002ea1084"
+  },
+  {
+    "id": "pal-ch1-island-hardcore",
+    "version": 1,
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "startKind": "saves",
+    "startFile": "bench/saves/pal-ch1-island.saves.json.gz",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 105,
+    "referenceSeeds": [
+      1,
+      2,
+      3
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "pal-ch1-island",
+    "taskSha256": "2e06847ced177fb93a63e25ead4c83deaba05973b2a1874aa1a80f0c54833b3b"
+  },
+  {
+    "id": "pal-ch1-island",
+    "version": 1,
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "startKind": "saves",
+    "startFile": "bench/saves/pal-ch1-island.saves.json.gz",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 105,
+    "referenceSeeds": [
+      1,
+      2,
+      3
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "pal-ch1-island",
+    "taskSha256": "5a5d1eaafce38508686538b4d094d1c4d1af86918bf6a8cbadca18e123677272"
+  },
+  {
+    "id": "pal-ch1-meet-linger-hardcore",
+    "version": 1,
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "startKind": "newGame",
+    "startFile": null,
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 380,
+    "referenceSeeds": [
+      1,
+      2,
+      3
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "pal-ch1-meet-linger",
+    "taskSha256": "4f915d24c39a82efa7b0b3de43094be390df10c9179569e614f32a746191ed24"
+  },
+  {
+    "id": "pal-ch1-meet-linger",
+    "version": 1,
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "startKind": "newGame",
+    "startFile": null,
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 380,
+    "referenceSeeds": [
+      1,
+      2,
+      3
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "pal-ch1-meet-linger",
+    "taskSha256": "419fc8f5b6bb7431f545a444803237813f05eb93aa59c4f1dce62a2315cdc9b9"
+  },
+  {
+    "id": "pal-final-preboss-reserve",
+    "version": 1,
+    "seeds": [
+      42
+    ],
+    "startKind": "saves",
+    "startFile": "bench/saves/pal-final-preboss-reserve.saves.json.gz",
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B"
+    ],
+    "callCap": 180,
+    "referenceSeeds": [
+      42
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "pal-final-preboss-reserve",
+    "taskSha256": "a575680ac84e87a81de6c68983ed5c084f7c14b4f15cf79bd4b12303997c9988"
+  },
+  {
+    "id": "wine-to-drunk-taoist",
+    "version": 3,
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "startKind": "newGame",
+    "startFile": null,
+    "startExists": true,
+    "startTracked": true,
+    "tiers": [
+      "B",
+      "C"
+    ],
+    "callCap": 192,
+    "referenceSeeds": [
+      1,
+      2,
+      3
+    ],
+    "expectStart": false,
+    "scoring": null,
+    "family": "wine-to-drunk-taoist",
+    "taskSha256": "796b221c0c5bcfcd3e9a5210680c196101b77ebdcac25c1db242cf06fbee4881"
+  }
+]

@@ -1,0 +1,62 @@
+✓ baiyue-single-fragile-stocked seed 42: goal at step 38/38 · rounds 13 · milestones (none) · vt 152.718s
+✓ baiyue-single-fragile-stocked seed 43: goal at step 38/38 · rounds 13 · milestones (none) · vt 155.168s
+✓ baiyue-single-fragile-stocked seed 44: goal at step 35/35 · rounds 12 · milestones (none) · vt 139.988s
+✓ baiyue-single-mana-budget seed 42: goal at step 47/47 · rounds 16 · milestones (none) · vt 177.678s
+✓ baiyue-single-mana-budget seed 43: goal at step 51/51 · rounds 17 · milestones (none) · vt 180.088s
+✓ baiyue-single-mana-budget seed 44: goal at step 57/57 · rounds 21 · milestones (none) · vt 208.788s
+✓ baiyue-single-origin seed 42: goal at step 35/35 · rounds 12 · milestones (none) · vt 141.558s
+✓ baiyue-single-origin seed 43: goal at step 36/36 · rounds 12 · milestones (none) · vt 142.588s
+✓ baiyue-single-origin seed 44: goal at step 36/36 · rounds 14 · milestones (none) · vt 158.398s
+✓ baiyue-single-sustain-no-wine seed 42: goal at step 45/45 · rounds 15 · milestones (none) · vt 138.408s
+✓ baiyue-single-sustain-no-wine seed 43: goal at step 47/47 · rounds 17 · milestones (none) · vt 145.978s
+✓ baiyue-single-sustain-no-wine seed 44: goal at step 42/42 · rounds 14 · milestones (none) · vt 126.768s
+✓ classic08-leave-area seed 42: goal at step 1/1 · milestones explored-upper-level@– · vt 13.275s
+✓ classic08-leave-area seed 43: goal at step 1/1 · milestones explored-upper-level@– · vt 13.275s
+✓ classic08-leave-area seed 44: goal at step 1/1 · milestones explored-upper-level@– · vt 13.275s
+✓ classic10-baihe-medicine seed 42: goal at step 40/40 · milestones got-ginkgo@8 got-carp@16 got-antler@34 · vt 123.092s
+✓ classic10-baihe-medicine seed 43: goal at step 40/40 · milestones got-ginkgo@8 got-carp@16 got-antler@34 · vt 124.009s
+✓ classic10-baihe-medicine seed 44: goal at step 40/40 · milestones got-ginkgo@8 got-carp@16 got-antler@34 · vt 123.764s
+✓ classic16-guiyin-altar seed 42: goal at step 20/20 · milestones on-the-mountain@9 through-cave-74@10 through-cave-73@12 · vt 73.056s
+✓ classic16-guiyin-altar seed 43: goal at step 20/20 · milestones on-the-mountain@9 through-cave-74@10 through-cave-73@12 · vt 69.721s
+✓ classic16-guiyin-altar seed 44: goal at step 20/20 · milestones on-the-mountain@9 through-cave-74@10 through-cave-73@12 · vt 70.305s
+✓ classic19-yangzhou-gourd seed 42: goal at step 74/74 · milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 · vt 250.718s
+✓ classic19-yangzhou-gourd seed 43: goal at step 74/74 · milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 · vt 251.181s
+✓ classic19-yangzhou-gourd seed 44: goal at step 74/74 · milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 · vt 249.782s
+✓ classic19-yangzhou-night seed 42: goal at step 13/13 · milestones entered-city@2 booked-room@6 · vt 41.978s
+✓ classic19-yangzhou-night seed 43: goal at step 13/13 · milestones entered-city@2 booked-room@6 · vt 41.978s
+✓ classic19-yangzhou-night seed 44: goal at step 13/13 · milestones entered-city@2 booked-room@6 · vt 41.978s
+✓ classic28-tower-chain seed 42: goal at step 114/114 · milestones ghost-king-agreed@55 through-bronze-gate@67 got-heavenly-book@98 · vt 360.095s
+✓ classic28-tower-chain seed 43: goal at step 115/115 · milestones ghost-king-agreed@57 through-bronze-gate@71 got-heavenly-book@100 · vt 376.731s
+✓ classic28-tower-chain seed 44: goal at step 109/109 · milestones ghost-king-agreed@57 through-bronze-gate@67 got-heavenly-book@96 · vt 352.797s
+✓ classic28-tower-gate seed 42: goal at step 67/67 · milestones entered-148@35 ghost-king-agreed@55 · vt 229.57s
+✓ classic28-tower-gate seed 43: goal at step 71/71 · milestones entered-148@37 ghost-king-agreed@57 · vt 237.544s
+✓ classic28-tower-gate seed 44: goal at step 67/67 · milestones entered-148@39 ghost-king-agreed@57 · vt 222.237s
+✓ classic31-banana-monkeys seed 42: goal at step 22/22 · milestones got-bananas@3 entered-tree-maze@5 · vt 39.889s
+✓ classic31-banana-monkeys seed 43: goal at step 22/22 · milestones got-bananas@3 entered-tree-maze@5 · vt 39.868s
+✓ classic31-banana-monkeys seed 44: goal at step 22/22 · milestones got-bananas@3 entered-tree-maze@5 · vt 40.576s
+✓ classic40-phoenix-handkerchief seed 42: goal at step 9/9 · milestones entered-temple@3 old-woman-calls@7 · vt 36.515s
+✓ classic40-phoenix-handkerchief seed 43: goal at step 9/9 · milestones entered-temple@3 old-woman-calls@7 · vt 36.515s
+✓ classic40-phoenix-handkerchief seed 44: goal at step 9/9 · milestones entered-temple@3 old-woman-calls@7 · vt 36.515s
+✓ classic40-water-orb seed 42: goal at step 83/83 · milestones handkerchief-delivered@28 got-wooden-sword@23 opened-box@80 · vt 172.82s
+✓ classic40-water-orb seed 43: goal at step 83/83 · milestones handkerchief-delivered@28 got-wooden-sword@23 opened-box@80 · vt 171.87s
+✓ classic40-water-orb seed 44: goal at step 83/83 · milestones handkerchief-delivered@28 got-wooden-sword@23 opened-box@80 · vt 171.659s
+✓ classic48-rain-orbs seed 42: goal at step 7/7 · milestones tablet-activated@1 first-orb-placed@3 · vt 39.564s
+✓ classic48-rain-orbs seed 43: goal at step 7/7 · milestones tablet-activated@1 first-orb-placed@3 · vt 39.564s
+✓ classic48-rain-orbs seed 44: goal at step 7/7 · milestones tablet-activated@1 first-orb-placed@3 · vt 39.564s
+✓ opening-serve-dishes seed 1: goal at step 58/58 · milestones (none) · vt 85.869s
+✓ opening-serve-dishes seed 2: goal at step 36/36 · milestones (none) · vt 66.908s
+✓ opening-serve-dishes seed 3: goal at step 47/47 · milestones (none) · vt 79.335s
+✓ pal-ch1-corridor seed 1: goal at step 30/30 · milestones reached-leaf-maze@9 statues-1@10 statues-3@14 statues-6@20 entered-xianling-dongtian@28 found-clothes@29 · vt 117.663s
+✓ pal-ch1-corridor seed 2: goal at step 32/32 · milestones reached-leaf-maze@11 statues-1@12 statues-3@16 statues-6@22 entered-xianling-dongtian@30 found-clothes@31 · vt 120.608s
+✓ pal-ch1-corridor seed 3: goal at step 29/29 · milestones reached-leaf-maze@9 statues-1@10 statues-3@14 statues-6@20 entered-xianling-dongtian@27 found-clothes@28 · vt 112.871s
+✓ pal-ch1-island seed 1: goal at step 31/31 · milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@29 found-clothes@30 · vt 120.163s
+✓ pal-ch1-island seed 2: goal at step 33/33 · milestones entered-corridor@1 reached-leaf-maze@12 statues-1@13 statues-3@17 statues-6@23 entered-xianling-dongtian@31 found-clothes@32 · vt 123.087s
+✓ pal-ch1-island seed 3: goal at step 30/30 · milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@28 found-clothes@29 · vt 115.288s
+✓ pal-ch1-island-hardcore seed 1: goal at step 31/31 · milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@29 found-clothes@30 · vt 120.163s
+✓ pal-ch1-island-hardcore seed 2: goal at step 33/33 · milestones entered-corridor@1 reached-leaf-maze@12 statues-1@13 statues-3@17 statues-6@23 entered-xianling-dongtian@31 found-clothes@32 · vt 123.087s
+✓ pal-ch1-island-hardcore seed 3: goal at step 30/30 · milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@28 found-clothes@29 · vt 115.288s
+✓ pal-ch1-meet-linger seed 1: goal at step 126/126 · milestones served-dishes@58 wine-to-taoist@64 shrimp-errand@67 heard-of-fairy@71 aunt-collapsed@76 island-medicine@82 got-hammer@84 landed-on-island@90 reached-leaf-maze@102 statues-1@106 statues-3@110 statues-6@116 entered-xianling-dongtian@124 found-clothes@125 · vt 286.909s
+✓ pal-ch1-meet-linger seed 2: goal at step 100/100 · milestones served-dishes@36 wine-to-taoist@42 shrimp-errand@45 heard-of-fairy@49 aunt-collapsed@54 island-medicine@60 got-hammer@62 landed-on-island@68 reached-leaf-maze@79 statues-1@80 statues-3@84 statues-6@90 entered-xianling-dongtian@98 found-clothes@99 · vt 263.739s
+✓ pal-ch1-meet-linger seed 3: goal at step 111/111 · milestones served-dishes@46 wine-to-taoist@52 shrimp-errand@55 heard-of-fairy@59 aunt-collapsed@64 island-medicine@70 got-hammer@72 landed-on-island@78 reached-leaf-maze@91 statues-1@92 statues-3@96 statues-6@102 entered-xianling-dongtian@109 found-clothes@110 · vt 282.269s
+✓ pal-ch1-meet-linger-hardcore seed 1: goal at step 123/123 · milestones served-dishes@58 wine-to-taoist@64 shrimp-errand@67 heard-of-fairy@71 aunt-collapsed@76 island-medicine@82 got-hammer@84 landed-on-island@90 reached-leaf-maze@102 statues-1@103 statues-3@107 statues-6@113 entered-xianling-dongtian@121 found-clothes@122 · vt 285.557s
+✓ pal-ch1-meet-linger-hardcore seed 2: goal at step 102/102 · milestones served-dishes@36 wine-to-taoist@42 shrimp-errand@45 heard-of-fairy@49 aunt-collapsed@54 island-medicine@60 got-hammer@62 landed-on-island@68 reached-leaf-maze@79 statues-1@82 statues-3@86 statues-6@92 entered-xianling-dongtian@100 found-clothes@101 · vt 272.323s

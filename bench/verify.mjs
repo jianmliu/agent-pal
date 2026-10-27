@@ -28,6 +28,7 @@ import { loadTask } from './task.mjs';
 import { taskFingerprint, runtimeFingerprint } from './start.mjs';
 import { codeRev, booksFingerprint } from './runner.mjs';
 import { costOf } from './providers.mjs';
+import { PROTOCOL_OVERRIDE_KEYS } from './protocol-contract.mjs';
 import { readClientFinalization, ACCOUNTING_FIELDS } from './client-finalization.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -47,12 +48,18 @@ export function readLog(file) {
   for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
     if (!line.trim()) continue;
     const ev = JSON.parse(line);
+    if (!ev || typeof ev !== 'object' || Array.isArray(ev) || typeof ev.type !== 'string') throw new Error(`${file}: invalid log event`);
+    if (ev.type === 'start' && (out.start || out.end || out.calls.length || out.turns.length)) throw new Error(`${file}: duplicate or misplaced start event`);
+    if (ev.type !== 'start' && !out.start) throw new Error(`${file}: event before start`);
+    if (ev.type === 'end' && out.end) throw new Error(`${file}: duplicate end event`);
+    if (ev.type === 'call' && (out.end || !Number.isInteger(ev.i) || ev.i !== out.calls.length + 1 || typeof ev.name !== 'string')) throw new Error(`${file}: invalid or misplaced call event`);
     if (ev.type === 'start') out.start = ev;
     else if (ev.type === 'call') out.calls.push(ev);
     else if (ev.type === 'turn') out.turns.push(ev);
     else if (ev.type === 'end') out.end = ev;
   }
   if (!out.start) throw new Error(`${file}: no start event`);
+  if (out.end?.toolCalls !== undefined && (!Number.isInteger(out.end.toolCalls) || out.end.toolCalls !== out.calls.length)) throw new Error(`${file}: end toolCalls disagrees with raw call count`);
   out.accountingErrors = [];
   if (out.end) {
     try { out.clientFinalized = readClientFinalization(file); }
@@ -71,7 +78,7 @@ export function compareLogs(orig, replay, claimed = orig.end) {
   const diffs = [...(orig.accountingErrors || [])];
   const accountedEnd = orig.clientFinalized?.result || orig.end;
   if (orig.start?.clientAccountingVersion === 1 && !orig.clientFinalized) diffs.push('missing required client_finalized event');
-  for(const k of ['fingerprint','initial','setup'])if(!same(orig.start?.[k],replay.start?.[k]))diffs.push(`start ${k} mismatch`);
+  for(const k of ['fingerprint','initial','setup','protocol','trial'])if(orig.start?.[k] !== undefined && !same(orig.start[k],replay.start?.[k]))diffs.push(`start ${k} mismatch`);
   const n = Math.max(orig.calls.length, replay.calls.length);
   for (let i = 0; i < n; i++) {
     const a = orig.calls[i], b = replay.calls[i];
@@ -86,38 +93,63 @@ export function compareLogs(orig, replay, claimed = orig.end) {
     return diffs;
   }
   for (const k of ['task','taskVersion','seed','tier','model','runId']) if(orig.start?.[k] != null && orig.end[k] != null && !same(orig.start[k], orig.end[k])) diffs.push(`end ${k} disagrees with start`);
+  for (const k of ['protocol','trial']) {
+    if (orig.start?.[k] !== undefined && orig.end && !same(orig.start[k], orig.end[k])) diffs.push(`end ${k} disagrees with start`);
+    if (claimed && orig.end?.[k] !== undefined && !same(claimed[k],orig.end[k])) diffs.push(`result file ${k} disagrees with log`);
+    if (replay.end && orig.end?.[k] !== undefined && !same(replay.end[k],orig.end[k])) diffs.push(`final ${k} mismatch`);
+  }
   if (claimed && claimed !== orig.end) {
     for (const k of CLAIM_FIELDS) if (!same(claimed[k], orig.end[k])) diffs.push(`result file ${k} ${JSON.stringify(claimed[k])} disagrees with the log's ${JSON.stringify(orig.end[k])}`);
     for (const k of orig.clientFinalized ? ACCOUNTING_FIELDS : CLAIM_USAGE_FIELDS) if ((orig.clientFinalized || (claimed[k] !== undefined && orig.end[k] !== undefined)) && !same(claimed[k], accountedEnd[k])) diffs.push(`result file ${k} ${JSON.stringify(claimed[k])} disagrees with the log's ${JSON.stringify(accountedEnd[k])}`);
+    for (const k of ['accountingStatus','measuredUsage','turns']) if ((claimed[k] !== undefined || accountedEnd?.[k] !== undefined) && !same(claimed[k],accountedEnd?.[k])) diffs.push(`result file ${k} disagrees with accounting log`);
     if (orig.clientFinalized && !same(claimed.client, accountedEnd.client)) diffs.push('result client metadata disagrees with client_finalized');
+  }
+  // Built-in provider errors retain a measured prefix, while whole-trial totals stay unknown.
+  const incomplete = !orig.end.external && orig.end.accountingStatus === 'incomplete';
+  const ledger = incomplete ? (orig.end.measuredUsage || {}) : orig.end;
+  const ledgerLabel = incomplete ? 'end measuredUsage' : 'end';
+  if (!orig.end.external && orig.end.accountingStatus === 'complete') {
+    for (const key of ['tokensIn','tokensOut','tokensCached','tokensCacheWrite']) {
+      if (!Number.isSafeInteger(orig.end[key]) || orig.end[key] < 0) diffs.push(`complete accounting requires known ${key}`);
+    }
+  }
+  if (incomplete) {
+    for (const key of CLAIM_USAGE_FIELDS) if (orig.end[key] !== null) diffs.push(`incomplete accounting requires null whole-trial ${key}`);
+    for (const key of ['tokensIn','tokensOut','tokensCached','tokensCacheWrite','turns']) {
+      if (!Number.isSafeInteger(ledger[key]) || ledger[key] < 0) diffs.push(`invalid measuredUsage ${key}`);
+    }
+    if (ledger.cost !== null && (typeof ledger.cost !== 'number' || !Number.isFinite(ledger.cost) || ledger.cost < 0)) diffs.push('invalid measuredUsage cost');
+    if (ledger.turns !== (orig.turns?.length ?? 0)) diffs.push('measuredUsage turns disagrees with logged turn count');
   }
   if (Array.isArray(orig.turns) && orig.turns.length > 0) {
     let sumIn = 0, sumOut = 0, sumCacheRead = 0, sumCacheWrite = 0, activeTurns = 0;
     for (const t of orig.turns) {
       const u = t.usage || {};
-      sumIn += u.tokensIn || 0;
-      sumOut += u.tokensOut || 0;
-      sumCacheRead += u.cacheRead || 0;
-      sumCacheWrite += u.cacheWrite || 0;
-      if ((u.tokensIn || 0) > 0) activeTurns++;
+      const known = key => {
+        if (u[key] === undefined || u[key] === null) return 0;
+        if (Number.isSafeInteger(u[key]) && u[key] >= 0) return u[key];
+        if (!incomplete) diffs.push(`invalid turn usage ${key}`);
+        return 0;
+      };
+      const input = known('tokensIn');
+      sumIn += input; sumOut += known('tokensOut');
+      sumCacheRead += known('cacheRead'); sumCacheWrite += known('cacheWrite');
+      if (input > 0) activeTurns++;
     }
-    if ((orig.end.tokensIn ?? 0) < sumIn) diffs.push(`end tokensIn ${orig.end.tokensIn} < sum of turn tokensIn ${sumIn}`);
-    if ((orig.end.tokensOut ?? 0) < sumOut) diffs.push(`end tokensOut ${orig.end.tokensOut} < sum of turn tokensOut ${sumOut}`);
-    if ((orig.end.tokensCached ?? 0) < sumCacheRead) diffs.push(`end tokensCached ${orig.end.tokensCached} < sum of turn cacheRead ${sumCacheRead}`);
-    if ((orig.end.tokensCacheWrite ?? 0) < sumCacheWrite) diffs.push(`end tokensCacheWrite ${orig.end.tokensCacheWrite} < sum of turn cacheWrite ${sumCacheWrite}`);
-    if (activeTurns > 0 && (orig.end.tokensIn ?? 0) < activeTurns * 100) {
-      diffs.push(`end tokensIn ${orig.end.tokensIn} is below physical prompt minimum (${activeTurns} active turns × 100 tokens)`);
+    for (const [key, sum] of [['tokensIn',sumIn],['tokensOut',sumOut],['tokensCached',sumCacheRead],['tokensCacheWrite',sumCacheWrite]]) {
+      if ((ledger[key] ?? 0) < sum) diffs.push(`${ledgerLabel} ${key} ${ledger[key]} < sum of turn ${key} ${sum}`);
+    }
+    if (!incomplete && activeTurns > 0 && (ledger.tokensIn ?? 0) < activeTurns * 100) {
+      diffs.push(`end tokensIn ${ledger.tokensIn} is below physical prompt minimum (${activeTurns} active turns × 100 tokens)`);
     }
   }
-  if (!orig.end.external && orig.end.model && orig.end.tokensIn !== undefined) {
+  if (!orig.end.external && orig.end.model && ledger.tokensIn != null) {
     const expectedCost = costOf(orig.end.model, {
-      tokensIn: orig.end.tokensIn || 0,
-      tokensOut: orig.end.tokensOut || 0,
-      cacheRead: orig.end.tokensCached || 0,
-      cacheWrite: orig.end.tokensCacheWrite || 0
+      tokensIn: ledger.tokensIn || 0, tokensOut: ledger.tokensOut || 0,
+      cacheRead: ledger.tokensCached || 0, cacheWrite: ledger.tokensCacheWrite || 0
     });
-    if (expectedCost != null && (orig.end.cost == null || Math.abs(orig.end.cost - expectedCost) > 1e-5)) {
-      diffs.push(`end cost ${JSON.stringify(orig.end.cost)} disagrees with official price table (${expectedCost.toFixed(6)})`);
+    if (expectedCost != null && (ledger.cost == null || Math.abs(ledger.cost - expectedCost) > 1e-5)) {
+      diffs.push(`${ledgerLabel} cost ${JSON.stringify(ledger.cost)} disagrees with official price table (${expectedCost.toFixed(6)})`);
     }
   }
   if (!replay.end) diffs.push('replay has no end event');
@@ -137,7 +169,7 @@ export async function verifyChild(job) {
   const orig = readLog(job.source);
   const s = orig.start;
   const task = loadTask(s.task);
-  const budgetToolCalls = s.budgetToolCalls ?? (orig.end?.endReason === 'budget-toolCalls' ? orig.end.toolCalls : undefined);
+  const budgetToolCalls = s.protocol?.budget?.toolCalls ?? s.budgetToolCalls ?? (orig.end?.endReason === 'budget-toolCalls' ? orig.end.toolCalls : undefined);
   let tailSame = 0;
   if (orig.end?.endReason === 'stuck' && orig.calls.length > 0) {
     const last = orig.calls[orig.calls.length - 1];
@@ -146,7 +178,7 @@ export async function verifyChild(job) {
     for (let i = orig.calls.length - 1; i >= 0 && sig(orig.calls[i]) === target; i--) tailSame++;
   }
   const stuckK = s.stuckK ?? (orig.end?.endReason === 'stuck' && tailSame < 60 ? 20 : undefined);
-  const ep = await createEpisode({ task, seed: s.seed, tier: s.tier, logFile: job.logFile, meta: { model: s.model, runId: s.runId, hints: s.hints ?? 'standard', ...(budgetToolCalls ? { budgetToolCalls } : {}), ...(stuckK ? { stuckK } : {}) } });
+  const ep = await createEpisode({ task, seed: s.seed, tier: s.tier, logFile: job.logFile, meta: { model: s.model, runId: s.runId, hints: s.hints ?? 'standard', ...(s.protocol ? {protocol:s.protocol} : {}), ...(s.trial ? {trial:s.trial} : {}), ...(budgetToolCalls ? { budgetToolCalls } : {}), ...(stuckK ? { stuckK } : {}) } });
   for (const c of orig.calls) {
     if (ep.done) break;
     await ep.call(c.name, c.args);
@@ -157,6 +189,10 @@ export async function verifyChild(job) {
 /** Semantic metadata that determines ranking and comparability. */
 export function runDigest(meta) {
   const keys=['runId','model','tier','hints','external','code','promptVersion','scoring','tasks','runtime','books','clientAccountingVersion'];
+  // Optional release fields must not alter the digest of historical runs.
+  for (const key of ['release','releaseId','campaign','campaignId','manifestDigest','protocol','protocols','formal','protocolVersion','effectiveBudgets','trial','trialId','condition','repetition','attempt']) {
+    if (Object.hasOwn(meta, key)) keys.push(key);
+  }
   return crypto.createHash('sha256').update(JSON.stringify(Object.fromEntries(keys.map(k=>[k,meta[k]??null])))).digest('hex');
 }
 
@@ -185,6 +221,20 @@ export function episodeDigest(jsonlPath) {
   return h.digest('hex');
 }
 
+/** Restore only protocol-owned knobs; never accept paths, endpoints or secrets from logs. */
+export function replayEnvironment(protocol, base = process.env) {
+  const env = {...base};
+  for (const key of ['BENCH_RESUME_FROM','BENCH_REPLAY_PREFIX','BENCH_REPLAY_NOTE']) delete env[key];
+  if (protocol) for (const key of PROTOCOL_OVERRIDE_KEYS) {
+    delete env[key];
+    if (protocol.overrides?.[key] !== undefined) {
+      if (typeof protocol.overrides[key] !== 'string') throw Error(`invalid protocol override ${key}`);
+      env[key] = protocol.overrides[key];
+    }
+  }
+  return env;
+}
+
 /** 新子进程按日志重放一局(引擎是全局状态,一个进程只跑一局),返回重放日志。 */
 export function replayInChild(source, { runtimeRoot = null } = {}) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-pal-verify-'));
@@ -192,7 +242,7 @@ export function replayInChild(source, { runtimeRoot = null } = {}) {
   try {
     const p = spawnSync(process.execPath, [runtimeRoot ? path.join(runtimeRoot, 'bench/bench.mjs') : benchCli, '--verify-episode', JSON.stringify({ source, logFile })], {
       stdio: ['ignore', 'ignore', 'pipe'], encoding: 'utf8',
-      env: { ...process.env, AGENT_PAL_SAVES: path.join(tmp, 'saves.json'), AGENT_PAL_MEMORY: '' }
+      env: { ...replayEnvironment(readLog(source).start.protocol), AGENT_PAL_SAVES: path.join(tmp, 'saves.json'), AGENT_PAL_MEMORY: '' }
     });
     if (p.status !== 0 || !fs.existsSync(logFile)) {
       const lines = (p.stderr || '').split('\n').map((l) => l.trim()).filter(Boolean);
@@ -220,14 +270,16 @@ export function booksMismatch(recorded, current) {
 }
 
 /** 核验一局(replay 可替换,测试用):返回 { file, task, seed, ok, verdict, diffs, warnings }。currentBooks 为本机资料指纹或返回它的函数(只有 C 档才算)。 */
-export function verifyEpisode(file, { runMeta = null, currentCode = undefined, currentBooks = booksFingerprint, currentRuntime = runtimeFingerprint, currentTaskFingerprint = taskFingerprint, replay = replayInChild } = {}) {
+export function verifyEpisode(file, { backend = 'engine-replay', runMeta = null, currentCode = undefined, currentBooks = booksFingerprint, currentRuntime = runtimeFingerprint, currentTaskFingerprint = taskFingerprint, replay = replayInChild } = {}) {
   const resultFile = file.replace(/\.jsonl$/, '.json');
-  let claimed = fs.existsSync(resultFile) ? JSON.parse(fs.readFileSync(resultFile, 'utf8')) : null;
-  let orig = null;
-  try { orig = readLog(file); } catch { /* 没有日志 / 开局前就崩了 */ }
+  let claimed = null, orig = null, inputError = null;
+  try { if (fs.existsSync(resultFile)) claimed = JSON.parse(fs.readFileSync(resultFile, 'utf8')); } catch (err) { inputError = err; }
+  try { if (fs.existsSync(file)) orig = readLog(file); } catch (err) { inputError = err; }
   claimed ??= orig?.end ?? null;
   const r = { file: path.basename(file), task: orig?.start.task ?? claimed?.task, seed: orig?.start.seed ?? claimed?.seed,
-    claimed: claimed ? { success: !!claimed.success, endReason: claimed.endReason } : null, digest: episodeDigest(file), ok: false, verdict: null, diffs: [], warnings: [] };
+    claimed: claimed ? { success: !!claimed.success, endReason: claimed.endReason } : null, digest: episodeDigest(file), backend, evidenceLevel: 'not-replayed', ok: false, verdict: null, diffs: [], warnings: [] };
+  if (!['engine-replay', 'log-consistency'].includes(backend)) {r.verdict='unverifiable';r.diffs.push(`unknown verification backend: ${backend}`);return r;}
+  if (inputError) {r.verdict='invalid-log';r.diffs.push(String(inputError.message));return r;}
   if (!orig) {
     // 没有可重放的日志:兜底的失败结果没什么可核的;声称成功却拿不出日志 = 不可信
     r.verdict = 'no-log';
@@ -237,6 +289,12 @@ export function verifyEpisode(file, { runMeta = null, currentCode = undefined, c
     return r;
   }
   const s = orig.start;
+  if (runMeta?.protocols) {
+    const planned = Array.isArray(runMeta.protocols) ? runMeta.protocols.find(p => p.task === s.task) : null;
+    if (!planned || !same(planned.contract, s.protocol)) {
+      r.verdict='unverifiable';r.diffs.push('run protocol disagrees with episode protocol');return r;
+    }
+  }
   if (!orig.end) r.warnings.push('the episode did not finish normally (no end event); only its calls were replayed');
   let task;
   try { task = loadTask(s.task); } catch (err) { r.verdict = 'unverifiable'; r.diffs.push(`task ${s.task}: ${err.message}`); return r; }
@@ -254,7 +312,8 @@ export function verifyEpisode(file, { runMeta = null, currentCode = undefined, c
       r.verdict='unverifiable'; r.diffs.push('run scoring / task / seed / model identity disagrees with episode'); return r;
     }
   }
-  if (runMeta?.runtime) {
+  if (backend === 'log-consistency') r.warnings.push('log consistency only: runtime/assets and engine behavior were not replayed or certified');
+  if (runMeta?.runtime && backend === 'engine-replay') {
     let runtime; try { runtime = typeof currentRuntime === 'function' ? currentRuntime() : currentRuntime; } catch(err) { r.verdict='unverifiable'; r.diffs.push(`runtime fingerprint: ${err.message}`); return r; }
     if (!same(runMeta.runtime, runtime)) { r.verdict='unverifiable'; r.diffs.push('runtime or assets fingerprint changed'); return r; }
   }
@@ -284,11 +343,13 @@ export function verifyEpisode(file, { runMeta = null, currentCode = undefined, c
     r.warnings.push('zero output tokens across tool calls (non-generative / custom decision adapter)');
   }
   let replayed;
-  try { replayed = replay(path.resolve(file)); } catch (err) { r.verdict = 'error'; r.diffs.push(String(err?.message || err)); return r; }
+  try { replayed = backend === 'log-consistency' ? orig : replay(path.resolve(file)); } catch (err) { r.verdict = 'error'; r.diffs.push(String(err?.message || err)); return r; }
   r.diffs = compareLogs(orig, replayed, claimed);
   if (orig.clientFinalized && orig.clientFinalized.result.accountingStatus !== 'complete') r.warnings.push(`client accounting ${orig.clientFinalized.result.accountingStatus}: usage/cost unknown, not zero`);
+  if (!orig.clientFinalized && orig.end?.accountingStatus === 'incomplete') r.warnings.push('built-in accounting incomplete: measured prefix retained; whole-trial usage/cost unknown, not zero');
   r.ok = r.diffs.length === 0;
-  r.verdict = r.ok ? 'verified' : 'mismatch';
+  r.evidenceLevel = backend;
+  r.verdict = r.ok ? (backend === 'engine-replay' ? 'verified' : 'consistent') : 'mismatch';
   return r;
 }
 
@@ -303,7 +364,7 @@ export const episodeLogs = (runDir) => {
 };
 
 /** bench verify:目录 = 整次运行(写 verify.json),文件 = 单局。返回各局结果。 */
-export function verify(target, { replay = replayInChild, runtimeRoot = null } = {}) {
+export function verify(target, { replay = replayInChild, runtimeRoot = null, backend = 'engine-replay' } = {}) {
   if (runtimeRoot) {
     runtimeRoot = path.resolve(runtimeRoot);
     if (replay === replayInChild) replay = source => replayInChild(source, {runtimeRoot});
@@ -327,17 +388,22 @@ export function verify(target, { replay = replayInChild, runtimeRoot = null } = 
   const files = isDir ? episodeLogs(target) : [target];
   const results = [];
   for (const f of files) {
-    const r = verifyEpisode(f, { runMeta, currentCode, currentBooks, currentRuntime, replay });
+    const r = verifyEpisode(f, { runMeta, currentCode, currentBooks, currentRuntime, replay, backend });
     results.push(r);
     const claim = r.claimed ? `${r.claimed.success ? 'success' : 'no success'} (${r.claimed.endReason})` : 'no result';
     console.log(`${r.ok ? '✓' : '✗'} ${r.task} seed ${r.seed}: ${r.verdict} · claimed ${claim}`);
     for (const d of r.diffs) console.log(`    ${d}`);
     for (const w of r.warnings) console.log(`    note: ${w}`);
   }
-  if (isDir) {
-    fs.writeFileSync(path.join(runDir, 'verify.json'), JSON.stringify({ verifiedAt: new Date().toISOString(), code: currentCode, ...(runtimeRoot ? {replayRuntimeRoot:runtimeRoot} : {}), ...(runMeta?.runtime ? {runDigest:runDigest(runMeta)} : {}), episodes: results }, null, 2));
+  if (isDir && backend === 'engine-replay') {
+    fs.writeFileSync(path.join(runDir, 'verify.json'), JSON.stringify({ backend, evidenceLevel: results.every(r => r.evidenceLevel === backend) ? backend : results.every(r => r.evidenceLevel === 'not-replayed') ? 'not-replayed' : 'mixed', verifiedAt: new Date().toISOString(), code: currentCode, ...(runtimeRoot ? {replayRuntimeRoot:runtimeRoot} : {}), ...(runMeta?.runtime ? {runDigest:runDigest(runMeta)} : {}), episodes: results }, null, 2));
   }
   const bad = results.filter((r) => !r.ok).length;
-  console.log(`\n${results.length - bad}/${results.length} episode(s) verified`);
+  console.log(`\n${results.length - bad}/${results.length} episode(s) passed ${backend}`);
   return results;
+}
+
+/** Strict formal certification; unlabeled historical evidence retains unknown provenance. */
+export function replayCertification(result) {
+  return result?.ok === true && result.verdict === 'verified' && result.backend === 'engine-replay' && result.evidenceLevel === 'engine-replay';
 }
