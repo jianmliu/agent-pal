@@ -1,5 +1,5 @@
 {
- "source": "脚本化实玩(--seed 各自录):前半段即 classic28-tower-gate 的参考解(遗骸 → 147 → 167 → 148 放出天鬼皇 → 铜门 (49,90) 调查 → walk_to (47,90) 进 154);154 里 walk_to (100,98) 先和通道口的沉思鬼 2582 对话听到问题 → walk_to (90,69) 直接 interact 书中仙 2580(隔一个不可见挡块,两格外调查)拿到天书 → 回 (100,98) 再和沉思鬼对话 → walk_to (106,98) 进场景 156。walk_to 被怪打断就 battle auto 再接着走。沉思鬼本身挡死通道,没听过问题时书中仙不给天书。;main #75 之后 seed 42 按同一航点计划自适应重推(铜门后的遭遇战位置变了);2026-10-17: seeds43/44 re-recorded with the same waypoint/quest plan, finishing encounters and resuming approaches before interaction; ordinary literal B/C tools only, no goal/state/resource edits.",
+ "source": "脚本化实玩(--seed 各自录):前半段即 classic28-tower-gate 的参考解(遗骸 → 147 → 167 → 148 放出天鬼皇 → 铜门 (49,90) 调查 → walk_to (47,90) 进 154);154 里 walk_to (100,98) 先和通道口的沉思鬼 2582 对话听到问题 → walk_to (90,69) 直接 interact 书中仙 2580(隔一个不可见挡块,两格外调查)拿到天书 → 回 (100,98) 再和沉思鬼对话 → walk_to (106,98) 进场景 156。walk_to 被怪打断就 battle auto 再接着走。沉思鬼本身挡死通道,没听过问题时书中仙不给天书。;main #75 之后 seed 42 按同一航点计划自适应重推(铜门后的遭遇战位置变了);2026-10-17: seeds43/44 re-recorded with the same waypoint/quest plan, finishing encounters and resuming approaches before interaction; ordinary literal B/C tools only, no goal/state/resource edits.;2026-10-27: seed43 step39 resumes the scene167 exit waypoint (54,75); after the interrupted book approach at original step98, explicit battle auto and resumed walk_to (90,69) precede interaction. Verified on the clean current-source build, replacing stale Oct20-build encounter assumptions. Goal, task version, budget and assets unchanged; Two verified no-op calls on the return route (walk while in battle, battle while in control) are omitted; par43=115.",
  "bySeed": {
   "42": [
    [
@@ -965,8 +965,8 @@
    [
     "walk_to",
     {
-     "x": 72,
-     "y": 46
+     "x": 54,
+     "y": 75
     }
    ],
    [
@@ -1337,6 +1337,19 @@
     }
    ],
    [
+    "battle",
+    {
+     "action": "auto"
+    }
+   ],
+   [
+    "walk_to",
+    {
+     "x": 90,
+     "y": 69
+    }
+   ],
+   [
     "interact",
     {
      "id": 2580
@@ -1401,13 +1414,6 @@
     }
    ],
    [
-    "walk_to",
-    {
-     "x": 100,
-     "y": 98
-    }
-   ],
-   [
     "battle",
     {
      "action": "auto"
@@ -1418,12 +1424,6 @@
     {
      "x": 100,
      "y": 98
-    }
-   ],
-   [
-    "battle",
-    {
-     "action": "auto"
     }
    ],
    [

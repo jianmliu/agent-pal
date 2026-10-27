@@ -1,5 +1,5 @@
 {
- "source": "脚本化实玩(--seed 各自录,只走目标点):开局调查蜀山前辈遗骸并打赢死灵 → 场景 147 迷宫 walk_to (58,53) 到出口(→167)→ 167 walk_to (54,75) 到出口(→148)→ 148 东南角酒坛 (117,126) 放出天鬼皇(选「是」、打赢后他答应帮忙)→ 西北铜门旁 (49,90) 调查 2507,天鬼皇破门 → walk_to (47,90) 踩进门的触发范围进场景 154。walk_to 被怪打断(怪堵路时 walk_to 会从怪身边过去)就 battle auto 再接着走,对白 advance;不再「走向那只怪开打」。;2026-10-17: seed43 finishes the extra encounter on the final approach and resumes walking before interacting with the bronze gate.",
+ "source": "脚本化实玩(--seed 各自录,只走目标点):开局调查蜀山前辈遗骸并打赢死灵 → 场景 147 迷宫 walk_to (58,53) 到出口(→167)→ 167 walk_to (54,75) 到出口(→148)→ 148 东南角酒坛 (117,126) 放出天鬼皇(选「是」、打赢后他答应帮忙)→ 西北铜门旁 (49,90) 调查 2507,天鬼皇破门 → walk_to (47,90) 踩进门的触发范围进场景 154。walk_to 被怪打断(怪堵路时 walk_to 会从怪身边过去)就 battle auto 再接着走,对白 advance;不再「走向那只怪开打」。;2026-10-17: seed43 finishes the extra encounter on the final approach and resumes walking before interacting with the bronze gate.;2026-10-27: seed43 step39 resumes the scene167 exit waypoint (54,75) after the final encounter; verified on the clean current-source build, replacing a route recorded against the stale Oct20 engine build. Goal, task version, budget, assets and action count unchanged; par43=71.",
  "bySeed": {
   "42": [
    [
@@ -667,8 +667,8 @@
    [
     "walk_to",
     {
-     "x": 72,
-     "y": 46
+     "x": 54,
+     "y": 75
     }
    ],
    [
