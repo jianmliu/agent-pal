@@ -1,0 +1,1238 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-27",
+  "scope": "First-stage resource/evaluation protocol technical acceptance; not a model experiment, rights clearance, independent human install, or public release.",
+  "sourceContractCommit": "74b7bd2c9479a5e18fe76fd5e918e7046d09db16",
+  "referenceRepairCommit": "9a5783a3bc448a0d0a1f9273615e6c891e6f583f",
+  "toolchain": {
+    "node": "22.16.0",
+    "pnpm": "9.15.9"
+  },
+  "cleanBuild": {
+    "passed": true,
+    "present": true,
+    "sha256": "f566b10d95c722b71fcf2dd5906ec5de304463ac405080f64cfa9bcf452119fb",
+    "fileCount": 81
+  },
+  "runtime": {
+    "node": "v22.16.0",
+    "agent": "198e8d70d0e85a1decec2fa7642f05d44cd8f40aa1fcf342b852e51b5c760eef",
+    "engine": "f566b10d95c722b71fcf2dd5906ec5de304463ac405080f64cfa9bcf452119fb",
+    "bench": "d78bbf0aa0374416adc1591b29950c1a32d505e0663835954dd97be328aa65e9",
+    "assets": "57e52e82061b0cc356d599c3c7e9092b2c034dd5ec4c90d3c9016d253c2a09c8"
+  },
+  "tests": {
+    "installExitCode": 0,
+    "buildExitCode": 0,
+    "unitSuiteExitCode": 0,
+    "benchSuiteExitCode": 0,
+    "releaseContractCases": 54,
+    "clientFinalizationCases": 16,
+    "providerCancellationCases": 12,
+    "standaloneChecksPassed": true
+  },
+  "references": {
+    "scope": "Initial65/67 and focused6/6 preserved; a subsequent full-catalog rerun passed67/67 with unique catalog identities, same engine build, after the two reference repairs.",
+    "sourceCandidate": "74b7bd2",
+    "initialRows": 67,
+    "initialSuccesses": 65,
+    "initialExitCode": 1,
+    "focusedRows": 6,
+    "focusedSuccesses": 6,
+    "focusedExitCode": 0,
+    "coveredFinalPairs": 67,
+    "changedPolicies": [
+      {
+        "task": "classic28-tower-chain",
+        "seed": 43
+      },
+      {
+        "task": "classic28-tower-gate",
+        "seed": 43
+      }
+    ],
+    "taskGoalsVersionsBudgetsUnchanged": true,
+    "allParsUnchanged": true,
+    "pairs": [
+      {
+        "task": "baiyue-single-fragile-stocked",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 38/38 \u00b7 rounds 13 \u00b7 milestones (none) \u00b7 vt 152.718s"
+      },
+      {
+        "task": "baiyue-single-fragile-stocked",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 38/38 \u00b7 rounds 13 \u00b7 milestones (none) \u00b7 vt 155.168s"
+      },
+      {
+        "task": "baiyue-single-fragile-stocked",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 35/35 \u00b7 rounds 12 \u00b7 milestones (none) \u00b7 vt 139.988s"
+      },
+      {
+        "task": "baiyue-single-mana-budget",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 47/47 \u00b7 rounds 16 \u00b7 milestones (none) \u00b7 vt 177.678s"
+      },
+      {
+        "task": "baiyue-single-mana-budget",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 51/51 \u00b7 rounds 17 \u00b7 milestones (none) \u00b7 vt 180.088s"
+      },
+      {
+        "task": "baiyue-single-mana-budget",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 57/57 \u00b7 rounds 21 \u00b7 milestones (none) \u00b7 vt 208.788s"
+      },
+      {
+        "task": "baiyue-single-origin",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 35/35 \u00b7 rounds 12 \u00b7 milestones (none) \u00b7 vt 141.558s"
+      },
+      {
+        "task": "baiyue-single-origin",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 36/36 \u00b7 rounds 12 \u00b7 milestones (none) \u00b7 vt 142.588s"
+      },
+      {
+        "task": "baiyue-single-origin",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 36/36 \u00b7 rounds 14 \u00b7 milestones (none) \u00b7 vt 158.398s"
+      },
+      {
+        "task": "baiyue-single-sustain-no-wine",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 45/45 \u00b7 rounds 15 \u00b7 milestones (none) \u00b7 vt 138.408s"
+      },
+      {
+        "task": "baiyue-single-sustain-no-wine",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 47/47 \u00b7 rounds 17 \u00b7 milestones (none) \u00b7 vt 145.978s"
+      },
+      {
+        "task": "baiyue-single-sustain-no-wine",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 42/42 \u00b7 rounds 14 \u00b7 milestones (none) \u00b7 vt 126.768s"
+      },
+      {
+        "task": "classic08-leave-area",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 1/1 \u00b7 milestones explored-upper-level@\u2013 \u00b7 vt 13.275s"
+      },
+      {
+        "task": "classic08-leave-area",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 1/1 \u00b7 milestones explored-upper-level@\u2013 \u00b7 vt 13.275s"
+      },
+      {
+        "task": "classic08-leave-area",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 1/1 \u00b7 milestones explored-upper-level@\u2013 \u00b7 vt 13.275s"
+      },
+      {
+        "task": "classic10-baihe-medicine",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 40/40 \u00b7 milestones got-ginkgo@8 got-carp@16 got-antler@34 \u00b7 vt 123.092s"
+      },
+      {
+        "task": "classic10-baihe-medicine",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 40/40 \u00b7 milestones got-ginkgo@8 got-carp@16 got-antler@34 \u00b7 vt 124.009s"
+      },
+      {
+        "task": "classic10-baihe-medicine",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 40/40 \u00b7 milestones got-ginkgo@8 got-carp@16 got-antler@34 \u00b7 vt 123.764s"
+      },
+      {
+        "task": "classic16-guiyin-altar",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 20/20 \u00b7 milestones on-the-mountain@9 through-cave-74@10 through-cave-73@12 \u00b7 vt 73.056s"
+      },
+      {
+        "task": "classic16-guiyin-altar",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 20/20 \u00b7 milestones on-the-mountain@9 through-cave-74@10 through-cave-73@12 \u00b7 vt 69.721s"
+      },
+      {
+        "task": "classic16-guiyin-altar",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 20/20 \u00b7 milestones on-the-mountain@9 through-cave-74@10 through-cave-73@12 \u00b7 vt 70.305s"
+      },
+      {
+        "task": "classic19-yangzhou-gourd",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 74/74 \u00b7 milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 \u00b7 vt 250.718s"
+      },
+      {
+        "task": "classic19-yangzhou-gourd",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 74/74 \u00b7 milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 \u00b7 vt 251.239s"
+      },
+      {
+        "task": "classic19-yangzhou-gourd",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 74/74 \u00b7 milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 \u00b7 vt 249.782s"
+      },
+      {
+        "task": "classic19-yangzhou-night",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 13/13 \u00b7 milestones entered-city@2 booked-room@6 \u00b7 vt 41.978s"
+      },
+      {
+        "task": "classic19-yangzhou-night",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 13/13 \u00b7 milestones entered-city@2 booked-room@6 \u00b7 vt 41.978s"
+      },
+      {
+        "task": "classic19-yangzhou-night",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 13/13 \u00b7 milestones entered-city@2 booked-room@6 \u00b7 vt 41.978s"
+      },
+      {
+        "task": "classic28-tower-chain",
+        "seed": 42,
+        "source": "focused-final-check",
+        "detail": "goal at step 114/114 \u00b7 milestones ghost-king-agreed@55 through-bronze-gate@67 got-heavenly-book@98 \u00b7 vt 359.037s"
+      },
+      {
+        "task": "classic28-tower-chain",
+        "seed": 43,
+        "source": "focused-final-check",
+        "detail": "goal at step 115/115 \u00b7 milestones ghost-king-agreed@57 through-bronze-gate@71 got-heavenly-book@102 \u00b7 vt 356.815s"
+      },
+      {
+        "task": "classic28-tower-chain",
+        "seed": 44,
+        "source": "focused-final-check",
+        "detail": "goal at step 109/109 \u00b7 milestones ghost-king-agreed@57 through-bronze-gate@67 got-heavenly-book@96 \u00b7 vt 352.998s"
+      },
+      {
+        "task": "classic28-tower-gate",
+        "seed": 42,
+        "source": "focused-final-check",
+        "detail": "goal at step 67/67 \u00b7 milestones entered-148@35 ghost-king-agreed@55 \u00b7 vt 225.911s"
+      },
+      {
+        "task": "classic28-tower-gate",
+        "seed": 43,
+        "source": "focused-final-check",
+        "detail": "goal at step 71/71 \u00b7 milestones entered-148@39 ghost-king-agreed@57 \u00b7 vt 224.932s"
+      },
+      {
+        "task": "classic28-tower-gate",
+        "seed": 44,
+        "source": "focused-final-check",
+        "detail": "goal at step 67/67 \u00b7 milestones entered-148@39 ghost-king-agreed@57 \u00b7 vt 221.428s"
+      },
+      {
+        "task": "classic31-banana-monkeys",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 22/22 \u00b7 milestones got-bananas@3 entered-tree-maze@5 \u00b7 vt 39.889s"
+      },
+      {
+        "task": "classic31-banana-monkeys",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 22/22 \u00b7 milestones got-bananas@3 entered-tree-maze@5 \u00b7 vt 39.868s"
+      },
+      {
+        "task": "classic31-banana-monkeys",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 22/22 \u00b7 milestones got-bananas@3 entered-tree-maze@5 \u00b7 vt 40.639s"
+      },
+      {
+        "task": "classic40-phoenix-handkerchief",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 9/9 \u00b7 milestones entered-temple@3 old-woman-calls@7 \u00b7 vt 36.515s"
+      },
+      {
+        "task": "classic40-phoenix-handkerchief",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 9/9 \u00b7 milestones entered-temple@3 old-woman-calls@7 \u00b7 vt 36.515s"
+      },
+      {
+        "task": "classic40-phoenix-handkerchief",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 9/9 \u00b7 milestones entered-temple@3 old-woman-calls@7 \u00b7 vt 36.515s"
+      },
+      {
+        "task": "classic40-water-orb",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 83/83 \u00b7 milestones handkerchief-delivered@28 got-wooden-sword@23 opened-box@80 \u00b7 vt 172.845s"
+      },
+      {
+        "task": "classic40-water-orb",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 83/83 \u00b7 milestones handkerchief-delivered@28 got-wooden-sword@23 opened-box@80 \u00b7 vt 171.909s"
+      },
+      {
+        "task": "classic40-water-orb",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 83/83 \u00b7 milestones handkerchief-delivered@28 got-wooden-sword@23 opened-box@80 \u00b7 vt 171.745s"
+      },
+      {
+        "task": "classic48-rain-orbs",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 7/7 \u00b7 milestones tablet-activated@1 first-orb-placed@3 \u00b7 vt 39.564s"
+      },
+      {
+        "task": "classic48-rain-orbs",
+        "seed": 43,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 7/7 \u00b7 milestones tablet-activated@1 first-orb-placed@3 \u00b7 vt 39.564s"
+      },
+      {
+        "task": "classic48-rain-orbs",
+        "seed": 44,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 7/7 \u00b7 milestones tablet-activated@1 first-orb-placed@3 \u00b7 vt 39.564s"
+      },
+      {
+        "task": "opening-serve-dishes",
+        "seed": 1,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 58/58 \u00b7 milestones (none) \u00b7 vt 85.869s"
+      },
+      {
+        "task": "opening-serve-dishes",
+        "seed": 2,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 36/36 \u00b7 milestones (none) \u00b7 vt 66.908s"
+      },
+      {
+        "task": "opening-serve-dishes",
+        "seed": 3,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 47/47 \u00b7 milestones (none) \u00b7 vt 79.335s"
+      },
+      {
+        "task": "pal-ch1-corridor",
+        "seed": 1,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 30/30 \u00b7 milestones reached-leaf-maze@9 statues-1@10 statues-3@14 statues-6@20 entered-xianling-dongtian@28 found-clothes@29 \u00b7 vt 118.246s"
+      },
+      {
+        "task": "pal-ch1-corridor",
+        "seed": 2,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 32/32 \u00b7 milestones reached-leaf-maze@11 statues-1@12 statues-3@16 statues-6@22 entered-xianling-dongtian@30 found-clothes@31 \u00b7 vt 120.712s"
+      },
+      {
+        "task": "pal-ch1-corridor",
+        "seed": 3,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 29/29 \u00b7 milestones reached-leaf-maze@9 statues-1@10 statues-3@14 statues-6@20 entered-xianling-dongtian@27 found-clothes@28 \u00b7 vt 112.996s"
+      },
+      {
+        "task": "pal-ch1-island",
+        "seed": 1,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 31/31 \u00b7 milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@29 found-clothes@30 \u00b7 vt 120.663s"
+      },
+      {
+        "task": "pal-ch1-island",
+        "seed": 2,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 33/33 \u00b7 milestones entered-corridor@1 reached-leaf-maze@12 statues-1@13 statues-3@17 statues-6@23 entered-xianling-dongtian@31 found-clothes@32 \u00b7 vt 123.129s"
+      },
+      {
+        "task": "pal-ch1-island",
+        "seed": 3,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 30/30 \u00b7 milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@28 found-clothes@29 \u00b7 vt 115.413s"
+      },
+      {
+        "task": "pal-ch1-island-hardcore",
+        "seed": 1,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 31/31 \u00b7 milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@29 found-clothes@30 \u00b7 vt 120.663s"
+      },
+      {
+        "task": "pal-ch1-island-hardcore",
+        "seed": 2,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 33/33 \u00b7 milestones entered-corridor@1 reached-leaf-maze@12 statues-1@13 statues-3@17 statues-6@23 entered-xianling-dongtian@31 found-clothes@32 \u00b7 vt 123.129s"
+      },
+      {
+        "task": "pal-ch1-island-hardcore",
+        "seed": 3,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 30/30 \u00b7 milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@28 found-clothes@29 \u00b7 vt 115.413s"
+      },
+      {
+        "task": "pal-ch1-meet-linger",
+        "seed": 1,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 126/126 \u00b7 milestones served-dishes@58 wine-to-taoist@64 shrimp-errand@67 heard-of-fairy@71 aunt-collapsed@76 island-medicine@82 got-hammer@84 landed-on-island@90 reached-leaf-maze@102 statues-1@106 statues-3@110 statues-6@116 entered-xianling-dongtian@124 found-clothes@125 \u00b7 vt 286.909s"
+      },
+      {
+        "task": "pal-ch1-meet-linger",
+        "seed": 2,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 100/100 \u00b7 milestones served-dishes@36 wine-to-taoist@42 shrimp-errand@45 heard-of-fairy@49 aunt-collapsed@54 island-medicine@60 got-hammer@62 landed-on-island@68 reached-leaf-maze@79 statues-1@80 statues-3@84 statues-6@90 entered-xianling-dongtian@98 found-clothes@99 \u00b7 vt 263.489s"
+      },
+      {
+        "task": "pal-ch1-meet-linger",
+        "seed": 3,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 111/111 \u00b7 milestones served-dishes@46 wine-to-taoist@52 shrimp-errand@55 heard-of-fairy@59 aunt-collapsed@64 island-medicine@70 got-hammer@72 landed-on-island@78 reached-leaf-maze@91 statues-1@92 statues-3@96 statues-6@102 entered-xianling-dongtian@109 found-clothes@110 \u00b7 vt 283.269s"
+      },
+      {
+        "task": "pal-ch1-meet-linger-hardcore",
+        "seed": 1,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 123/123 \u00b7 milestones served-dishes@58 wine-to-taoist@64 shrimp-errand@67 heard-of-fairy@71 aunt-collapsed@76 island-medicine@82 got-hammer@84 landed-on-island@90 reached-leaf-maze@102 statues-1@103 statues-3@107 statues-6@113 entered-xianling-dongtian@121 found-clothes@122 \u00b7 vt 285.682s"
+      },
+      {
+        "task": "pal-ch1-meet-linger-hardcore",
+        "seed": 2,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 102/102 \u00b7 milestones served-dishes@36 wine-to-taoist@42 shrimp-errand@45 heard-of-fairy@49 aunt-collapsed@54 island-medicine@60 got-hammer@62 landed-on-island@68 reached-leaf-maze@79 statues-1@82 statues-3@86 statues-6@92 entered-xianling-dongtian@100 found-clothes@101 \u00b7 vt 272.573s"
+      },
+      {
+        "task": "pal-ch1-meet-linger-hardcore",
+        "seed": 3,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 111/111 \u00b7 milestones served-dishes@47 wine-to-taoist@53 shrimp-errand@56 heard-of-fairy@60 aunt-collapsed@65 island-medicine@71 got-hammer@73 landed-on-island@79 reached-leaf-maze@91 statues-1@92 statues-3@96 statues-6@102 entered-xianling-dongtian@109 found-clothes@110 \u00b7 vt 285.289s"
+      },
+      {
+        "task": "pal-final-preboss-reserve",
+        "seed": 42,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 35/35 \u00b7 milestones (none) \u00b7 vt 87.895s"
+      },
+      {
+        "task": "wine-to-drunk-taoist",
+        "seed": 1,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 64/64 \u00b7 milestones served-dishes@58 got-wine@59 met-taoist@40 \u00b7 vt 104.347s"
+      },
+      {
+        "task": "wine-to-drunk-taoist",
+        "seed": 2,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 42/42 \u00b7 milestones served-dishes@36 got-wine@37 met-taoist@16 \u00b7 vt 85.365s"
+      },
+      {
+        "task": "wine-to-drunk-taoist",
+        "seed": 3,
+        "source": "initial-full-check-identical-final-policy",
+        "detail": "goal at step 53/53 \u00b7 milestones served-dishes@47 got-wine@48 met-taoist@20 \u00b7 vt 97.8s"
+      }
+    ],
+    "finalFullRun": {
+      "rows": 67,
+      "successes": 67,
+      "exitCode": 0,
+      "timedOut": false,
+      "independentlyAudited": true,
+      "pairs": [
+        {
+          "task": "baiyue-single-fragile-stocked",
+          "seed": 42,
+          "detail": "goal at step 38/38 \u00b7 rounds 13 \u00b7 milestones (none) \u00b7 vt 152.718s"
+        },
+        {
+          "task": "baiyue-single-fragile-stocked",
+          "seed": 43,
+          "detail": "goal at step 38/38 \u00b7 rounds 13 \u00b7 milestones (none) \u00b7 vt 155.168s"
+        },
+        {
+          "task": "baiyue-single-fragile-stocked",
+          "seed": 44,
+          "detail": "goal at step 35/35 \u00b7 rounds 12 \u00b7 milestones (none) \u00b7 vt 139.988s"
+        },
+        {
+          "task": "baiyue-single-mana-budget",
+          "seed": 42,
+          "detail": "goal at step 47/47 \u00b7 rounds 16 \u00b7 milestones (none) \u00b7 vt 177.678s"
+        },
+        {
+          "task": "baiyue-single-mana-budget",
+          "seed": 43,
+          "detail": "goal at step 51/51 \u00b7 rounds 17 \u00b7 milestones (none) \u00b7 vt 180.088s"
+        },
+        {
+          "task": "baiyue-single-mana-budget",
+          "seed": 44,
+          "detail": "goal at step 57/57 \u00b7 rounds 21 \u00b7 milestones (none) \u00b7 vt 208.788s"
+        },
+        {
+          "task": "baiyue-single-origin",
+          "seed": 42,
+          "detail": "goal at step 35/35 \u00b7 rounds 12 \u00b7 milestones (none) \u00b7 vt 141.558s"
+        },
+        {
+          "task": "baiyue-single-origin",
+          "seed": 43,
+          "detail": "goal at step 36/36 \u00b7 rounds 12 \u00b7 milestones (none) \u00b7 vt 142.588s"
+        },
+        {
+          "task": "baiyue-single-origin",
+          "seed": 44,
+          "detail": "goal at step 36/36 \u00b7 rounds 14 \u00b7 milestones (none) \u00b7 vt 158.398s"
+        },
+        {
+          "task": "baiyue-single-sustain-no-wine",
+          "seed": 42,
+          "detail": "goal at step 45/45 \u00b7 rounds 15 \u00b7 milestones (none) \u00b7 vt 138.408s"
+        },
+        {
+          "task": "baiyue-single-sustain-no-wine",
+          "seed": 43,
+          "detail": "goal at step 47/47 \u00b7 rounds 17 \u00b7 milestones (none) \u00b7 vt 145.978s"
+        },
+        {
+          "task": "baiyue-single-sustain-no-wine",
+          "seed": 44,
+          "detail": "goal at step 42/42 \u00b7 rounds 14 \u00b7 milestones (none) \u00b7 vt 126.768s"
+        },
+        {
+          "task": "classic08-leave-area",
+          "seed": 42,
+          "detail": "goal at step 1/1 \u00b7 milestones explored-upper-level@\u2013 \u00b7 vt 13.275s"
+        },
+        {
+          "task": "classic08-leave-area",
+          "seed": 43,
+          "detail": "goal at step 1/1 \u00b7 milestones explored-upper-level@\u2013 \u00b7 vt 13.275s"
+        },
+        {
+          "task": "classic08-leave-area",
+          "seed": 44,
+          "detail": "goal at step 1/1 \u00b7 milestones explored-upper-level@\u2013 \u00b7 vt 13.275s"
+        },
+        {
+          "task": "classic10-baihe-medicine",
+          "seed": 42,
+          "detail": "goal at step 40/40 \u00b7 milestones got-ginkgo@8 got-carp@16 got-antler@34 \u00b7 vt 123.092s"
+        },
+        {
+          "task": "classic10-baihe-medicine",
+          "seed": 43,
+          "detail": "goal at step 40/40 \u00b7 milestones got-ginkgo@8 got-carp@16 got-antler@34 \u00b7 vt 124.009s"
+        },
+        {
+          "task": "classic10-baihe-medicine",
+          "seed": 44,
+          "detail": "goal at step 40/40 \u00b7 milestones got-ginkgo@8 got-carp@16 got-antler@34 \u00b7 vt 123.764s"
+        },
+        {
+          "task": "classic16-guiyin-altar",
+          "seed": 42,
+          "detail": "goal at step 20/20 \u00b7 milestones on-the-mountain@9 through-cave-74@10 through-cave-73@12 \u00b7 vt 73.056s"
+        },
+        {
+          "task": "classic16-guiyin-altar",
+          "seed": 43,
+          "detail": "goal at step 20/20 \u00b7 milestones on-the-mountain@9 through-cave-74@10 through-cave-73@12 \u00b7 vt 69.721s"
+        },
+        {
+          "task": "classic16-guiyin-altar",
+          "seed": 44,
+          "detail": "goal at step 20/20 \u00b7 milestones on-the-mountain@9 through-cave-74@10 through-cave-73@12 \u00b7 vt 70.305s"
+        },
+        {
+          "task": "classic19-yangzhou-gourd",
+          "seed": 42,
+          "detail": "goal at step 74/74 \u00b7 milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 \u00b7 vt 250.718s"
+        },
+        {
+          "task": "classic19-yangzhou-gourd",
+          "seed": 43,
+          "detail": "goal at step 74/74 \u00b7 milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 \u00b7 vt 251.239s"
+        },
+        {
+          "task": "classic19-yangzhou-gourd",
+          "seed": 44,
+          "detail": "goal at step 74/74 \u00b7 milestones night-alarm@13 recovered-bag@41 accused-by-merchant@50 met-widow@61 entered-well@68 \u00b7 vt 249.782s"
+        },
+        {
+          "task": "classic19-yangzhou-night",
+          "seed": 42,
+          "detail": "goal at step 13/13 \u00b7 milestones entered-city@2 booked-room@6 \u00b7 vt 41.978s"
+        },
+        {
+          "task": "classic19-yangzhou-night",
+          "seed": 43,
+          "detail": "goal at step 13/13 \u00b7 milestones entered-city@2 booked-room@6 \u00b7 vt 41.978s"
+        },
+        {
+          "task": "classic19-yangzhou-night",
+          "seed": 44,
+          "detail": "goal at step 13/13 \u00b7 milestones entered-city@2 booked-room@6 \u00b7 vt 41.978s"
+        },
+        {
+          "task": "classic28-tower-chain",
+          "seed": 42,
+          "detail": "goal at step 114/114 \u00b7 milestones ghost-king-agreed@55 through-bronze-gate@67 got-heavenly-book@98 \u00b7 vt 359.037s"
+        },
+        {
+          "task": "classic28-tower-chain",
+          "seed": 43,
+          "detail": "goal at step 115/115 \u00b7 milestones ghost-king-agreed@57 through-bronze-gate@71 got-heavenly-book@102 \u00b7 vt 356.815s"
+        },
+        {
+          "task": "classic28-tower-chain",
+          "seed": 44,
+          "detail": "goal at step 109/109 \u00b7 milestones ghost-king-agreed@57 through-bronze-gate@67 got-heavenly-book@96 \u00b7 vt 352.998s"
+        },
+        {
+          "task": "classic28-tower-gate",
+          "seed": 42,
+          "detail": "goal at step 67/67 \u00b7 milestones entered-148@35 ghost-king-agreed@55 \u00b7 vt 225.911s"
+        },
+        {
+          "task": "classic28-tower-gate",
+          "seed": 43,
+          "detail": "goal at step 71/71 \u00b7 milestones entered-148@39 ghost-king-agreed@57 \u00b7 vt 224.932s"
+        },
+        {
+          "task": "classic28-tower-gate",
+          "seed": 44,
+          "detail": "goal at step 67/67 \u00b7 milestones entered-148@39 ghost-king-agreed@57 \u00b7 vt 221.428s"
+        },
+        {
+          "task": "classic31-banana-monkeys",
+          "seed": 42,
+          "detail": "goal at step 22/22 \u00b7 milestones got-bananas@3 entered-tree-maze@5 \u00b7 vt 39.889s"
+        },
+        {
+          "task": "classic31-banana-monkeys",
+          "seed": 43,
+          "detail": "goal at step 22/22 \u00b7 milestones got-bananas@3 entered-tree-maze@5 \u00b7 vt 39.868s"
+        },
+        {
+          "task": "classic31-banana-monkeys",
+          "seed": 44,
+          "detail": "goal at step 22/22 \u00b7 milestones got-bananas@3 entered-tree-maze@5 \u00b7 vt 40.639s"
+        },
+        {
+          "task": "classic40-phoenix-handkerchief",
+          "seed": 42,
+          "detail": "goal at step 9/9 \u00b7 milestones entered-temple@3 old-woman-calls@7 \u00b7 vt 36.515s"
+        },
+        {
+          "task": "classic40-phoenix-handkerchief",
+          "seed": 43,
+          "detail": "goal at step 9/9 \u00b7 milestones entered-temple@3 old-woman-calls@7 \u00b7 vt 36.515s"
+        },
+        {
+          "task": "classic40-phoenix-handkerchief",
+          "seed": 44,
+          "detail": "goal at step 9/9 \u00b7 milestones entered-temple@3 old-woman-calls@7 \u00b7 vt 36.515s"
+        },
+        {
+          "task": "classic40-water-orb",
+          "seed": 42,
+          "detail": "goal at step 83/83 \u00b7 milestones handkerchief-delivered@28 got-wooden-sword@23 opened-box@80 \u00b7 vt 172.845s"
+        },
+        {
+          "task": "classic40-water-orb",
+          "seed": 43,
+          "detail": "goal at step 83/83 \u00b7 milestones handkerchief-delivered@28 got-wooden-sword@23 opened-box@80 \u00b7 vt 171.909s"
+        },
+        {
+          "task": "classic40-water-orb",
+          "seed": 44,
+          "detail": "goal at step 83/83 \u00b7 milestones handkerchief-delivered@28 got-wooden-sword@23 opened-box@80 \u00b7 vt 171.745s"
+        },
+        {
+          "task": "classic48-rain-orbs",
+          "seed": 42,
+          "detail": "goal at step 7/7 \u00b7 milestones tablet-activated@1 first-orb-placed@3 \u00b7 vt 39.564s"
+        },
+        {
+          "task": "classic48-rain-orbs",
+          "seed": 43,
+          "detail": "goal at step 7/7 \u00b7 milestones tablet-activated@1 first-orb-placed@3 \u00b7 vt 39.564s"
+        },
+        {
+          "task": "classic48-rain-orbs",
+          "seed": 44,
+          "detail": "goal at step 7/7 \u00b7 milestones tablet-activated@1 first-orb-placed@3 \u00b7 vt 39.564s"
+        },
+        {
+          "task": "opening-serve-dishes",
+          "seed": 1,
+          "detail": "goal at step 58/58 \u00b7 milestones (none) \u00b7 vt 85.869s"
+        },
+        {
+          "task": "opening-serve-dishes",
+          "seed": 2,
+          "detail": "goal at step 36/36 \u00b7 milestones (none) \u00b7 vt 66.908s"
+        },
+        {
+          "task": "opening-serve-dishes",
+          "seed": 3,
+          "detail": "goal at step 47/47 \u00b7 milestones (none) \u00b7 vt 79.335s"
+        },
+        {
+          "task": "pal-ch1-corridor",
+          "seed": 1,
+          "detail": "goal at step 30/30 \u00b7 milestones reached-leaf-maze@9 statues-1@10 statues-3@14 statues-6@20 entered-xianling-dongtian@28 found-clothes@29 \u00b7 vt 118.246s"
+        },
+        {
+          "task": "pal-ch1-corridor",
+          "seed": 2,
+          "detail": "goal at step 32/32 \u00b7 milestones reached-leaf-maze@11 statues-1@12 statues-3@16 statues-6@22 entered-xianling-dongtian@30 found-clothes@31 \u00b7 vt 120.712s"
+        },
+        {
+          "task": "pal-ch1-corridor",
+          "seed": 3,
+          "detail": "goal at step 29/29 \u00b7 milestones reached-leaf-maze@9 statues-1@10 statues-3@14 statues-6@20 entered-xianling-dongtian@27 found-clothes@28 \u00b7 vt 112.996s"
+        },
+        {
+          "task": "pal-ch1-island",
+          "seed": 1,
+          "detail": "goal at step 31/31 \u00b7 milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@29 found-clothes@30 \u00b7 vt 120.663s"
+        },
+        {
+          "task": "pal-ch1-island",
+          "seed": 2,
+          "detail": "goal at step 33/33 \u00b7 milestones entered-corridor@1 reached-leaf-maze@12 statues-1@13 statues-3@17 statues-6@23 entered-xianling-dongtian@31 found-clothes@32 \u00b7 vt 123.129s"
+        },
+        {
+          "task": "pal-ch1-island",
+          "seed": 3,
+          "detail": "goal at step 30/30 \u00b7 milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@28 found-clothes@29 \u00b7 vt 115.413s"
+        },
+        {
+          "task": "pal-ch1-island-hardcore",
+          "seed": 1,
+          "detail": "goal at step 31/31 \u00b7 milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@29 found-clothes@30 \u00b7 vt 120.663s"
+        },
+        {
+          "task": "pal-ch1-island-hardcore",
+          "seed": 2,
+          "detail": "goal at step 33/33 \u00b7 milestones entered-corridor@1 reached-leaf-maze@12 statues-1@13 statues-3@17 statues-6@23 entered-xianling-dongtian@31 found-clothes@32 \u00b7 vt 123.129s"
+        },
+        {
+          "task": "pal-ch1-island-hardcore",
+          "seed": 3,
+          "detail": "goal at step 30/30 \u00b7 milestones entered-corridor@1 reached-leaf-maze@10 statues-1@11 statues-3@15 statues-6@21 entered-xianling-dongtian@28 found-clothes@29 \u00b7 vt 115.413s"
+        },
+        {
+          "task": "pal-ch1-meet-linger",
+          "seed": 1,
+          "detail": "goal at step 126/126 \u00b7 milestones served-dishes@58 wine-to-taoist@64 shrimp-errand@67 heard-of-fairy@71 aunt-collapsed@76 island-medicine@82 got-hammer@84 landed-on-island@90 reached-leaf-maze@102 statues-1@106 statues-3@110 statues-6@116 entered-xianling-dongtian@124 found-clothes@125 \u00b7 vt 286.909s"
+        },
+        {
+          "task": "pal-ch1-meet-linger",
+          "seed": 2,
+          "detail": "goal at step 100/100 \u00b7 milestones served-dishes@36 wine-to-taoist@42 shrimp-errand@45 heard-of-fairy@49 aunt-collapsed@54 island-medicine@60 got-hammer@62 landed-on-island@68 reached-leaf-maze@79 statues-1@80 statues-3@84 statues-6@90 entered-xianling-dongtian@98 found-clothes@99 \u00b7 vt 263.489s"
+        },
+        {
+          "task": "pal-ch1-meet-linger",
+          "seed": 3,
+          "detail": "goal at step 111/111 \u00b7 milestones served-dishes@46 wine-to-taoist@52 shrimp-errand@55 heard-of-fairy@59 aunt-collapsed@64 island-medicine@70 got-hammer@72 landed-on-island@78 reached-leaf-maze@91 statues-1@92 statues-3@96 statues-6@102 entered-xianling-dongtian@109 found-clothes@110 \u00b7 vt 283.269s"
+        },
+        {
+          "task": "pal-ch1-meet-linger-hardcore",
+          "seed": 1,
+          "detail": "goal at step 123/123 \u00b7 milestones served-dishes@58 wine-to-taoist@64 shrimp-errand@67 heard-of-fairy@71 aunt-collapsed@76 island-medicine@82 got-hammer@84 landed-on-island@90 reached-leaf-maze@102 statues-1@103 statues-3@107 statues-6@113 entered-xianling-dongtian@121 found-clothes@122 \u00b7 vt 285.682s"
+        },
+        {
+          "task": "pal-ch1-meet-linger-hardcore",
+          "seed": 2,
+          "detail": "goal at step 102/102 \u00b7 milestones served-dishes@36 wine-to-taoist@42 shrimp-errand@45 heard-of-fairy@49 aunt-collapsed@54 island-medicine@60 got-hammer@62 landed-on-island@68 reached-leaf-maze@79 statues-1@82 statues-3@86 statues-6@92 entered-xianling-dongtian@100 found-clothes@101 \u00b7 vt 272.573s"
+        },
+        {
+          "task": "pal-ch1-meet-linger-hardcore",
+          "seed": 3,
+          "detail": "goal at step 111/111 \u00b7 milestones served-dishes@47 wine-to-taoist@53 shrimp-errand@56 heard-of-fairy@60 aunt-collapsed@65 island-medicine@71 got-hammer@73 landed-on-island@79 reached-leaf-maze@91 statues-1@92 statues-3@96 statues-6@102 entered-xianling-dongtian@109 found-clothes@110 \u00b7 vt 285.289s"
+        },
+        {
+          "task": "pal-final-preboss-reserve",
+          "seed": 42,
+          "detail": "goal at step 35/35 \u00b7 milestones (none) \u00b7 vt 87.895s"
+        },
+        {
+          "task": "wine-to-drunk-taoist",
+          "seed": 1,
+          "detail": "goal at step 64/64 \u00b7 milestones served-dishes@58 got-wine@59 met-taoist@40 \u00b7 vt 104.347s"
+        },
+        {
+          "task": "wine-to-drunk-taoist",
+          "seed": 2,
+          "detail": "goal at step 42/42 \u00b7 milestones served-dishes@36 got-wine@37 met-taoist@16 \u00b7 vt 85.365s"
+        },
+        {
+          "task": "wine-to-drunk-taoist",
+          "seed": 3,
+          "detail": "goal at step 53/53 \u00b7 milestones served-dishes@47 got-wine@48 met-taoist@20 \u00b7 vt 97.8s"
+        }
+      ]
+    }
+  },
+  "runnerAcceptance": {
+    "freeReferenceOnly": true,
+    "successAndBudgetFailureEngineReplayed": true,
+    "completeDenominator": "1/2",
+    "overwriteRefused": true,
+    "wrongTaskVersionRefused": true,
+    "initialWrongTestDefinitionRetained": true,
+    "pinsCapturedAfterCollection": "technical fixture only, not prespecified science"
+  },
+  "independentReview": {
+    "specificationFindingsResolved": [
+      "frozen protocol pin required before file-backed publication",
+      "exact infrastructure trial/directory/reason binding",
+      "incomplete provider consumption stays unknown"
+    ],
+    "qualityFindingsResolved": [
+      "accounting-aware replay checks",
+      "contradictory evidence levels cannot certify engine replay"
+    ],
+    "technicalAcceptance": "Independent worker confirmed source/build hashes, eight copied-evidence tamper controls, strict import, final benchmark suite and final full67/67 reference identities/exit0."
+  },
+  "modelEvaluationsStarted": false,
+  "newModelEvaluationCalls": 0,
+  "draftCampaign": {
+    "planned": 288,
+    "recorded": 0,
+    "missing": 288,
+    "frozen": false,
+    "inferenceEnabled": false,
+    "publishable": false
+  },
+  "externalGates": {
+    "rightsCleared": false,
+    "independentAccessTested": false,
+    "independentInstallAccepted": false,
+    "taskValidityAccepted": false,
+    "cliSandboxCertified": false,
+    "spendAuthorized": false,
+    "releaseReady": false,
+    "modelProtocolFrozen": false
+  },
+  "sources": {
+    "bench/backfill-client.mjs": {
+      "sha256": "5f4480458c773edc9388335344dd3d539b07a80645ea956260f82cb32e4405ed",
+      "bytes": 2896
+    },
+    "bench/battle-metrics.mjs": {
+      "sha256": "7b5af69628408fd84b582a252ccdb8d5639ee817a5dde81ad4d53452240fa27b",
+      "bytes": 3668
+    },
+    "bench/bench.mjs": {
+      "sha256": "1fc872530e9f950088ebef10950cdf717690429d391c2439b5fee50f4c3501b6",
+      "bytes": 15759
+    },
+    "bench/board.mjs": {
+      "sha256": "2682659ed21d18033526cb4bc6d1c20814faf23ad3542fca1b18fb4e1f15096f",
+      "bytes": 73183
+    },
+    "bench/cli-bins.mjs": {
+      "sha256": "534deb939db4a45c4a741a6a3785d3b57e25462dabffa1a9513f2e1c1b97088f",
+      "bytes": 1220
+    },
+    "bench/client-finalization.mjs": {
+      "sha256": "0d2c3dc0303d58b76f9b53e648064ec98169b8e66903cab4b976d6b1c7163a57",
+      "bytes": 7398
+    },
+    "bench/episode.mjs": {
+      "sha256": "81a06304b5c4027929dead08ddceea6d0c67cd705d8100c9973b52d2eaf72b32",
+      "bytes": 22841
+    },
+    "bench/laya-provider.mjs": {
+      "sha256": "af06be6cba55d5f86da8ebd0484d768607555ce7bf26880e2e1f49a9a43af23b",
+      "bytes": 22850
+    },
+    "bench/loop.mjs": {
+      "sha256": "f81f8316f23aca362533c24e226f3ce03da283779e97061c0571ee9cf9450ed7",
+      "bytes": 4569
+    },
+    "bench/mcp-episode.mjs": {
+      "sha256": "12b98ad8c7760f50617c8172cabbf9fd20d67864ed3784745d877f687ee2a695",
+      "bytes": 5714
+    },
+    "bench/pr-check.mjs": {
+      "sha256": "03e3e7c2350ac945e0cb9d3e01d9ff17710c712bc5e42c5e98118f3d0733c099",
+      "bytes": 8755
+    },
+    "bench/predicates.mjs": {
+      "sha256": "6e52dd66708f27276e5c4e7bd42af594932136530081414bc10a2ab8e3b84c4a",
+      "bytes": 3847
+    },
+    "bench/prompt.mjs": {
+      "sha256": "2882cf7c1a8985da4dd4f4092f3cba636ee60a744f10c8289c035b35938bc1a6",
+      "bytes": 2950
+    },
+    "bench/protocol-contract.mjs": {
+      "sha256": "5cd2d82fc23ad093c03973d628e5c6b8b48b5e5d1e53fefe9c0815d270e36ada",
+      "bytes": 9064
+    },
+    "bench/providers.mjs": {
+      "sha256": "23bffbdfa0020727e71b694db1e598857b4f98140900e9cc4fbf2d7e08e7002e",
+      "bytes": 20628
+    },
+    "bench/quiz.mjs": {
+      "sha256": "51073f806edff19eb57722090c19470588b0de5486974407bf64696a9c43e8c4",
+      "bytes": 10881
+    },
+    "bench/reference/baiyue-single-fragile-stocked.json": {
+      "sha256": "789b0de161eb6e93cb0933480f181f4b70cc9deaa74a0225246f620a95176bb7",
+      "bytes": 15128
+    },
+    "bench/reference/baiyue-single-mana-budget.json": {
+      "sha256": "ff3af4d7a71706135c6e9b6e719d35fd6d2de663bc7a7117c75465806157f627",
+      "bytes": 20593
+    },
+    "bench/reference/baiyue-single-origin.json": {
+      "sha256": "5b570d3a3618f149bb3f7a83f1356442ee381869325c6ef795d83e801e6c9a4a",
+      "bytes": 14636
+    },
+    "bench/reference/baiyue-single-sustain-no-wine.json": {
+      "sha256": "b20195691dbd2c00d70efb0876767394b6d79a4be13d555f31fb2a67e16f0ad7",
+      "bytes": 17747
+    },
+    "bench/reference/classic08-leave-area.json": {
+      "sha256": "e451a5d905289f2b1b08d4d5462cf4cb2ab979c5b99a4cc5461d307d7cc71da3",
+      "bytes": 293
+    },
+    "bench/reference/classic10-baihe-medicine.json": {
+      "sha256": "0fd786df1430bb89c8737c84ddca706c87257ea6f7c2023a1798cd03551b552d",
+      "bytes": 2387
+    },
+    "bench/reference/classic16-guiyin-altar.json": {
+      "sha256": "261b7b7d5603a723689d698a943638017d39c37fef3ed1766ea1c15e6f775916",
+      "bytes": 1407
+    },
+    "bench/reference/classic19-yangzhou-gourd.json": {
+      "sha256": "7248d3d04a532b0cd74b1ddf77a8fd404fc6cfe5c8968a90c27dcafbb0abad65",
+      "bytes": 4185
+    },
+    "bench/reference/classic19-yangzhou-night.json": {
+      "sha256": "7fe978f8bcf77949bd2b77f988c85b22e98028662b083b60ddc70c35d4f957fc",
+      "bytes": 846
+    },
+    "bench/reference/classic28-tower-chain.json": {
+      "sha256": "76f9f44c5e3947f5e5fe7311bae9757d00f5f2c82a46ca6080a98bbc64e2874b",
+      "bytes": 21628
+    },
+    "bench/reference/classic28-tower-gate.json": {
+      "sha256": "1329a1403aea832e5ab430f610ea8efb4e66bba01227294d21dae93bcb800440",
+      "bytes": 13219
+    },
+    "bench/reference/classic31-banana-monkeys.json": {
+      "sha256": "b8df6276afa1512cc16b4812586145e63193195e65084126e31198ab4af029de",
+      "bytes": 1672
+    },
+    "bench/reference/classic40-phoenix-handkerchief.json": {
+      "sha256": "00faa3d004c1c946eab631ac8b03d62a57a8594b62faf98e369f003f6924dd9c",
+      "bytes": 669
+    },
+    "bench/reference/classic40-water-orb.json": {
+      "sha256": "06fbdd8c3ad5d1949f9300d150d8dc61a8f0f34b1bf61ed2fcc6aaa9753f6f62",
+      "bytes": 13537
+    },
+    "bench/reference/classic48-rain-orbs.json": {
+      "sha256": "3dbc06d47c2a4f9ea29fd0d25900b2fcdc58b1b50d63f0da7457cf472b3c8ca6",
+      "bytes": 954
+    },
+    "bench/reference/opening-serve-dishes.json": {
+      "sha256": "3ae1f7b1e99f2c55652a7fe4caf6848cb556de1f95a17e68236682d960c94c18",
+      "bytes": 9723
+    },
+    "bench/reference/pal-ch1-corridor.json": {
+      "sha256": "26c5f82fc1ea97e78fd15b7070f35ec0660c313952d6e9e2b4945e9ff6a8fd76",
+      "bytes": 5912
+    },
+    "bench/reference/pal-ch1-island-hardcore.json": {
+      "sha256": "3249059101435adb63e57365a6b09403a539722efdfa2af62ac34abb00dadad8",
+      "bytes": 6278
+    },
+    "bench/reference/pal-ch1-island.json": {
+      "sha256": "14acf214af1883967540332f99b1081f52e0c4d1799faf4c50f7e05951886d10",
+      "bytes": 6100
+    },
+    "bench/reference/pal-ch1-meet-linger-hardcore.json": {
+      "sha256": "bf6fa4891800301385fa06ef6aa04041973317b1cdf4271779c6c8663f43ca49",
+      "bytes": 18953
+    },
+    "bench/reference/pal-ch1-meet-linger.json": {
+      "sha256": "b42be3ff96a091bc8450ddfdea7570674b03564f777b17bb2944b576aa297f12",
+      "bytes": 19050
+    },
+    "bench/reference/pal-final-preboss-reserve.json": {
+      "sha256": "28db2cff7db41e35f10dc25e4156effeb7c6314a19c4b43459d74f9b6278823d",
+      "bytes": 4318
+    },
+    "bench/reference/wine-to-drunk-taoist.json": {
+      "sha256": "d5eab248ca5204e50e42db343e242f765e029aa3c7db302f8c95ac8f39297b4e",
+      "bytes": 9723
+    },
+    "bench/release-ledger.mjs": {
+      "sha256": "237b28d6303dd7719e9e95fc4c956cb6430ff5051fee71ce1fb204d502c7ec38",
+      "bytes": 11115
+    },
+    "bench/release.mjs": {
+      "sha256": "324da0436266a28569dd6e90da90084be58d24cee380cbb36df24eb412fe9c99",
+      "bytes": 2470
+    },
+    "bench/resource-contract.mjs": {
+      "sha256": "95b36191694a739657e61d2ce797fe139700fa63963f6eb90a9b9a782875f803",
+      "bytes": 7125
+    },
+    "bench/runner.mjs": {
+      "sha256": "c268a576a5011261a889954ae4267947ea55a9c8f4fb32c2b2171ed549d8b654",
+      "bytes": 29695
+    },
+    "bench/score.mjs": {
+      "sha256": "8aada2c3baf91df9bbcf185b908a53a18d21e13585de71f384cef4d9efc09610",
+      "bytes": 6771
+    },
+    "bench/start.mjs": {
+      "sha256": "91270e47150bb0cf41021ac97fb9813ce86a58c9c27d9d0303b4094789ead713",
+      "bytes": 6966
+    },
+    "bench/state-view.mjs": {
+      "sha256": "736b60c8a0092a6c73ec4fa62a05fe9b26b74be7ef19491d5ccda7f7a9de2c59",
+      "bytes": 4088
+    },
+    "bench/task.mjs": {
+      "sha256": "616186019b8aa33a561ff5fabc8e2575406fbc2aa50f3f20abc1451c3eb9c60e",
+      "bytes": 7067
+    },
+    "bench/tasks/baiyue-single-fragile-stocked.json": {
+      "sha256": "3168bf7509d07b5496e3ee1750f846b0e97d336d2a90946cdf89f5ff099399b6",
+      "bytes": 4777
+    },
+    "bench/tasks/baiyue-single-mana-budget.json": {
+      "sha256": "c5371b60279c9f3d3775156fa85b03c809941fd496546db5fbe62a16cf169732",
+      "bytes": 4677
+    },
+    "bench/tasks/baiyue-single-origin.json": {
+      "sha256": "130f135db2ec2daef4d3d71d0110a4e05929b4f4b9fd762bfc79176cb1b288f7",
+      "bytes": 4713
+    },
+    "bench/tasks/baiyue-single-sustain-no-wine.json": {
+      "sha256": "1b2cce1af9373351ca65e46e5d8a03df22718cef66fcacea9e1a4a9b08cc4068",
+      "bytes": 4715
+    },
+    "bench/tasks/classic08-leave-area.json": {
+      "sha256": "1ac9588bb628ec4c15c4996993e6c0432fbf655048792b5248b5555d182ca82f",
+      "bytes": 855
+    },
+    "bench/tasks/classic10-baihe-medicine.json": {
+      "sha256": "9871cc4088af38eaab6545220e41e9b189e35282be3b6f9a89ad20084a636a27",
+      "bytes": 1130
+    },
+    "bench/tasks/classic16-guiyin-altar.json": {
+      "sha256": "eac3670f793c49c56e710950de2ac48269a7b2a729a4edd93f69194f1ab68100",
+      "bytes": 952
+    },
+    "bench/tasks/classic19-yangzhou-gourd.json": {
+      "sha256": "9ed5ef4869989f1c145e9fb24e7899050df6b9a53a2a94992f55a7b5b3f1fd09",
+      "bytes": 1490
+    },
+    "bench/tasks/classic19-yangzhou-night.json": {
+      "sha256": "a59ca57c6611390229b7cae1d2df5d000fc986b5f1abeac66bce79ef5a1f09ac",
+      "bytes": 930
+    },
+    "bench/tasks/classic28-tower-chain.json": {
+      "sha256": "6f6143131a0a98182ff8d8828fd8b89c5c2c3ca8bb31f4d5d35b19e2f8603bdb",
+      "bytes": 1294
+    },
+    "bench/tasks/classic28-tower-gate.json": {
+      "sha256": "d97dd1037d2fc159445b888182b93dd90ee9b9741e182c169e35f21e61244cd4",
+      "bytes": 995
+    },
+    "bench/tasks/classic31-banana-monkeys.json": {
+      "sha256": "85ae249c247d3e6a13aa5187cb2f2a367e615582f54f9e8c31f6eb34d5899419",
+      "bytes": 1274
+    },
+    "bench/tasks/classic40-phoenix-handkerchief.json": {
+      "sha256": "0bcbc59600b03282d5238755de9340cf5c3c7ad465719ea735345777d796b0ed",
+      "bytes": 795
+    },
+    "bench/tasks/classic40-water-orb.json": {
+      "sha256": "690b6360fcd52a0ab7fb92d78e3cdeaabb881620697db9224349cafd893819f0",
+      "bytes": 1090
+    },
+    "bench/tasks/classic48-rain-orbs.json": {
+      "sha256": "49df8d8a2e8d0dfe8dda084660fb6b5910efe1d2485902c7a9050b503d97b4cd",
+      "bytes": 2280
+    },
+    "bench/tasks/opening-serve-dishes.json": {
+      "sha256": "1a7549e602dea26cb7cdb8411e26ba41ba90c246e70ebd8786e339af3689a480",
+      "bytes": 518
+    },
+    "bench/tasks/pal-ch1-corridor.json": {
+      "sha256": "88d5aabf335afac419a036beee2b29338631f5eb9330a424700cccb002ea1084",
+      "bytes": 13832
+    },
+    "bench/tasks/pal-ch1-island-hardcore.json": {
+      "sha256": "2e06847ced177fb93a63e25ead4c83deaba05973b2a1874aa1a80f0c54833b3b",
+      "bytes": 14534
+    },
+    "bench/tasks/pal-ch1-island.json": {
+      "sha256": "5a5d1eaafce38508686538b4d094d1c4d1af86918bf6a8cbadca18e123677272",
+      "bytes": 13906
+    },
+    "bench/tasks/pal-ch1-meet-linger-hardcore.json": {
+      "sha256": "4f915d24c39a82efa7b0b3de43094be390df10c9179569e614f32a746191ed24",
+      "bytes": 15334
+    },
+    "bench/tasks/pal-ch1-meet-linger.json": {
+      "sha256": "419fc8f5b6bb7431f545a444803237813f05eb93aa59c4f1dce62a2315cdc9b9",
+      "bytes": 14920
+    },
+    "bench/tasks/pal-final-preboss-reserve.json": {
+      "sha256": "a575680ac84e87a81de6c68983ed5c084f7c14b4f15cf79bd4b12303997c9988",
+      "bytes": 1549
+    },
+    "bench/tasks/wine-to-drunk-taoist.json": {
+      "sha256": "796b221c0c5bcfcd3e9a5210680c196101b77ebdcac25c1db242cf06fbee4881",
+      "bytes": 732
+    },
+    "bench/verify.mjs": {
+      "sha256": "eee36ef0a59ac8834f1497e58acb7c03fca58f2d019c7085e259269bc8fb1fe6",
+      "bytes": 27733
+    },
+    "package.json": {
+      "sha256": "247cc64dd14a1b2d7913945c64525e210bd4bda03a5930a3b8a738e88e85b196",
+      "bytes": 2641
+    },
+    "pnpm-lock.yaml": {
+      "sha256": "cdee802e43195482d02da390df3d9c50994adde26a575ff3b763563cdfad4591",
+      "bytes": 18465
+    },
+    "bench/releases/ed-v1/manifest.json": {
+      "sha256": "d9f3df46c53686726dda76ff7b2cb1db5251712bb69a46df5045889d51a9a7d3",
+      "bytes": 1123
+    },
+    "bench/releases/ed-v1/resources.json": {
+      "sha256": "3ef0b50537bbb9cc0d7abceec0d6a5ecc6d70f5af3f8f1f8152464447246cda3",
+      "bytes": 14792
+    },
+    "bench/releases/ed-v1/campaign.json": {
+      "sha256": "cf5922553517e8f0295e3d0b68b8be0b6f14ac8d5022aa56979300a4762d60cd",
+      "bytes": 95352
+    }
+  },
+  "localEvidence": {
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/install.txt": {
+      "sha256": "777b49e28e321b459d071f9eca277aefb30e46fba6f2b9e63b4d1a1658de922f",
+      "bytes": 812
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/build.txt": {
+      "sha256": "070f47e088c3dcc26cd1876918ec2c084f38e93ad282bde9a884178a1292a3c0",
+      "bytes": 1123
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/unit-tests.txt": {
+      "sha256": "c0c8620e6aef9de972f03d8a3b20fcec8cb27ea6ca2dad4909d68c1b118826aa",
+      "bytes": 5730
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/bench-tests.txt": {
+      "sha256": "26dd0d99d55b7d7ee494c0faae3be0aab006750a554f7fb6ed15f84a520b8590",
+      "bytes": 22450
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/final-bench-tests.txt": {
+      "sha256": "5c3decfb7e59e823d2b19780beb430cf296f7de4913351a9291e5064d3259017",
+      "bytes": 22438
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/references.txt": {
+      "sha256": "211fdf95f251d494f6557ab9acfea2372337ead80adb81826195ac6ea840fb60",
+      "bytes": 10092
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/references-status.json": {
+      "sha256": "23a58ed04b9581c7b31c5d89e6163655553b459d24f947766284b174a5359a2b",
+      "bytes": 41
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/reference-coverage.json": {
+      "sha256": "c3c28c0971d67e32d711dab1915ff8690ad43af9d3f88e400c18bfcbaa459744",
+      "bytes": 18878
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/preflight.json": {
+      "sha256": "adf5a5f906655f78c2d3c8cb49b7d195dc6991e1d0626de309874b001a206c4f",
+      "bytes": 13203
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/runner-replay.txt": {
+      "sha256": "3389722dab2ca39a97b936ea0d879dc7b8d5e29cebe440e3742a89dd792d701d",
+      "bytes": 1799
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/runner-ledger-acceptance.txt": {
+      "sha256": "67d19aa763802b26b534500146f9b7922f278336e2b2f29134c5b3b0e5592a56",
+      "bytes": 134
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/runner-replay-status.json": {
+      "sha256": "9f4f4a46ea728cd4eed11165bb5fee60e09ee6fe3b5f6ed50442129ba51c9482",
+      "bytes": 2817
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/draft-campaign-report.json": {
+      "sha256": "7827469afe69e944ede2dd2312a992072b08fc22403fd3580f42add067fa0a97",
+      "bytes": 132565
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/reference-diagnosis/diagnosis.txt": {
+      "sha256": "3d908dacc6d152076af444e5cddfdf39b368073f0b13f4be49486ca182b31f32",
+      "bytes": 4395
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/reference-diagnosis/comparison.json": {
+      "sha256": "bc64ecd1ff0f7fef9d6d4c5b548e92a9ac4606e266896f76e8633b3ef42b3a20",
+      "bytes": 266903
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/reference-diagnosis/build-semantic-diff.txt": {
+      "sha256": "5039999e41d11e3df477a576fbc76af7026ea7ed9fbcfbcb9ed2da85883806db",
+      "bytes": 370
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/reference-diagnosis/reference-semantic-diff.json": {
+      "sha256": "58bc5359c1691e35ab6c31d2bf279cc7e938bc836e5daca34016aa1a12ede5fe",
+      "bytes": 1316
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/reference-diagnosis/focused-final-all-seeds.txt": {
+      "sha256": "36ea4557de90098183c18731aa03784859848c5b6da682c3ef65738a31653672",
+      "bytes": 805
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/final-preflight.json": {
+      "sha256": "c4a3c4ee3181689a0551fce21bd10cef93c951cba637644e2e31124e7e2d5097",
+      "bytes": 13202
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/final-references.txt": {
+      "sha256": "408d7af9bfc8d6283f840028844e309336ac68903ca16cc82e1018d9d82e8a97",
+      "bytes": 10071
+    },
+    "/Volumes/T7-Data/pal/reviews/ed-release-20261027/technical-74b7bd2/final-references-status.json": {
+      "sha256": "a00672d2bae193bfdef5344fed1c8a6fa87ea4e8801979ddcc79b2216c0057d9",
+      "bytes": 41
+    }
+  }
+}

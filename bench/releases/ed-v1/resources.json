@@ -13,7 +13,7 @@
     "rightsCleared": false,
     "independentAccessTested": false,
     "twoIndependentReplays": false,
-    "engineBuildAccepted": false
+    "engineBuildAccepted": true
   },
   "sourceProvenance": {
     "authoredCode": "tracked source; license and attribution lineage not independently cleared",
@@ -405,9 +405,9 @@
     }
   ],
   "build": {
-    "present": false,
-    "sha256": null,
-    "status": "awaiting consolidated clean build; local precompiled cache not accepted"
+    "present": true,
+    "sha256": "f566b10d95c722b71fcf2dd5906ec5de304463ac405080f64cfa9bcf452119fb",
+    "fileCount": 81
   },
   "distribution": {
     "originalAssets": "excluded",

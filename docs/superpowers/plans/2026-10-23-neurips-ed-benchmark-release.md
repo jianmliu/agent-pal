@@ -8,7 +8,9 @@
 
 **Tech Stack:** Node.js ESM, TypeScript game engine, pnpm workspace, JSON tasks/manifests, JSONL trajectories, CLI/API adapters, GitHub Actions, existing Markdown-to-LaTeX synchronization.
 
-**Status:** Audit and proposed execution plan, 23 October 2026. Implementation and paid/model evaluation have not started under this plan. The open v0.7 manuscript is unchanged. Proposed sample counts and gates below are project choices, not NeurIPS minimum requirements.
+**Initial status (23 October 2026):** Audit and proposed execution plan; implementation and model evaluation had not started at that time. The open v0.7 manuscript is unchanged. Proposed sample counts and gates below are project choices, not NeurIPS minimum requirements.
+
+**Execution update,27 October2026:** first-stage resource/protocol/complete-ledger implementation and consolidated technical acceptance are complete; see `../../benchmark-release/acceptance.md`. A single clean engine build, initial65/67 reference check, focused6/6 repair verification and final full67/67 rerun establish acceptance of all67 final pairs. This does not complete the broader publication plan: external rights/access, full task-validity curation, independent installations, permission canaries, statistical analysis and all model experiments remain gated. No paid model evaluation has started, and the draft campaign remains disabled.
 
 ## 1. Research framing and scope
 

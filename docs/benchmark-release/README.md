@@ -42,6 +42,8 @@ File-backed reports additionally require a **frozen** campaign with one `protoco
 
 Unlabeled historical cached checks retain compatibility but have **legacy-unknown** provenance. They are not automatically promoted into the formal campaign. Public CI builds and checks the contract without proprietary resources; no remote resource-equipped replay job or secret distribution is enabled here.
 
+Consequently, a result-submission PR that requires fresh engine certification will fail that gate on a resource-free runner, rather than passing a log-only check as replay. Source-only contract checks still run without game assets. An authorized resource-equipped review runner remains a deployment/access prerequisite; do not expose private assets to untrusted PR code or bypass the evidence distinction to make the check green.
+
 ## Protocol changes
 
 New runs bind actual task/save/runtime fingerprints, effective action/token/virtual budgets, prompt/tool-schema source identities, adapter identity, context policy, overrides, effort and engine execution profile. Existing token/virtual multipliers are serialized, not silently normalized; CLI tokens remain measured at exit. Formal runs forbid undeclared ambient overrides and replay prefixes and reject paid-model starts while inference is disabled. Startup, post-ready model wall, terminal drain and termination escalation have bounded lifecycles. Gameplay end events stay intact; client accounting remains appended from raw CLI evidence.

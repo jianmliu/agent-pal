@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "releaseId": "ed-v1",
-  "status": "candidate-technical-acceptance-pending",
+  "status": "technical-contract-accepted-external-gates-blocked",
   "inferenceEnabled": false,
   "sourceBase": "97c11865501c99488821df98d6b8e154bbe9271b",
   "candidateTasks": [
@@ -22,12 +22,15 @@
   "campaign": "campaign.json",
   "gates": {
     "taskCurationAccepted": false,
-    "cleanBuildAccepted": false,
-    "engineReplayAccepted": false,
+    "cleanBuildAccepted": true,
+    "engineReplayAccepted": true,
     "rightsCleared": false,
     "independentAccessTested": false,
     "independentInstallAccepted": false,
     "spendAuthorized": false
   },
-  "modelEvaluationsStarted": false
+  "modelEvaluationsStarted": false,
+  "sourceContractCommit": "74b7bd2c9479a5e18fe76fd5e918e7046d09db16",
+  "referenceRepairCommit": "9a5783a3bc448a0d0a1f9273615e6c891e6f583f",
+  "technicalAcceptance": "../../../docs/benchmark-release/evidence/2026-10-27/acceptance.json"
 }
