@@ -1,567 +1,382 @@
-// deepseek-pure-lib.js — auto-generated helper library
-global.settleAll = async function(){
-  for(let i=0;i<12;i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+// deepseek-pure-lib.js — pure-mode helper library\n\ntry { global.getRowsOf2 = async function(scene){
+  const mn = global.SCENEMAP[scene];
+  if (mn==null) throw new Error('nomap '+scene);
+  let r = global.MAPS[mn];
+  if (!Array.isArray(r)) { const d = await pal.readData('maps/'+mn+'.json'); r = d.rows; global.MAPS[mn]=r; }
+  if (r.__padded) return r;
+  const p = r.map(s=>{ s=s||''; return s.length>=192? s : s.padEnd(192,' '); });
+  p.__padded = true;
+  global.MAPS[mn] = p;
+  return p;
+}; } catch(e){}\n\ntry { global.patchCell = function(rows,x,y,ch){ const r=rows.slice(); let s=r[y]||''; if(s.length<192) s=s.padEnd(192,' '); r[y]=s.slice(0,x)+ch+s.slice(x+1); return r; }; } catch(e){}\n\ntry { global.buildPads = function buildPads(scene){
+  const eos = (global.EOALL||[]).filter(e=>e.scene===scene);
+  const pads=[];
+  for (const e of eos){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    if (!e.triggerScript) continue;
+    const ops = global.opsOf(e.triggerScript);
+    let dest=null, battle=false; const coords=[];
+    for (const o of ops){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+      if (o.op==='0059') dest=o.args[0];
+      if (o.op==='0007') battle=true;
+      if (['0046','007A','007B','0070','0044'].includes(o.op)) coords.push({op:o.op, args:o.args.slice()});
+      if (o.op==='0000') break;
+    }
+    const conv = c => ht2g(c.args[0], c.args[1], c.args[2]||0);
+    pads.push({id:e.id, own:[e.gx,e.gy], dest, battle,
+      first: coords.length?conv(coords[0]):null,
+      tele: (coords.find(c=>c.op==='0046')||null) && conv(coords.find(c=>c.op==='0046')),
+      land: coords.length?conv(coords[coords.length-1]):null,
+      coords, nops:ops.length, tm:e.triggerMode});
+  }
+  return pads;
+}; } catch(e){}\n\ntry { global.padData = async function(scene){
+  const rows = await global.getRowsOf2(scene);
+  const built = global.buildPads(scene)||[];
+  const live = {}; for (const o of (pal.world.objectList||[])) live[o.id]=[o.gx,o.gy];
+  const tele = built.map(q=>({...q, own: live[q.id]||q.own})).filter(q=>q.own&&q.land);
+  const zone = {}; const blocked = new Set();
+  for(const p of tele){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    const cells=[]; const [x,y]=p.own;
+    for(const [dx,dy] of [[0,0],[1,0],[-1,0],[0,1],[0,-1]]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const nx=x+dx, ny=y+dy; if(nx<0||ny<0||nx>=192||ny>=192) continue; cells.push([nx,ny]); blocked.add(nx+','+ny); }
+    zone[p.id]=cells;
+  }
+  return {rows, tele, zone, blocked, byId:Object.fromEntries(tele.map(p=>[p.id,p]))};
+}; } catch(e){}\n\ntry { global.firePadGo4 = async function(scene, padId, opts={}){
+  const D = await global.padData(scene);
+  const {rows, zone, blocked, byId} = D;
+  const p = byId[padId]; if(!p) return {ok:false,err:'nopad'};
+  const zc = zone[padId];
+  const zset = new Set(zc.map(([x,y])=>x+','+y));
+  const blockedOthers = new Set(); 
+  for(const id in zone){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); if(+id===+padId) continue; for(const [x,y] of zone[id]) blockedOthers.add(x+','+y); }
+  const K=(x,y)=>x+','+y;
+  const N=192;
+  const W=(x,y)=>{ if(x<0||y<0||x>=N||y>=N) return false; const r=rows[y]; return !!r && r[x]==='.';};
+  const pass=(x,y)=>{ if(x<0||y<0||x>=N||y>=N) return false; const k=K(x,y); if(zset.has(k)) return true; return W(x,y)&&!blockedOthers.has(k); };
+  const sx=pal.world.gx, sy=pal.world.gy;
+  if(!pass(sx,sy)) return {ok:false,err:'startblocked',at:[sx,sy]};
+  const prev=new Map([[K(sx,sy),null]]); const q=[[sx,sy]]; let h=0; let goal=null;
+  while(h<q.length){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const [x,y]=q[h++];
+    if(zset.has(K(x,y))){ goal=[x,y]; break; }
+    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const nx=x+dx,ny=y+dy,k=K(nx,ny);
+      if(prev.has(k)) continue; if(!pass(nx,ny)) continue;
+      prev.set(k,[x,y]); q.push([nx,ny]); } }
+  if(!goal) return {ok:false,err:'nopath',pad:padId,from:[sx,sy]};
+  let c=goal; const rev=[]; while(c){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); rev.push(c); c=prev.get(K(c[0],c[1])); }
+  rev.reverse();
+  const DIRS=[[0,-1,'up'],[0,1,'down'],[-1,0,'left'],[1,0,'right']];
+  const scene0=pal.world.scene; let steps=0; let jumped=false;
+  for(let i=1;i<rev.length;i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    if(pal.world.mode!=='control'){ await global.settleAll(30, opts.battleBudget||60000); await pal.observe(); }
+    if(pal.world.scene!==scene0) return {ok:true, why:'scene', scene:pal.world.scene, at:[pal.world.gx,pal.world.gy], steps};
+    if(pal.world.gx!==rev[i-1][0] || pal.world.gy!==rev[i-1][1]){ jumped=true; break; }
+    const dx=rev[i][0]-pal.world.gx, dy=rev[i][1]-pal.world.gy;
+    let d=null; for(const [ax,ay,dd] of DIRS) if(ax===dx&&ay===dy) d=dd;
+    if(!d){ jumped=true; break; }
+    const res = await pal.step(d,1); steps++;
+    await pal.wait(opts.delay||22);
     await pal.observe();
-    const m=pal.world.mode;
-    if(m==='dialog'){ await pal.advance(20); continue; }
-    if(m==='menu'){ await pal.press('Menu'); continue; }
-    if(m==='busy'){ await pal.wait(400); continue; }
-    if(m==='battle'){ await pal.battle('auto'); continue; }
-    break;
+    if(res && res.rejected){ break; }
+    if (rev[i][0]!==pal.world.gx || rev[i][1]!==pal.world.gy) { jumped=true; break; }
   }
+  for(let i=0;i<30 && pal.world.mode!=='control';i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); await global.settleAll(15, opts.battleBudget||60000); await pal.wait(30); await pal.observe(); }
   await pal.observe();
-  return pal.world.mode;
-};
-
-global.getRows = async function(mapNum){
-  if(global.MAPROWS[mapNum]) return global.MAPROWS[mapNum];
-  const m = await pal.readData('maps/'+mapNum+'.json');
-  global.MAPROWS[mapNum]=m.rows;
-  return m.rows;
-};
-
-global.bfsP = function(rows, start, isTarget, blk){
-  const k=(x,y)=>x+','+y;
-  const prev=new Map([[k(...start),null]]); const q=[start]; let qi=0; let goal=null;
-  while(qi<q.length){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const [x,y]=q[qi++];
-    if(isTarget(x,y)){ goal=[x,y]; break; }
-    for(const [dx,dy] of [[0,-1],[0,1],[-1,0],[1,0]]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-      const nx=x+dx, ny=y+dy, kk=k(nx,ny);
-      if((rows[ny]||'')[nx]!=='.'||prev.has(kk)||blk.has(kk)) continue;
-      prev.set(kk,k(x,y)); q.push([nx,ny]);
-    }
-  }
-  if(!goal) return null;
-  const path=[]; let c=k(...goal);
-  while(c){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const [a,b]=c.split(',').map(Number); path.push([a,b]); c=prev.get(c); }
-  return path.reverse();
-};
-
-global.walkPathLog = async function(path, opt={}){
-  const sc0 = pal.world.scene;
-  const trace=[]; let blocked=0;
-  for(let i=1;i<path.length;i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const [cx,cy]=path[i];
-    const dx = cx - pal.world.player.gx, dy = cy - pal.world.player.gy;
-    const dir = dy===-1?'up':dy===1?'down':dx===-1?'left':dx===1?'right':null;
-    if(!dir) return {err:'offpath', at:[pal.world.player.gx,pal.world.player.gy], i, want:[cx,cy], trace};
-    const r = await global.step1(dir);
-    trace.push([r.scene,r.at[0],r.at[1],r.mode]);
-    if(r.scene!==sc0) return {moved:true, scene:r.scene, at:r.at, i, trace};
-    if(r.mode!=='control') return {mode:r.mode, scene:r.scene, at:r.at, i, trace};
-    if(!r.moved){ blocked++; if(blocked>2) return {err:'stuck', at:r.at, i, trace}; }
-    else blocked=0;
-  }
-  return {done:true, scene:pal.world.scene, at:[pal.world.player.gx,pal.world.player.gy], trace};
-};
-
-global.goObjA = async function(id){
-  await global.settleAll();
-  const w=pal.world;
-  const o=(w.objectList||[]).find(o=>o.id===id) || global.EOIDX[id];
-  if(!o) return {err:'noobj'};
-  const mn=(global.SC_NAME[w.scene]||{}).mapNum||w.map;
-  const rows=await global.getRows(mn);
-  const blk=new Set();
-  for(const q of (w.objectList||[])){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    if(q.kind==='touch-trigger' && q.id!==id) for(const [x,y] of global.trigZone(q)) blk.add(x+','+y);
-    if(q.blocking) blk.add(q.gx+','+q.gy);
-  }
-  const adj=[[o.gx,o.gy-1],[o.gx,o.gy+1],[o.gx-1,o.gy],[o.gx+1,o.gy]].filter(([x,y])=>(rows[y]||'')[x]==='.');
-  const tset=new Set(adj.map(a=>a.join(',')));
-  if((rows[o.gy]||'')[o.gx]==='.') tset.add(o.gx+','+o.gy);
-  let p = global.bfsP(rows,[w.player.gx,w.player.gy],(x,y)=>tset.has(x+','+y),blk);
-  if(!p) return {err:'nopath', to:[o.gx,o.gy]};
-  if(!(p.length===1 && p[0][0]===o.gx && p[0][1]===o.gy)){
-    const r0 = await global.walkPathLog(p);
-    if(r0.scene!==w.scene || r0.mode!=='control'){ await global.settleAll(); return {phase:'walk', ...r0, now:[pal.world.scene,pal.world.gx,pal.world.gy]}; }
-  }
-  // step into object
-  await pal.observe();
-  const dx=o.gx-pal.world.gx, dy=o.gy-pal.world.gy;
-  const dir = dy<0?'up':dy>0?'down':dx<0?'left':dx>0?'right':null;
-  if(!dir) return {err:'notadj', at:[pal.world.gx,pal.world.gy]};
-  await pal.step(dir,1);
-  await global.settleAll();
-  return {phase:'step', now:{scene:pal.world.scene,pos:[pal.world.gx,pal.world.gy],mode:pal.world.mode}};
-};
-
-global.avWalkBox = async function(tx,ty,opt={}){
-  const W0=pal.world; const sc0=W0.scene;
-  const rows=await global.getRows(W0.map);
-  const blk=new Set(); const allow=new Set(opt.allow||[]);
-  for(const q of (W0.objectList||[])){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    if(allow.has(q.id)) continue;
-    if(q.kind==='touch-trigger'){ for(const [x,y] of global.box2(q.gx,q.gy)) blk.add(x+','+y); }
-    else if(q.blocking) blk.add(q.gx+','+q.gy);
-  }
-  const isW=(x,y)=>((rows[y]||'')[x]==='.')&&!blk.has(x+','+y);
-  const sx=W0.gx,sy=W0.gy;
-  if(!isW(tx,ty)) return {err:'target blocked'};
-  const prev=new Map(); const seen=new Set([sx+','+sy]); const qq=[[sx,sy]]; let found=false;
-  while(qq.length){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");const [x,y]=qq.shift(); if(x===tx&&y===ty){found=true;break;}
-    for(const [dx,dy] of [[0,-1],[0,1],[-1,0],[1,0]]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");const nx=x+dx,ny=y+dy,kk=nx+','+ny;if(seen.has(kk))continue;if(!isW(nx,ny))continue;seen.add(kk);prev.set(kk,x+','+y);qq.push([nx,ny]);}}
-  if(!found) return {err:'nopath'};
-  const path=[]; let k=tx+','+ty; while(k){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");path.push(k.split(',').map(Number)); k=prev.get(k);} path.reverse();
-  for(let i=1;i<path.length;i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const [x,y]=path[i];
-    const dx=x-pal.world.gx, dy=y-pal.world.gy;
-    if(Math.abs(dx)+Math.abs(dy)!==1) return {err:'lost',at:[pal.world.gx,pal.world.gy],i};
-    const dir= dx===1?'right':dx===-1?'left':dy===1?'down':'up';
-    await pal.step(dir,1);
-    if(pal.world.scene!==sc0) return {scene:pal.world.scene,at:[pal.world.gx,pal.world.gy],i};
-    if(pal.world.mode!=='control'){ await global.settleAll(); if(pal.world.scene!==sc0) return {scene:pal.world.scene,at:[pal.world.gx,pal.world.gy],i}; }
-  }
-  return {arrived:true,at:[pal.world.gx,pal.world.gy],len:path.length};
-};
-
-global.box2 = (x,y)=>[[x-1,y-1],[x,y-1],[x-1,y],[x,y]];
-
-global.trigZone = function(eo){
-  const x=eo.gx, y=eo.gy, out=[];
-  for(let dx=-1;dx<=1;dx++) for(let dy=-1;dy<=1;dy++) out.push([x+dx,y+dy]);
-  return out;
-};
-
-global.goObjB = async function(id, boxFn){
-  await global.settleAll();
-  const w=pal.world;
-  const o=(w.objectList||[]).find(o=>o.id===id) || global.EOIDX[id];
-  if(!o) return {err:'noobj'};
-  const mn=(global.SC_NAME[w.scene]||{}).mapNum||w.map;
-  const rows=await global.getRows(mn);
-  const blk=new Set();
-  for(const q of (w.objectList||[])){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    if(q.kind==='touch-trigger' && q.id!==id) for(const [x,y] of (boxFn||global.box2)(q.gx,q.gy)) blk.add(x+','+y);
-    if(q.blocking) blk.add(q.gx+','+q.gy);
-  }
-  const adj=[[o.gx,o.gy-1],[o.gx,o.gy+1],[o.gx-1,o.gy],[o.gx+1,o.gy]].filter(([x,y])=>(rows[y]||'')[x]==='.');
-  const tset=new Set(adj.map(a=>a.join(',')));
-  if((rows[o.gy]||'')[o.gx]==='.') tset.add(o.gx+','+o.gy);
-  let p = global.bfsP(rows,[w.player.gx,w.player.gy],(x,y)=>tset.has(x+','+y),blk);
-  if(!p) return {err:'nopath'};
-  const r0 = await global.walkPathLog(p);
-  if(r0.scene!==w.scene || r0.mode!=='control'){ await global.settleAll(); return {phase:'walk', ...r0, now:[pal.world.scene,pal.world.gx,pal.world.gy]}; }
-  await pal.observe();
-  const dx=o.gx-pal.world.gx, dy=o.gy-pal.world.gy;
-  const dir = dy<0?'up':dy>0?'down':dx<0?'left':dx>0?'right':null;
-  if(!dir) return {err:'notadj'};
-  await pal.step(dir,1); await global.settleAll();
-  return {phase:'step', now:{scene:pal.world.scene,pos:[pal.world.gx,pal.world.gy]}};
-};
-
-global.goObj = async function(id){
-  await global.settleAll();
-  const w=pal.world;
-  const o=(w.objectList||[]).find(o=>o.id===id) || global.EOIDX[id];
-  if(!o) return {err:'noobj '+id};
-  const mn = (global.SC_NAME[w.scene]||{}).mapNum || w.map;
-  const rows = await global.getRows(mn);
-  const blk=new Set();
-  for(const q of (w.objectList||[])){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    if(q.kind==='touch-trigger' && q.id!==id) for(const [x,y] of global.trigZone(q)) blk.add(x+','+y);
-    if(q.blocking) blk.add(q.gx+','+q.gy);
-  }
-  const p = global.bfsP(rows,[w.player.gx,w.player.gy],(x,y)=>x===o.gx&&y===o.gy,blk);
-  if(!p) return {err:'nopath', to:[o.gx,o.gy], scene:w.scene};
-  const r = await global.walkPathLog(p);
-  await global.settleAll();
-  return {len:p.length, ...r, now:{scene:pal.world.scene, pos:[pal.world.gx,pal.world.gy], mode:pal.world.mode}};
-};
-
-global.travel = async function(steps){
+  return {ok:true, at:[pal.world.gx,pal.world.gy], scene:pal.world.scene, mode:pal.world.mode, steps, jumped, expectLand:p.land, pathLen:rev.length-1};
+}; } catch(e){}\n\ntry { global.execChain = async function(scene, ids, opts={}){
+  const D = await global.padData(scene);
   const log=[];
-  for(const [id,exp] of steps){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const r = await global.goObjA(id);
-    await global.settleAll();
-    log.push({id, exp, res:(r&&r.err)?r:undefined, scene:pal.world.scene, pos:[pal.world.gx,pal.world.gy], mode:pal.world.mode});
-    if(r && r.err) { log.push("ERR at "+id); break; }
-    if(pal.world.scene!==exp) log.push("WARN expected "+exp);
+  for(const id of ids){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    if(pal.world.scene!==scene) return {ok:true, why:'scene', scene:pal.world.scene, at:[pal.world.gx,pal.world.gy], log};
+    const p = D.byId[id];
+    const r = await global.firePadGo4(scene, id, opts);
+    log.push({hop:id, ok:r.ok, err:r.err, at:r.at, want:p?p.land:null, scene:r.scene||pal.world.scene, jumped:r.jumped, steps:r.steps});
+    if(!r.ok) return {ok:false, why:'hopfail', hop:id, r, log};
+    if(r.scene && r.scene!==scene) return {ok:true, why:'scene', scene:r.scene, at:r.at, log};
+    if(p && p.land && (r.at[0]!==p.land[0] || r.at[1]!==p.land[1])) return {ok:false, why:'landmismatch', hop:id, at:r.at, want:p.land, log};
   }
-  return log;
-};
-
-global.fightSmart = async (opts={})=>{
-  const max=opts.max||300; let n=0; const log=[];
-  while(n<max){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const w=pal.world;
-    if(w.mode==='battle'){ await global.oneBattleAction(log); n++; await pal.wait(70); }
-    else if(w.mode==='dialog'){ await pal.advance(40); }
-    else if(w.mode==='busy'){ await pal.wait(180); }
-    else if(w.mode==='menu'){ await pal.press('Menu'); await pal.wait(150); }
-    else return {result:(w.lastBattleResult&&JSON.stringify(w.lastBattleResult))||'ended', turns:n, log:log.slice(-12)};
+  return {ok:true, why:'done', log};
+}; } catch(e){}\n\ntry { global.mazePlan6 = async function(scene, goalPad, startXY, noFireIds){
+  const nf = new Set((noFireIds||[]).map(Number));
+  const D = await global.padData(scene);
+  const {rows, zone, byId} = D;
+  const allPads = D.tele;
+  const blocked = new Set();
+  for(const p of allPads) for(const [x,y] of zone[p.id]) blocked.add(x+','+y);
+  const tele = allPads.filter(p=>!nf.has(p.id));
+  const N=192; const K=(x,y)=>x+','+y;
+  const W=(x,y)=>{const r=rows[y]; return !!r && r[x]==='.';};
+  const regionFrom=function(sx,sy){
+    const seen=new Set(); if(!W(sx,sy)) return {seen,size:0};
+    seen.add(K(sx,sy)); const q=[sx,sy]; let h=0;
+    while(h<q.length){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const x=q[h++], y=q[h++];
+      for(const [nx,ny] of [[x+1,y],[x-1,y],[x,y+1],[x,y-1]]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+        const k=K(nx,ny); if(seen.has(k)) continue;
+        if(!W(nx,ny)) continue; if(blocked.has(k)) continue;
+        seen.add(k); q.push(nx,ny); } }
+    return {seen,size:seen.size};
+  };
+  const reach=function(reg){
+    const out=[];
+    for(const p of tele){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); let ok=false;
+      for(const [zx,zy] of zone[p.id]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+        for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+          const nx=zx+dx, ny=zy+dy; if(nx<0||ny<0||nx>=N||ny>=N) continue;
+          if(reg.seen.has(K(nx,ny))){ ok=true; break; } }
+        if(ok) break; }
+      if(ok) out.push(p.id); }
+    return out;
+  };
+  const src = startXY || [pal.world.gx,pal.world.gy];
+  const edges={}; const R={};
+  R['start']=regionFrom(src[0],src[1]); edges['start']=reach(R['start']);
+  for(const p of tele){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const r=regionFrom(p.land[0],p.land[1]); R[p.id]=r; if(r.size>0) edges[p.id]=reach(r); }
+  const prev=new Map([['start',null]]); const q=['start'];
+  while(q.length){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const cur=q.shift(); if(cur===goalPad) break;
+    for(const nxt of (edges[cur]||[])){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); if(prev.has(nxt)) continue; prev.set(nxt,cur); q.push(nxt); } }
+  let chain=null;
+  if(prev.has(goalPad)){ chain=[]; let c=goalPad; while(c!=null){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); chain.unshift(c); c=prev.get(c);} chain.shift(); }
+  return {edges, chain, hasGoal:prev.has(goalPad), startEdges:edges['start'], startSize:R['start'].size, byId, R};
+}; } catch(e){}\n\ntry { global.avoidPads = function(scene, keepIds){
+  const keep = new Set((keepIds||[]).map(Number));
+  const pads = global.buildPads(scene) || [];
+  const s = new Set();
+  for (const p of pads){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    if (keep.has(p.id)) continue;
+    const [x,y]=p.own;
+    for (const [dx,dy] of [[0,0],[1,0],[-1,0],[0,1],[0,-1]]) s.add((x+dx)+','+(y+dy));
   }
-  return {result:'maxturns', turns:n, log:log.slice(-12)};
-};
-
-global.heal = async (frac=0.9)=>{
-  // use healing items out of battle: 止血草(heal), 行軍丹 etc. Simple: use 止血草 on lowest hp member
-  return;
-};
-
-// SC_NAME is data
-
-// EOIDX is data
-
-global.castSpellOut = async function(h, spellName, tgtIdx){
-  const m = await global.openMagic(h);
-  if(!m) return false;
-  const spi = pal.world.menu.items.findIndex(x=>x.label.startsWith(spellName) && x.enabled);
-  if(spi<0){ await global.closeAllMenus(); return false; }
-  if(!(await global.menuSeek(spi))) { await global.closeAllMenus(); return false; }
-  await pal.press('Search'); await pal.observe();
-  if(pal.world.menu && pal.world.menu.kind==='party'){
-    // 2-column layout: 0,1 / 2
-    if(tgtIdx===1) { await pal.press('Right'); await pal.observe(); }
-    else if(tgtIdx===2) { await pal.press('Down'); await pal.observe(); }
-    await pal.press('Search'); await pal.wait(350);
+  return s;
+}; } catch(e){}\n\ntry { global.healNow = async function(targetPct=0.95, maxCasts=30){
+  // 氣療術 heals 75 HP for 6 MP
+  for (let i=0;i<maxCasts;i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    const me = pal.world.members[0];
+    if (!me || me.hp >= me.maxHp*targetPct) break;
+    if (pal.world.mode!=='control') await global.settleAll(10);
+    await pal.press('Menu'); await pal.wait(250); await pal.observe();
+    if (pal.world.mode!=='menu') { continue; }
+    // choose 仙術
+    const items = pal.world.menu.items.map(x=>String(x.label||x));
+    let idx = items.findIndex(t=>t.includes('仙術'));
+    if (idx<0) { await pal.press('Menu'); await pal.wait(150); await pal.observe(); continue; }
+    await pal.choose(idx); await pal.wait(350); await pal.observe();
+    if (pal.world.mode!=='menu') continue;
+    const mi = pal.world.menu.items.findIndex(x=>String(x.label||x).includes('氣療術'));
+    if (mi<0) { await pal.press('Menu'); await pal.press('Menu'); await pal.wait(150); await pal.observe(); continue; }
+    await pal.choose(mi); await pal.wait(350); await pal.observe();
+    if (pal.world.mode==='menu'){ await pal.choose(0); await pal.wait(700); await pal.observe(); }
+    await global.settleAll(10);
   }
-  await global.closeAllMenus();
-  return true;
-};
-
-global.bossAI5 = async function(opt={}){
-  const w=pal.world, b=w.battle;
-  if(!b||!b.turn) return null;
-  const mi=b.turn.member;
-  const en=(b.enemies||[]).filter(e=>e.hp>0);
-  if(!en.length) return null;
-  const boss=en.slice().sort((a,c)=>((c.maxHp||0)-(a.maxHp||0)))[0];
-  const target=boss.index;
-  const ms=w.members, mem=ms[mi], mp=mem.mp||0;
-  const alive=ms.filter(m=>m.hp>0);
-  let low=-1, worst=2;
-  for(let k=0;k<ms.length;k++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); if(ms[k].hp<=0) continue; const g=ms[k].hp/ms[k].maxHp; if(g<worst){worst=g;low=k;} }
-  const deadIdx=ms.findIndex(m=>m.hp<=0);
-  const hurtCount=ms.filter(m=>m.hp>0 && m.hp<m.maxHp*0.6).length;
-  const hasSoup = w.items.some(i=>i.name==='孟婆湯');
-  const hasMPitem = w.items.some(i=>i.name==='龍涎草');
-  let type='attack', extra={target};
-  if(mi===0){
-    if(deadIdx===2 && hasSoup){ type='item'; extra={item:'孟婆湯', target:2}; }
-    else if(worst<0.35 && mp>=18){ type='magic'; extra={magic:'凝神歸元', target:low}; }
-    else if(mp>=18){ type='magic'; extra={magic:'天師符法', target}; }
-    else type='attack';
-  } else if(mi===1){
-    if(deadIdx===2 && mp>=16){ type='magic'; extra={magic:'還魂咒', target:2}; }
-    else if(hurtCount>=2 && mp>=40){ type='magic'; extra={magic:'五氣朝元', target:1}; }
-    else if(mp>=12){ type='magic'; extra={magic:'玄冰咒', target}; }
-    else if(mp<12 && hasMPitem){ type='item'; extra={item:'龍涎草', target:1}; }
-    else if(mp>=5){ type='magic'; extra={magic:'冰咒', target}; }
-    else type='attack';
-  } else {
-    if(mem.hp/mem.maxHp<0.3 && mp>=18){ type='magic'; extra={magic:'凝神歸元', target:2}; }
-    else if(deadIdx===0 && hasSoup){ type='item'; extra={item:'孟婆湯', target:0}; }
-    else if(deadIdx===1 && hasSoup){ type='item'; extra={item:'孟婆湯', target:1}; }
-    else if(w.cash>=250){ type='magic'; extra={magic:'銅錢鏢', target}; }
-    else if(mp>=18){ type='magic'; extra={magic:'一陽指', target}; }
-    else type='attack';
+  const me=pal.world.members[0];
+  return {hp:me.hp, mhp:me.maxHp, mp:me.mp};
+}; } catch(e){}\n\ntry { global.settleAll = async function(maxIter=40, budget=60000){
+  for (let i=0;i<maxIter;i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    const ww = pal.world;
+    if (ww.mode==='control') return {mode:'control'};
+    if (ww.mode==='dialog'){ await pal.advance(30); continue; }
+    if (ww.mode==='busy'){ await pal.wait(300); continue; }
+    if (ww.mode==='menu'){ await pal.press('Menu'); await pal.wait(120); await pal.observe(); continue; }
+    if (ww.mode==='battle'){ await global.battleAI({budget}); await pal.observe(); continue; }
+    await pal.wait(200);
   }
-  let note='';
-  try{ note=(await pal.battle(type, extra))?.reply?.note || ''; }catch(e){ note='ERR '+e.message; }
-  if(/is .*'s spell/.test(note)){ try{ await pal.battle('attack',{target}); note='fallback'; }catch(e){} }
-  return `${mi}:${extra.magic||extra.item||type}`;
-};
-
-global.avWalk = async function(tx,ty,opt={}){
-  const W0 = pal.world; const sc0=W0.scene;
-  const rows = await global.getRows(W0.map);
-  const blk = new Set();
-  const allow = new Set(opt.allow||[]);
-  const pad = opt.pad===undefined?1:opt.pad;
-  for(const q of (W0.objectList||[])){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    if(allow.has(q.id)) continue;
-    if(q.kind==='touch-trigger'){
-      for(let dx=-pad;dx<=pad;dx++)for(let dy=-pad;dy<=pad;dy++) blk.add((q.gx+dx)+','+(q.gy+dy));
-    } else if(q.blocking) blk.add(q.gx+','+q.gy);
-  }
-  const isW=(x,y)=>((rows[y]||'')[x]==='.') && !blk.has(x+','+y);
-  const sx=W0.gx, sy=W0.gy;
-  if(!isW(tx,ty)) return {err:'target blocked',t:[tx,ty]};
-  const prev=new Map(); const seen=new Set([sx+','+sy]); const qq=[[sx,sy]];
-  let found=false;
-  while(qq.length){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");const [x,y]=qq.shift(); if(x===tx&&y===ty){found=true;break;}
-    for(const [dx,dy] of [[0,-1],[0,1],[-1,0],[1,0]]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");const nx=x+dx,ny=y+dy;const kk=nx+','+ny;if(seen.has(kk))continue;if(!isW(nx,ny))continue;seen.add(kk);prev.set(kk,x+','+y);qq.push([nx,ny]);}}
-  if(!found) return {err:'nopath',t:[tx,ty]};
-  const path=[]; let k=tx+','+ty; while(k){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");path.push(k.split(',').map(Number)); k=prev.get(k);} path.reverse();
-  for(let i=1;i<path.length;i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const [x,y]=path[i];
-    const dx=x-pal.world.gx, dy=y-pal.world.gy;
-    if(Math.abs(dx)+Math.abs(dy)!==1) return {err:'lost',at:[pal.world.gx,pal.world.gy],i};
-    const dir= dx===1?'right':dx===-1?'left':dy===1?'down':'up';
-    await pal.step(dir,1);
-    if(pal.world.scene!==sc0) return {scene:pal.world.scene,at:[pal.world.gx,pal.world.gy],i};
-    if(pal.world.mode!=='control'){ await global.settleAll(); if(pal.world.scene!==sc0) return {scene:pal.world.scene,at:[pal.world.gx,pal.world.gy],i}; }
-  }
-  return {arrived:true,at:[pal.world.gx,pal.world.gy],len:path.length};
-};
-
-// SCGRAPH is data
-
-global.sceneRoute = function(from,to){
-  if(from===to) return [];
-  const seen=new Set([from]); const q=[[from,[]]];
-  while(q.length){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const [s,path]=q.shift();
-    for(const ed of (g.get(s)||[])){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-      if(seen.has(ed.dest)) continue;
-      const np=[...path,{from:s,id:ed.id,pos:ed.pos,dest:ed.dest,mode:ed.mode,state:ed.state}];
-      if(ed.dest===to) return np;
-      seen.add(ed.dest); q.push([ed.dest,np]);
+  return {mode:pal.world.mode};
+}; } catch(e){}\n\ntry { global.battleAI = async function(opts={}){
+  const log=[]; let turns=0; const t0=Date.now(); const budget=opts.budget||70000;
+  let dump=null;
+  while (Date.now()-t0 < budget){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    const w = pal.world;
+    if (w.mode==='dialog'){ await pal.advance(20); continue; }
+    if (w.mode==='busy'){ await pal.wait(120); continue; }
+    if (w.mode==='menu'){ await pal.press('Menu'); await pal.wait(120); await pal.observe(); continue; }
+    if (w.mode!=='battle') return {done:true, mode:w.mode, res:w.lastBattleResult, turns, log:log.slice(-60)};
+    const b = w.battle || {};
+    if (!dump) { try { dump = JSON.parse(JSON.stringify(b)); } catch(e){ dump = String(b); } }
+    if (!b.turn || b.turn.kind!=='command'){ await pal.wait(90); continue; }
+    turns++;
+    if (turns>120) return {err:'too many turns', dump, log:log.slice(-40)};
+    const mems = w.members||[];
+    const mi = b.turn.member;
+    const me = mems.find(m=>m.roleId===mi) || mems[mi] || mems[0] || {};
+    const en = (b.enemies||[]).filter(e=>(e.hp===undefined||e.hp>0));
+    let tgt = 0;
+    if (en.length){ let best=en[0]; for(const e of en){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); if((e.hp||0) < (best.hp||0)) best=e; } tgt = (best.index!==undefined? best.index : 0); }
+    const hpPct = me.maxHp? me.hp/me.maxHp : 1;
+    let acted=false;
+    // heal if low
+    if (hpPct < 0.35 && (me.mp||0) >= 18){
+      for (const sp of ['凝神歸元','氣療術']){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+        try { const r = await pal.battle('magic',{magic:sp, target: mi}); acted=true; log.push({heal:sp, hp:me.hp}); break; } catch(e){ }
+      }
     }
-  }
-  return null;
-};
-
-// deepseek-pure-lib.js — auto-generated helper library (compact snapshot)
-if(typeof global.getRows!=='function'){ global.getRows = async function(mapNum){
-  if(global.MAPROWS[mapNum]) return global.MAPROWS[mapNum];
-  const m = await pal.readData('maps/'+mapNum+'.json');
-  global.MAPROWS[mapNum]=m.rows;
-  return m.rows;
-}; }
-if(typeof global.loadMap!=='function'){ global.loadMap = async (n)=>{ if(!global.maps[n]) global.maps[n]=await pal.readData(`maps/${n}.json`); return global.maps[n]; }; }
-if(typeof global.isWalk!=='function'){ global.isWalk = (map,x,y)=>{
-  const ov = global.wallOv[map+':'+x+','+y];
-  if(ov!==undefined) return ov;
-  const rows=global.maps[map]?.rows; if(!rows) return false;
-  if(y<0||y>=rows.length) return false;
-  const row=rows[y]; if(!row||x<0||x>=row.length) return false;
-  return row[x]==='.';
-}; }
-if(typeof global.settle2!=='function'){ global.settle2 = async ()=>{
-  for(let i=0;i<12;i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const w=pal.world, m=w.mode;
-    if(m==='control') return true;
-    if(m==='dialog'){ await pal.advance(60); continue; }
-    if(m==='battle'){ await global.fightSmart({max:400}); continue; }
-    if(m==='busy'){ await pal.wait(250); continue; }
-    if(m==='menu'){ await pal.press('Menu'); await pal.wait(150); continue; }
+    if (!acted){
+      const cands = [];
+      if ((me.mp||0)>=44) cands.push('天劍');
+      if ((me.mp||0)>=25) cands.push('萬劍訣');
+      if ((me.mp||0)>=18) cands.push('天師符法');
+      if ((me.mp||0)>=10) cands.push('御劍術');
+      for (const sp of cands){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+        try { await pal.battle('magic',{magic:sp, target:tgt}); acted=true; log.push({sp, tgt, en:en.length, hp:me.hp, mp:me.mp}); break; } catch(e){ log.push({fail:sp, e:String(e).slice(0,80)}); }
+      }
+    }
+    if (!acted){
+      try { await pal.battle('attack',{target:tgt}); acted=true; log.push({atk:tgt, hp:me.hp}); }
+      catch(e){ try { await pal.battle('defend'); } catch(e2){ await pal.wait(150); } }
+    }
     await pal.wait(150);
   }
-  return pal.world.mode==='control';
-}; }
-if(typeof global.settleAll!=='function'){ global.settleAll = async function(){
-  for(let i=0;i<12;i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+  return {timeout:true, dump, log:log.slice(-60), turns};
+}; } catch(e){}\n\ntry { global.NV = async function(tx,ty, opts={}){
+  const log=[]; let steps=0;
+  const maxSteps = opts.maxSteps||300;
+  const scene0 = pal.world.scene;
+  while (steps < maxSteps){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    if (pal.world.mode!=='control'){ const r = await global.settleAll(30, opts.battleBudget||60000); if (pal.world.mode!=='control'){ return {ok:false, why:'mode', mode:pal.world.mode, log}; } }
+    if (pal.world.scene!==scene0) return {ok:true, why:'scene', scene:pal.world.scene, at:[pal.world.gx,pal.world.gy], steps, log};
+    const px=pal.world.gx, py=pal.world.gy;
+    if (px===tx && py===ty) return {ok:true, at:[px,py], steps, log};
+    const rows = await global.rowsOfScene(pal.world.scene);
+    const path = global.NVpath(rows, px,py,tx,ty, opts.blocked);
+    if (!path) return {ok:false, why:'nopath', from:[px,py], to:[tx,ty], rows:undefined, log};
+    // take one step
+    const d = path[0];
+    const res = await pal.step(d, 1);
+    steps++;
+    if (res && res.rejected) { if(!opts.blocked) opts.blocked=new Set(); opts.blocked.add((px+(d==='right'?1:d==='left'?-1:0))+','+(py+(d==='down'?1:d==='up'?-1:0))); log.push('rej '+d); continue; }
+    await pal.wait(opts.delay||60);
     await pal.observe();
-    const m=pal.world.mode;
-    if(m==='dialog'){ await pal.advance(20); continue; }
-    if(m==='menu'){ await pal.press('Menu'); continue; }
-    if(m==='busy'){ await pal.wait(400); continue; }
-    if(m==='battle'){ await pal.battle('auto'); continue; }
-    break;
+    if (steps%15===0) log.push('at '+pal.world.gx+','+pal.world.gy);
   }
-  await pal.observe();
-  return pal.world.mode;
-}; }
-if(typeof global.walkB!=='function'){ global.walkB = async (tx,ty,opts={})=>{
-  const maxIter=opts.maxIter||3000;
-  const scene0=pal.world.scene;
-  const dbg=[];
-  for(let it=0; it<maxIter; it++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    if(!await global.settle2()) return {stop:'mode',mode:pal.world.mode,dbg};
-    const w=pal.world;
-    if(w.scene!==scene0) return {stop:'scene',scene:w.scene,x:w.player.gx,y:w.player.gy,dbg};
-    const cx=w.player.gx, cy=w.player.gy;
-    if(cx===tx&&cy===ty) return {stop:'arrived',iter:it,dbg};
-    const map=w.map;
-    if(!global.maps[map]) await global.loadMap(map);
-    const R=global.maps[map].rows;
-    const goal=tx+','+ty, startKey=cx+','+cy;
-    const warps=new Set(global.warpCells()); warps.delete(goal);
-    const blkObj=new Set(); for(const o of w.objectList) if(o.blocking) blkObj.add(o.gx+','+o.gy);
-    const path=(avoidObj)=>{
-      const blocked=new Set(warps);
-      if(avoidObj) for(const c of blkObj) blocked.add(c);
-      const prev={}; const q=[[cx,cy]]; let head=0; const sn=new Set([startKey]);
-      while(head<q.length){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-        const cell=q[head++]; const x=cell[0], y=cell[1];
-        if(x===tx&&y===ty){ const p=[]; let cur=goal; while(cur&&cur!==startKey){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");const pp=cur.split(',');p.push([+pp[0],+pp[1]]);cur=prev[cur];} return p.reverse(); }
-        for(const [dx,dy] of [[0,-1],[0,1],[-1,0],[1,0]]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-          const nx=x+dx,ny=y+dy,k=nx+','+ny;
-          if(sn.has(k))continue;
-          if(!(R[ny]&&R[ny][nx]==='.'))continue;
-          if(blocked.has(k)&&k!==goal)continue;
-          sn.add(k);prev[k]=x+','+y;q.push([nx,ny]);
-        }
-      }
-      return null;
-    };
-    let p=path(true); if(!p){ p=path(false); if(p) dbg.push('bumpmode'); }
-    if(!p) return {stop:'nopath',x:cx,y:cy};
-    let prog=false;
-    for(const [nx,ny] of p){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-      const dir=global.dirBetween(pal.world.player.gx,pal.world.player.gy,nx,ny);
-      if(!dir) break;
-      await pal.step(dir,1); await pal.observe();
-      const w2=pal.world;
-      if(w2.scene!==scene0) return {stop:'scene',scene:w2.scene,x:w2.player.gx,y:w2.player.gy,dbg};
-      if(w2.mode!=='control'){ await global.settle2(); continue; }
-      prog=true;
-      if(w2.player.gx===tx&&w2.player.gy===ty) return {stop:'arrived',iter:it,dbg};
-      if(w2.player.gx!==nx||w2.player.gy!==ny){ break; }
-    }
-    if(!prog) await pal.wait(200);
-  }
-  return {stop:'maxiter',x:pal.world.player.gx,y:pal.world.player.gy,dbg};
-}; }
-if(typeof global.reachMap!=='function'){ global.reachMap = async function(mapNum, sx, sy, opts={}){
-  const rows = await global.getRows(mapNum);
-  const blk = new Set(opts.blk||[]);
-  const free=(x,y)=>{const r=rows[y]; return !!r && r[x]==='.' && !blk.has(x+','+y);};
-  const seen=new Set(); const key=(x,y)=>x+','+y;
-  if(!free(sx,sy)) return {seen, free};
-  seen.add(key(sx,sy)); const q=[[sx,sy]];
-  for(let h=0;h<q.length;h++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const [x,y]=q[h];
-    for(const [dx,dy] of [[0,-1],[0,1],[-1,0],[1,0]]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-      const nx=x+dx, ny=y+dy, k=key(nx,ny);
-      if(seen.has(k)||!free(nx,ny)) continue;
-      seen.add(k); q.push([nx,ny]);
+  return {ok:false, why:'maxsteps', at:[pal.world.gx,pal.world.gy], steps, log};
+}; } catch(e){}\n\ntry { global.NVpath = function(rows, sx,sy,tx,ty, blockSet){
+  const K=(x,y)=>x+','+y;
+  const prev=new Map([[K(sx,sy),null]]); const q=[[sx,sy]]; const goal=K(tx,ty); let found=false;
+  while(q.length){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    const [x,y]=q.shift(); const k=K(x,y);
+    if (k===goal){found=true;break;}
+    for (const [dx,dy,d] of [[1,0,'right'],[-1,0,'left'],[0,1,'down'],[0,-1,'up']]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+      const nx=x+dx, ny=y+dy, nk=K(nx,ny);
+      if (prev.has(nk)) continue;
+      if (!global.isW(rows,nx,ny)) continue;
+      if (blockSet && blockSet.has(nk)) continue;
+      prev.set(nk,{from:k,dir:d}); q.push([nx,ny]);
     }
   }
-  return {seen, free};
-}; }
-if(typeof global.pathAvoidTrig!=='function'){ global.pathAvoidTrig = async function(tx,ty,opts={}){
-  const rows = await global.getRows(pal.world.map);
-  const blk=new Set();
-  for(const o of (pal.world.objectList||[])){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const tm = o.tm!==undefined?o.tm:o.triggerMode;
-    if(o.kind==='touch-trigger' && !(o.gx===tx&&o.gy===ty)) blk.add(o.gx+','+o.gy);
-    if(o.blocking) blk.add(o.gx+','+o.gy);
-  }
-  for(const k of (opts.extraBlk||[])) blk.add(k);
-  const free=(x,y)=>{const r=rows[y]; return !!r && r[x]==='.' && !blk.has(x+','+y);};
-  const sx=pal.world.player.gx, sy=pal.world.player.gy;
-  const prev=new Map(); const key=(x,y)=>x+','+y;
-  const q=[[sx,sy]]; const seen=new Set([key(sx,sy)]);
-  const dirs=[[0,-1,'up'],[0,1,'down'],[-1,0,'left'],[1,0,'right']];
-  let found=false;
-  for(let h=0;h<q.length;h++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const [x,y]=q[h];
-    if(x===tx&&y===ty){found=true;break;}
-    for(const [dx,dy,d] of dirs){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-      const nx=x+dx, ny=y+dy, k=key(nx,ny);
-      if(seen.has(k)||!free(nx,ny)) continue;
-      seen.add(k); prev.set(k,{p:key(x,y),d}); q.push([nx,ny]);
+  if (!found) return null;
+  const path=[]; let cur=goal;
+  while(prev.get(cur)){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const p=prev.get(cur); path.push(p.dir); cur=p.from; }
+  return path.reverse();
+}; } catch(e){}\n\ntry { global.opsOf = function(addr){
+  const txt = global.dumpScript(addr)||'';
+  const out=[];
+  for (const line of txt.split('\n')){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    const m = line.match(/^(\d+): ([0-9A-Fa-f]{4}) .*?\[([^\]]*)\]/);
+    if (m) out.push({addr:+m[1], op:m[2].toUpperCase(), args:m[3].split(',').map(s=>parseInt(s.trim(),10))});
+    else {
+      const m2 = line.match(/^(\d+): ([0-9A-Fa-f]{4})/);
+      if (m2) out.push({addr:+m2[1], op:m2[2].toUpperCase(), args:[]});
     }
-  }
-  if(!found) return null;
-  const out=[]; let cur=key(tx,ty);
-  while(cur!==key(sx,sy)){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const p=prev.get(cur); if(!p) return null; out.push(p.d); cur=p.p; }
-  return out.reverse();
-}; }
-if(typeof global.findRefs!=='function'){ global.findRefs = function(target){
-  const S=global.scripts; const out=[];
-  for(let i=0;i<S.length;i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const o=S[i]; if(!o||!o.op) continue;
-    const a=o.operands||[];
-    const hit = a.includes(target);
-    if(!hit) continue;
-    // 009A batch: operands [lo,hi,0]
-    out.push({addr:o.addr,op:o.op,name:o.name,operands:a,entry:o.entry,depth:o.depth});
   }
   return out;
-}; }
-if(typeof global.pathSafeFP!=='function'){ global.pathSafeFP = async function(tx,ty,opts={}){
-  const rows = await global.getRows(pal.world.map);
-  const trig=[]; const obst=new Set();
-  for(const o of (pal.world.objectList||[])){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const tm = o.tm!==undefined?o.tm:o.triggerMode;
-    if(o.kind==='touch-trigger' || tm===5||tm===6||tm===4) trig.push([o.gx,o.gy,o.id]);
-    if(o.blocking) obst.add(o.gx+','+o.gy);
-  }
-  for(const k of (opts.extraBlk||[])) obst.add(k);
-  const bad=new Set();
-  const ignore = opts.ignoreIds||[];
-  for(const [x,y,id] of trig){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    if(ignore.includes(id)) continue;
-    for(const dx of [0,-1]) for(const dy of [-1,0,1]) bad.add((x+dx)+','+(y+dy));
-  }
-  const free=(x,y)=>{const r=rows[y]; return !!r && r[x]==='.' && !obst.has(x+','+y) && !bad.has(x+','+y);};
-  const sx=pal.world.player.gx, sy=pal.world.player.gy;
+}; } catch(e){}\n\ntry { global.ht2g = function(tx,ty,h){ return {gx: tx+ty+h, gy: ty-tx+64}; }; } catch(e){}\n\ntry { global.rowsOfScene = async function(scene){
+  const mn = global.SCENEMAP[scene];
+  if (mn==null) throw new Error('nomap '+scene);
+  let r = global.MAPS[mn];
+  if (!Array.isArray(r)) { const d = await pal.readData('maps/'+mn+'.json'); r = d.rows; global.MAPS[mn]=r; }
+  if (r.__padded) return r;
+  const p = r.map(s=>{ s=s||''; return s.length>=192? s : s.padEnd(192,' '); });
+  p.__padded = true;
+  global.MAPS[mn] = p;
+  return p;
+}; } catch(e){}\n\ntry { global.bfsPath = function(rows, sx, sy, tx, ty, blockSet){
   const key=(x,y)=>x+','+y;
-  const prev=new Map(); const q=[[sx,sy]]; const seen=new Set([key(sx,sy)]);
-  const dirs=[[0,-1,'up'],[0,1,'down'],[-1,0,'left'],[1,0,'right']];
-  let found=(sx===tx&&sy===ty);
-  for(let h=0;h<q.length&&!found;h++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const [x,y]=q[h];
-    for(const [dx,dy,d] of dirs){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-      const nx=x+dx, ny=y+dy, k=key(nx,ny);
-      if(seen.has(k)||!free(nx,ny)) continue;
-      seen.add(k); prev.set(k,{p:key(x,y),d}); q.push([nx,ny]);
-      if(nx===tx&&ny===ty){found=true;break;}
+  const prev=new Map(); const start=key(sx,sy); prev.set(start,null);
+  const q=[[sx,sy]];
+  const goal=key(tx,ty);
+  while(q.length){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    const [x,y]=q.shift(); const k=key(x,y);
+    if (k===goal) break;
+    for (const [dx,dy,d] of [[1,0,'right'],[-1,0,'left'],[0,1,'down'],[0,-1,'up']]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+      const nx=x+dx, ny=y+dy, nk=key(nx,ny);
+      if (prev.has(nk)) continue;
+      if (!global.isW(rows,nx,ny)) continue;
+      if (blockSet && blockSet.has(nk)) continue;
+      prev.set(nk, {from:k, dir:d});
+      q.push([nx,ny]);
     }
   }
-  if(!found) return null;
-  const out=[]; let cur=key(tx,ty);
-  while(cur!==key(sx,sy)){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const p=prev.get(cur); if(!p) return null; out.push(p.d); cur=p.p; }
-  return out.reverse();
-}; }
-if(typeof global.fightSmart!=='function'){ global.fightSmart = async (opts={})=>{
-  const max=opts.max||300; let n=0; const log=[];
-  while(n<max){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    const w=pal.world;
-    if(w.mode==='battle'){ await global.oneBattleAction(log); n++; await pal.wait(70); }
-    else if(w.mode==='dialog'){ await pal.advance(40); }
-    else if(w.mode==='busy'){ await pal.wait(180); }
-    else if(w.mode==='menu'){ await pal.press('Menu'); await pal.wait(150); }
-    else return {result:(w.lastBattleResult&&JSON.stringify(w.lastBattleResult))||'ended', turns:n, log:log.slice(-12)};
+  if (!prev.has(goal)) return null;
+  const path=[]; let cur=goal;
+  while(prev.get(cur)){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const p=prev.get(cur); path.push(p.dir); cur=p.from; }
+  return path.reverse();
+}; } catch(e){}\n\ntry { global.isW = (rows,x,y)=>{ const r=rows[y]; return !!r && r[x]==='.'; }; } catch(e){}\n\ntry { global.rowsForScene = async (scene)=>{ const mn = global.SCENEMAP[scene]; if(mn==null) throw new Error('no map for scene '+scene); return await global.loadMap(mn); }; } catch(e){}\n\nglobal.CHAIN192 = [3427,3429,3431,3433,3435,3480,3437,3439,3441,3443,3445,3447,3449,3453,3481,3455,3457,3459,3461,3470,3469,3471,3473,3475,3477,3479];\n\ntry { global.EXITS = {}; } catch(e){}// deepseek-pure-lib.js  (auto-appended Round 374)
+// Region model + maze route helpers
+async function(maxIter=40){
+  for(let i=0;i<maxIter;i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    const m = pal.world.mode;
+    if(m==='control') return true;
+    if(m==='dialog'){ await pal.advance(30); }
+    else if(m==='menu'){ await pal.choose(0); }
+    else if(m==='battle'){ await global.BATTLE(); }
+    else { await pal.wait(150); }
   }
-  return {result:'maxturns', turns:n, log:log.slice(-12)};
-}; }
-if(typeof global.walkTo!=='function'){ global.walkTo = async (tx,ty, opts={})=>{
-  const maxSteps = opts.maxSteps||600;
+  return pal.world.mode==='control';
+}
+
+async function(){
+  let g=0;
+  while(pal.world.mode==='battle' && g++<400){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    await pal.battle('attack');
+    await pal.wait(60);
+    if(pal.world.mode==='dialog') await pal.advance(30);
+  }
+}
+
+async function(tx,ty,opts={}){
+  const scene=pal.world.scene;
+  const mn=global.SCENEMAP[scene];
+  global.__ROWS = global.__ROWS||{};
+  let rows=global.__ROWS[mn];
+  if(!rows){ const d=await pal.readData(`maps/${mn}.json`); rows=(d.rows||[]).map(r=>(r||'').padEnd(192,' ')); global.__ROWS[mn]=rows; }
+  const K=(x,y)=>y*1000+x, N=rows.length, M=192;
+  const blk=new Set();
+  for(const o of pal.world.objectList) if(o.blocking) blk.add(K(o.gx,o.gy));
+  const avoid = opts.avoid||new Set();
+  const walk=(x,y)=> x>=0&&y>=0&&x<M&&y<N && rows[y][x]==='.' && !blk.has(K(x,y)) && !avoid.has(K(x,y));
+  const sx=pal.world.gx, sy=pal.world.gy;
+  const prev=new Map(); const q=[[sx,sy]]; prev.set(K(sx,sy),null); let found=(sx===tx&&sy===ty);
+  while(q.length&&!found){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const [x,y]=q.shift();
+    for(const [dx,dy] of [[0,-1],[0,1],[-1,0],[1,0]]){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); const nx=x+dx,ny=y+dy;
+      if(!walk(nx,ny)||prev.has(K(nx,ny))) continue; prev.set(K(nx,ny),[x,y]); if(nx===tx&&ny===ty){found=true;break;} q.push([nx,ny]); } }
+  if(!found) return {ok:false,reason:'nopath',from:[sx,sy],to:[tx,ty]};
+  const path=[]; let cur=[tx,ty];
+  while(cur){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); path.unshift(cur); cur=prev.get(K(cur[0],cur[1])); }
   let steps=0;
-  for(let iter=0; iter<maxSteps; iter++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    if(!await global.settle()) return {stop:'stuck-mode',mode:pal.world.mode};
-    const w=pal.world;
-    if(w.gameOver) return {stop:'gameover'};
-    const cx=w.player.gx, cy=w.player.gy;
-    if(cx===tx&&cy===ty) return {stop:'arrived',x:cx,y:cy};
-    const map=w.map;
-    if(opts.stopScene && w.scene!==opts.stopScene) return {stop:'scene',scene:w.scene};
-    const path=global.bfsPath(map,cx,cy,tx,ty);
-    if(!path){ return {stop:'nopath',x:cx,y:cy,map}; }
-    // take up to a few steps along path
-    let advanced=0;
-    for(const [nx,ny] of path){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-      const dir=global.dirBetween(pal.world.player.gx,pal.world.player.gy,nx,ny);
-      if(!dir) break;
-      const before={x:pal.world.player.gx,y:pal.world.player.gy,sc:pal.world.scene,mode:pal.world.mode};
-      await pal.step(dir,1);
-      steps++; advanced++;
-      const w2=pal.world;
-      if(w2.scene!==before.sc){ return {stop:'scene',scene:w2.scene,x:w2.player.gx,y:w2.player.gy}; }
-      if(w2.mode!=='control'){ break; }
-      if(w2.player.gx===before.x && w2.player.gy===before.y){
-        // rejected: mark this cell blocked
-        global.wallOv[map+':'+nx+','+ny]=false;
-        break;
-      }
-      if(w2.player.gx===tx&&w2.player.gy===ty) return {stop:'arrived',x:tx,y:ty};
-    }
-    if(advanced===0) return {stop:'nopass',x:pal.world.player.gx,y:pal.world.player.gy};
+  for(let i=1;i<path.length;i++){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
+    if(pal.world.mode!=='control'){ await global.PUMP(); if(pal.world.mode!=='control') return {ok:false,reason:'mode:'+pal.world.mode,at:[pal.world.gx,pal.world.gy]}; }
+    const [ax,ay]=path[i-1], [bx,by]=path[i];
+    const dir = bx>ax?'right':bx<ax?'left':by>ay?'down':'up';
+    if(pal.world.gx!==ax||pal.world.gy!==ay) return {ok:false,reason:'offpath',at:[pal.world.gx,pal.world.gy],want:[ax,ay]};
+    await pal.step(dir,1); await pal.observe();
+    if(pal.world.scene!==scene) return {ok:false,reason:'scene',scene:pal.world.scene,at:[pal.world.gx,pal.world.gy]};
+    if(pal.world.gx===ax&&pal.world.gy===ay&&pal.world.mode==='control') return {ok:false,reason:'blocked',dir,at:[ax,ay]};
+    steps++;
   }
-  return {stop:'maxsteps',x:pal.world.player.gx,y:pal.world.player.gy};
-}; }
-if(typeof global.warpCells!=='function'){ global.warpCells = ()=>{ const s=new Set(); for(const o of pal.world.objectList){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)"); if(o.kind==='touch-trigger') s.add(o.gx+','+o.gy); } return s; }; }
-if(typeof global.blockedLive!=='function'){ global.blockedLive = function(){
-  const set = new Set();
-  for (const o of pal.world.objectList){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    if (o.blocking) set.add(o.gx+','+o.gy);
-  }
-  return set;
-}; }
-if(typeof global.entryInfo!=='function'){ global.entryInfo = (addr)=>{
-  const ops = byEntry.get(addr)||[];
-  const out={addr, n:ops.length, scenes:[], warps:[], battles:[], flags:[]};
-  for (const o of ops){if(++globalThis.__lg>5000000||((globalThis.__lg&63)===0&&globalThis.__lgCheck&&globalThis.__lgCheck()))throw new Error("Infinite synchronous loop detected (>3s without await; check while/continue condition)");
-    if (o.name.includes('切换场景')) out.scenes.push(o.operands[0]);
-    if (o.name.includes('开战')) out.battles.push(o.operands[0]);
-    if (o.name.includes('设队伍在地图上的位置')||o.name.includes('0046')) out.warps.push(o.operands.join(','));
-    if (o.name.includes('设事件对象状态')||o.name.includes('设标志')) out.flags.push(o.name+'['+o.operands.join(',')+']');
-  }
-  return out;
-}; }
+  return {ok:true,steps,at:[pal.world.gx,pal.world.gy]};
+}
+
+async function(dir){
+  const before={x:pal.world.gx,y:pal.world.gy,scene:pal.world.scene};
+  await pal.step(dir,1); await pal.observe();
+  if(pal.world.mode!=='control') await global.PUMP();
+  return {dir,from:before,to:{x:pal.world.gx,y:pal.world.gy,scene:pal.world.scene},moved:(pal.world.gx!==before.x||pal.world.gy!==before.y||pal.world.scene!==before.scene),mode:pal.world.mode};
+}
+
+// ===== R402/R403 additions (pasted into deepseek-pure-lib.js) =====
+// global.palRows(mapNum) -> cached rows array (char rows: '.' walkable, '#'/' ' blocked)
+// global.MAPCACHE = {}
+// global.BLKMAP = {}  learned blocked tiles per map
+// global.settle2(maxRounds=40)
+// global.walkOnMap(mapNum, tx, ty, {scene})  <-- BFS walker; returns {ok:false, why:'scene changed', scene, at} on warp
+// NOTE: do NOT use global.getRows() (Uint8Array). Use pal.readData('maps/<n>.json').rows
+// sc203 statue EO 3641 @(84,72) triggerMode2 = past transition (巫后 cutscene)
+// sc227 EO 4253@(144,141) 婦人 rescue (2 battles); EO 4267@(100,108) -> warp to 235
+// EXITS 227-252 table captured in round 402 handover.
